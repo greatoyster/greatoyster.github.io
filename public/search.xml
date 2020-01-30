@@ -1,26 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Main</title>
+    <title>Homepage</title>
     <url>/2020/01/30/Main/</url>
-    <content><![CDATA[<h1 id="Welcome"><a href="#Welcome" class="headerlink" title="Welcome!"></a>Welcome!</h1><h2 id="Projects-on-the-way"><a href="#Projects-on-the-way" class="headerlink" title="Projects on the way"></a>Projects on the way</h2><ul>
-<li><input disabled="" type="checkbox"> </li>
-<li><input disabled="" type="checkbox"> </li>
-<li><input disabled="" type="checkbox"> </li>
-</ul>
-<h2 id="Learning"><a href="#Learning" class="headerlink" title="Learning"></a>Learning</h2><ul>
+    <content><![CDATA[<h1 id="Welcome-欢迎！"><a href="#Welcome-欢迎！" class="headerlink" title="Welcome! 欢迎！"></a>Welcome! 欢迎！</h1><h2 id="Projects-on-the-way-手头项目"><a href="#Projects-on-the-way-手头项目" class="headerlink" title="Projects on the way 手头项目"></a>Projects on the way 手头项目</h2><ul>
+<li><input disabled="" type="checkbox"> chip-8 emulator (chip-8模拟器)</li>
 <li><input disabled="" type="checkbox"> </li>
 <li><input disabled="" type="checkbox"> </li>
 </ul>
-<h2 id="Notes"><a href="#Notes" class="headerlink" title="Notes"></a>Notes</h2><ul>
+<h2 id="Learning-学习目标"><a href="#Learning-学习目标" class="headerlink" title="Learning 学习目标"></a>Learning 学习目标</h2><ul>
+<li><input disabled="" type="checkbox"> Machine Learning 机器学习</li>
 <li><input disabled="" type="checkbox"> </li>
 </ul>
-<h2 id="Transports"><a href="#Transports" class="headerlink" title="Transports"></a>Transports</h2><ul>
+<h2 id="Notes-笔记"><a href="#Notes-笔记" class="headerlink" title="Notes 笔记"></a>Notes 笔记</h2><ul>
+<li><input disabled="" type="checkbox"> </li>
+</ul>
+<h2 id="Transports-传送门"><a href="#Transports-传送门" class="headerlink" title="Transports 传送门"></a>Transports 传送门</h2><ul>
 <li><a href="https://www.cn.bing.com" target="_blank" rel="noopener">Bing</a></li>
 <li><a href="https://www.google.com" target="_blank" rel="noopener">Google</a></li>
 <li><a href="https://www.github.com" target="_blank" rel="noopener">Github</a></li>
+<li><a href="https://www.baidu.com" target="_blank" rel="noopener">Baidu</a></li>
 </ul>
-<h2 id="Contact-Author"><a href="#Contact-Author" class="headerlink" title="Contact Author"></a>Contact Author</h2><p>Email: <a href="mailto:yangjq@shanghaitech.edu.cn">yangjq@shanghaitech.edu.cn</a></p>
+<h2 id="Contact-Author-联系方式"><a href="#Contact-Author-联系方式" class="headerlink" title="Contact Author 联系方式"></a>Contact Author 联系方式</h2><p>Email: <a href="mailto:yangjq@shanghaitech.edu.cn">yangjq@shanghaitech.edu.cn</a></p>
 ]]></content>
+      <categories>
+        <category>navigator</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>chip-8概述</title>
+    <url>/2020/01/30/chip-8-emulator/chip-8%E6%A6%82%E8%BF%B0/</url>
+    <content><![CDATA[<p><img src="../../images/%E6%8D%95%E8%8E%B7.PNG" alt="images"></p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"hello world"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>lkajdsflkjadsflkjlka lksd fjlkaj kldaj;</p>
+]]></content>
+      <tags>
+        <tag>chip-8</tag>
+        <tag>rust</tag>
+      </tags>
   </entry>
 </search>
