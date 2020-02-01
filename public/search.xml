@@ -1,13 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Rust语法小结</title>
+    <title>Homepage</title>
+    <url>/2020/01/30/Main/</url>
+    <content><![CDATA[<h1 id="Welcome-欢迎！"><a href="#Welcome-欢迎！" class="headerlink" title="Welcome! 欢迎！"></a>Welcome! 欢迎！</h1><h2 id="Projects-on-the-way-手头项目"><a href="#Projects-on-the-way-手头项目" class="headerlink" title="Projects on the way 手头项目"></a>Projects on the way 手头项目</h2><ul>
+<li><input disabled="" type="checkbox"> chip-8 emulator (chip-8模拟器)</li>
+<li><input disabled="" type="checkbox"> </li>
+<li><input disabled="" type="checkbox"> </li>
+</ul>
+<h2 id="Learning-学习目标"><a href="#Learning-学习目标" class="headerlink" title="Learning 学习目标"></a>Learning 学习目标</h2><ul>
+<li><input disabled="" type="checkbox"> Machine Learning 机器学习</li>
+<li><input disabled="" type="checkbox"> </li>
+</ul>
+<h2 id="Notes-笔记"><a href="#Notes-笔记" class="headerlink" title="Notes 笔记"></a>Notes 笔记</h2><ul>
+<li><input disabled="" type="checkbox"> </li>
+</ul>
+<h2 id="Transports-传送门"><a href="#Transports-传送门" class="headerlink" title="Transports 传送门"></a>Transports 传送门</h2><ul>
+<li><a href="https://www.cn.bing.com" target="_blank" rel="noopener">Bing</a></li>
+<li><a href="https://www.google.com" target="_blank" rel="noopener">Google</a></li>
+<li><a href="https://www.github.com" target="_blank" rel="noopener">Github</a></li>
+<li><a href="https://www.baidu.com" target="_blank" rel="noopener">Baidu</a></li>
+</ul>
+<h2 id="Contact-Author-联系方式"><a href="#Contact-Author-联系方式" class="headerlink" title="Contact Author 联系方式"></a>Contact Author 联系方式</h2><p>Email: <a href="mailto:yangjq@shanghaitech.edu.cn">yangjq@shanghaitech.edu.cn</a></p>
+]]></content>
+      <categories>
+        <category>navigator</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Rust入门语法归纳</title>
     <url>/2020/02/01/Rust%E8%AF%AD%E6%B3%95%E5%B0%8F%E7%BB%93/</url>
-    <content><![CDATA[<h1 id="Rust语法小结"><a href="#Rust语法小结" class="headerlink" title="Rust语法小结"></a>Rust语法小结</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>Rust是一门学习曲线极其陡峭的编程语言，里面的语法规则比较庞杂。不得不承认，Rust可读性是很高的，但是写出正确的代码又是另外一回事了。</p>
+    <content><![CDATA[<h1 id="Rust入门语法归纳"><a href="#Rust入门语法归纳" class="headerlink" title="Rust入门语法归纳"></a>Rust入门语法归纳</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>Rust是一门学习曲线极其陡峭的编程语言，里面的语法规则比较庞杂。不得不承认，Rust可读性是很高的，但是写出正确的代码又是另外一回事了。</p>
 <p>好在学习Rust有比较好的官方教材《The Rust Programing Language》，而且也有了翻译质量很高的中文版，但是我发现这本官方教材里面很多东西都是零零碎碎的，例子很多，却缺乏了一些很general的表述。在这里，我负责来汇总一下Rust的部分基本语法规则。</p>
-<p>此外，如果你在一门或者多门其他编程语言上已经有了相当的基础，</p>
+<p>此外，如果你在一门或者多门其他编程语言上已经有了相当的基础，那么学习Rust会快上一些。</p>
 <h2 id="类型系统"><a href="#类型系统" class="headerlink" title="类型系统"></a>类型系统</h2><h3 id="类型签名"><a href="#类型签名" class="headerlink" title="类型签名"></a>类型签名</h3><p>遵循<code>变量名: 变量类型</code>的格式，冒号前面是变量名，后面是变量类型</p>
 <p>在C语言中的<code>char a</code>到了Rust里面就变成了<code>a : char</code></p>
+<p>这与Haskell里面的类型签名是一致的。</p>
 <h3 id="内置类型（built-in-type）"><a href="#内置类型（built-in-type）" class="headerlink" title="内置类型（built-in type）"></a>内置类型（built-in type）</h3><p>也叫做原生类型（primitive）。这些类型包括了内建在Rust语言中的和标准库里提供的两大类。</p>
 <h4 id="布尔类型"><a href="#布尔类型" class="headerlink" title="布尔类型"></a>布尔类型</h4><p><code>bool</code>: <code>true</code> or <code>false</code></p>
 <h4 id="字符"><a href="#字符" class="headerlink" title="字符"></a>字符</h4><p><code>char</code>:代表一个Unicode字符，与其他编程语言不同，它的大小是4字节（意味着可以代表更多的字符，比如表情）。</p>
@@ -65,53 +93,66 @@
 <h5 id="一个重要的枚举Option-lt-T-gt"><a href="#一个重要的枚举Option-lt-T-gt" class="headerlink" title="一个重要的枚举Option&lt;T&gt;"></a>一个重要的枚举<code>Option&lt;T&gt;</code></h5><p><code>Option&lt;T&gt;</code>由标准库定义</p>
 <figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">enum</span> <span class="title">Option</span></span>&lt;T&gt; &#123;</span><br><span class="line">    <span class="literal">Some</span>(T),</span><br><span class="line">    <span class="literal">None</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+<p>整个枚举体的精髓就体现在了成员<code>None</code>上，<code>Option&lt;T&gt;::None</code>是Rust里唯一一种表示空值的方式。也就是说，如果一个变量的类型不是<code>Option&lt;T&gt;</code>，你就不用担心它是空值。</p>
+<h3 id="类型别名"><a href="#类型别名" class="headerlink" title="类型别名"></a>类型别名</h3><p>依赖关键词<code>type</code></p>
+<p>遵循规则：<code>type 别名 = 类型名</code></p>
+<p>例如：</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">type</span> <span class="title">Name</span></span> = <span class="built_in">String</span>;</span><br><span class="line"><span class="keyword">let</span> x: Name = <span class="string">"Hello"</span>.to_string();</span><br></pre></td></tr></table></figure>
+
+<h2 id="控制流"><a href="#控制流" class="headerlink" title="控制流"></a>控制流</h2><p>关于Rust类型系统的介绍就告一段落，下面我们来了解一下Rust的控制流。</p>
+<h3 id="变量绑定"><a href="#变量绑定" class="headerlink" title="变量绑定"></a>变量绑定</h3><p>依赖于关键字<code>let</code></p>
+<p>遵循规则：<code>let 变量名:类型签名 = 值</code></p>
+<p>注意：不绑定变量<code>let 变量名:类型签名</code>会有警告，不绑定变量且无类型签名<code>let 变量名</code>无法编译，而在绑定变量的时候没有类型签名<code>let 变量名 = 值</code>可以正常编译</p>
+<p>示例</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> x:<span class="built_in">i32</span> = <span class="number">5</span>;</span><br><span class="line"><span class="keyword">let</span> y = <span class="number">6</span>;</span><br><span class="line"><span class="keyword">let</span> z:<span class="built_in">f64</span>;</span><br></pre></td></tr></table></figure>
+
+<p>这一语句把对应的值绑定到了变量名上。</p>
+<p>变量绑定和赋值不能够等同视之。</p>
+<p>如果期望以上的<code>x,y,z</code>是可变的，那么在变量名之前要加上关键字<code>mut</code></p>
+<h3 id="条件语句"><a href="#条件语句" class="headerlink" title="条件语句"></a>条件语句</h3><p>条件语句主要依赖关键词<code>if</code>和表示分支的<code>else</code></p>
+<p>完全的语法规则是<code>if 表达式 语句块 else if 语句块 else 语句块</code></p>
+<p><code>else if</code>可以没有，也可以是多个, <code>else</code>可有可无。</p>
+<p>注意：<code>if</code>后面的表达式必须是<code>bool</code>类型的</p>
+<p>此外，条件语句可以用于变量绑定</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> x = <span class="number">5</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> y = <span class="keyword">if</span> x == <span class="number">5</span> &#123;</span><br><span class="line">    <span class="number">10</span></span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="number">15</span></span><br><span class="line">&#125;; <span class="comment">// y: i32</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="循环语句"><a href="#循环语句" class="headerlink" title="循环语句"></a>循环语句</h3><p>有三种表达迭代的关键字<code>loop</code>, <code>for</code>, <code>while</code></p>
+<h4 id="loop"><a href="#loop" class="headerlink" title="loop"></a>loop</h4><p>简单粗暴：<code>loop 语句块</code></p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">loop</span> &#123;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"Loop forever!"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>依赖语句块中的内容来跳出循环。</p>
+<p>我们可以思考一下C语言中的两种相同语义的表述方式</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> i=<span class="number">0</span></span><br><span class="line"><span class="keyword">while</span>(i&lt;<span class="number">10</span>)&#123;</span><br><span class="line">    i++;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> j;</span><br><span class="line"><span class="keyword">while</span> (<span class="number">1</span>)&#123;</span><br><span class="line">    <span class="keyword">if</span> (j&lt;<span class="number">10</span>) <span class="keyword">break</span>;</span><br><span class="line">    j++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="while"><a href="#while" class="headerlink" title="while"></a>while</h4><p>看起来像略微机智的<code>loop</code></p>
+<p>遵循规则：<code>while 条件表达式 语句块</code></p>
+<p>示例如下：</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="keyword">mut</span> x = <span class="number">5</span>; <span class="comment">// mut x: i32</span></span><br><span class="line"><span class="keyword">let</span> <span class="keyword">mut</span> done = <span class="literal">false</span>; <span class="comment">// mut done: bool</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> !done &#123;</span><br><span class="line">    x += x - <span class="number">3</span>;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"&#123;&#125;"</span>, x);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> x % <span class="number">5</span> == <span class="number">0</span> &#123;</span><br><span class="line">        done = <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>注意：条件表达式需要一个<code>bool</code>类型</p>
+<h3 id="for"><a href="#for" class="headerlink" title="for"></a>for</h3><p>Rust的<code>for</code>循环的设计范式和C语言中的有很大不同，更加接近Python中的。</p>
+<p>遵循规则  <code>for 变量名 in 迭代器 代码块</code></p>
+<p>也即</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> var <span class="keyword">in</span> expression &#123;</span><br><span class="line">    code</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个<code>expression</code>是一个迭代器。迭代器返回一系列的元素。每次迭代循环中的一个元素。然后它的值与<code>var</code>绑定，它在循环体中有效。每当循环体执行完后，我们从迭代器中取出下一个值，然后我们再重复一遍。当迭代器中不再有值时，<code>for</code>循环结束。</p>
+<p>下面提供C和Rust里面打印0到9的等价表述</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> (x = <span class="number">0</span>; x &lt; <span class="number">10</span>; x++) &#123;</span><br><span class="line">    <span class="built_in">printf</span>( <span class="string">"%d\n"</span>, x );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> <span class="number">0</span>..<span class="number">10</span> &#123;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"&#123;&#125;"</span>, x); <span class="comment">// x: i32</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="循环标签"><a href="#循环标签" class="headerlink" title="循环标签"></a>循环标签</h3><p>且看例子：</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="symbol">'outer</span>: <span class="keyword">for</span> x <span class="keyword">in</span> <span class="number">0</span>..<span class="number">10</span> &#123;</span><br><span class="line">    <span class="symbol">'inner</span>: <span class="keyword">for</span> y <span class="keyword">in</span> <span class="number">0</span>..<span class="number">10</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> x % <span class="number">2</span> == <span class="number">0</span> &#123; <span class="keyword">continue</span> <span class="symbol">'outer</span>; &#125; <span class="comment">// Continues the loop over `x`.</span></span><br><span class="line">        <span class="keyword">if</span> y % <span class="number">2</span> == <span class="number">0</span> &#123; <span class="keyword">continue</span> <span class="symbol">'inner</span>; &#125; <span class="comment">// Continues the loop over `y`.</span></span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">"x: &#123;&#125;, y: &#123;&#125;"</span>, x, y);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
 
-
-
-
+<p>这里的<code>&#39;outer</code>和<code>&#39;inner</code>两个循环标签分别标记了外层的循环和内部的循环，而语句中的<code>continue</code>就对他们标记的循环起作用。</p>
+<p>值得注意的是，循环标签名字前面的单引号<code>&#39;</code>是不可省略哟。</p>
+<h2 id="尾声"><a href="#尾声" class="headerlink" title="尾声"></a>尾声</h2><p>到了这个阶段，你就已经掌握了Rust语法规则里面大概两三成的内容，这两三成的内容是最为基本的，而且有一个很重要的特点，他们是Rust语言和一些常见编程语言（比如类C语言或者Python）的共通之处，你多多少少可以在Rust上找到它们的影子。</p>
+<p>在剩下的所有权，泛型等更为高级的概念之中，Rust则有与众不同的地方，这个就留在后面的文章里了。</p>
 ]]></content>
       <categories>
         <category>Rust</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Homepage</title>
-    <url>/2020/01/30/Main/</url>
-    <content><![CDATA[<h1 id="Welcome-欢迎！"><a href="#Welcome-欢迎！" class="headerlink" title="Welcome! 欢迎！"></a>Welcome! 欢迎！</h1><h2 id="Projects-on-the-way-手头项目"><a href="#Projects-on-the-way-手头项目" class="headerlink" title="Projects on the way 手头项目"></a>Projects on the way 手头项目</h2><ul>
-<li><input disabled="" type="checkbox"> chip-8 emulator (chip-8模拟器)</li>
-<li><input disabled="" type="checkbox"> </li>
-<li><input disabled="" type="checkbox"> </li>
-</ul>
-<h2 id="Learning-学习目标"><a href="#Learning-学习目标" class="headerlink" title="Learning 学习目标"></a>Learning 学习目标</h2><ul>
-<li><input disabled="" type="checkbox"> Machine Learning 机器学习</li>
-<li><input disabled="" type="checkbox"> </li>
-</ul>
-<h2 id="Notes-笔记"><a href="#Notes-笔记" class="headerlink" title="Notes 笔记"></a>Notes 笔记</h2><ul>
-<li><input disabled="" type="checkbox"> </li>
-</ul>
-<h2 id="Transports-传送门"><a href="#Transports-传送门" class="headerlink" title="Transports 传送门"></a>Transports 传送门</h2><ul>
-<li><a href="https://www.cn.bing.com" target="_blank" rel="noopener">Bing</a></li>
-<li><a href="https://www.google.com" target="_blank" rel="noopener">Google</a></li>
-<li><a href="https://www.github.com" target="_blank" rel="noopener">Github</a></li>
-<li><a href="https://www.baidu.com" target="_blank" rel="noopener">Baidu</a></li>
-</ul>
-<h2 id="Contact-Author-联系方式"><a href="#Contact-Author-联系方式" class="headerlink" title="Contact Author 联系方式"></a>Contact Author 联系方式</h2><p>Email: <a href="mailto:yangjq@shanghaitech.edu.cn">yangjq@shanghaitech.edu.cn</a></p>
-]]></content>
-      <categories>
-        <category>navigator</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>熟悉图形API</title>
-    <url>/2020/01/31/chip-8-emulator/OpenGL%E5%85%A5%E9%97%A8/</url>
-    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>为了实现chip-8模拟器的图像显示功能，我们需要依赖第三方库的帮助，比如比较著名的OpenGL。这次打算试着用一下gfx-rs。</p>
-<h2 id="gfx-rs"><a href="#gfx-rs" class="headerlink" title="gfx-rs"></a>gfx-rs</h2><p>它是用Rust编写的一个图形API。</p>
-<p>还没用过。</p>
-]]></content>
-      <categories>
-        <category>emulator</category>
       </categories>
   </entry>
   <entry>
@@ -277,6 +318,17 @@
 <p>补码使减法运算转换为加法运算,进一步简化计算机中运算器的线路设计</p>
 </li>
 </ol>
+]]></content>
+      <categories>
+        <category>emulator</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>熟悉图形API</title>
+    <url>/2020/01/31/chip-8-emulator/OpenGL%E5%85%A5%E9%97%A8/</url>
+    <content><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>为了实现chip-8模拟器的图像显示功能，我们需要依赖第三方库的帮助，比如比较著名的OpenGL。这次打算试着用一下gfx-rs。</p>
+<h2 id="gfx-rs"><a href="#gfx-rs" class="headerlink" title="gfx-rs"></a>gfx-rs</h2><p>它是用Rust编写的一个图形API。</p>
+<p>还没用过。</p>
 ]]></content>
       <categories>
         <category>emulator</category>
