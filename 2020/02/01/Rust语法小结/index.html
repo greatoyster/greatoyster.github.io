@@ -55,7 +55,7 @@
 <meta property="og:description" content="Rust入门语法归纳前言Rust是一门学习曲线极其陡峭的编程语言，里面的语法规则比较庞杂。不得不承认，Rust可读性是很高的，但是写出正确的代码又是另外一回事了。 好在学习Rust有比较好的官方教材《The Rust Programing Language》，而且也有了翻译质量很高的中文版，但是我发现这本官方教材里面很多东西都是零零碎碎的，例子很多，却缺乏了一些很general的表述。在这里，我负">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-02-01T13:03:49.000Z">
-<meta property="article:modified_time" content="2020-02-01T13:30:26.130Z">
+<meta property="article:modified_time" content="2020-02-01T13:57:50.078Z">
 <meta property="article:author" content="greatoyster">
 <meta property="article:tag" content="greatoyster">
 <meta name="twitter:card" content="summary">
@@ -140,9 +140,24 @@
     <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
 
   </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags<span class="badge">1</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories<span class="badge">2</span></a>
+
+  </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives<span class="badge">5</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives<span class="badge">4</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -224,7 +239,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2020-02-01 13:03:49 / Modified: 13:30:26" itemprop="dateCreated datePublished" datetime="2020-02-01T13:03:49Z">2020-02-01</time>
+              <time title="Created: 2020-02-01 13:03:49 / Modified: 13:57:50" itemprop="dateCreated datePublished" datetime="2020-02-01T13:03:49Z">2020-02-01</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -259,6 +274,8 @@
         <h1 id="Rust入门语法归纳"><a href="#Rust入门语法归纳" class="headerlink" title="Rust入门语法归纳"></a>Rust入门语法归纳</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>Rust是一门学习曲线极其陡峭的编程语言，里面的语法规则比较庞杂。不得不承认，Rust可读性是很高的，但是写出正确的代码又是另外一回事了。</p>
 <p>好在学习Rust有比较好的官方教材《The Rust Programing Language》，而且也有了翻译质量很高的中文版，但是我发现这本官方教材里面很多东西都是零零碎碎的，例子很多，却缺乏了一些很general的表述。在这里，我负责来汇总一下Rust的部分基本语法规则。</p>
 <p>此外，如果你在一门或者多门其他编程语言上已经有了相当的基础，那么学习Rust会快上一些。</p>
+<a id="more"></a>
+
 <h2 id="类型系统"><a href="#类型系统" class="headerlink" title="类型系统"></a>类型系统</h2><h3 id="类型签名"><a href="#类型签名" class="headerlink" title="类型签名"></a>类型签名</h3><p>遵循<code>变量名: 变量类型</code>的格式，冒号前面是变量名，后面是变量类型</p>
 <p>在C语言中的<code>char a</code>到了Rust里面就变成了<code>a : char</code></p>
 <p>这与Haskell里面的类型签名是一致的。</p>
@@ -468,13 +485,21 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-count">4</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">3</span>
-        <span class="site-state-item-name">categories</span>
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
 </div>

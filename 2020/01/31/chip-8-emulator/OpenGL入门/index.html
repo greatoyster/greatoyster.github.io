@@ -47,17 +47,17 @@
   };
 </script>
 
-  <meta name="description" content="前言为了实现chip-8模拟器的图像显示功能，我们需要依赖第三方库的帮助，比如比较著名的OpenGL。这次打算试着用一下gfx-rs。 gfx-rs它是用Rust编写的一个图形API。 还没用过。">
+  <meta name="description" content="前言为了实现chip-8模拟器的图像显示功能，我们需要依赖第三方库的帮助，比如比较著名的OpenGL。这次打算试着用一下gfx-rs。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="熟悉图形API">
 <meta property="og:url" content="http://yoursite.com/2020/01/31/chip-8-emulator/OpenGL%E5%85%A5%E9%97%A8/index.html">
 <meta property="og:site_name" content="Greatoyster">
-<meta property="og:description" content="前言为了实现chip-8模拟器的图像显示功能，我们需要依赖第三方库的帮助，比如比较著名的OpenGL。这次打算试着用一下gfx-rs。 gfx-rs它是用Rust编写的一个图形API。 还没用过。">
+<meta property="og:description" content="前言为了实现chip-8模拟器的图像显示功能，我们需要依赖第三方库的帮助，比如比较著名的OpenGL。这次打算试着用一下gfx-rs。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-01-31T09:16:18.177Z">
-<meta property="article:modified_time" content="2020-02-01T13:31:02.428Z">
+<meta property="article:modified_time" content="2020-02-01T14:07:02.096Z">
 <meta property="article:author" content="greatoyster">
-<meta property="article:tag" content="greatoyster">
+<meta property="article:tag" content="emulator">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="http://yoursite.com/2020/01/31/chip-8-emulator/OpenGL%E5%85%A5%E9%97%A8/">
@@ -140,9 +140,24 @@
     <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
 
   </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags<span class="badge">1</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories<span class="badge">2</span></a>
+
+  </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives<span class="badge">5</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives<span class="badge">4</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -230,7 +245,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-02-01 13:31:02" itemprop="dateModified" datetime="2020-02-01T13:31:02Z">2020-02-01</time>
+                <time title="Modified: 2020-02-01 14:07:02" itemprop="dateModified" datetime="2020-02-01T14:07:02Z">2020-02-01</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -263,6 +278,8 @@
 
       
         <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>为了实现chip-8模拟器的图像显示功能，我们需要依赖第三方库的帮助，比如比较著名的OpenGL。这次打算试着用一下gfx-rs。</p>
+<a id="more"></a>
+
 <h2 id="gfx-rs"><a href="#gfx-rs" class="headerlink" title="gfx-rs"></a>gfx-rs</h2><p>它是用Rust编写的一个图形API。</p>
 <p>还没用过。</p>
 
@@ -273,6 +290,9 @@
     
 
       <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/emulator/" rel="tag"># emulator</a>
+          </div>
 
         
 
@@ -360,13 +380,21 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-count">4</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">3</span>
-        <span class="site-state-item-name">categories</span>
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
 </div>
