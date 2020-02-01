@@ -1,37 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Homepage</title>
-    <url>/2020/01/30/Main/</url>
-    <content><![CDATA[<h1 id="Welcome-欢迎！"><a href="#Welcome-欢迎！" class="headerlink" title="Welcome! 欢迎！"></a>Welcome! 欢迎！</h1><h2 id="Projects-on-the-way-手头项目"><a href="#Projects-on-the-way-手头项目" class="headerlink" title="Projects on the way 手头项目"></a>Projects on the way 手头项目</h2><ul>
-<li><input disabled="" type="checkbox"> chip-8 emulator (chip-8模拟器)</li>
-<li><input disabled="" type="checkbox"> </li>
-<li><input disabled="" type="checkbox"> </li>
-</ul>
-<h2 id="Learning-学习目标"><a href="#Learning-学习目标" class="headerlink" title="Learning 学习目标"></a>Learning 学习目标</h2><ul>
-<li><input disabled="" type="checkbox"> Machine Learning 机器学习</li>
-<li><input disabled="" type="checkbox"> </li>
-</ul>
-<h2 id="Notes-笔记"><a href="#Notes-笔记" class="headerlink" title="Notes 笔记"></a>Notes 笔记</h2><ul>
-<li><input disabled="" type="checkbox"> </li>
-</ul>
-<h2 id="Transports-传送门"><a href="#Transports-传送门" class="headerlink" title="Transports 传送门"></a>Transports 传送门</h2><ul>
-<li><a href="https://www.cn.bing.com" target="_blank" rel="noopener">Bing</a></li>
-<li><a href="https://www.google.com" target="_blank" rel="noopener">Google</a></li>
-<li><a href="https://www.github.com" target="_blank" rel="noopener">Github</a></li>
-<li><a href="https://www.baidu.com" target="_blank" rel="noopener">Baidu</a></li>
-</ul>
-<h2 id="Contact-Author-联系方式"><a href="#Contact-Author-联系方式" class="headerlink" title="Contact Author 联系方式"></a>Contact Author 联系方式</h2><p>Email: <a href="mailto:yangjq@shanghaitech.edu.cn">yangjq@shanghaitech.edu.cn</a></p>
-]]></content>
-      <categories>
-        <category>navigator</category>
-      </categories>
-  </entry>
-  <entry>
     <title>Rust语法小结</title>
     <url>/2020/02/01/Rust%E8%AF%AD%E6%B3%95%E5%B0%8F%E7%BB%93/</url>
     <content><![CDATA[<h1 id="Rust语法小结"><a href="#Rust语法小结" class="headerlink" title="Rust语法小结"></a>Rust语法小结</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>Rust是一门学习曲线极其陡峭的编程语言，里面的语法规则比较庞杂。不得不承认，Rust可读性是很高的，但是写出正确的代码又是另外一回事了。</p>
 <p>好在学习Rust有比较好的官方教材《The Rust Programing Language》，而且也有了翻译质量很高的中文版，但是我发现这本官方教材里面很多东西都是零零碎碎的，例子很多，却缺乏了一些很general的表述。在这里，我负责来汇总一下Rust的部分基本语法规则。</p>
+<p>此外，如果你在一门或者多门其他编程语言上已经有了相当的基础，</p>
 <h2 id="类型系统"><a href="#类型系统" class="headerlink" title="类型系统"></a>类型系统</h2><h3 id="类型签名"><a href="#类型签名" class="headerlink" title="类型签名"></a>类型签名</h3><p>遵循<code>变量名: 变量类型</code>的格式，冒号前面是变量名，后面是变量类型</p>
 <p>在C语言中的<code>char a</code>到了Rust里面就变成了<code>a : char</code></p>
 <h3 id="内置类型（built-in-type）"><a href="#内置类型（built-in-type）" class="headerlink" title="内置类型（built-in type）"></a>内置类型（built-in type）</h3><p>也叫做原生类型（primitive）。这些类型包括了内建在Rust语言中的和标准库里提供的两大类。</p>
@@ -88,9 +62,98 @@
 <li><code>Write</code> 包含单独一个 <code>String</code>。</li>
 <li><code>ChangeColor</code> 包含三个 <code>i32</code>。</li>
 </ul>
+<h5 id="一个重要的枚举Option-lt-T-gt"><a href="#一个重要的枚举Option-lt-T-gt" class="headerlink" title="一个重要的枚举Option&lt;T&gt;"></a>一个重要的枚举<code>Option&lt;T&gt;</code></h5><p><code>Option&lt;T&gt;</code>由标准库定义</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">enum</span> <span class="title">Option</span></span>&lt;T&gt; &#123;</span><br><span class="line">    <span class="literal">Some</span>(T),</span><br><span class="line">    <span class="literal">None</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
 ]]></content>
       <categories>
         <category>Rust</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>Homepage</title>
+    <url>/2020/01/30/Main/</url>
+    <content><![CDATA[<h1 id="Welcome-欢迎！"><a href="#Welcome-欢迎！" class="headerlink" title="Welcome! 欢迎！"></a>Welcome! 欢迎！</h1><h2 id="Projects-on-the-way-手头项目"><a href="#Projects-on-the-way-手头项目" class="headerlink" title="Projects on the way 手头项目"></a>Projects on the way 手头项目</h2><ul>
+<li><input disabled="" type="checkbox"> chip-8 emulator (chip-8模拟器)</li>
+<li><input disabled="" type="checkbox"> </li>
+<li><input disabled="" type="checkbox"> </li>
+</ul>
+<h2 id="Learning-学习目标"><a href="#Learning-学习目标" class="headerlink" title="Learning 学习目标"></a>Learning 学习目标</h2><ul>
+<li><input disabled="" type="checkbox"> Machine Learning 机器学习</li>
+<li><input disabled="" type="checkbox"> </li>
+</ul>
+<h2 id="Notes-笔记"><a href="#Notes-笔记" class="headerlink" title="Notes 笔记"></a>Notes 笔记</h2><ul>
+<li><input disabled="" type="checkbox"> </li>
+</ul>
+<h2 id="Transports-传送门"><a href="#Transports-传送门" class="headerlink" title="Transports 传送门"></a>Transports 传送门</h2><ul>
+<li><a href="https://www.cn.bing.com" target="_blank" rel="noopener">Bing</a></li>
+<li><a href="https://www.google.com" target="_blank" rel="noopener">Google</a></li>
+<li><a href="https://www.github.com" target="_blank" rel="noopener">Github</a></li>
+<li><a href="https://www.baidu.com" target="_blank" rel="noopener">Baidu</a></li>
+</ul>
+<h2 id="Contact-Author-联系方式"><a href="#Contact-Author-联系方式" class="headerlink" title="Contact Author 联系方式"></a>Contact Author 联系方式</h2><p>Email: <a href="mailto:yangjq@shanghaitech.edu.cn">yangjq@shanghaitech.edu.cn</a></p>
+]]></content>
+      <categories>
+        <category>navigator</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>熟悉图形API</title>
+    <url>/2020/01/31/chip-8-emulator/OpenGL%E5%85%A5%E9%97%A8/</url>
+    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>为了实现chip-8模拟器的图像显示功能，我们需要依赖第三方库的帮助，比如比较著名的OpenGL。这次打算试着用一下gfx-rs。</p>
+<h2 id="gfx-rs"><a href="#gfx-rs" class="headerlink" title="gfx-rs"></a>gfx-rs</h2><p>它是用Rust编写的一个图形API。</p>
+<p>还没用过。</p>
+]]></content>
+      <categories>
+        <category>emulator</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>chip-8模拟器概述</title>
+    <url>/2020/01/30/chip-8-emulator/chip-8%E6%A6%82%E8%BF%B0/</url>
+    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>模拟器是用以模拟某种系统环境的计算机程序。</p>
+<p>chip-8模拟器是所有模拟器项目最适合新手入门的一种，可谓麻雀虽小，五脏俱全。</p>
+<p>通过这个小项目，你可以了解到CPU的工作原理和机器码的执行过程。一般来说，一周的时间就足以完成这个小项目。</p>
+<h2 id="开始之前"><a href="#开始之前" class="headerlink" title="开始之前"></a>开始之前</h2><p>在开始之前，有一些事情先行完成：</p>
+<ul>
+<li><p>选择一门合适的编程语言？</p>
+</li>
+<li><p>了解位操作 (bitwise operation)</p>
+</li>
+<li><p>了解关于音频、图像、用户输入的第三方库 (third party libraries)</p>
+</li>
+</ul>
+<h2 id="关于chip-8的一些硬件参数"><a href="#关于chip-8的一些硬件参数" class="headerlink" title="关于chip-8的一些硬件参数"></a>关于chip-8的一些硬件参数</h2><ul>
+<li><p>chip-8模拟器有35种不同的操作数，每个操作数占两字节大小</p>
+</li>
+<li><p>chip-8模拟器有4KB内存</p>
+</li>
+<li><p>chip-8模拟器的CPU有16个寄存器</p>
+</li>
+<li><p>chip-8的模拟器的显示器有2048(64*32)个像素</p>
+</li>
+<li><p>chip-8有16种按键输入</p>
+</li>
+<li><p>chip-8内部有计时器</p>
+</li>
+</ul>
+<h2 id="CPU运行的流程"><a href="#CPU运行的流程" class="headerlink" title="CPU运行的流程"></a>CPU运行的流程</h2><p>CPU获取指令 =&gt; CPU执行指令 =&gt; CPU获取指令…</p>
+<h2 id="内存分布情况"><a href="#内存分布情况" class="headerlink" title="内存分布情况"></a>内存分布情况</h2><p>4KB： 0x000-0xFFF</p>
+<ol>
+<li>chip-8模拟器本体： 0x000-0x1FF （包含字体集0x050-0x0A0）</li>
+<li>运行内存： 0x200-0xFFF </li>
+</ol>
+<h2 id="寄存器"><a href="#寄存器" class="headerlink" title="寄存器"></a>寄存器</h2><p>每个寄存器占1字节</p>
+<h2 id="计时器"><a href="#计时器" class="headerlink" title="计时器"></a>计时器</h2><p>计时器有两个，分别用来处理游戏时间和游戏音效，负责维持60HZ的频率</p>
+]]></content>
+      <categories>
+        <category>emulator</category>
       </categories>
   </entry>
   <entry>
@@ -214,59 +277,6 @@
 <p>补码使减法运算转换为加法运算,进一步简化计算机中运算器的线路设计</p>
 </li>
 </ol>
-]]></content>
-      <categories>
-        <category>emulator</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>chip-8模拟器概述</title>
-    <url>/2020/01/30/chip-8-emulator/chip-8%E6%A6%82%E8%BF%B0/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>模拟器是用以模拟某种系统环境的计算机程序。</p>
-<p>chip-8模拟器是所有模拟器项目最适合新手入门的一种，可谓麻雀虽小，五脏俱全。</p>
-<p>通过这个小项目，你可以了解到CPU的工作原理和机器码的执行过程。一般来说，一周的时间就足以完成这个小项目。</p>
-<h2 id="开始之前"><a href="#开始之前" class="headerlink" title="开始之前"></a>开始之前</h2><p>在开始之前，有一些事情先行完成：</p>
-<ul>
-<li><p>选择一门合适的编程语言？</p>
-</li>
-<li><p>了解位操作 (bitwise operation)</p>
-</li>
-<li><p>了解关于音频、图像、用户输入的第三方库 (third party libraries)</p>
-</li>
-</ul>
-<h2 id="关于chip-8的一些硬件参数"><a href="#关于chip-8的一些硬件参数" class="headerlink" title="关于chip-8的一些硬件参数"></a>关于chip-8的一些硬件参数</h2><ul>
-<li><p>chip-8模拟器有35种不同的操作数，每个操作数占两字节大小</p>
-</li>
-<li><p>chip-8模拟器有4KB内存</p>
-</li>
-<li><p>chip-8模拟器的CPU有16个寄存器</p>
-</li>
-<li><p>chip-8的模拟器的显示器有2048(64*32)个像素</p>
-</li>
-<li><p>chip-8有16种按键输入</p>
-</li>
-<li><p>chip-8内部有计时器</p>
-</li>
-</ul>
-<h2 id="CPU运行的流程"><a href="#CPU运行的流程" class="headerlink" title="CPU运行的流程"></a>CPU运行的流程</h2><p>CPU获取指令 =&gt; CPU执行指令 =&gt; CPU获取指令…</p>
-<h2 id="内存分布情况"><a href="#内存分布情况" class="headerlink" title="内存分布情况"></a>内存分布情况</h2><p>4KB： 0x000-0xFFF</p>
-<ol>
-<li>chip-8模拟器本体： 0x000-0x1FF （包含字体集0x050-0x0A0）</li>
-<li>运行内存： 0x200-0xFFF </li>
-</ol>
-<h2 id="寄存器"><a href="#寄存器" class="headerlink" title="寄存器"></a>寄存器</h2><p>每个寄存器占1字节</p>
-<h2 id="计时器"><a href="#计时器" class="headerlink" title="计时器"></a>计时器</h2><p>计时器有两个，分别用来处理游戏时间和游戏音效，负责维持60HZ的频率</p>
-]]></content>
-      <categories>
-        <category>emulator</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>熟悉图形API</title>
-    <url>/2020/01/31/chip-8-emulator/OpenGL%E5%85%A5%E9%97%A8/</url>
-    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>为了实现chip-8模拟器的图像显示功能，我们需要依赖第三方库的帮助，比如比较著名的OpenGL。这次打算试着用一下gfx-rs。</p>
-<h2 id="gfx-rs"><a href="#gfx-rs" class="headerlink" title="gfx-rs"></a>gfx-rs</h2><p>它是用Rust编写的一个图形API。</p>
-<p>还没用过。</p>
 ]]></content>
       <categories>
         <category>emulator</category>

@@ -155,17 +155,18 @@
   <span class="search-icon">
     <i class="fa fa-search"></i>
   </span>
-  <div class="search-input-container">
-    <input autocomplete="off" autocorrect="off" autocapitalize="none"
-           placeholder="Searching..." spellcheck="false"
-           type="text" id="search-input">
-  </div>
+  <div class="search-input" id="search-input"></div>
   <span class="popup-btn-close">
     <i class="fa fa-times-circle"></i>
   </span>
 </div>
-<div id="search-result"></div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
 
+  
 </div>
 <div class="search-pop-overlay"></div>
 
@@ -192,6 +193,143 @@
             
 
   <div class="posts-expand">
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/01/Rust%E8%AF%AD%E6%B3%95%E5%B0%8F%E7%BB%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="greatoyster">
+      <meta itemprop="description" content="Technique-sharing station">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Greatoyster">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/02/01/Rust%E8%AF%AD%E6%B3%95%E5%B0%8F%E7%BB%93/" class="post-title-link" itemprop="url">Rust语法小结</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-02-01 13:03:49 / Modified: 09:45:48" itemprop="dateCreated datePublished" datetime="2020-02-01T13:03:49Z">2020-02-01</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Rust/" itemprop="url" rel="index">
+                    <span itemprop="name">Rust</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Rust语法小结"><a href="#Rust语法小结" class="headerlink" title="Rust语法小结"></a>Rust语法小结</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>Rust是一门学习曲线极其陡峭的编程语言，里面的语法规则比较庞杂。不得不承认，Rust可读性是很高的，但是写出正确的代码又是另外一回事了。</p>
+<p>好在学习Rust有比较好的官方教材《The Rust Programing Language》，而且也有了翻译质量很高的中文版，但是我发现这本官方教材里面很多东西都是零零碎碎的，例子很多，却缺乏了一些很general的表述。在这里，我负责来汇总一下Rust的部分基本语法规则。</p>
+<p>此外，如果你在一门或者多门其他编程语言上已经有了相当的基础，</p>
+<h2 id="类型系统"><a href="#类型系统" class="headerlink" title="类型系统"></a>类型系统</h2><h3 id="类型签名"><a href="#类型签名" class="headerlink" title="类型签名"></a>类型签名</h3><p>遵循<code>变量名: 变量类型</code>的格式，冒号前面是变量名，后面是变量类型</p>
+<p>在C语言中的<code>char a</code>到了Rust里面就变成了<code>a : char</code></p>
+<h3 id="内置类型（built-in-type）"><a href="#内置类型（built-in-type）" class="headerlink" title="内置类型（built-in type）"></a>内置类型（built-in type）</h3><p>也叫做原生类型（primitive）。这些类型包括了内建在Rust语言中的和标准库里提供的两大类。</p>
+<h4 id="布尔类型"><a href="#布尔类型" class="headerlink" title="布尔类型"></a>布尔类型</h4><p><code>bool</code>: <code>true</code> or <code>false</code></p>
+<h4 id="字符"><a href="#字符" class="headerlink" title="字符"></a>字符</h4><p><code>char</code>:代表一个Unicode字符，与其他编程语言不同，它的大小是4字节（意味着可以代表更多的字符，比如表情）。</p>
+<h4 id="数字"><a href="#数字" class="headerlink" title="数字"></a>数字</h4><p>数字类型名的组成规则是 <code>数字类型+有效位数</code></p>
+<p>数字类型有三种：<code>u</code>, <code>i</code>, <code>f</code>, 分别代表无符号整数，正数，浮点数</p>
+<p>数字类型的几个例子：<code>u8</code>, <code>f64</code>, <code>i32</code>, 诸如此类，用C语言的思路来看的话，这三个类型就是<code>unsigned char</code>, <code>double</code>, <code>int</code></p>
+<p>Rust数字类型的命名规则是直观而易于理解的。</p>
+<h4 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h4><p>数组默认不可修改，他有两种属性：元素类型和长度，也就是 <code>[元素类型;长度]</code></p>
+<p>比如一个数组<code>[1，2，3]</code>，它的类型签名就是<code>[i32;3]</code></p>
+<p>如果要用动态数组，就需要用到<code>vec!</code>的宏(或者<code>Vec&lt;T&gt;</code>)，直接用例子来演示</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> array:[<span class="built_in">i32</span>;<span class="number">3</span>]=[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>];</span><br><span class="line"><span class="keyword">let</span> vector:<span class="built_in">Vec</span>&lt;<span class="built_in">i32</span>&gt;=<span class="built_in">vec!</span>[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>];</span><br></pre></td></tr></table></figure>
+
+<h4 id="函数类型"><a href="#函数类型" class="headerlink" title="函数类型"></a>函数类型</h4><p>一个函数类型可以表示为<code>fn (参数类型)-&gt;(返回值类型)</code></p>
+<p>对应C语言中的函数指针。</p>
+<h4 id="字符串类型"><a href="#字符串类型" class="headerlink" title="字符串类型"></a>字符串类型</h4><p>Rust里面有两种主要的字符串类型：<code>String</code>和<code>str</code>，其中<code>str</code>是内建类型，而<code>String</code>由标准库提供。</p>
+<p>其中<code>String</code>类型是分配在堆(heap)上的，它是可变的，还有所有权，而<code>str</code>一般以被借用的形式出现，即<code>&amp;str</code>。</p>
+<p>值得一提的是字符串常量，在下面的赋值语句</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> sentence = <span class="string">"hello, my friend!"</span>;</span><br></pre></td></tr></table></figure>
+
+<p>变量<code>sentence</code>的类型是<code>&amp;&#39;static str</code></p>
+<p><code>&amp;str</code>的类型可以用来表示字符串片段。</p>
+<h3 id="用户定义类型（UDT）"><a href="#用户定义类型（UDT）" class="headerlink" title="用户定义类型（UDT）"></a>用户定义类型（UDT）</h3><h4 id="结构体struct"><a href="#结构体struct" class="headerlink" title="结构体struct"></a>结构体<code>struct</code></h4><p>定义结构体的关键字就是<code>struct</code></p>
+<p>它的定义规则为<code>struct 结构体名称 {结构体内变量:对应变量的类型}</code></p>
+<p>当然也可以用<code>{结构体内部变量：对应类型}</code>的方式来描述一个匿名结构体。</p>
+<p>例如我们要定义类型<code>Point</code>来表示平面内的一个点：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Point</span></span> &#123;</span><br><span class="line">    x:<span class="built_in">f32</span>,</span><br><span class="line">    y:<span class="built_in">i32</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>需要注意的是，在为类型命名的时候，我们一般遵循首字母大写的驼峰命名法。</p>
+<p>另外一点比较有趣的是，Rust中的<code>struct</code>更像C++当中的<code>class</code>，原因是它也可以通过<code>impl</code>关键字来定义方法<code>method</code>。</p>
+<p>示例如下:</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Rectangle</span></span> &#123;</span><br><span class="line">    width: <span class="built_in">u32</span>,</span><br><span class="line">    height: <span class="built_in">u32</span>,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">impl</span> Rectangle &#123;</span><br><span class="line">    <span class="function"><span class="keyword">fn</span> <span class="title">area</span></span>(&amp;<span class="keyword">self</span>) -&gt; <span class="built_in">u32</span> &#123;</span><br><span class="line">        <span class="keyword">self</span>.width * <span class="keyword">self</span>.height</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">fn</span> <span class="title">square</span></span>(size: <span class="built_in">u32</span>) -&gt; Rectangle &#123;</span><br><span class="line">        Rectangle &#123; width: size, height: size &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里需要强调一点，与<code>area</code>不同，<code>square</code>并不叫方法，而是叫做关联函数，原因是它的参数里面没有<code>&amp;self</code></p>
+<p>这里的<code>self</code>不难联想到python当中的方法定义</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Foo</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">foo</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="枚举体"><a href="#枚举体" class="headerlink" title="枚举体"></a>枚举体</h4><p>定义枚举体依赖于关键字<code>enum</code>，最基本的使用规则是<code>enum 枚举体名称 {成员}</code></p>
+<p>比如IP地址包括了IPv4和IPv6两种，用枚举体来描述就是：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">enum</span> <span class="title">IpAddrKind</span></span>&#123;</span><br><span class="line">    v4,</span><br><span class="line">    v6,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>v4、v6</code>两者是枚举体的成员(variants)，他们位于<code>IpAddrKind</code>的命名空间中。这也就意味着我们可以通过如下方式来创建对应的实例</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> v4addr=IpAddrKind::v4;</span><br></pre></td></tr></table></figure>
+
+<p>在这时，我们的<code>v4</code>和<code>v6</code>只能起到一个类型标识的作用，不能表示具体的数据。我们通过数据关联来解决这个问题。加上了数据关联之后，枚举体的使用规则被扩展为<code>enum 枚举体名称 {成员 (关联数据)}</code></p>
+<p>例子如下：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">enum</span> <span class="title">Message</span></span> &#123;</span><br><span class="line">    Quit,</span><br><span class="line">    Move &#123; x: <span class="built_in">i32</span>, y: <span class="built_in">i32</span> &#125;,</span><br><span class="line">    Write(<span class="built_in">String</span>),</span><br><span class="line">    ChangeColor(<span class="built_in">i32</span>, <span class="built_in">i32</span>, <span class="built_in">i32</span>),</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//扩展示例</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">QuitMessage</span></span>; <span class="comment">// 类单元结构体</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">MoveMessage</span></span> &#123;</span><br><span class="line">    x: <span class="built_in">i32</span>,</span><br><span class="line">    y: <span class="built_in">i32</span>,</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">WriteMessage</span></span>(<span class="built_in">String</span>); <span class="comment">// 元组结构体</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">ChangeColorMessage</span></span>(<span class="built_in">i32</span>, <span class="built_in">i32</span>, <span class="built_in">i32</span>); <span class="comment">// 元组结构体</span></span><br></pre></td></tr></table></figure>
+
+<p>这个枚举有四个含有不同类型的成员：</p>
+<ul>
+<li><code>Quit</code> 没有关联任何数据。</li>
+<li><code>Move</code> 包含一个匿名结构体。</li>
+<li><code>Write</code> 包含单独一个 <code>String</code>。</li>
+<li><code>ChangeColor</code> 包含三个 <code>i32</code>。</li>
+</ul>
+<h5 id="一个重要的枚举Option-lt-T-gt"><a href="#一个重要的枚举Option-lt-T-gt" class="headerlink" title="一个重要的枚举Option&lt;T&gt;"></a>一个重要的枚举<code>Option&lt;T&gt;</code></h5><p><code>Option&lt;T&gt;</code>由标准库定义</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">enum</span> <span class="title">Option</span></span>&lt;T&gt; &#123;</span><br><span class="line">    <span class="literal">Some</span>(T),</span><br><span class="line">    <span class="literal">None</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
         
   
   
@@ -284,7 +422,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/01/Rust%E8%AF%AD%E6%B3%95%E5%B0%8F%E7%BB%93/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/31/chip-8-emulator/OpenGL%E5%85%A5%E9%97%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -298,7 +436,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2020/02/01/Rust%E8%AF%AD%E6%B3%95%E5%B0%8F%E7%BB%93/" class="post-title-link" itemprop="url">Rust语法小结</a>
+            <a href="/2020/01/31/chip-8-emulator/OpenGL%E5%85%A5%E9%97%A8/" class="post-title-link" itemprop="url">熟悉图形API</a>
         </h1>
 
         <div class="post-meta">
@@ -309,7 +447,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2020-02-01 13:03:49 / Modified: 09:10:12" itemprop="dateCreated datePublished" datetime="2020-02-01T13:03:49Z">2020-02-01</time>
+              <time title="Created: 2020-01-31 09:16:18 / Modified: 13:59:33" itemprop="dateCreated datePublished" datetime="2020-01-31T09:16:18Z">2020-01-31</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -317,8 +455,8 @@
               </span>
               <span class="post-meta-item-text">In</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Rust/" itemprop="url" rel="index">
-                    <span itemprop="name">Rust</span>
+                  <a href="/categories/emulator/" itemprop="url" rel="index">
+                    <span itemprop="name">emulator</span>
                   </a>
                 </span>
             </span>
@@ -334,64 +472,118 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="Rust语法小结"><a href="#Rust语法小结" class="headerlink" title="Rust语法小结"></a>Rust语法小结</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>Rust是一门学习曲线极其陡峭的编程语言，里面的语法规则比较庞杂。不得不承认，Rust可读性是很高的，但是写出正确的代码又是另外一回事了。</p>
-<p>好在学习Rust有比较好的官方教材《The Rust Programing Language》，而且也有了翻译质量很高的中文版，但是我发现这本官方教材里面很多东西都是零零碎碎的，例子很多，却缺乏了一些很general的表述。在这里，我负责来汇总一下Rust的部分基本语法规则。</p>
-<h2 id="类型系统"><a href="#类型系统" class="headerlink" title="类型系统"></a>类型系统</h2><h3 id="类型签名"><a href="#类型签名" class="headerlink" title="类型签名"></a>类型签名</h3><p>遵循<code>变量名: 变量类型</code>的格式，冒号前面是变量名，后面是变量类型</p>
-<p>在C语言中的<code>char a</code>到了Rust里面就变成了<code>a : char</code></p>
-<h3 id="内置类型（built-in-type）"><a href="#内置类型（built-in-type）" class="headerlink" title="内置类型（built-in type）"></a>内置类型（built-in type）</h3><p>也叫做原生类型（primitive）。这些类型包括了内建在Rust语言中的和标准库里提供的两大类。</p>
-<h4 id="布尔类型"><a href="#布尔类型" class="headerlink" title="布尔类型"></a>布尔类型</h4><p><code>bool</code>: <code>true</code> or <code>false</code></p>
-<h4 id="字符"><a href="#字符" class="headerlink" title="字符"></a>字符</h4><p><code>char</code>:代表一个Unicode字符，与其他编程语言不同，它的大小是4字节（意味着可以代表更多的字符，比如表情）。</p>
-<h4 id="数字"><a href="#数字" class="headerlink" title="数字"></a>数字</h4><p>数字类型名的组成规则是 <code>数字类型+有效位数</code></p>
-<p>数字类型有三种：<code>u</code>, <code>i</code>, <code>f</code>, 分别代表无符号整数，正数，浮点数</p>
-<p>数字类型的几个例子：<code>u8</code>, <code>f64</code>, <code>i32</code>, 诸如此类，用C语言的思路来看的话，这三个类型就是<code>unsigned char</code>, <code>double</code>, <code>int</code></p>
-<p>Rust数字类型的命名规则是直观而易于理解的。</p>
-<h4 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h4><p>数组默认不可修改，他有两种属性：元素类型和长度，也就是 <code>[元素类型;长度]</code></p>
-<p>比如一个数组<code>[1，2，3]</code>，它的类型签名就是<code>[i32;3]</code></p>
-<p>如果要用动态数组，就需要用到<code>vec!</code>的宏(或者<code>Vec&lt;T&gt;</code>)，直接用例子来演示</p>
-<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> array:[<span class="built_in">i32</span>;<span class="number">3</span>]=[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>];</span><br><span class="line"><span class="keyword">let</span> vector:<span class="built_in">Vec</span>&lt;<span class="built_in">i32</span>&gt;=<span class="built_in">vec!</span>[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>];</span><br></pre></td></tr></table></figure>
+          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>为了实现chip-8模拟器的图像显示功能，我们需要依赖第三方库的帮助，比如比较著名的OpenGL。这次打算试着用一下gfx-rs。</p>
+<h2 id="gfx-rs"><a href="#gfx-rs" class="headerlink" title="gfx-rs"></a>gfx-rs</h2><p>它是用Rust编写的一个图形API。</p>
+<p>还没用过。</p>
 
-<h4 id="函数类型"><a href="#函数类型" class="headerlink" title="函数类型"></a>函数类型</h4><p>一个函数类型可以表示为<code>fn (参数类型)-&gt;(返回值类型)</code></p>
-<p>对应C语言中的函数指针。</p>
-<h4 id="字符串类型"><a href="#字符串类型" class="headerlink" title="字符串类型"></a>字符串类型</h4><p>Rust里面有两种主要的字符串类型：<code>String</code>和<code>str</code>，其中<code>str</code>是内建类型，而<code>String</code>由标准库提供。</p>
-<p>其中<code>String</code>类型是分配在堆(heap)上的，它是可变的，还有所有权，而<code>str</code>一般以被借用的形式出现，即<code>&amp;str</code>。</p>
-<p>值得一提的是字符串常量，在下面的赋值语句</p>
-<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> sentence = <span class="string">"hello, my friend!"</span>;</span><br></pre></td></tr></table></figure>
+      
+    </div>
 
-<p>变量<code>sentence</code>的类型是<code>&amp;&#39;static str</code></p>
-<p><code>&amp;str</code>的类型可以用来表示字符串片段。</p>
-<h3 id="用户定义类型（UDT）"><a href="#用户定义类型（UDT）" class="headerlink" title="用户定义类型（UDT）"></a>用户定义类型（UDT）</h3><h4 id="结构体struct"><a href="#结构体struct" class="headerlink" title="结构体struct"></a>结构体<code>struct</code></h4><p>定义结构体的关键字就是<code>struct</code></p>
-<p>它的定义规则为<code>struct 结构体名称 {结构体内变量:对应变量的类型}</code></p>
-<p>当然也可以用<code>{结构体内部变量：对应类型}</code>的方式来描述一个匿名结构体。</p>
-<p>例如我们要定义类型<code>Point</code>来表示平面内的一个点：</p>
-<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Point</span></span> &#123;</span><br><span class="line">    x:<span class="built_in">f32</span>,</span><br><span class="line">    y:<span class="built_in">i32</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
 
-<p>需要注意的是，在为类型命名的时候，我们一般遵循首字母大写的驼峰命名法。</p>
-<p>另外一点比较有趣的是，Rust中的<code>struct</code>更像C++当中的<code>class</code>，原因是它也可以通过<code>impl</code>关键字来定义方法<code>method</code>。</p>
-<p>示例如下:</p>
-<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Rectangle</span></span> &#123;</span><br><span class="line">    width: <span class="built_in">u32</span>,</span><br><span class="line">    height: <span class="built_in">u32</span>,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">impl</span> Rectangle &#123;</span><br><span class="line">    <span class="function"><span class="keyword">fn</span> <span class="title">area</span></span>(&amp;<span class="keyword">self</span>) -&gt; <span class="built_in">u32</span> &#123;</span><br><span class="line">        <span class="keyword">self</span>.width * <span class="keyword">self</span>.height</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">fn</span> <span class="title">square</span></span>(size: <span class="built_in">u32</span>) -&gt; Rectangle &#123;</span><br><span class="line">        Rectangle &#123; width: size, height: size &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/30/chip-8-emulator/chip-8%E6%A6%82%E8%BF%B0/">
 
-<p>这里需要强调一点，与<code>area</code>不同，<code>square</code>并不叫方法，而是叫做关联函数，原因是它的参数里面没有<code>&amp;self</code></p>
-<p>这里的<code>self</code>不难联想到python当中的方法定义</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Foo</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">foo</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="greatoyster">
+      <meta itemprop="description" content="Technique-sharing station">
+    </span>
 
-<h4 id="枚举体"><a href="#枚举体" class="headerlink" title="枚举体"></a>枚举体</h4><p>定义枚举体依赖于关键字<code>enum</code>，最基本的使用规则是<code>enum 枚举体名称 {成员}</code></p>
-<p>比如IP地址包括了IPv4和IPv6两种，用枚举体来描述就是：</p>
-<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">enum</span> <span class="title">IpAddrKind</span></span>&#123;</span><br><span class="line">    v4,</span><br><span class="line">    v6,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Greatoyster">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/01/30/chip-8-emulator/chip-8%E6%A6%82%E8%BF%B0/" class="post-title-link" itemprop="url">chip-8模拟器概述</a>
+        </h1>
 
-<p><code>v4、v6</code>两者是枚举体的成员(variants)，他们位于<code>IpAddrKind</code>的命名空间中。这也就意味着我们可以通过如下方式来创建对应的实例</p>
-<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> v4addr=IpAddrKind::v4;</span><br></pre></td></tr></table></figure>
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
 
-<p>在这时，我们的<code>v4</code>和<code>v6</code>只能起到一个类型标识的作用，不能表示具体的数据。我们通过数据关联来解决这个问题。加上了数据关联之后，枚举体的使用规则被扩展为<code>enum 枚举体名称 {成员 (关联数据)}</code></p>
-<p>例子如下：</p>
-<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">enum</span> <span class="title">Message</span></span> &#123;</span><br><span class="line">    Quit,</span><br><span class="line">    Move &#123; x: <span class="built_in">i32</span>, y: <span class="built_in">i32</span> &#125;,</span><br><span class="line">    Write(<span class="built_in">String</span>),</span><br><span class="line">    ChangeColor(<span class="built_in">i32</span>, <span class="built_in">i32</span>, <span class="built_in">i32</span>),</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//扩展示例</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">QuitMessage</span></span>; <span class="comment">// 类单元结构体</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">MoveMessage</span></span> &#123;</span><br><span class="line">    x: <span class="built_in">i32</span>,</span><br><span class="line">    y: <span class="built_in">i32</span>,</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">WriteMessage</span></span>(<span class="built_in">String</span>); <span class="comment">// 元组结构体</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">ChangeColorMessage</span></span>(<span class="built_in">i32</span>, <span class="built_in">i32</span>, <span class="built_in">i32</span>); <span class="comment">// 元组结构体</span></span><br></pre></td></tr></table></figure>
+              <time title="Created: 2020-01-30 07:38:04" itemprop="dateCreated datePublished" datetime="2020-01-30T07:38:04Z">2020-01-30</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-01-31 04:05:50" itemprop="dateModified" datetime="2020-01-31T04:05:50Z">2020-01-31</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/emulator/" itemprop="url" rel="index">
+                    <span itemprop="name">emulator</span>
+                  </a>
+                </span>
+            </span>
 
-<p>这个枚举有四个含有不同类型的成员：</p>
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>模拟器是用以模拟某种系统环境的计算机程序。</p>
+<p>chip-8模拟器是所有模拟器项目最适合新手入门的一种，可谓麻雀虽小，五脏俱全。</p>
+<p>通过这个小项目，你可以了解到CPU的工作原理和机器码的执行过程。一般来说，一周的时间就足以完成这个小项目。</p>
+<h2 id="开始之前"><a href="#开始之前" class="headerlink" title="开始之前"></a>开始之前</h2><p>在开始之前，有一些事情先行完成：</p>
 <ul>
-<li><code>Quit</code> 没有关联任何数据。</li>
-<li><code>Move</code> 包含一个匿名结构体。</li>
-<li><code>Write</code> 包含单独一个 <code>String</code>。</li>
-<li><code>ChangeColor</code> 包含三个 <code>i32</code>。</li>
+<li><p>选择一门合适的编程语言？</p>
+</li>
+<li><p>了解位操作 (bitwise operation)</p>
+</li>
+<li><p>了解关于音频、图像、用户输入的第三方库 (third party libraries)</p>
+</li>
 </ul>
+<h2 id="关于chip-8的一些硬件参数"><a href="#关于chip-8的一些硬件参数" class="headerlink" title="关于chip-8的一些硬件参数"></a>关于chip-8的一些硬件参数</h2><ul>
+<li><p>chip-8模拟器有35种不同的操作数，每个操作数占两字节大小</p>
+</li>
+<li><p>chip-8模拟器有4KB内存</p>
+</li>
+<li><p>chip-8模拟器的CPU有16个寄存器</p>
+</li>
+<li><p>chip-8的模拟器的显示器有2048(64*32)个像素</p>
+</li>
+<li><p>chip-8有16种按键输入</p>
+</li>
+<li><p>chip-8内部有计时器</p>
+</li>
+</ul>
+<h2 id="CPU运行的流程"><a href="#CPU运行的流程" class="headerlink" title="CPU运行的流程"></a>CPU运行的流程</h2><p>CPU获取指令 =&gt; CPU执行指令 =&gt; CPU获取指令…</p>
+<h2 id="内存分布情况"><a href="#内存分布情况" class="headerlink" title="内存分布情况"></a>内存分布情况</h2><p>4KB： 0x000-0xFFF</p>
+<ol>
+<li>chip-8模拟器本体： 0x000-0x1FF （包含字体集0x050-0x0A0）</li>
+<li>运行内存： 0x200-0xFFF </li>
+</ol>
+<h2 id="寄存器"><a href="#寄存器" class="headerlink" title="寄存器"></a>寄存器</h2><p>每个寄存器占1字节</p>
+<h2 id="计时器"><a href="#计时器" class="headerlink" title="计时器"></a>计时器</h2><p>计时器有两个，分别用来处理游戏时间和游戏音效，负责维持60HZ的频率</p>
 
       
     </div>
@@ -594,187 +786,6 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/30/chip-8-emulator/chip-8%E6%A6%82%E8%BF%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="greatoyster">
-      <meta itemprop="description" content="Technique-sharing station">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Greatoyster">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/01/30/chip-8-emulator/chip-8%E6%A6%82%E8%BF%B0/" class="post-title-link" itemprop="url">chip-8模拟器概述</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-01-30 07:38:04" itemprop="dateCreated datePublished" datetime="2020-01-30T07:38:04Z">2020-01-30</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-01-31 04:05:50" itemprop="dateModified" datetime="2020-01-31T04:05:50Z">2020-01-31</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/emulator/" itemprop="url" rel="index">
-                    <span itemprop="name">emulator</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>模拟器是用以模拟某种系统环境的计算机程序。</p>
-<p>chip-8模拟器是所有模拟器项目最适合新手入门的一种，可谓麻雀虽小，五脏俱全。</p>
-<p>通过这个小项目，你可以了解到CPU的工作原理和机器码的执行过程。一般来说，一周的时间就足以完成这个小项目。</p>
-<h2 id="开始之前"><a href="#开始之前" class="headerlink" title="开始之前"></a>开始之前</h2><p>在开始之前，有一些事情先行完成：</p>
-<ul>
-<li><p>选择一门合适的编程语言？</p>
-</li>
-<li><p>了解位操作 (bitwise operation)</p>
-</li>
-<li><p>了解关于音频、图像、用户输入的第三方库 (third party libraries)</p>
-</li>
-</ul>
-<h2 id="关于chip-8的一些硬件参数"><a href="#关于chip-8的一些硬件参数" class="headerlink" title="关于chip-8的一些硬件参数"></a>关于chip-8的一些硬件参数</h2><ul>
-<li><p>chip-8模拟器有35种不同的操作数，每个操作数占两字节大小</p>
-</li>
-<li><p>chip-8模拟器有4KB内存</p>
-</li>
-<li><p>chip-8模拟器的CPU有16个寄存器</p>
-</li>
-<li><p>chip-8的模拟器的显示器有2048(64*32)个像素</p>
-</li>
-<li><p>chip-8有16种按键输入</p>
-</li>
-<li><p>chip-8内部有计时器</p>
-</li>
-</ul>
-<h2 id="CPU运行的流程"><a href="#CPU运行的流程" class="headerlink" title="CPU运行的流程"></a>CPU运行的流程</h2><p>CPU获取指令 =&gt; CPU执行指令 =&gt; CPU获取指令…</p>
-<h2 id="内存分布情况"><a href="#内存分布情况" class="headerlink" title="内存分布情况"></a>内存分布情况</h2><p>4KB： 0x000-0xFFF</p>
-<ol>
-<li>chip-8模拟器本体： 0x000-0x1FF （包含字体集0x050-0x0A0）</li>
-<li>运行内存： 0x200-0xFFF </li>
-</ol>
-<h2 id="寄存器"><a href="#寄存器" class="headerlink" title="寄存器"></a>寄存器</h2><p>每个寄存器占1字节</p>
-<h2 id="计时器"><a href="#计时器" class="headerlink" title="计时器"></a>计时器</h2><p>计时器有两个，分别用来处理游戏时间和游戏音效，负责维持60HZ的频率</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/31/chip-8-emulator/OpenGL%E5%85%A5%E9%97%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="greatoyster">
-      <meta itemprop="description" content="Technique-sharing station">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Greatoyster">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/01/31/chip-8-emulator/OpenGL%E5%85%A5%E9%97%A8/" class="post-title-link" itemprop="url">熟悉图形API</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2020-01-31 09:16:18 / Modified: 13:59:33" itemprop="dateCreated datePublished" datetime="2020-01-31T09:16:18Z">2020-01-31</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/emulator/" itemprop="url" rel="index">
-                    <span itemprop="name">emulator</span>
-                  </a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>为了实现chip-8模拟器的图像显示功能，我们需要依赖第三方库的帮助，比如比较著名的OpenGL。这次打算试着用一下gfx-rs。</p>
-<h2 id="gfx-rs"><a href="#gfx-rs" class="headerlink" title="gfx-rs"></a>gfx-rs</h2><p>它是用Rust编写的一个图形API。</p>
-<p>还没用过。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -946,7 +957,10 @@
 
 
   
-<script src="/js/local-search.js"></script>
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/instantsearch.js@2/dist/instantsearch.min.css">
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@2/dist/instantsearch.min.js"></script>
+<script src="/js/algolia-search.js"></script>
+
 
 
 
