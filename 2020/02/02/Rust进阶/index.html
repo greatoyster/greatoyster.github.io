@@ -47,20 +47,20 @@
   };
 </script>
 
-  <meta name="description" content="位逻辑运算   操作符 含义 例子    &amp; 与 1&amp;0&#x3D;1   | 或 1&amp;0&#x3D;0   ~ 非 ~1&#x3D;0   ^ 异或 1^0&#x3D;1">
+  <meta name="description" content="Rust进阶前言如果看过了前面的《Rust入门语法归纳》或者是对Rust语法已经有了基本了解，那么就可以进入进阶阶段了。 在进阶阶段，我们依然从类型系统和控制流两个主要方面来展开。另外，还有相关的编程概念也需要交代。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="C++位操作">
-<meta property="og:url" content="http://yoursite.com/2020/01/31/chip-8-emulator/C++%E4%BD%8D%E6%93%8D%E4%BD%9C/index.html">
+<meta property="og:title" content="Rust进阶">
+<meta property="og:url" content="http://yoursite.com/2020/02/02/Rust%E8%BF%9B%E9%98%B6/index.html">
 <meta property="og:site_name" content="Greatoyster">
-<meta property="og:description" content="位逻辑运算   操作符 含义 例子    &amp; 与 1&amp;0&#x3D;1   | 或 1&amp;0&#x3D;0   ~ 非 ~1&#x3D;0   ^ 异或 1^0&#x3D;1">
+<meta property="og:description" content="Rust进阶前言如果看过了前面的《Rust入门语法归纳》或者是对Rust语法已经有了基本了解，那么就可以进入进阶阶段了。 在进阶阶段，我们依然从类型系统和控制流两个主要方面来展开。另外，还有相关的编程概念也需要交代。">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2020-01-31T04:05:20.997Z">
-<meta property="article:modified_time" content="2020-02-01T14:00:31.110Z">
+<meta property="article:published_time" content="2020-02-02T10:54:15.000Z">
+<meta property="article:modified_time" content="2020-02-02T04:03:19.337Z">
 <meta property="article:author" content="greatoyster">
-<meta property="article:tag" content="greatoyster">
+<meta property="article:tag" content="Rust">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://yoursite.com/2020/01/31/chip-8-emulator/C++%E4%BD%8D%E6%93%8D%E4%BD%9C/">
+<link rel="canonical" href="http://yoursite.com/2020/02/02/Rust%E8%BF%9B%E9%98%B6/">
 
 
 <script id="page-configurations">
@@ -72,7 +72,7 @@
   };
 </script>
 
-  <title>C++位操作 | Greatoyster</title>
+  <title>Rust进阶 | Greatoyster</title>
   
 
 
@@ -214,7 +214,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/01/31/chip-8-emulator/C++%E4%BD%8D%E6%93%8D%E4%BD%9C/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/02/Rust%E8%BF%9B%E9%98%B6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -227,7 +227,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          C++位操作
+          Rust进阶
         </h1>
 
         <div class="post-meta">
@@ -236,26 +236,9 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
+              
 
-              <time title="Created: 2020-01-31 04:05:20" itemprop="dateCreated datePublished" datetime="2020-01-31T04:05:20Z">2020-01-31</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-02-01 14:00:31" itemprop="dateModified" datetime="2020-02-01T14:00:31Z">2020-02-01</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/emulator/" itemprop="url" rel="index">
-                    <span itemprop="name">emulator</span>
-                  </a>
-                </span>
+              <time title="Created: 2020-02-02 10:54:15 / Modified: 04:03:19" itemprop="dateCreated datePublished" datetime="2020-02-02T10:54:15Z">2020-02-02</time>
             </span>
 
           
@@ -276,127 +259,12 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="位逻辑运算"><a href="#位逻辑运算" class="headerlink" title="位逻辑运算"></a>位逻辑运算</h2><table>
-<thead>
-<tr>
-<th align="center">操作符</th>
-<th align="center">含义</th>
-<th align="center">例子</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">&amp;</td>
-<td align="center">与</td>
-<td align="center">1&amp;0=1</td>
-</tr>
-<tr>
-<td align="center">|</td>
-<td align="center">或</td>
-<td align="center">1&amp;0=0</td>
-</tr>
-<tr>
-<td align="center">~</td>
-<td align="center">非</td>
-<td align="center">~1=0</td>
-</tr>
-<tr>
-<td align="center">^</td>
-<td align="center">异或</td>
-<td align="center">1^0=1</td>
-</tr>
-</tbody></table>
+        <h1 id="Rust进阶"><a href="#Rust进阶" class="headerlink" title="Rust进阶"></a>Rust进阶</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>如果看过了前面的《Rust入门语法归纳》或者是对Rust语法已经有了基本了解，那么就可以进入进阶阶段了。</p>
+<p>在进阶阶段，我们依然从类型系统和控制流两个主要方面来展开。另外，还有相关的编程概念也需要交代。</p>
 <a id="more"></a>
 
-<p>逻辑运算是计算机的基础知识，在这里就一笔带过了。</p>
-<h2 id="位移操作"><a href="#位移操作" class="headerlink" title="位移操作"></a>位移操作</h2><table>
-<thead>
-<tr>
-<th align="center">操作符</th>
-<th align="center">含义</th>
-<th align="center">例子</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">&lt;&lt;</td>
-<td align="center">左移</td>
-<td align="center">10&lt;&lt;2=40</td>
-</tr>
-<tr>
-<td align="center">&gt;&gt;</td>
-<td align="center">右移</td>
-<td align="center">10&gt;&gt;1=5</td>
-</tr>
-</tbody></table>
-<h2 id="一些问题"><a href="#一些问题" class="headerlink" title="一些问题"></a>一些问题</h2><p>我们注意到这些位操作都是在正数上进行的，但如果遇到负数又该如何处理呢？</p>
-<p>我们不得不去了解一下三种可以编码负数二进制表示的方案。</p>
-<h2 id="补充：原码、反码、补码"><a href="#补充：原码、反码、补码" class="headerlink" title="补充：原码、反码、补码"></a>补充：原码、反码、补码</h2><p>一个数字的二进制表示有如上三种编码形式，最易于理解的是原码，而在计算机中用于储存数字的编码格式则是补码。</p>
-<p>（关于为何不用原码或者反码，而用看起来不太直观的补码来储存数字，背后有深刻原因的，这里先挖个坑，日后再填，有兴趣的读者可以思考一下0该如何用原码或者反码来表示）</p>
-<ol>
-<li><p>原码</p>
-<p>最为直观，就是在一个数字的二进制表示前面再加上一位数字代表正负（思路就是符号位），这和我们用<code>+</code>和<code>-</code>来代表整数的正负是一致的。</p>
-<p>比如：</p>
-<table>
-<thead>
-<tr>
-<th align="center">数字</th>
-<th align="center">十进制</th>
-<th align="center">二进制（原码）</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">13</td>
-<td align="center">+13</td>
-<td align="center">01101</td>
-</tr>
-<tr>
-<td align="center">-12</td>
-<td align="center">-12</td>
-<td align="center">11100</td>
-</tr>
-</tbody></table>
-</li>
-<li><p>反码</p>
-<p>顾名思义，反码里面涉及到了取反操作。</p>
-<p>由于原码、补码、反码都是用来扩充负数操作的，并不影响原来就可以进行操作的正数，所以这些编码方案里面，所有的正数的表达方式都是一致的，换言之，正数的反码就是正数的原码。</p>
-<p>对于负数，得到反码要遵循规则：在原码基础上符号位不变，数值位取反。</p>
-<p>以13为例，13=&gt;01101=&gt;01101就是它从十进制到二进制原码再到反码的过程。</p>
-<p>以-12为例，-12=&gt;11100=&gt;10011</p>
-<p>反码看起来也不太直观，也没有实际上的作用，但为了得到一个数的补码（也就是计算机最终期望的编码形式），反码是从原码到补码的一个过渡。</p>
-</li>
-<li><p>补码</p>
-<p>计算规则:</p>
-<ul>
-<li>对于正数，它的原码和补码是一致的</li>
-<li>对于负数，有这样的公式：补码=反码+1</li>
-</ul>
-<p>例如-12，</p>
-<table>
-<thead>
-<tr>
-<th align="center">编码方式</th>
-<th align="center">二进制表示</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">原码</td>
-<td align="center">11100</td>
-</tr>
-<tr>
-<td align="center">反码</td>
-<td align="center">10011</td>
-</tr>
-<tr>
-<td align="center">补码</td>
-<td align="center">10100</td>
-</tr>
-</tbody></table>
-</li>
-<li><p>补码好处都有啥？</p>
-<p>补码使符号位能与有效值部分一起参加运算,从而简化运算规则.</p>
-<p>补码使减法运算转换为加法运算,进一步简化计算机中运算器的线路设计</p>
-</li>
-</ol>
-
+<h2 id="类型系统进阶"><a href="#类型系统进阶" class="headerlink" title="类型系统进阶"></a>类型系统进阶</h2><h3 id="原生类型"><a href="#原生类型" class="headerlink" title="原生类型"></a>原生类型</h3><h4 id="元组-（tuple）"><a href="#元组-（tuple）" class="headerlink" title="元组 （tuple）"></a>元组 （tuple）</h4><p>这里的元组和Python中的元组类似，</p>
+<h3 id="用户定义类型（UDT）"><a href="#用户定义类型（UDT）" class="headerlink" title="用户定义类型（UDT）"></a>用户定义类型（UDT）</h3><h2 id="控制流进阶"><a href="#控制流进阶" class="headerlink" title="控制流进阶"></a>控制流进阶</h2><h2 id="尾声"><a href="#尾声" class="headerlink" title="尾声"></a>尾声</h2>
     </div>
 
     
@@ -404,6 +272,9 @@
     
 
       <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Rust/" rel="tag"># Rust</a>
+          </div>
 
         
 
@@ -411,12 +282,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/01/30/chip-8-emulator/chip-8%E6%A6%82%E8%BF%B0/" rel="prev" title="chip-8模拟器概述">
-      <i class="fa fa-chevron-left"></i> chip-8模拟器概述
+    <a href="/2020/02/01/Rust%E5%85%A5%E9%97%A8%E8%AF%AD%E6%B3%95%E5%BD%92%E7%BA%B3/" rel="prev" title="Rust入门语法归纳">
+      <i class="fa fa-chevron-left"></i> Rust入门语法归纳
     </a></div>
       <div class="post-nav-item">
-    <a href="/2020/01/31/chip-8-emulator/OpenGL%E5%85%A5%E9%97%A8/" rel="next" title="熟悉图形API">
-      熟悉图形API <i class="fa fa-chevron-right"></i>
+    <a href="/2020/02/02/Rust%E8%82%89%E7%9C%BC%E7%BA%A7Bug%E6%8C%91%E6%88%98/Rust-Bug-L01/" rel="next" title="Rust肉眼级Bug挑战Lv.01">
+      Rust肉眼级Bug挑战Lv.01 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -477,7 +348,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#位逻辑运算"><span class="nav-number">1.</span> <span class="nav-text">位逻辑运算</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#位移操作"><span class="nav-number">2.</span> <span class="nav-text">位移操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一些问题"><span class="nav-number">3.</span> <span class="nav-text">一些问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#补充：原码、反码、补码"><span class="nav-number">4.</span> <span class="nav-text">补充：原码、反码、补码</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Rust进阶"><span class="nav-number">1.</span> <span class="nav-text">Rust进阶</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类型系统进阶"><span class="nav-number">1.2.</span> <span class="nav-text">类型系统进阶</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#原生类型"><span class="nav-number">1.2.1.</span> <span class="nav-text">原生类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#元组-（tuple）"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">元组 （tuple）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用户定义类型（UDT）"><span class="nav-number">1.2.2.</span> <span class="nav-text">用户定义类型（UDT）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#控制流进阶"><span class="nav-number">1.3.</span> <span class="nav-text">控制流进阶</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#尾声"><span class="nav-number">1.4.</span> <span class="nav-text">尾声</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
