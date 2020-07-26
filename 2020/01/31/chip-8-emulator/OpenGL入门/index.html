@@ -47,15 +47,15 @@
   };
 </script>
 
-  <meta name="description" content="前言为了实现chip-8模拟器的图像显示功能，我们需要依赖第三方库的帮助，比如比较著名的OpenGL。这次打算试着用一下用Rust下面的第三方库glium">
+  <meta name="description" content="前言为了实现chip-8模拟器的图像显示功能，我们需要依赖第三方库的帮助，比如比较著名的OpenGL。这次打算试着用一下用Rust下面的第三方库glium 当然glium的原作者已经不再继续维护了，我们考虑换一个第三方库piston（所以大家可以直接跳到piston部分）">
 <meta property="og:type" content="article">
-<meta property="og:title" content="图形API—初探glium">
+<meta property="og:title" content="图形API—初探">
 <meta property="og:url" content="http://yoursite.com/2020/01/31/chip-8-emulator/OpenGL%E5%85%A5%E9%97%A8/index.html">
 <meta property="og:site_name" content="Greatoyster">
-<meta property="og:description" content="前言为了实现chip-8模拟器的图像显示功能，我们需要依赖第三方库的帮助，比如比较著名的OpenGL。这次打算试着用一下用Rust下面的第三方库glium">
+<meta property="og:description" content="前言为了实现chip-8模拟器的图像显示功能，我们需要依赖第三方库的帮助，比如比较著名的OpenGL。这次打算试着用一下用Rust下面的第三方库glium 当然glium的原作者已经不再继续维护了，我们考虑换一个第三方库piston（所以大家可以直接跳到piston部分）">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-01-31T09:16:18.177Z">
-<meta property="article:modified_time" content="2020-02-04T15:00:20.864Z">
+<meta property="article:modified_time" content="2020-02-10T07:59:51.266Z">
 <meta property="article:author" content="greatoyster">
 <meta property="article:tag" content="emulator">
 <meta name="twitter:card" content="summary">
@@ -72,7 +72,7 @@
   };
 </script>
 
-  <title>图形API—初探glium | Greatoyster</title>
+  <title>图形API—初探 | Greatoyster</title>
   
 
 
@@ -147,17 +147,17 @@
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags<span class="badge">2</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags<span class="badge">4</span></a>
 
   </li>
         <li class="menu-item menu-item-categories">
 
-    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories<span class="badge">3</span></a>
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories<span class="badge">4</span></a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives<span class="badge">6</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives<span class="badge">8</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -227,7 +227,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          图形API—初探glium
+          图形API—初探
         </h1>
 
         <div class="post-meta">
@@ -244,7 +244,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-02-04 15:00:20" itemprop="dateModified" datetime="2020-02-04T15:00:20Z">2020-02-04</time>
+                <time title="Modified: 2020-02-10 07:59:51" itemprop="dateModified" datetime="2020-02-10T07:59:51Z">2020-02-10</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -277,6 +277,7 @@
 
       
         <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>为了实现chip-8模拟器的图像显示功能，我们需要依赖第三方库的帮助，比如比较著名的OpenGL。这次打算试着用一下用Rust下面的第三方库<code>glium</code></p>
+<p>当然<code>glium</code>的原作者已经不再继续维护了，我们考虑换一个第三方库<code>piston</code>（所以大家可以直接跳到<code>piston</code>部分）</p>
 <a id="more"></a>
 
 <h2 id="glium"><a href="#glium" class="headerlink" title="glium"></a>glium</h2><h3 id="导入第三方库"><a href="#导入第三方库" class="headerlink" title="导入第三方库"></a>导入第三方库</h3><p>在<code>Cargo.toml</code>文件中加入如下一行</p>
@@ -321,6 +322,43 @@
 <li>一个着色器程序</li>
 </ul>
 <p>怎么描述形状呢？那就只需要知道三角形三个顶点（vertex）的位置</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#[derive(Copy, Clone)]</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Vertex</span></span> &#123;</span><br><span class="line">    position: [<span class="built_in">f32</span>; <span class="number">2</span>],</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>注意OpenGL渲染器的默认坐标系用窗口中间作为原点（origin），窗口的宽度和高度作为两个单位长度</p>
+<p>也就是说，它的坐标范围是<br>$$<br>(x,y)\in[-1,1]\times[-1,1]<br>$$<br>那么我随便描述一个形状</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> vertex1 = Vertex &#123; position: [-<span class="number">0.5</span>, -<span class="number">0.5</span>] &#125;;</span><br><span class="line"><span class="keyword">let</span> vertex2 = Vertex &#123; position: [ <span class="number">0.0</span>,  <span class="number">0.5</span>] &#125;;</span><br><span class="line"><span class="keyword">let</span> vertex3 = Vertex &#123; position: [ <span class="number">0.5</span>, -<span class="number">0.25</span>] &#125;;</span><br><span class="line"><span class="keyword">let</span> shape = <span class="built_in">vec!</span>[vertex1, vertex2, vertex3];</span><br></pre></td></tr></table></figure>
+
+<p>接下来我们一般不会马上把这个形状，而是会先把这个形状塞到GPU的缓存（buffer）中,在<code>glium</code>里，这个叫做<code>VertexBuffer</code></p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> vertex_buffer = glium::VertexBuffer::new(&amp;display, &amp;shape).unwrap();</span><br></pre></td></tr></table></figure>
+
+<p>知道了有哪一些顶点，我们的着色器还要知道要用什么顺序来连接这些顶点（三角形就一种连法，好像多余了，不过其他有成千上万顶点的复杂图形在这一块还是有迫切需求滴）</p>
+<p>在这里就做做样子好了（笑）</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> indices = glium::index::NoIndices(glium::index::PrimitiveType::TrianglesList);</span><br></pre></td></tr></table></figure>
+
+<h2 id="改道"><a href="#改道" class="headerlink" title="改道"></a>改道</h2><p>看完了<code>glium</code>，试着运行了一下它在后续官方教程中的代码，发现已经无法编译了，它的模块架构和一些实现发生了不小的变化，现在要使用这个库只能依赖官方文档了（官方教程真是坑爹）</p>
+<h2 id="改道-gfx"><a href="#改道-gfx" class="headerlink" title="改道 gfx"></a>改道 gfx</h2><p><code>piston</code>是个好东西，功能全面好用。我们再试试看稍稍原始的<code>gfx-rs</code></p>
+<h3 id="三个核心类型"><a href="#三个核心类型" class="headerlink" title="三个核心类型"></a>三个核心类型</h3><ul>
+<li><p><code>Factory</code>：分配诸如纹理，顶点缓存之类的资源</p>
+</li>
+<li><p><code>Encoder</code>：把操作命令进一步解码成机器层面的操作</p>
+</li>
+<li><p><code>Device</code>：把指令派发给GPU</p>
+</li>
+</ul>
+<h3 id="Crate主要结构"><a href="#Crate主要结构" class="headerlink" title="Crate主要结构"></a>Crate主要结构</h3><ul>
+<li><p><code>gfx_core</code>：比较原始的模块</p>
+</li>
+<li><p><code>gfx</code>：在<code>gfx_core</code>基础上包装过后的高级API，三个核心<code>trait</code>就被定义在这里</p>
+</li>
+<li><p><code>gfx_device_*</code>：后面可以跟<code>gl,vulkan,emtal,dx11,dx12</code></p>
+</li>
+<li><p><code>gfx_window_*</code>：和窗口的构建有关，后面可以跟<code>glutin,glfw,sdl</code>。其中<code>glutin</code>支持最好，且由纯Rust编写</p>
+</li>
+<li><p><code>gfx_app</code>：一个抽象层，让你更灵活地选择窗口和后端。</p>
+</li>
+<li><p><code>gfx_gl</code>：<code>gfx_device_gl</code>所使用的封装</p>
+</li>
+</ul>
 
     </div>
 
@@ -339,8 +377,8 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/01/31/chip-8-emulator/%E4%BD%8D%E6%93%8D%E4%BD%9C/" rel="prev" title="C++位操作">
-      <i class="fa fa-chevron-left"></i> C++位操作
+    <a href="/2020/01/31/chip-8-emulator/%E4%BD%8D%E6%93%8D%E4%BD%9C/" rel="prev" title="位操作概述">
+      <i class="fa fa-chevron-left"></i> 位操作概述
     </a></div>
       <div class="post-nav-item">
     <a href="/2020/02/01/Rust%E5%85%A5%E9%97%A8%E8%AF%AD%E6%B3%95%E5%BD%92%E7%BA%B3/" rel="next" title="Rust入门语法归纳">
@@ -405,7 +443,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#glium"><span class="nav-number">2.</span> <span class="nav-text">glium</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#导入第三方库"><span class="nav-number">2.1.</span> <span class="nav-text">导入第三方库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#开始"><span class="nav-number">2.2.</span> <span class="nav-text">开始</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#下一步"><span class="nav-number">2.3.</span> <span class="nav-text">下一步</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#再进一步"><span class="nav-number">3.</span> <span class="nav-text">再进一步</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#glium"><span class="nav-number">2.</span> <span class="nav-text">glium</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#导入第三方库"><span class="nav-number">2.1.</span> <span class="nav-text">导入第三方库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#开始"><span class="nav-number">2.2.</span> <span class="nav-text">开始</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#下一步"><span class="nav-number">2.3.</span> <span class="nav-text">下一步</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#再进一步"><span class="nav-number">3.</span> <span class="nav-text">再进一步</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#改道"><span class="nav-number">4.</span> <span class="nav-text">改道</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#改道-gfx"><span class="nav-number">5.</span> <span class="nav-text">改道 gfx</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#三个核心类型"><span class="nav-number">5.1.</span> <span class="nav-text">三个核心类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Crate主要结构"><span class="nav-number">5.2.</span> <span class="nav-text">Crate主要结构</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -419,20 +457,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-count">8</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

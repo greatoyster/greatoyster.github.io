@@ -145,17 +145,17 @@
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags<span class="badge">2</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags<span class="badge">4</span></a>
 
   </li>
         <li class="menu-item menu-item-categories">
 
-    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories<span class="badge">3</span></a>
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories<span class="badge">4</span></a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives<span class="badge">6</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives<span class="badge">8</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -329,7 +329,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-02-03 11:54:40" itemprop="dateModified" datetime="2020-02-03T11:54:40Z">2020-02-03</time>
+                <time title="Modified: 2020-02-05 06:18:50" itemprop="dateModified" datetime="2020-02-05T06:18:50Z">2020-02-05</time>
               </span>
 
           
@@ -345,6 +345,7 @@
       
           <h1 id="Rust进阶"><a href="#Rust进阶" class="headerlink" title="Rust进阶"></a>Rust进阶</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>如果看过了前面的《Rust入门语法归纳》或者是对Rust语法已经有了基本了解，那么就可以进入进阶阶段了。</p>
 <p>在进阶阶段，我们依然从类型系统和控制流两个主要方面来展开。另外，还有相关的编程概念也需要交代。</p>
+<p>文章暂时没有写完。</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2020/02/02/Rust%E8%BF%9B%E9%98%B6/#more" rel="contents">
@@ -539,7 +540,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2020/01/31/chip-8-emulator/OpenGL%E5%85%A5%E9%97%A8/" class="post-title-link" itemprop="url">图形API—初探glium</a>
+            <a href="/2020/01/31/chip-8-emulator/OpenGL%E5%85%A5%E9%97%A8/" class="post-title-link" itemprop="url">图形API—初探</a>
         </h1>
 
         <div class="post-meta">
@@ -556,7 +557,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-02-04 15:00:20" itemprop="dateModified" datetime="2020-02-04T15:00:20Z">2020-02-04</time>
+                <time title="Modified: 2020-02-10 07:59:51" itemprop="dateModified" datetime="2020-02-10T07:59:51Z">2020-02-10</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -582,6 +583,7 @@
 
       
           <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>为了实现chip-8模拟器的图像显示功能，我们需要依赖第三方库的帮助，比如比较著名的OpenGL。这次打算试着用一下用Rust下面的第三方库<code>glium</code></p>
+<p>当然<code>glium</code>的原作者已经不再继续维护了，我们考虑换一个第三方库<code>piston</code>（所以大家可以直接跳到<code>piston</code>部分）</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2020/01/31/chip-8-emulator/OpenGL%E5%85%A5%E9%97%A8/#more" rel="contents">
@@ -622,7 +624,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2020/01/31/chip-8-emulator/%E4%BD%8D%E6%93%8D%E4%BD%9C/" class="post-title-link" itemprop="url">C++位操作</a>
+            <a href="/2020/01/31/chip-8-emulator/%E4%BD%8D%E6%93%8D%E4%BD%9C/" class="post-title-link" itemprop="url">位操作概述</a>
         </h1>
 
         <div class="post-meta">
@@ -639,7 +641,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-02-01 14:00:31" itemprop="dateModified" datetime="2020-02-01T14:00:31Z">2020-02-01</time>
+                <time title="Modified: 2020-02-05 05:51:53" itemprop="dateModified" datetime="2020-02-05T05:51:53Z">2020-02-05</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -664,7 +666,8 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="位逻辑运算"><a href="#位逻辑运算" class="headerlink" title="位逻辑运算"></a>位逻辑运算</h2><table>
+          <p>位操作又基础又容易掌握，如果还不会的最好去看一下。</p>
+<h2 id="位逻辑运算"><a href="#位逻辑运算" class="headerlink" title="位逻辑运算"></a>位逻辑运算</h2><table>
 <thead>
 <tr>
 <th align="center">操作符</th>
@@ -696,6 +699,175 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2020/01/31/chip-8-emulator/%E4%BD%8D%E6%93%8D%E4%BD%9C/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/16/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="greatoyster">
+      <meta itemprop="description" content="Technique-sharing station">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Greatoyster">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/02/16/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E7%AC%94%E8%AE%B0/" class="post-title-link" itemprop="url">统计学学习计划</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-02-15 18:46:25 / Modified: 11:14:28" itemprop="dateCreated datePublished" datetime="2020-02-15T18:46:25Z">2020-02-15</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="计划本体"><a href="#计划本体" class="headerlink" title="计划本体"></a>计划本体</h1><p>从一本简称ISLR的书本入门</p>
+<p>这本书除去前言和简介，有九大章的内容，涵盖了</p>
+<ol>
+<li>统计学习综述</li>
+<li>线性回归</li>
+<li>分类</li>
+<li>采样方法</li>
+<li>线性模型选择和正则化</li>
+<li>非线性的问题</li>
+<li>树方法</li>
+<li>支持向量机</li>
+<li>非监督学习</li>
+</ol>
+<p>以前自己有一些概率和数理统计的基础（概率方面比较熟悉，学校相关课程当中关于统计只是皮毛中的皮毛）。关于机器学习中的一些方法，也有涉猎，但是一直不够系统化，需要有一个契机，把它们融合到一起。这本书采用R语言来讲解统计学的相关应用（毕竟R语言和统计学的契合度很高），以前基本上都是用Python上的<code>np</code>, <code>pd</code>, <code>plt</code>三大模块，要不就是MATLAB，这次试试新的编程语言。</p>
+<p>因为资源有限，只能看电子版，所以阅读速度会慢一些。加上相关实践，大概每一章节需要3-4小时的学习（这是比较好的情况下），大概四天以内可以学完。姑且把ddl定在2020.2.20的12:00。</p>
+<h2 id="第一天"><a href="#第一天" class="headerlink" title="第一天"></a>第一天</h2><h2 id="第二天"><a href="#第二天" class="headerlink" title="第二天"></a>第二天</h2><h2 id="第三天"><a href="#第三天" class="headerlink" title="第三天"></a>第三天</h2><h2 id="第四天"><a href="#第四天" class="headerlink" title="第四天"></a>第四天</h2><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/08/SLAM%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="greatoyster">
+      <meta itemprop="description" content="Technique-sharing station">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Greatoyster">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/02/08/SLAM%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80/" class="post-title-link" itemprop="url">SLAM数学基础</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-02-08 12:03:19" itemprop="dateCreated datePublished" datetime="2020-02-08T12:03:19Z">2020-02-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-06-10 07:36:02" itemprop="dateModified" datetime="2020-06-10T07:36:02Z">2020-06-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E5%AD%A6/" itemprop="url" rel="index">
+                    <span itemprop="name">数学</span>
+                  </a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>SLAM（中文名：即时定位与地图构建）最早被被应用在机器人领域，其目标是在没有任何先验知识的情况下，根据传感器数据实时构建周围环境地图，同时根据这个地图推测自身的定位。</p>
+<p>其中依赖与摄像头采集外部信息的被称为视觉SLAM，这是一种比较常见的类型。</p>
+<p>下面是一些术语的解释</p>
+<ul>
+<li><p>视觉里程计 (Visual Odometry)：仅有视觉输入的姿态估计；</p>
+</li>
+<li><p>后端优化 (Optimization): 后端接受不同时刻视觉里程计测量的相机位姿，以及闭环检测的信息，对它们进行优化，得到全局一致的轨迹和地图；</p>
+</li>
+<li><p>闭环检测 (Loop Closing): 指机器人在地图构建过程中, 通过视觉等传感器信息检测是否发生了轨迹闭环, 即判断自身是否进入历史同一地点;</p>
+</li>
+<li><p>建图 (Mapping): 根据估计的轨迹，建立与任务要求对应的地图；</p>
+</li>
+</ul>
+<p>本节主要介绍关于和视觉SLAM相关的数学基础若干</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/02/08/SLAM%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -782,20 +954,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-count">8</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

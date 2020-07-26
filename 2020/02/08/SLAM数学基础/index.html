@@ -47,18 +47,20 @@
   };
 </script>
 
-  <meta name="description" content="Technique-sharing station">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Greatoyster">
-<meta property="og:url" content="http://yoursite.com/archives/2020/01/index.html">
+  <meta name="description" content="前言SLAM（中文名：即时定位与地图构建）最早被被应用在机器人领域，其目标是在没有任何先验知识的情况下，根据传感器数据实时构建周围环境地图，同时根据这个地图推测自身的定位。 其中依赖与摄像头采集外部信息的被称为视觉SLAM，这是一种比较常见的类型。 下面是一些术语的解释  视觉里程计 (Visual Odometry)：仅有视觉输入的姿态估计；  后端优化 (Optimization): 后端接受">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SLAM数学基础">
+<meta property="og:url" content="http://yoursite.com/2020/02/08/SLAM%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80/index.html">
 <meta property="og:site_name" content="Greatoyster">
-<meta property="og:description" content="Technique-sharing station">
+<meta property="og:description" content="前言SLAM（中文名：即时定位与地图构建）最早被被应用在机器人领域，其目标是在没有任何先验知识的情况下，根据传感器数据实时构建周围环境地图，同时根据这个地图推测自身的定位。 其中依赖与摄像头采集外部信息的被称为视觉SLAM，这是一种比较常见的类型。 下面是一些术语的解释  视觉里程计 (Visual Odometry)：仅有视觉输入的姿态估计；  后端优化 (Optimization): 后端接受">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-02-08T12:03:19.000Z">
+<meta property="article:modified_time" content="2020-06-10T07:36:02.167Z">
 <meta property="article:author" content="greatoyster">
-<meta property="article:tag" content="greatoyster">
+<meta property="article:tag" content="SLAM">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://yoursite.com/archives/2020/01/">
+<link rel="canonical" href="http://yoursite.com/2020/02/08/SLAM%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80/">
 
 
 <script id="page-configurations">
@@ -66,11 +68,11 @@
   CONFIG.page = {
     sidebar: "",
     isHome: false,
-    isPost: false
+    isPost: true
   };
 </script>
 
-  <title>Archive | Greatoyster</title>
+  <title>SLAM数学基础 | Greatoyster</title>
   
 
 
@@ -207,89 +209,132 @@
           <div class="content">
             
 
+  <div class="posts-expand">
+      
   
   
-  
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        <span class="collection-header">Um..! 8 posts in total. Keep on posting.</span>
-      </div>
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/08/SLAM%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="greatoyster">
+      <meta itemprop="description" content="Technique-sharing station">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Greatoyster">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          SLAM数学基础
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-02-08 12:03:19" itemprop="dateCreated datePublished" datetime="2020-02-08T12:03:19Z">2020-02-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-06-10 07:36:02" itemprop="dateModified" datetime="2020-06-10T07:36:02Z">2020-06-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E5%AD%A6/" itemprop="url" rel="index">
+                    <span itemprop="name">数学</span>
+                  </a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <h1 class="collection-header">2020</h1>
-    </div>
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>SLAM（中文名：即时定位与地图构建）最早被被应用在机器人领域，其目标是在没有任何先验知识的情况下，根据传感器数据实时构建周围环境地图，同时根据这个地图推测自身的定位。</p>
+<p>其中依赖与摄像头采集外部信息的被称为视觉SLAM，这是一种比较常见的类型。</p>
+<p>下面是一些术语的解释</p>
+<ul>
+<li><p>视觉里程计 (Visual Odometry)：仅有视觉输入的姿态估计；</p>
+</li>
+<li><p>后端优化 (Optimization): 后端接受不同时刻视觉里程计测量的相机位姿，以及闭环检测的信息，对它们进行优化，得到全局一致的轨迹和地图；</p>
+</li>
+<li><p>闭环检测 (Loop Closing): 指机器人在地图构建过程中, 通过视觉等传感器信息检测是否发生了轨迹闭环, 即判断自身是否进入历史同一地点;</p>
+</li>
+<li><p>建图 (Mapping): 根据估计的轨迹，建立与任务要求对应的地图；</p>
+</li>
+</ul>
+<p>本节主要介绍关于和视觉SLAM相关的数学基础若干</p>
+<a id="more"></a>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+<h1 id="数学基础"><a href="#数学基础" class="headerlink" title="数学基础"></a>数学基础</h1><p>注：本节默认读者已经有了初步的线性代数基础和相关概念的自学能力。</p>
+<h2 id="二维旋转矩阵"><a href="#二维旋转矩阵" class="headerlink" title="二维旋转矩阵"></a>二维旋转矩阵</h2><p>一个旋转矩阵对应着一个旋转几何变换。</p>
+<p>我们正常的平面直角坐标系有两个标准基$e_1=\left[\begin{matrix}1\ 0\end{matrix}\right],e_2=\left[\begin{matrix} 0 \ 1\end{matrix}\right]$</p>
+<p>想象把$e_1$逆时针旋转$\theta$，那么它的坐标就应该是$\left[\begin{matrix}\cos{\theta}\ \sin{\theta}\end{matrix}\right]$</p>
+<p>想象把$e_2$逆时针旋转$\theta$，那么它的坐标就应该是$\left[\begin{matrix}-\sin{\theta}\ \cos{\theta}\end{matrix}\right]$</p>
+<p>把这两个基向量变换后向量拼接一下，我么就获得了对应的几何变换矩阵<br>$$<br>R(\theta)=\left[<br>\begin{matrix}<br>\cos{\theta} &amp; -\sin{\theta}\<br>\sin{\theta} &amp; \cos{\theta}<br>\end{matrix}<br>\right]<br>$$<br>对于任意一个向量$v=\left[\begin{matrix}x\y\end{matrix}\right]$，可以通过乘上一个旋转矩阵来得到它旋转过$\theta$过后的位置<br>$$<br>v_{rotated}=R(\theta)v<br>$$</p>
+<!-- template \left[\begin{matrix}\end{matrix}\right] -->
 
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2020-01-31T09:16:18Z"
-              content="2020-01-31">
-          01-31
-        </time>
-      </div>
-
-      <h2 class="post-title">
-          <a class="post-title-link" href="/2020/01/31/chip-8-emulator/OpenGL%E5%85%A5%E9%97%A8/" itemprop="url">
-            <span itemprop="name">图形API—初探</span>
-          </a>
-      </h2>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2020-01-31T04:05:20Z"
-              content="2020-01-31">
-          01-31
-        </time>
-      </div>
-
-      <h2 class="post-title">
-          <a class="post-title-link" href="/2020/01/31/chip-8-emulator/%E4%BD%8D%E6%93%8D%E4%BD%9C/" itemprop="url">
-            <span itemprop="name">位操作概述</span>
-          </a>
-      </h2>
-
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2020-01-30T07:38:04Z"
-              content="2020-01-30">
-          01-30
-        </time>
-      </div>
-
-      <h2 class="post-title">
-          <a class="post-title-link" href="/2020/01/30/chip-8-emulator/chip-8%E6%A6%82%E8%BF%B0/" itemprop="url">
-            <span itemprop="name">chip-8模拟器概述</span>
-          </a>
-      </h2>
-
-    </header>
-  </article>
-
+<h3 id="三维旋转矩阵"><a href="#三维旋转矩阵" class="headerlink" title="三维旋转矩阵"></a>三维旋转矩阵</h3><p>要想知道如何得到三维的旋转矩阵，一个比较重要的前提是需要描述它的旋转（绕着什么旋转？旋转了多少角度？）</p>
 
     </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/SLAM/" rel="tag"># SLAM</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/02/02/Rust%E8%82%89%E7%9C%BC%E7%BA%A7Bug%E6%8C%91%E6%88%98/Rust-Bug-L01/" rel="prev" title="Rust肉眼级Bug挑战Lv.01">
+      <i class="fa fa-chevron-left"></i> Rust肉眼级Bug挑战Lv.01
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/02/16/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E7%AC%94%E8%AE%B0/" rel="next" title="统计学学习计划">
+      统计学学习计划 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
   </div>
-  
-  
-  
-
-  
-
 
 
           </div>
@@ -340,6 +385,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#数学基础"><span class="nav-number">2.</span> <span class="nav-text">数学基础</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#二维旋转矩阵"><span class="nav-number">2.1.</span> <span class="nav-text">二维旋转矩阵</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#三维旋转矩阵"><span class="nav-number">2.1.1.</span> <span class="nav-text">三维旋转矩阵</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

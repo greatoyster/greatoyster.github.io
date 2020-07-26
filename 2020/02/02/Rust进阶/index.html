@@ -47,15 +47,15 @@
   };
 </script>
 
-  <meta name="description" content="Rust进阶前言如果看过了前面的《Rust入门语法归纳》或者是对Rust语法已经有了基本了解，那么就可以进入进阶阶段了。 在进阶阶段，我们依然从类型系统和控制流两个主要方面来展开。另外，还有相关的编程概念也需要交代。">
+  <meta name="description" content="Rust进阶前言如果看过了前面的《Rust入门语法归纳》或者是对Rust语法已经有了基本了解，那么就可以进入进阶阶段了。 在进阶阶段，我们依然从类型系统和控制流两个主要方面来展开。另外，还有相关的编程概念也需要交代。 文章暂时没有写完。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Rust进阶">
 <meta property="og:url" content="http://yoursite.com/2020/02/02/Rust%E8%BF%9B%E9%98%B6/index.html">
 <meta property="og:site_name" content="Greatoyster">
-<meta property="og:description" content="Rust进阶前言如果看过了前面的《Rust入门语法归纳》或者是对Rust语法已经有了基本了解，那么就可以进入进阶阶段了。 在进阶阶段，我们依然从类型系统和控制流两个主要方面来展开。另外，还有相关的编程概念也需要交代。">
+<meta property="og:description" content="Rust进阶前言如果看过了前面的《Rust入门语法归纳》或者是对Rust语法已经有了基本了解，那么就可以进入进阶阶段了。 在进阶阶段，我们依然从类型系统和控制流两个主要方面来展开。另外，还有相关的编程概念也需要交代。 文章暂时没有写完。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-02-02T10:54:15.000Z">
-<meta property="article:modified_time" content="2020-02-03T11:54:40.352Z">
+<meta property="article:modified_time" content="2020-02-05T06:18:50.267Z">
 <meta property="article:author" content="greatoyster">
 <meta property="article:tag" content="Rust">
 <meta name="twitter:card" content="summary">
@@ -147,17 +147,17 @@
   </li>
         <li class="menu-item menu-item-tags">
 
-    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags<span class="badge">2</span></a>
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags<span class="badge">4</span></a>
 
   </li>
         <li class="menu-item menu-item-categories">
 
-    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories<span class="badge">3</span></a>
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories<span class="badge">4</span></a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives<span class="badge">6</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives<span class="badge">8</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -244,7 +244,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-02-03 11:54:40" itemprop="dateModified" datetime="2020-02-03T11:54:40Z">2020-02-03</time>
+                <time title="Modified: 2020-02-05 06:18:50" itemprop="dateModified" datetime="2020-02-05T06:18:50Z">2020-02-05</time>
               </span>
 
           
@@ -267,6 +267,7 @@
       
         <h1 id="Rust进阶"><a href="#Rust进阶" class="headerlink" title="Rust进阶"></a>Rust进阶</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>如果看过了前面的《Rust入门语法归纳》或者是对Rust语法已经有了基本了解，那么就可以进入进阶阶段了。</p>
 <p>在进阶阶段，我们依然从类型系统和控制流两个主要方面来展开。另外，还有相关的编程概念也需要交代。</p>
+<p>文章暂时没有写完。</p>
 <a id="more"></a>
 
 <h2 id="类型进阶"><a href="#类型进阶" class="headerlink" title="类型进阶"></a>类型进阶</h2><h3 id="数字运算"><a href="#数字运算" class="headerlink" title="数字运算"></a>数字运算</h3><p>主要五个运算符<code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, <code>%</code>，对应了加减乘除和取余。 </p>
@@ -317,6 +318,85 @@
 <p>栈非常快速，并且是 Rust 默认分配内存的地方。不过这个分配位于函数调用的本地，并有大小限制。堆，相反，更慢，并且需要被你的程序显式分配。不过它无事实上的大小限制，并且是全局可访问的。注意这里堆的意义，它意味着已任意顺序分配任意大小的内存块，这与堆数据结构有很大不同</p>
 <h3 id="模式匹配-pattern-match"><a href="#模式匹配-pattern-match" class="headerlink" title="模式匹配 pattern match"></a>模式匹配 pattern match</h3><p><code>match</code>可以在一堆东西中把具有你所期望的特征的东西找出来的功能，这也叫做模式匹配</p>
 <p>这里不做详细介绍</p>
+<h3 id="宏"><a href="#宏" class="headerlink" title="宏"></a>宏</h3><p>十分有用（但挺难懂）的高级抽象，例子随处都是，具体的描述可以参考[宏]([<a href="https://kaisery.gitbooks.io/rust-book-chinese/content/content/Macros%20%E5%AE%8F.html]" target="_blank" rel="noopener">https://kaisery.gitbooks.io/rust-book-chinese/content/content/Macros%20%E5%AE%8F.html]</a>(<a href="https://kaisery.gitbooks.io/rust-book-chinese/content/content/Macros" target="_blank" rel="noopener">https://kaisery.gitbooks.io/rust-book-chinese/content/content/Macros</a> 宏.html))，这篇易读又全面。下面只是列举一下宏里面的基本概念</p>
+<p>我们通过阅读标准库或者其他地方的一些宏定义，比如<code>vec!</code>的简化版</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">macro_rules!</span> vec &#123;</span><br><span class="line">    ( $( $x:expr ),* ) =&gt; &#123;</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">let</span> <span class="keyword">mut</span> temp_vec = <span class="built_in">Vec</span>::new();</span><br><span class="line">            $(</span><br><span class="line">                temp_vec.push($x);</span><br><span class="line">            )*</span><br><span class="line">            temp_vec</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>多少可以看出，宏的定义有那么一丝模式匹配的味道</p>
+<p>我们把<code>=&gt;</code>左侧的称为匹配器，<code>expr</code>被称为分段标识符（这不是任意变量名，而是分段标识符的一系列规范名称之一）    </p>
+<h4 id="句法要求"><a href="#句法要求" class="headerlink" title="句法要求"></a>句法要求</h4><p>即使 Rust 代码中含有未展开的宏，它也可以被解析为一个完整的[语法树](<a href="https://kaisery.gitbooks.io/rust-book-chinese/content/content/7.Glossary" target="_blank" rel="noopener">https://kaisery.gitbooks.io/rust-book-chinese/content/content/7.Glossary</a> 词汇表.md#abstract-syntax-tree)。这个属性对于编辑器或其它处理代码的工具来说十分有用。这里也有一些关于 Rust 宏系统设计的推论。</p>
+<p>一个推论是 Rust 必须确定，当它解析一个宏展开时，宏是否代替了</p>
+<ul>
+<li>0个或多个项</li>
+<li>0个或多个方法</li>
+<li>一个表达式</li>
+<li>一个语句</li>
+<li>一个模式</li>
+</ul>
+<p>一个块中的宏展开代表一些项，或者一个表达式/语句。Rust 使用一个简单的规则来解决这些二义性。一个代表项的宏展开必须是</p>
+<ul>
+<li>用大括号界定的，例如<code>foo! { ... }</code></li>
+<li>分号结尾的，例如<code>foo!(...);</code></li>
+</ul>
+<p>另一个展开前解析的推论是宏展开必须包含有效的Rust记号。更进一步，括号，中括号，大括号在宏展开中必须是封闭的。例如，<code>foo!([)</code>是不允许的。这让Rust知道宏何时结束。</p>
+<p>更正式一点，宏展开体必须是一个<strong>记号树</strong>（<em>token trees</em>）的序列。一个记号树是一系列递归的</p>
+<ul>
+<li>一个由<code>()</code>，<code>[]</code>或<code>{}</code>包围的记号树序列</li>
+<li>任何其它单个记号</li>
+</ul>
+<p>在一个匹配器中，每一个元变量都有一个<strong>片段分类符</strong>（<em>fragment specifier</em>），确定它匹配的哪种句法。</p>
+<ul>
+<li><code>ident</code>：一个标识符。例如：<code>x</code>，<code>foo</code></li>
+<li><code>path</code>：一个受限的名字。例如：<code>T::SpecialA</code></li>
+<li><code>expr</code>：一个表达式。例如：<code>2 + 2</code>；<code>if true then { 1 } else { 2 }</code>；<code>f(42)</code></li>
+<li><code>ty</code>：一个类型。例如：<code>i32</code>；<code>Vec&lt;(char, String)&gt;</code>；<code>&amp;T</code></li>
+<li><code>pat</code>：一个模式。例如：<code>Some(t)</code>；<code>(17, &#39;a&#39;)</code>；<code>_</code></li>
+<li><code>stmt</code>：一个单独语句。例如：<code>let x = 3</code></li>
+<li><code>block</code>：一个大括号界定的语句序列，或者一个表达式。例如：<code>{ log(error, &quot;hi&quot;); return 12; }</code></li>
+<li><code>item</code>：一个<a href="http://doc.rust-lang.org/stable/reference.html#items" target="_blank" rel="noopener">项</a>。例如：<code>fn foo() { }</code>，<code>struct Bar</code></li>
+<li><code>meta</code>：一个“元数据项”，可以在属性中找到。例如：<code>cfg(target_os = &quot;windows&quot;)</code></li>
+<li><code>tt</code>：一个单独的记号树</li>
+</ul>
+<p>对于一个元变量（metavariable）后面的一个记号有一些额外的规则：</p>
+<ul>
+<li><code>expr</code>和<code>stmt</code>变量必须后跟任意一个：<code>=&gt; , ;</code></li>
+<li><code>ty</code>和<code>path</code>变量必须后跟任意一个：<code>=&gt; , = | ; : &gt; [ { as where</code></li>
+<li><code>pat</code>变量必须后跟任意一个：<code>=&gt; , = | if in</code></li>
+<li>其它变量可以后跟任何记号</li>
+</ul>
+<p>这些规则为 Rust 语法提供了一些灵活性以便将来的展开不会破坏现有的宏。</p>
+<p>宏系统完全不处理解析模糊。例如，<code>$($i:ident)* $e:expr</code>语法总是会解析失败，因为解析器会被强制在解析<code>$i</code>和解析<code>$e</code>之间做出选择。改变展开在它们之前分别加上一个记号可以解决这个问题。在这个例子中，你可以写成<code>$(I $i:ident)* E $e:expr</code>。</p>
+<h4 id="常见宏"><a href="#常见宏" class="headerlink" title="常见宏"></a>常见宏</h4><p><code>panic!</code></p>
+<p>这个宏导致当前线程恐慌。你可以传给这个宏一个信息通过：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">panic!(&quot;oh no!&quot;);</span><br></pre></td></tr></table></figure>
+
+<p><code>vec!</code></p>
+<p>它方便创建<code>Vec&lt;T&gt;</code>：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> v = <span class="built_in">vec!</span>[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>];</span><br></pre></td></tr></table></figure>
+
+<p>它也让你可以用重复值创建vector。例如，100个<code>0</code>：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> v = <span class="built_in">vec!</span>[<span class="number">0</span>; <span class="number">100</span>];</span><br></pre></td></tr></table></figure>
+
+<p><code>assert!</code>和<code>assert_eq!</code></p>
+<p>这两个宏用在测试中。<code>assert!</code>获取一个布尔值，而<code>assert_eq!</code>获取两个值并比较它们。<code>true</code> 就通过，<code>false</code>就<code>panic!</code>。像这样：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// A-ok!</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">assert!</span>(<span class="literal">true</span>);</span><br><span class="line"><span class="built_in">assert_eq!</span>(<span class="number">5</span>, <span class="number">3</span> + <span class="number">2</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Nope :(</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">assert!</span>(<span class="number">5</span> &lt; <span class="number">3</span>);</span><br><span class="line"><span class="built_in">assert_eq!</span>(<span class="number">5</span>, <span class="number">3</span>);</span><br></pre></td></tr></table></figure>
+
+<p><code>try!</code></p>
+<p><code>try!</code>用来进行错误处理。它获取一些可以返回<code>Result&lt;T, E&gt;</code>的数据，并返回<code>T</code>如果它是<code>Ok&lt;T&gt;</code>，或<code>return</code>一个<code>Err(E)</code>如果出错了。像这样：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> std::fs::File;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">foo</span></span>() -&gt; std::io::<span class="built_in">Result</span>&lt;()&gt; &#123;</span><br><span class="line">    <span class="keyword">let</span> f = <span class="built_in">try!</span>(File::create(<span class="string">"foo.txt"</span>));</span><br><span class="line"></span><br><span class="line">    <span class="literal">Ok</span>(())</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>它比这么写要更简明：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> std::fs::File;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">foo</span></span>() -&gt; std::io::<span class="built_in">Result</span>&lt;()&gt; &#123;</span><br><span class="line">    <span class="keyword">let</span> f = File::create(<span class="string">"foo.txt"</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> f = <span class="keyword">match</span> f &#123;</span><br><span class="line">        <span class="literal">Ok</span>(t) =&gt; t,</span><br><span class="line">        <span class="literal">Err</span>(e) =&gt; <span class="keyword">return</span> <span class="literal">Err</span>(e),</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="literal">Ok</span>(())</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>unreachable!</code></p>
+<p>这个宏用于当你认为一些代码不应该被执行的时候：</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="literal">false</span> &#123;</span><br><span class="line">    <span class="built_in">unreachable!</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>有时，编译器可能会让你编写一个你认为将永远不会执行的不同分支。在这个例子中，用这个宏，这样如果最终你错了，你会为此得到一个<code>panic!</code>。</p>
+<figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> x: <span class="built_in">Option</span>&lt;<span class="built_in">i32</span>&gt; = <span class="literal">None</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">match</span> x &#123;</span><br><span class="line">    <span class="literal">Some</span>(_) =&gt; <span class="built_in">unreachable!</span>(),</span><br><span class="line">    <span class="literal">None</span> =&gt; <span class="built_in">println!</span>(<span class="string">"I know x is None!"</span>),</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>unimplemented!</code></p>
+<p><code>unimplemented!</code>宏可以被用来当你尝试去让你的函数通过类型检查，同时你又不想操心去写函数体的时候。一个这种情况的例子是实现一个要求多个方法的特性，而你只想一次搞定一个。用<code>unimplemented!</code>定义其它的直到你准备好去写它们了。</p>
 <h2 id="尾声"><a href="#尾声" class="headerlink" title="尾声"></a>尾声</h2>
     </div>
 
@@ -401,7 +481,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Rust进阶"><span class="nav-number">1.</span> <span class="nav-text">Rust进阶</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类型进阶"><span class="nav-number">1.2.</span> <span class="nav-text">类型进阶</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#数字运算"><span class="nav-number">1.2.1.</span> <span class="nav-text">数字运算</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数组操作"><span class="nav-number">1.2.2.</span> <span class="nav-text">数组操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用户定义类型（UDT）"><span class="nav-number">1.2.3.</span> <span class="nav-text">用户定义类型（UDT）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#控制流进阶"><span class="nav-number">1.3.</span> <span class="nav-text">控制流进阶</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#匹配-match"><span class="nav-number">1.3.1.</span> <span class="nav-text">匹配 match</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#抽象概念"><span class="nav-number">1.4.</span> <span class="nav-text">抽象概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#所有权系统"><span class="nav-number">1.4.1.</span> <span class="nav-text">所有权系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内存管理"><span class="nav-number">1.4.2.</span> <span class="nav-text">内存管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模式匹配-pattern-match"><span class="nav-number">1.4.3.</span> <span class="nav-text">模式匹配 pattern match</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#尾声"><span class="nav-number">1.5.</span> <span class="nav-text">尾声</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Rust进阶"><span class="nav-number">1.</span> <span class="nav-text">Rust进阶</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类型进阶"><span class="nav-number">1.2.</span> <span class="nav-text">类型进阶</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#数字运算"><span class="nav-number">1.2.1.</span> <span class="nav-text">数字运算</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数组操作"><span class="nav-number">1.2.2.</span> <span class="nav-text">数组操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用户定义类型（UDT）"><span class="nav-number">1.2.3.</span> <span class="nav-text">用户定义类型（UDT）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#控制流进阶"><span class="nav-number">1.3.</span> <span class="nav-text">控制流进阶</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#匹配-match"><span class="nav-number">1.3.1.</span> <span class="nav-text">匹配 match</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#抽象概念"><span class="nav-number">1.4.</span> <span class="nav-text">抽象概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#所有权系统"><span class="nav-number">1.4.1.</span> <span class="nav-text">所有权系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内存管理"><span class="nav-number">1.4.2.</span> <span class="nav-text">内存管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模式匹配-pattern-match"><span class="nav-number">1.4.3.</span> <span class="nav-text">模式匹配 pattern match</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#宏"><span class="nav-number">1.4.4.</span> <span class="nav-text">宏</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#句法要求"><span class="nav-number">1.4.4.1.</span> <span class="nav-text">句法要求</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#常见宏"><span class="nav-number">1.4.4.2.</span> <span class="nav-text">常见宏</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#尾声"><span class="nav-number">1.5.</span> <span class="nav-text">尾声</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -415,20 +495,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-count">8</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

@@ -155,6 +155,7 @@
     <url>/2020/02/02/Rust%E8%BF%9B%E9%98%B6/</url>
     <content><![CDATA[<h1 id="Rust进阶"><a href="#Rust进阶" class="headerlink" title="Rust进阶"></a>Rust进阶</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>如果看过了前面的《Rust入门语法归纳》或者是对Rust语法已经有了基本了解，那么就可以进入进阶阶段了。</p>
 <p>在进阶阶段，我们依然从类型系统和控制流两个主要方面来展开。另外，还有相关的编程概念也需要交代。</p>
+<p>文章暂时没有写完。</p>
 <a id="more"></a>
 
 <h2 id="类型进阶"><a href="#类型进阶" class="headerlink" title="类型进阶"></a>类型进阶</h2><h3 id="数字运算"><a href="#数字运算" class="headerlink" title="数字运算"></a>数字运算</h3><p>主要五个运算符<code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, <code>%</code>，对应了加减乘除和取余。 </p>
@@ -205,6 +206,85 @@
 <p>栈非常快速，并且是 Rust 默认分配内存的地方。不过这个分配位于函数调用的本地，并有大小限制。堆，相反，更慢，并且需要被你的程序显式分配。不过它无事实上的大小限制，并且是全局可访问的。注意这里堆的意义，它意味着已任意顺序分配任意大小的内存块，这与堆数据结构有很大不同</p>
 <h3 id="模式匹配-pattern-match"><a href="#模式匹配-pattern-match" class="headerlink" title="模式匹配 pattern match"></a>模式匹配 pattern match</h3><p><code>match</code>可以在一堆东西中把具有你所期望的特征的东西找出来的功能，这也叫做模式匹配</p>
 <p>这里不做详细介绍</p>
+<h3 id="宏"><a href="#宏" class="headerlink" title="宏"></a>宏</h3><p>十分有用（但挺难懂）的高级抽象，例子随处都是，具体的描述可以参考[宏]([<a href="https://kaisery.gitbooks.io/rust-book-chinese/content/content/Macros%20%E5%AE%8F.html]" target="_blank" rel="noopener">https://kaisery.gitbooks.io/rust-book-chinese/content/content/Macros%20%E5%AE%8F.html]</a>(<a href="https://kaisery.gitbooks.io/rust-book-chinese/content/content/Macros" target="_blank" rel="noopener">https://kaisery.gitbooks.io/rust-book-chinese/content/content/Macros</a> 宏.html))，这篇易读又全面。下面只是列举一下宏里面的基本概念</p>
+<p>我们通过阅读标准库或者其他地方的一些宏定义，比如<code>vec!</code>的简化版</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="built_in">macro_rules!</span> vec &#123;</span><br><span class="line">    ( $( $x:expr ),* ) =&gt; &#123;</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">let</span> <span class="keyword">mut</span> temp_vec = <span class="built_in">Vec</span>::new();</span><br><span class="line">            $(</span><br><span class="line">                temp_vec.push($x);</span><br><span class="line">            )*</span><br><span class="line">            temp_vec</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>多少可以看出，宏的定义有那么一丝模式匹配的味道</p>
+<p>我们把<code>=&gt;</code>左侧的称为匹配器，<code>expr</code>被称为分段标识符（这不是任意变量名，而是分段标识符的一系列规范名称之一）    </p>
+<h4 id="句法要求"><a href="#句法要求" class="headerlink" title="句法要求"></a>句法要求</h4><p>即使 Rust 代码中含有未展开的宏，它也可以被解析为一个完整的[语法树](<a href="https://kaisery.gitbooks.io/rust-book-chinese/content/content/7.Glossary" target="_blank" rel="noopener">https://kaisery.gitbooks.io/rust-book-chinese/content/content/7.Glossary</a> 词汇表.md#abstract-syntax-tree)。这个属性对于编辑器或其它处理代码的工具来说十分有用。这里也有一些关于 Rust 宏系统设计的推论。</p>
+<p>一个推论是 Rust 必须确定，当它解析一个宏展开时，宏是否代替了</p>
+<ul>
+<li>0个或多个项</li>
+<li>0个或多个方法</li>
+<li>一个表达式</li>
+<li>一个语句</li>
+<li>一个模式</li>
+</ul>
+<p>一个块中的宏展开代表一些项，或者一个表达式/语句。Rust 使用一个简单的规则来解决这些二义性。一个代表项的宏展开必须是</p>
+<ul>
+<li>用大括号界定的，例如<code>foo! { ... }</code></li>
+<li>分号结尾的，例如<code>foo!(...);</code></li>
+</ul>
+<p>另一个展开前解析的推论是宏展开必须包含有效的Rust记号。更进一步，括号，中括号，大括号在宏展开中必须是封闭的。例如，<code>foo!([)</code>是不允许的。这让Rust知道宏何时结束。</p>
+<p>更正式一点，宏展开体必须是一个<strong>记号树</strong>（<em>token trees</em>）的序列。一个记号树是一系列递归的</p>
+<ul>
+<li>一个由<code>()</code>，<code>[]</code>或<code>{}</code>包围的记号树序列</li>
+<li>任何其它单个记号</li>
+</ul>
+<p>在一个匹配器中，每一个元变量都有一个<strong>片段分类符</strong>（<em>fragment specifier</em>），确定它匹配的哪种句法。</p>
+<ul>
+<li><code>ident</code>：一个标识符。例如：<code>x</code>，<code>foo</code></li>
+<li><code>path</code>：一个受限的名字。例如：<code>T::SpecialA</code></li>
+<li><code>expr</code>：一个表达式。例如：<code>2 + 2</code>；<code>if true then { 1 } else { 2 }</code>；<code>f(42)</code></li>
+<li><code>ty</code>：一个类型。例如：<code>i32</code>；<code>Vec&lt;(char, String)&gt;</code>；<code>&amp;T</code></li>
+<li><code>pat</code>：一个模式。例如：<code>Some(t)</code>；<code>(17, &#39;a&#39;)</code>；<code>_</code></li>
+<li><code>stmt</code>：一个单独语句。例如：<code>let x = 3</code></li>
+<li><code>block</code>：一个大括号界定的语句序列，或者一个表达式。例如：<code>{ log(error, &quot;hi&quot;); return 12; }</code></li>
+<li><code>item</code>：一个<a href="http://doc.rust-lang.org/stable/reference.html#items" target="_blank" rel="noopener">项</a>。例如：<code>fn foo() { }</code>，<code>struct Bar</code></li>
+<li><code>meta</code>：一个“元数据项”，可以在属性中找到。例如：<code>cfg(target_os = &quot;windows&quot;)</code></li>
+<li><code>tt</code>：一个单独的记号树</li>
+</ul>
+<p>对于一个元变量（metavariable）后面的一个记号有一些额外的规则：</p>
+<ul>
+<li><code>expr</code>和<code>stmt</code>变量必须后跟任意一个：<code>=&gt; , ;</code></li>
+<li><code>ty</code>和<code>path</code>变量必须后跟任意一个：<code>=&gt; , = | ; : &gt; [ { as where</code></li>
+<li><code>pat</code>变量必须后跟任意一个：<code>=&gt; , = | if in</code></li>
+<li>其它变量可以后跟任何记号</li>
+</ul>
+<p>这些规则为 Rust 语法提供了一些灵活性以便将来的展开不会破坏现有的宏。</p>
+<p>宏系统完全不处理解析模糊。例如，<code>$($i:ident)* $e:expr</code>语法总是会解析失败，因为解析器会被强制在解析<code>$i</code>和解析<code>$e</code>之间做出选择。改变展开在它们之前分别加上一个记号可以解决这个问题。在这个例子中，你可以写成<code>$(I $i:ident)* E $e:expr</code>。</p>
+<h4 id="常见宏"><a href="#常见宏" class="headerlink" title="常见宏"></a>常见宏</h4><p><code>panic!</code></p>
+<p>这个宏导致当前线程恐慌。你可以传给这个宏一个信息通过：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">panic!(&quot;oh no!&quot;);</span><br></pre></td></tr></table></figure>
+
+<p><code>vec!</code></p>
+<p>它方便创建<code>Vec&lt;T&gt;</code>：</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> v = <span class="built_in">vec!</span>[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>];</span><br></pre></td></tr></table></figure>
+
+<p>它也让你可以用重复值创建vector。例如，100个<code>0</code>：</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> v = <span class="built_in">vec!</span>[<span class="number">0</span>; <span class="number">100</span>];</span><br></pre></td></tr></table></figure>
+
+<p><code>assert!</code>和<code>assert_eq!</code></p>
+<p>这两个宏用在测试中。<code>assert!</code>获取一个布尔值，而<code>assert_eq!</code>获取两个值并比较它们。<code>true</code> 就通过，<code>false</code>就<code>panic!</code>。像这样：</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="comment">// A-ok!</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">assert!</span>(<span class="literal">true</span>);</span><br><span class="line"><span class="built_in">assert_eq!</span>(<span class="number">5</span>, <span class="number">3</span> + <span class="number">2</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Nope :(</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">assert!</span>(<span class="number">5</span> &lt; <span class="number">3</span>);</span><br><span class="line"><span class="built_in">assert_eq!</span>(<span class="number">5</span>, <span class="number">3</span>);</span><br></pre></td></tr></table></figure>
+
+<p><code>try!</code></p>
+<p><code>try!</code>用来进行错误处理。它获取一些可以返回<code>Result&lt;T, E&gt;</code>的数据，并返回<code>T</code>如果它是<code>Ok&lt;T&gt;</code>，或<code>return</code>一个<code>Err(E)</code>如果出错了。像这样：</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">use</span> std::fs::File;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">foo</span></span>() -&gt; std::io::<span class="built_in">Result</span>&lt;()&gt; &#123;</span><br><span class="line">    <span class="keyword">let</span> f = <span class="built_in">try!</span>(File::create(<span class="string">"foo.txt"</span>));</span><br><span class="line"></span><br><span class="line">    <span class="literal">Ok</span>(())</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>它比这么写要更简明：</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">use</span> std::fs::File;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">foo</span></span>() -&gt; std::io::<span class="built_in">Result</span>&lt;()&gt; &#123;</span><br><span class="line">    <span class="keyword">let</span> f = File::create(<span class="string">"foo.txt"</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> f = <span class="keyword">match</span> f &#123;</span><br><span class="line">        <span class="literal">Ok</span>(t) =&gt; t,</span><br><span class="line">        <span class="literal">Err</span>(e) =&gt; <span class="keyword">return</span> <span class="literal">Err</span>(e),</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="literal">Ok</span>(())</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>unreachable!</code></p>
+<p>这个宏用于当你认为一些代码不应该被执行的时候：</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="literal">false</span> &#123;</span><br><span class="line">    <span class="built_in">unreachable!</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>有时，编译器可能会让你编写一个你认为将永远不会执行的不同分支。在这个例子中，用这个宏，这样如果最终你错了，你会为此得到一个<code>panic!</code>。</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> x: <span class="built_in">Option</span>&lt;<span class="built_in">i32</span>&gt; = <span class="literal">None</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">match</span> x &#123;</span><br><span class="line">    <span class="literal">Some</span>(_) =&gt; <span class="built_in">unreachable!</span>(),</span><br><span class="line">    <span class="literal">None</span> =&gt; <span class="built_in">println!</span>(<span class="string">"I know x is None!"</span>),</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>unimplemented!</code></p>
+<p><code>unimplemented!</code>宏可以被用来当你尝试去让你的函数通过类型检查，同时你又不想操心去写函数体的时候。一个这种情况的例子是实现一个要求多个方法的特性，而你只想一次搞定一个。用<code>unimplemented!</code>定义其它的直到你准备好去写它们了。</p>
 <h2 id="尾声"><a href="#尾声" class="headerlink" title="尾声"></a>尾声</h2>]]></content>
       <tags>
         <tag>Rust</tag>
@@ -263,9 +343,10 @@
       </categories>
   </entry>
   <entry>
-    <title>图形API—初探glium</title>
+    <title>图形API—初探</title>
     <url>/2020/01/31/chip-8-emulator/OpenGL%E5%85%A5%E9%97%A8/</url>
     <content><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>为了实现chip-8模拟器的图像显示功能，我们需要依赖第三方库的帮助，比如比较著名的OpenGL。这次打算试着用一下用Rust下面的第三方库<code>glium</code></p>
+<p>当然<code>glium</code>的原作者已经不再继续维护了，我们考虑换一个第三方库<code>piston</code>（所以大家可以直接跳到<code>piston</code>部分）</p>
 <a id="more"></a>
 
 <h2 id="glium"><a href="#glium" class="headerlink" title="glium"></a>glium</h2><h3 id="导入第三方库"><a href="#导入第三方库" class="headerlink" title="导入第三方库"></a>导入第三方库</h3><p>在<code>Cargo.toml</code>文件中加入如下一行</p>
@@ -310,6 +391,43 @@
 <li>一个着色器程序</li>
 </ul>
 <p>怎么描述形状呢？那就只需要知道三角形三个顶点（vertex）的位置</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="meta">#[derive(Copy, Clone)]</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Vertex</span></span> &#123;</span><br><span class="line">    position: [<span class="built_in">f32</span>; <span class="number">2</span>],</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>注意OpenGL渲染器的默认坐标系用窗口中间作为原点（origin），窗口的宽度和高度作为两个单位长度</p>
+<p>也就是说，它的坐标范围是<br>$$<br>(x,y)\in[-1,1]\times[-1,1]<br>$$<br>那么我随便描述一个形状</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> vertex1 = Vertex &#123; position: [-<span class="number">0.5</span>, -<span class="number">0.5</span>] &#125;;</span><br><span class="line"><span class="keyword">let</span> vertex2 = Vertex &#123; position: [ <span class="number">0.0</span>,  <span class="number">0.5</span>] &#125;;</span><br><span class="line"><span class="keyword">let</span> vertex3 = Vertex &#123; position: [ <span class="number">0.5</span>, -<span class="number">0.25</span>] &#125;;</span><br><span class="line"><span class="keyword">let</span> shape = <span class="built_in">vec!</span>[vertex1, vertex2, vertex3];</span><br></pre></td></tr></table></figure>
+
+<p>接下来我们一般不会马上把这个形状，而是会先把这个形状塞到GPU的缓存（buffer）中,在<code>glium</code>里，这个叫做<code>VertexBuffer</code></p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> vertex_buffer = glium::VertexBuffer::new(&amp;display, &amp;shape).unwrap();</span><br></pre></td></tr></table></figure>
+
+<p>知道了有哪一些顶点，我们的着色器还要知道要用什么顺序来连接这些顶点（三角形就一种连法，好像多余了，不过其他有成千上万顶点的复杂图形在这一块还是有迫切需求滴）</p>
+<p>在这里就做做样子好了（笑）</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> indices = glium::index::NoIndices(glium::index::PrimitiveType::TrianglesList);</span><br></pre></td></tr></table></figure>
+
+<h2 id="改道"><a href="#改道" class="headerlink" title="改道"></a>改道</h2><p>看完了<code>glium</code>，试着运行了一下它在后续官方教程中的代码，发现已经无法编译了，它的模块架构和一些实现发生了不小的变化，现在要使用这个库只能依赖官方文档了（官方教程真是坑爹）</p>
+<h2 id="改道-gfx"><a href="#改道-gfx" class="headerlink" title="改道 gfx"></a>改道 gfx</h2><p><code>piston</code>是个好东西，功能全面好用。我们再试试看稍稍原始的<code>gfx-rs</code></p>
+<h3 id="三个核心类型"><a href="#三个核心类型" class="headerlink" title="三个核心类型"></a>三个核心类型</h3><ul>
+<li><p><code>Factory</code>：分配诸如纹理，顶点缓存之类的资源</p>
+</li>
+<li><p><code>Encoder</code>：把操作命令进一步解码成机器层面的操作</p>
+</li>
+<li><p><code>Device</code>：把指令派发给GPU</p>
+</li>
+</ul>
+<h3 id="Crate主要结构"><a href="#Crate主要结构" class="headerlink" title="Crate主要结构"></a>Crate主要结构</h3><ul>
+<li><p><code>gfx_core</code>：比较原始的模块</p>
+</li>
+<li><p><code>gfx</code>：在<code>gfx_core</code>基础上包装过后的高级API，三个核心<code>trait</code>就被定义在这里</p>
+</li>
+<li><p><code>gfx_device_*</code>：后面可以跟<code>gl,vulkan,emtal,dx11,dx12</code></p>
+</li>
+<li><p><code>gfx_window_*</code>：和窗口的构建有关，后面可以跟<code>glutin,glfw,sdl</code>。其中<code>glutin</code>支持最好，且由纯Rust编写</p>
+</li>
+<li><p><code>gfx_app</code>：一个抽象层，让你更灵活地选择窗口和后端。</p>
+</li>
+<li><p><code>gfx_gl</code>：<code>gfx_device_gl</code>所使用的封装</p>
+</li>
+</ul>
 ]]></content>
       <categories>
         <category>emulator</category>
@@ -319,9 +437,10 @@
       </tags>
   </entry>
   <entry>
-    <title>C++位操作</title>
+    <title>位操作概述</title>
     <url>/2020/01/31/chip-8-emulator/%E4%BD%8D%E6%93%8D%E4%BD%9C/</url>
-    <content><![CDATA[<h2 id="位逻辑运算"><a href="#位逻辑运算" class="headerlink" title="位逻辑运算"></a>位逻辑运算</h2><table>
+    <content><![CDATA[<p>位操作又基础又容易掌握，如果还不会的最好去看一下。</p>
+<h2 id="位逻辑运算"><a href="#位逻辑运算" class="headerlink" title="位逻辑运算"></a>位逻辑运算</h2><table>
 <thead>
 <tr>
 <th align="center">操作符</th>
@@ -445,5 +564,64 @@
       <categories>
         <category>emulator</category>
       </categories>
+  </entry>
+  <entry>
+    <title>统计学学习计划</title>
+    <url>/2020/02/16/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<h1 id="计划本体"><a href="#计划本体" class="headerlink" title="计划本体"></a>计划本体</h1><p>从一本简称ISLR的书本入门</p>
+<p>这本书除去前言和简介，有九大章的内容，涵盖了</p>
+<ol>
+<li>统计学习综述</li>
+<li>线性回归</li>
+<li>分类</li>
+<li>采样方法</li>
+<li>线性模型选择和正则化</li>
+<li>非线性的问题</li>
+<li>树方法</li>
+<li>支持向量机</li>
+<li>非监督学习</li>
+</ol>
+<p>以前自己有一些概率和数理统计的基础（概率方面比较熟悉，学校相关课程当中关于统计只是皮毛中的皮毛）。关于机器学习中的一些方法，也有涉猎，但是一直不够系统化，需要有一个契机，把它们融合到一起。这本书采用R语言来讲解统计学的相关应用（毕竟R语言和统计学的契合度很高），以前基本上都是用Python上的<code>np</code>, <code>pd</code>, <code>plt</code>三大模块，要不就是MATLAB，这次试试新的编程语言。</p>
+<p>因为资源有限，只能看电子版，所以阅读速度会慢一些。加上相关实践，大概每一章节需要3-4小时的学习（这是比较好的情况下），大概四天以内可以学完。姑且把ddl定在2020.2.20的12:00。</p>
+<h2 id="第一天"><a href="#第一天" class="headerlink" title="第一天"></a>第一天</h2><h2 id="第二天"><a href="#第二天" class="headerlink" title="第二天"></a>第二天</h2><h2 id="第三天"><a href="#第三天" class="headerlink" title="第三天"></a>第三天</h2><h2 id="第四天"><a href="#第四天" class="headerlink" title="第四天"></a>第四天</h2><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2>]]></content>
+      <tags>
+        <tag>杂谈</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>SLAM数学基础</title>
+    <url>/2020/02/08/SLAM%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80/</url>
+    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>SLAM（中文名：即时定位与地图构建）最早被被应用在机器人领域，其目标是在没有任何先验知识的情况下，根据传感器数据实时构建周围环境地图，同时根据这个地图推测自身的定位。</p>
+<p>其中依赖与摄像头采集外部信息的被称为视觉SLAM，这是一种比较常见的类型。</p>
+<p>下面是一些术语的解释</p>
+<ul>
+<li><p>视觉里程计 (Visual Odometry)：仅有视觉输入的姿态估计；</p>
+</li>
+<li><p>后端优化 (Optimization): 后端接受不同时刻视觉里程计测量的相机位姿，以及闭环检测的信息，对它们进行优化，得到全局一致的轨迹和地图；</p>
+</li>
+<li><p>闭环检测 (Loop Closing): 指机器人在地图构建过程中, 通过视觉等传感器信息检测是否发生了轨迹闭环, 即判断自身是否进入历史同一地点;</p>
+</li>
+<li><p>建图 (Mapping): 根据估计的轨迹，建立与任务要求对应的地图；</p>
+</li>
+</ul>
+<p>本节主要介绍关于和视觉SLAM相关的数学基础若干</p>
+<a id="more"></a>
+
+<h1 id="数学基础"><a href="#数学基础" class="headerlink" title="数学基础"></a>数学基础</h1><p>注：本节默认读者已经有了初步的线性代数基础和相关概念的自学能力。</p>
+<h2 id="二维旋转矩阵"><a href="#二维旋转矩阵" class="headerlink" title="二维旋转矩阵"></a>二维旋转矩阵</h2><p>一个旋转矩阵对应着一个旋转几何变换。</p>
+<p>我们正常的平面直角坐标系有两个标准基$e_1=\left[\begin{matrix}1\ 0\end{matrix}\right],e_2=\left[\begin{matrix} 0 \ 1\end{matrix}\right]$</p>
+<p>想象把$e_1$逆时针旋转$\theta$，那么它的坐标就应该是$\left[\begin{matrix}\cos{\theta}\ \sin{\theta}\end{matrix}\right]$</p>
+<p>想象把$e_2$逆时针旋转$\theta$，那么它的坐标就应该是$\left[\begin{matrix}-\sin{\theta}\ \cos{\theta}\end{matrix}\right]$</p>
+<p>把这两个基向量变换后向量拼接一下，我么就获得了对应的几何变换矩阵<br>$$<br>R(\theta)=\left[<br>\begin{matrix}<br>\cos{\theta} &amp; -\sin{\theta}\<br>\sin{\theta} &amp; \cos{\theta}<br>\end{matrix}<br>\right]<br>$$<br>对于任意一个向量$v=\left[\begin{matrix}x\y\end{matrix}\right]$，可以通过乘上一个旋转矩阵来得到它旋转过$\theta$过后的位置<br>$$<br>v_{rotated}=R(\theta)v<br>$$</p>
+<!-- template \left[\begin{matrix}\end{matrix}\right] -->
+
+<h3 id="三维旋转矩阵"><a href="#三维旋转矩阵" class="headerlink" title="三维旋转矩阵"></a>三维旋转矩阵</h3><p>要想知道如何得到三维的旋转矩阵，一个比较重要的前提是需要描述它的旋转（绕着什么旋转？旋转了多少角度？）</p>
+]]></content>
+      <categories>
+        <category>数学</category>
+      </categories>
+      <tags>
+        <tag>SLAM</tag>
+      </tags>
   </entry>
 </search>
