@@ -335,108 +335,6 @@
       </categories>
   </entry>
   <entry>
-    <title>Rust肉眼级Bug挑战Lv.01</title>
-    <url>/2020/02/02/Rust%E8%82%89%E7%9C%BC%E7%BA%A7Bug%E6%8C%91%E6%88%98/Rust-Bug-L01/</url>
-    <content><![CDATA[]]></content>
-      <categories>
-        <category>Rust肉眼级Bug挑战</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>图形API—初探</title>
-    <url>/2020/01/31/chip-8-emulator/OpenGL%E5%85%A5%E9%97%A8/</url>
-    <content><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>为了实现chip-8模拟器的图像显示功能，我们需要依赖第三方库的帮助，比如比较著名的OpenGL。这次打算试着用一下用Rust下面的第三方库<code>glium</code></p>
-<p>当然<code>glium</code>的原作者已经不再继续维护了，我们考虑换一个第三方库<code>piston</code>（所以大家可以直接跳到<code>piston</code>部分）</p>
-<a id="more"></a>
-
-<h2 id="glium"><a href="#glium" class="headerlink" title="glium"></a>glium</h2><h3 id="导入第三方库"><a href="#导入第三方库" class="headerlink" title="导入第三方库"></a>导入第三方库</h3><p>在<code>Cargo.toml</code>文件中加入如下一行</p>
-<figure class="highlight toml"><table><tr><td class="code"><pre><span class="line">---snip---</span><br><span class="line"><span class="section">[dependencies]</span></span><br><span class="line"><span class="attr">glium</span>=<span class="string">"*"</span></span><br></pre></td></tr></table></figure>
-
-<p>然后直接<code>cargo build</code>，这个第三方库就可以在自己的项目中使用啦。</p>
-<h3 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h3><p>话不多说，我们先来试着建一个窗口（在这个库中被称为Display），看看<code>glium::Display::new(window,context,&amp;events_loop)</code>就可以知道，我们需要这么几样东西</p>
-<ul>
-<li>一个事件循环<code>events_loop</code></li>
-<li>和窗口有关的参数<code>WindowBuilder</code></li>
-<li>和上下文（context）有关的参数<code>ContextBuilder</code></li>
-</ul>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    <span class="keyword">use</span> glium::glutin;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut</span> events_loop = glutin::EventsLoop::new();</span><br><span class="line">    <span class="keyword">let</span> wb = glutin::WindowBuilder::new();</span><br><span class="line">    <span class="keyword">let</span> cb = glutin::ContextBuilder::new();</span><br><span class="line">    <span class="keyword">let</span> display = glium::Display::new(wb, cb, &amp;events_loop).unwrap();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>通过以上的代码，我们就创建了一个“一闪而逝”的窗口。</p>
-<p>啥？怎么就“一闪而逝了”？这当然不难理解，主函数<code>main</code>都结束了，窗口当然就消失咯。</p>
-<p>好吧，为了避免窗口如此短命，我们给他一个无限循环来续命。（它可以一直保持，除非我们给该窗口一个关闭的请求）再加这么一段代码进去就可以了</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="keyword">mut</span> closed = <span class="literal">false</span>;</span><br><span class="line"><span class="keyword">while</span> !closed &#123;</span><br><span class="line">    <span class="comment">// listing the events produced by application and waiting to be received</span></span><br><span class="line">    events_loop.poll_events(|ev| &#123;</span><br><span class="line">        <span class="keyword">match</span> ev &#123;</span><br><span class="line">            glutin::Event::WindowEvent &#123; event, .. &#125; =&gt; <span class="keyword">match</span> event &#123;</span><br><span class="line">                glutin::WindowEvent::CloseRequested =&gt; closed = <span class="literal">true</span>,</span><br><span class="line">                _ =&gt; (),</span><br><span class="line">            &#125;,</span><br><span class="line">            _ =&gt; (),</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="下一步"><a href="#下一步" class="headerlink" title="下一步"></a>下一步</h3><p>结合了前面的两段代码，你应该就可以得到一个持续的窗口了。</p>
-<p>那么我们接下来可以试着在窗口中绘制一些图形。</p>
-<p>要绘制图形的话，我们需要一块画布<code>Frame</code>，这在<code>glium</code>中可以通过<code>display.draw()</code>方法来创造这么一块画布</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="keyword">mut</span> target = display.draw();</span><br></pre></td></tr></table></figure>
-
-<p>好，画布(drawing surface)已经就位。</p>
-<p>先随便给画布填充下颜色好了</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">use</span> glium::Surface;</span><br><span class="line"><span class="comment">//记得要先导入surface trait呐</span></span><br><span class="line">target.clear_color(<span class="number">0.0</span>,<span class="number">0.0</span>,<span class="number">1.0</span>,<span class="number">1.0</span>);</span><br><span class="line"><span class="comment">//四个数字代表红绿蓝和透明度，也即RGBA四个颜色通道，四个数字在0-1之间</span></span><br></pre></td></tr></table></figure>
-
-<p>好，就这么草率的画完了，然后把画布铺展到窗口就可以了,收工</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line">target.finish().unwarp();</span><br></pre></td></tr></table></figure>
-
-<p>全代码如下</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    <span class="keyword">use</span> glium::&#123;glutin, Surface&#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut</span> events_loop = glium::glutin::EventsLoop::new();</span><br><span class="line">    <span class="keyword">let</span> wb = glium::glutin::WindowBuilder::new();</span><br><span class="line">    <span class="keyword">let</span> cb = glium::glutin::ContextBuilder::new();</span><br><span class="line">    <span class="keyword">let</span> display = glium::Display::new(wb, cb, &amp;events_loop).unwrap();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> <span class="keyword">mut</span> closed = <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">while</span> !closed &#123;</span><br><span class="line">        <span class="keyword">let</span> <span class="keyword">mut</span> target = display.draw();</span><br><span class="line">        target.clear_color(<span class="number">0.0</span>, <span class="number">0.0</span>, <span class="number">1.0</span>, <span class="number">1.0</span>);</span><br><span class="line">        target.finish().unwrap();</span><br><span class="line"></span><br><span class="line">        events_loop.poll_events(|ev| &#123;</span><br><span class="line">            <span class="keyword">match</span> ev &#123;</span><br><span class="line">                glutin::Event::WindowEvent &#123; event, .. &#125; =&gt; <span class="keyword">match</span> event &#123;</span><br><span class="line">                    glutin::WindowEvent::CloseRequested =&gt; closed = <span class="literal">true</span>,</span><br><span class="line">                    _ =&gt; (),</span><br><span class="line">                &#125;,</span><br><span class="line">                _ =&gt; (),</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="再进一步"><a href="#再进一步" class="headerlink" title="再进一步"></a>再进一步</h2><p>好像光是建个窗口填个色什么的太没有技术含量了，那么我们接下来试着画一个三角形吧。</p>
-<p>啥?三角形就有技术含量了？</p>
-<p>是啊，画完了一个三角，你就学会了画两个三角，然后就又会了画三个三角…</p>
-<p>所谓一生二，二生三，三生万物，你就可以通过这种基本操作画出各种你想要绘制的图形和物体了（因为方法原理完全一致）。</p>
-<p>那就开始吧，我们画三角要两样东西</p>
-<ul>
-<li>三角形的形状</li>
-<li>一个着色器程序</li>
-</ul>
-<p>怎么描述形状呢？那就只需要知道三角形三个顶点（vertex）的位置</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="meta">#[derive(Copy, Clone)]</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Vertex</span></span> &#123;</span><br><span class="line">    position: [<span class="built_in">f32</span>; <span class="number">2</span>],</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>注意OpenGL渲染器的默认坐标系用窗口中间作为原点（origin），窗口的宽度和高度作为两个单位长度</p>
-<p>也就是说，它的坐标范围是<br>$$<br>(x,y)\in[-1,1]\times[-1,1]<br>$$<br>那么我随便描述一个形状</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> vertex1 = Vertex &#123; position: [-<span class="number">0.5</span>, -<span class="number">0.5</span>] &#125;;</span><br><span class="line"><span class="keyword">let</span> vertex2 = Vertex &#123; position: [ <span class="number">0.0</span>,  <span class="number">0.5</span>] &#125;;</span><br><span class="line"><span class="keyword">let</span> vertex3 = Vertex &#123; position: [ <span class="number">0.5</span>, -<span class="number">0.25</span>] &#125;;</span><br><span class="line"><span class="keyword">let</span> shape = <span class="built_in">vec!</span>[vertex1, vertex2, vertex3];</span><br></pre></td></tr></table></figure>
-
-<p>接下来我们一般不会马上把这个形状，而是会先把这个形状塞到GPU的缓存（buffer）中,在<code>glium</code>里，这个叫做<code>VertexBuffer</code></p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> vertex_buffer = glium::VertexBuffer::new(&amp;display, &amp;shape).unwrap();</span><br></pre></td></tr></table></figure>
-
-<p>知道了有哪一些顶点，我们的着色器还要知道要用什么顺序来连接这些顶点（三角形就一种连法，好像多余了，不过其他有成千上万顶点的复杂图形在这一块还是有迫切需求滴）</p>
-<p>在这里就做做样子好了（笑）</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> indices = glium::index::NoIndices(glium::index::PrimitiveType::TrianglesList);</span><br></pre></td></tr></table></figure>
-
-<h2 id="改道"><a href="#改道" class="headerlink" title="改道"></a>改道</h2><p>看完了<code>glium</code>，试着运行了一下它在后续官方教程中的代码，发现已经无法编译了，它的模块架构和一些实现发生了不小的变化，现在要使用这个库只能依赖官方文档了（官方教程真是坑爹）</p>
-<h2 id="改道-gfx"><a href="#改道-gfx" class="headerlink" title="改道 gfx"></a>改道 gfx</h2><p><code>piston</code>是个好东西，功能全面好用。我们再试试看稍稍原始的<code>gfx-rs</code></p>
-<h3 id="三个核心类型"><a href="#三个核心类型" class="headerlink" title="三个核心类型"></a>三个核心类型</h3><ul>
-<li><p><code>Factory</code>：分配诸如纹理，顶点缓存之类的资源</p>
-</li>
-<li><p><code>Encoder</code>：把操作命令进一步解码成机器层面的操作</p>
-</li>
-<li><p><code>Device</code>：把指令派发给GPU</p>
-</li>
-</ul>
-<h3 id="Crate主要结构"><a href="#Crate主要结构" class="headerlink" title="Crate主要结构"></a>Crate主要结构</h3><ul>
-<li><p><code>gfx_core</code>：比较原始的模块</p>
-</li>
-<li><p><code>gfx</code>：在<code>gfx_core</code>基础上包装过后的高级API，三个核心<code>trait</code>就被定义在这里</p>
-</li>
-<li><p><code>gfx_device_*</code>：后面可以跟<code>gl,vulkan,emtal,dx11,dx12</code></p>
-</li>
-<li><p><code>gfx_window_*</code>：和窗口的构建有关，后面可以跟<code>glutin,glfw,sdl</code>。其中<code>glutin</code>支持最好，且由纯Rust编写</p>
-</li>
-<li><p><code>gfx_app</code>：一个抽象层，让你更灵活地选择窗口和后端。</p>
-</li>
-<li><p><code>gfx_gl</code>：<code>gfx_device_gl</code>所使用的封装</p>
-</li>
-</ul>
-]]></content>
-      <categories>
-        <category>emulator</category>
-      </categories>
-      <tags>
-        <tag>emulator</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>位操作概述</title>
     <url>/2020/01/31/chip-8-emulator/%E4%BD%8D%E6%93%8D%E4%BD%9C/</url>
     <content><![CDATA[<p>位操作又基础又容易掌握，如果还不会的最好去看一下。</p>
@@ -566,62 +464,66 @@
       </categories>
   </entry>
   <entry>
-    <title>统计学学习计划</title>
-    <url>/2020/02/16/%E7%BB%9F%E8%AE%A1%E5%AD%A6%E7%AC%94%E8%AE%B0/</url>
-    <content><![CDATA[<h1 id="计划本体"><a href="#计划本体" class="headerlink" title="计划本体"></a>计划本体</h1><p>从一本简称ISLR的书本入门</p>
-<p>这本书除去前言和简介，有九大章的内容，涵盖了</p>
-<ol>
-<li>统计学习综述</li>
-<li>线性回归</li>
-<li>分类</li>
-<li>采样方法</li>
-<li>线性模型选择和正则化</li>
-<li>非线性的问题</li>
-<li>树方法</li>
-<li>支持向量机</li>
-<li>非监督学习</li>
-</ol>
-<p>以前自己有一些概率和数理统计的基础（概率方面比较熟悉，学校相关课程当中关于统计只是皮毛中的皮毛）。关于机器学习中的一些方法，也有涉猎，但是一直不够系统化，需要有一个契机，把它们融合到一起。这本书采用R语言来讲解统计学的相关应用（毕竟R语言和统计学的契合度很高），以前基本上都是用Python上的<code>np</code>, <code>pd</code>, <code>plt</code>三大模块，要不就是MATLAB，这次试试新的编程语言。</p>
-<p>因为资源有限，只能看电子版，所以阅读速度会慢一些。加上相关实践，大概每一章节需要3-4小时的学习（这是比较好的情况下），大概四天以内可以学完。姑且把ddl定在2020.2.20的12:00。</p>
-<h2 id="第一天"><a href="#第一天" class="headerlink" title="第一天"></a>第一天</h2><h2 id="第二天"><a href="#第二天" class="headerlink" title="第二天"></a>第二天</h2><h2 id="第三天"><a href="#第三天" class="headerlink" title="第三天"></a>第三天</h2><h2 id="第四天"><a href="#第四天" class="headerlink" title="第四天"></a>第四天</h2><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2>]]></content>
-      <tags>
-        <tag>杂谈</tag>
-      </tags>
+    <title>Rust Trait 多态</title>
+    <url>/2020/07/06/Rust-Trait-%E5%A4%9A%E6%80%81/</url>
+    <content><![CDATA[<h1 id="Trait-in-Rust"><a href="#Trait-in-Rust" class="headerlink" title="Trait in Rust"></a>Trait in Rust</h1><p>Trait是Rust实现多态的一个重要方式</p>
+<p>可以把他理解为特性</p>
+<p>每一个struct可以拥有多个特性Trait</p>
+]]></content>
   </entry>
   <entry>
-    <title>SLAM数学基础</title>
-    <url>/2020/02/08/SLAM%E6%95%B0%E5%AD%A6%E5%9F%BA%E7%A1%80/</url>
-    <content><![CDATA[<h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>SLAM（中文名：即时定位与地图构建）最早被被应用在机器人领域，其目标是在没有任何先验知识的情况下，根据传感器数据实时构建周围环境地图，同时根据这个地图推测自身的定位。</p>
-<p>其中依赖与摄像头采集外部信息的被称为视觉SLAM，这是一种比较常见的类型。</p>
-<p>下面是一些术语的解释</p>
+    <title>Rust 错误处理</title>
+    <url>/2020/07/05/Rust-%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86/</url>
+    <content><![CDATA[<h1 id="Rust-错误处理"><a href="#Rust-错误处理" class="headerlink" title="Rust 错误处理"></a>Rust 错误处理</h1><p>在这之前有一个必要重要的点需要交代一下</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">enum</span> <span class="title">Result</span></span>&lt;T,E&gt;&#123;</span><br><span class="line">    <span class="literal">Ok</span>(T),</span><br><span class="line">    <span class="literal">Err</span>(E),</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个<code>enum</code>表示结果要么是对的要么是错的，T和E是类型变量（模板变量），如果结果符合要求那么就会用到关联的类型<code>T</code>, 反之就是<code>Err(E)</code></p>
+<p>那么当进行一个操作之后，我们就有必要对他的结果进行探讨（对了的话程序继续，错的的话返回错误）</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">use</span> std::fs::File;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> f = File::open(<span class="string">"./updated_time.txt"</span>);</span><br><span class="line">    <span class="keyword">let</span> f = <span class="keyword">match</span> f &#123;</span><br><span class="line">        <span class="literal">Ok</span>(file) =&gt; file,</span><br><span class="line">        <span class="literal">Err</span>(error) =&gt; &#123;</span><br><span class="line">            <span class="built_in">panic!</span>(<span class="string">"Problem in opening file: &#123;:?&#125;"</span>, error);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这段代码就是对打开文件这一操作做了一个分类讨论，对了的话就打开文件，错了的话就panic。</p>
+<p>这里面<code>panic!</code>会让程序中断，可以在运行的时候打开回溯开关来检查此时的堆栈信息</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line">RUST_BACKTRACE = <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p><code>?</code>操作符对一个合法的值进行unwrap，或者当是错误类型的时候，向上传播错误，该操作符仅能作用于类型<code>Result&lt;T, E&gt;</code>和<code>Option&lt;T&gt;</code></p>
+<p>当作用于<code>Result&lt;T, E&gt;</code>类型的值时：</p>
 <ul>
-<li><p>视觉里程计 (Visual Odometry)：仅有视觉输入的姿态估计；</p>
-</li>
-<li><p>后端优化 (Optimization): 后端接受不同时刻视觉里程计测量的相机位姿，以及闭环检测的信息，对它们进行优化，得到全局一致的轨迹和地图；</p>
-</li>
-<li><p>闭环检测 (Loop Closing): 指机器人在地图构建过程中, 通过视觉等传感器信息检测是否发生了轨迹闭环, 即判断自身是否进入历史同一地点;</p>
-</li>
-<li><p>建图 (Mapping): 根据估计的轨迹，建立与任务要求对应的地图；</p>
-</li>
+<li>如果值是<code>Err(e)</code>，则该函数或者闭包返回 <code>Err(From::from(e))</code></li>
+<li>如果值是<code>Ok(x)</code>，则将值unwrap为<code>x</code></li>
 </ul>
-<p>本节主要介绍关于和视觉SLAM相关的数学基础若干</p>
-<a id="more"></a>
-
-<h1 id="数学基础"><a href="#数学基础" class="headerlink" title="数学基础"></a>数学基础</h1><p>注：本节默认读者已经有了初步的线性代数基础和相关概念的自学能力。</p>
-<h2 id="二维旋转矩阵"><a href="#二维旋转矩阵" class="headerlink" title="二维旋转矩阵"></a>二维旋转矩阵</h2><p>一个旋转矩阵对应着一个旋转几何变换。</p>
-<p>我们正常的平面直角坐标系有两个标准基$e_1=\left[\begin{matrix}1\ 0\end{matrix}\right],e_2=\left[\begin{matrix} 0 \ 1\end{matrix}\right]$</p>
-<p>想象把$e_1$逆时针旋转$\theta$，那么它的坐标就应该是$\left[\begin{matrix}\cos{\theta}\ \sin{\theta}\end{matrix}\right]$</p>
-<p>想象把$e_2$逆时针旋转$\theta$，那么它的坐标就应该是$\left[\begin{matrix}-\sin{\theta}\ \cos{\theta}\end{matrix}\right]$</p>
-<p>把这两个基向量变换后向量拼接一下，我么就获得了对应的几何变换矩阵<br>$$<br>R(\theta)=\left[<br>\begin{matrix}<br>\cos{\theta} &amp; -\sin{\theta}\<br>\sin{\theta} &amp; \cos{\theta}<br>\end{matrix}<br>\right]<br>$$<br>对于任意一个向量$v=\left[\begin{matrix}x\y\end{matrix}\right]$，可以通过乘上一个旋转矩阵来得到它旋转过$\theta$过后的位置<br>$$<br>v_{rotated}=R(\theta)v<br>$$</p>
-<!-- template \left[\begin{matrix}\end{matrix}\right] -->
-
-<h3 id="三维旋转矩阵"><a href="#三维旋转矩阵" class="headerlink" title="三维旋转矩阵"></a>三维旋转矩阵</h3><p>要想知道如何得到三维的旋转矩阵，一个比较重要的前提是需要描述它的旋转（绕着什么旋转？旋转了多少角度？）</p>
+<p>当作用于<code>Option&lt;T&gt;</code>类型的值时：</p>
+<ul>
+<li>如果值是<code>None</code>，则该函数或者闭包返回<code>None</code></li>
+<li>如果值是<code>Some(x)</code>，则将值unwrap为<code>x</code></li>
+</ul>
+<p>特别的是：</p>
+<ul>
+<li>同一个函数中使用<code>?</code>操作符的地方必须返回同一个错误类型，否则会编译失败</li>
+<li>main函数有两个有效返回值，分别为<code>()</code>，<code>Result&lt;T, E&gt;</code></li>
+</ul>
 ]]></content>
-      <categories>
-        <category>数学</category>
-      </categories>
+  </entry>
+  <entry>
+    <title>rCore2020总结</title>
+    <url>/2020/07/26/rCore2020%E6%80%BB%E7%BB%93/</url>
+    <content><![CDATA[<p>不知不觉一个月都要过去了，整了将近一个月（中间因为各种事情咕咕了一周多）的 rCoreLab， 在这里做一个小小的总结。</p>
+<p>关于收获：</p>
+<ul>
+<li>Rust编程更加熟练了，对于Rust本身的一些有趣的特性的理解也更加深刻了。比起C++和Python之类的语言，Rust可以明显让人感到要过编译其实不太容易。但是其实稍微入门一点以后就会习惯了，Rust编译器给你的各种提示比C++友好多了。另一方面，Rust花在测试Debug上的时间显著减少了，基本算法正确的情况下一遍过是没问题的。</li>
+<li>当然，上面的这些收获还是次要的。在这次rCore的活动中，我对于RISC-V指令集有了更加深刻的认知，以前上计算机体系结构的时候讲的也是这玩意儿，但因为Soren本身是做Robotics的，其实讲的就没那么仔细了，关于页表、中断这种概念我是看了清华的OS课以后才有了一种恍然大悟的感觉（捂脸）</li>
+<li>我比较认真地通读了当前rcore-tutorial的所有源代码，包括Rust和汇编，应证了以前的一个观点：“一个涉及合理的架构远胜于细节的精雕细琢”。可以看到，tutorial v3的代码比前两个版本组织的更好了，它是循序渐进的，而且模块化也做得更好了，分隔出来的六个实验基本上你看看过源码之后就可以知道该如何修改，这些对于接口的抽象也是我应该学习的。</li>
+</ul>
+<p>关于下一步：</p>
+<ul>
+<li>如果可以进入下一轮的话，我比较感兴趣的工作是zCore的文档和单元测试完善，这一部分看起来容易，但是要做好还是需要花不少工夫的。</li>
+</ul>
+<p>曾经遇到的困难：</p>
+<ul>
+<li>关于OS和RISC-V这部分其实还可以再深挖一下，但就目前的需求而言，可以点到为止了。</li>
+</ul>
+]]></content>
       <tags>
-        <tag>SLAM</tag>
+        <tag>Rust</tag>
       </tags>
   </entry>
 </search>
