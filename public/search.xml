@@ -46,56 +46,121 @@
 ]]></content>
   </entry>
   <entry>
-    <title>仿射几何</title>
-    <url>/2020/08/07/%E4%BB%BF%E5%B0%84%E5%87%A0%E4%BD%95/</url>
-    <content><![CDATA[<p>在数域$K$上的仿射空间包含了四样东西：</p>
-<ul>
-<li><p>非空点集$E$</p>
-</li>
-<li><p>一个向量空间$V$</p>
-</li>
-<li><p>二元运算符</p>
-<script type="math/tex; mode=display">
-E\times E \to V\\
-E\times V \to E</script></li>
-</ul>
+    <title>Rust进阶</title>
+    <url>/2020/02/02/Rust%E8%BF%9B%E9%98%B6/</url>
+    <content><![CDATA[<h1 id="Rust进阶"><a href="#Rust进阶" class="headerlink" title="Rust进阶"></a>Rust进阶</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>如果看过了前面的《Rust入门语法归纳》或者是对Rust语法已经有了基本了解，那么就可以进入进阶阶段了。</p>
+<p>在进阶阶段，我们依然从类型系统和控制流两个主要方面来展开。另外，还有相关的编程概念也需要交代。</p>
+<p>文章暂时没有写完。</p>
 <a id="more"></a>
-<p>满足下面的公理</p>
-<script type="math/tex; mode=display">
-\vec{AB}+\vec{BC}=\vec{AC}\\
-A+\vec{AB}=B\\
-\overrightarrow{A(A+v)}=v</script><p>关于仿射子空间，和仿射空间的定义类似，只要找出$E,V$的子集或者子空间也即$F\subset E, W\subset V$，再加上两种二元运算</p>
-<script type="math/tex; mode=display">
-F\times F \to W\\
-F\times W \to F</script><p>那么子空间就有了。</p>
-<p>另外这个向量子空间$W$代表了仿射子空间的方向，如果两个仿射子空间的方向相同，那么他们就是平行的仿射子空间了。</p>
-<p>注意到：向量空间$W$的维度决定了仿射空间的维度，比如$dim(W)=1$的情况下，这个仿射空间就是一条线（也叫仿射线）</p>
-<p>仿射平面的构成条件也呼之欲出。</p>
-<p>点集的生成子空间：包含一系列的点的最小的仿射子空间。</p>
-<p>仿射空间中的不同的点都是仿射独立的</p>
-<p>关于仿射空间还有一个质心坐标，在epnp算法里面有相关描述，这里略过</p>
-]]></content>
-  </entry>
-  <entry>
-    <title>rCore2020总结</title>
-    <url>/2020/07/26/rCore2020%E6%80%BB%E7%BB%93/</url>
-    <content><![CDATA[<p>不知不觉一个月都要过去了，整了将近一个月（中间因为各种事情咕咕了一周多）的 rCoreLab， 在这里做一个小小的总结。</p>
-<a id="more"></a>
-<p>关于收获：</p>
+<h2 id="类型进阶"><a href="#类型进阶" class="headerlink" title="类型进阶"></a>类型进阶</h2><h3 id="数字运算"><a href="#数字运算" class="headerlink" title="数字运算"></a>数字运算</h3><p>主要五个运算符<code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, <code>%</code>，对应了加减乘除和取余。 </p>
+<h3 id="数组操作"><a href="#数组操作" class="headerlink" title="数组操作"></a>数组操作</h3><p>一个数组可以用索引来获取相关元素的值，如果要得到数组长度，那么可以用<code>len()</code>来获取</p>
+<p>例子</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> x:[<span class="built_in">i32</span>;<span class="number">3</span>]=[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>];</span><br><span class="line"><span class="built_in">println!</span>(<span class="string">"First element of x is &#123;&#125;, the size of x is &#123;&#125;"</span>,x[<span class="number">0</span>],x.len());</span><br></pre></td></tr></table></figure>
+<h3 id="用户定义类型（UDT）"><a href="#用户定义类型（UDT）" class="headerlink" title="用户定义类型（UDT）"></a>用户定义类型（UDT）</h3><h2 id="控制流进阶"><a href="#控制流进阶" class="headerlink" title="控制流进阶"></a>控制流进阶</h2><h3 id="匹配-match"><a href="#匹配-match" class="headerlink" title="匹配 match"></a>匹配 match</h3><p>先放例子，不难看出来<code>match</code>和C语言中的<code>switch</code>类似：</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> x = <span class="number">5</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">match</span> x &#123;</span><br><span class="line">    <span class="number">1</span> =&gt; <span class="built_in">println!</span>(<span class="string">"one"</span>),</span><br><span class="line">    <span class="number">2</span> =&gt; <span class="built_in">println!</span>(<span class="string">"two"</span>),</span><br><span class="line">    <span class="number">3</span> =&gt; <span class="built_in">println!</span>(<span class="string">"three"</span>),</span><br><span class="line">    <span class="number">4</span> =&gt; <span class="built_in">println!</span>(<span class="string">"four"</span>),</span><br><span class="line">    <span class="number">5</span> =&gt; <span class="built_in">println!</span>(<span class="string">"five"</span>),</span><br><span class="line">    _ =&gt; <span class="built_in">println!</span>(<span class="string">"something else"</span>),</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>下划线<code>_</code>代表通配符（什么都可以和它匹配上）</p>
+<p>匹配的语法一个很重要的点是它要求所有情况都枚举一遍，在没有通配符的情况下，上面的代码就不只是<code>1,2,3,4,5</code>这些匹配分支了，编译器会让你把所有<code>i32</code>范围内的数字都加上，不妨想象一下这个壮观场面……（多亏有通配符）</p>
+<p>前面讲判断语句有这样的一个用法，匹配也是类似的</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> x = <span class="number">5</span>;</span><br><span class="line"><span class="keyword">let</span> y = <span class="keyword">if</span> x==<span class="number">5</span> &#123; <span class="number">6</span> &#125; <span class="keyword">else</span> &#123; <span class="number">7</span> &#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//等价表述</span></span><br><span class="line"><span class="keyword">let</span> x = <span class="number">5</span>;</span><br><span class="line"><span class="keyword">let</span> y = <span class="keyword">match</span> x&#123;</span><br><span class="line">    <span class="number">5</span> =&gt; <span class="number">6</span>,</span><br><span class="line">    _ =&gt; <span class="number">7</span>,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p><code>match</code>和<code>enum</code>是一对好搭档</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">enum</span> <span class="title">Message</span></span> &#123;</span><br><span class="line">    Quit,</span><br><span class="line">    ChangeColor(<span class="built_in">i32</span>, <span class="built_in">i32</span>, <span class="built_in">i32</span>),</span><br><span class="line">    Move &#123; x: <span class="built_in">i32</span>, y: <span class="built_in">i32</span> &#125;,</span><br><span class="line">    Write(<span class="built_in">String</span>),</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">quit</span></span>() &#123; <span class="comment">/* ... */</span> &#125;</span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">change_color</span></span>(r: <span class="built_in">i32</span>, g: <span class="built_in">i32</span>, b: <span class="built_in">i32</span>) &#123; <span class="comment">/* ... */</span> &#125;</span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">move_cursor</span></span>(x: <span class="built_in">i32</span>, y: <span class="built_in">i32</span>) &#123; <span class="comment">/* ... */</span> &#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">process_message</span></span>(msg: Message) &#123;</span><br><span class="line">    <span class="keyword">match</span> msg &#123;</span><br><span class="line">        Message::Quit =&gt; quit(),</span><br><span class="line">        Message::ChangeColor(r, g, b) =&gt; change_color(r, g, b),</span><br><span class="line">        Message::Move &#123; x, y: new_name_for_y &#125; =&gt; move_cursor(x, new_name_for_y),</span><br><span class="line">        Message::Write(s) =&gt; <span class="built_in">println!</span>(<span class="string">"&#123;&#125;"</span>, s),</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>匹配还有多重匹配，下面的代码就会把<code>one or two</code>打印出来</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> x = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">match</span> x &#123;</span><br><span class="line">    <span class="number">1</span> | <span class="number">2</span> =&gt; <span class="built_in">println!</span>(<span class="string">"one or two"</span>),</span><br><span class="line">    <span class="number">3</span> =&gt; <span class="built_in">println!</span>(<span class="string">"three"</span>),</span><br><span class="line">    _ =&gt; <span class="built_in">println!</span>(<span class="string">"anything"</span>),</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="抽象概念"><a href="#抽象概念" class="headerlink" title="抽象概念"></a>抽象概念</h2><h3 id="所有权系统"><a href="#所有权系统" class="headerlink" title="所有权系统"></a>所有权系统</h3><p>所有权系统包括三个部分：所有权，借用与引用，生命周期</p>
+<p>在变量绑定的同时，所有权也随之声明。</p>
+<p>例如</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> sentence = <span class="built_in">String</span>::from(<span class="string">"Hello!"</span>);</span><br></pre></td></tr></table></figure>
+<p>这一句里面，变量<code>sentence</code>拥有了字符串<code>&quot;Hello&quot;</code>的所有权。所有数据的所有权只能被一个变量所占有。当一个变量名有一个数据的所有权的时候，理所当然地可以对它拥有的数据进行种种操作。</p>
+<p>那么，有一个问题，其他变量想要使用这个数据的时候，应该怎么办呢？</p>
+<p>我们自然就可以想到几种方案，比如说，可以考虑把所有权移交出去。</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> sentence = <span class="built_in">String</span>::from(<span class="string">"Hello!"</span>);</span><br><span class="line"><span class="keyword">let</span> another_sentence = sentence;</span><br><span class="line"><span class="built_in">println!</span>(<span class="string">"&#123;&#125;"</span>,another_sentence);	<span class="comment">//It's OK</span></span><br><span class="line"><span class="built_in">println!</span>(<span class="string">"&#123;&#125;"</span>,sentence);			<span class="comment">//Errors happened</span></span><br></pre></td></tr></table></figure>
+<p>在第二条语句中，原本字符串<code>&quot;Hello&quot;</code>的所有权从<code>sentence</code>转移到了<code>another_sentence</code>， 自然而然地，第三条语句可以把字符串打印出来。而第四条语句则不然，在失去了所有权以后，<code>sentence</code>已经无法访问该字符串了，会产生报错。</p>
+<p>再来展示一个迷惑操作</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> x:<span class="built_in">i32</span> = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">let</span> y = x;</span><br><span class="line"><span class="built_in">println!</span>(<span class="string">"&#123;&#125;"</span>,x);	<span class="comment">//It's OK</span></span><br><span class="line"><span class="built_in">println!</span>(<span class="string">"&#123;&#125;"</span>,y);	<span class="comment">//It's OK</span></span><br></pre></td></tr></table></figure>
+<p>两条都可以顺利打印，照理来说，<code>x</code>对<code>1</code>的所有权转移到了<code>y</code>上，那么为什么第三行没有报错。对比上面的例子，要想知道答案，就需要着眼于第二行。表面上同样是变量绑定，但是，<code>let y = x;</code>当中所执行的实际语义是把<code>1</code>拷贝一份，再把它的所有权绑到<code>y</code>上。<code>x,y</code>两个变量人手一份所有权，那么自然也就解释的通了。</p>
+<p>上面讲的是所有权的转移方法，也叫做移动语义。那么能不能只是授权其他人使用数据而自己继续保留该数据的所有权呢？</p>
+<p>方法是有的，这就是借用的概念，这和我们在日常生活中的认识没有多少区别。</p>
+<p>借用的实现依托关键词<code>ref</code>或者<code>&amp;</code>，遵循了<code>ref 类型名</code>或者<code>&amp;类型名</code>，这种实现借用功能的形式我们称之为应用，比如</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> x:<span class="built_in">i32</span> = <span class="number">5</span>;</span><br><span class="line"><span class="keyword">let</span> y = &amp;x;</span><br></pre></td></tr></table></figure>
+<p><code>y</code>就是<code>x</code>的一个引用，他借用了<code>x</code>所拥有的数据的所有权（会还回去的）</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> s1 = <span class="built_in">String</span>::from(<span class="string">"hello"</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> len = calculate_length(&amp;s1);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"The length of '&#123;&#125;' is &#123;&#125;."</span>, s1, len);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">calculate_length</span></span>(s: &amp;<span class="built_in">String</span>) -&gt; <span class="built_in">usize</span> &#123;</span><br><span class="line">    s.len()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在下面这个例子中，我们注意到函数<code>calculate_length</code>要求的参数类型是<code>&amp;String</code>也就是一个<code>String</code>变量的引用，在第四行函数执行的时候，<code>s1</code>的所有权被借了出去当做参数，也就是<code>&amp;s1</code>。在这里，规定函数的参数为引用是有必要的，否则，我们可以预想到<code>s1</code>的本体会被传进函数的作用域，然后随着函数的结束，它会在离开作用域的时候面临一个问题—资源被释放了（相当于<code>&quot;Hello&quot;</code>字符串已经在内存中被销毁），我们无法在后续的程序中调用<code>s1</code>，可谓一去不复返。（除非<code>s1</code>是<code>i32</code>之类的基本类型，那么实际上程序会重新拷贝一份当成参数传入函数，也就是说后续依然可以使用<code>s1</code>）</p>
+<p>程序中的每一个对象都有生命周期，一般来说，编译器会自动推导，而当遇到和引用相关的地方，编译器时常难以自行推导生命周期，就会发生错误，这个时候需要我们自己手动显式地去声明。关于这一部分的语法规则，先挖个坑，以后填。</p>
+<h3 id="内存管理"><a href="#内存管理" class="headerlink" title="内存管理"></a>内存管理</h3><p>关于内存，主要有两个讨论的对象：堆和栈</p>
+<p>栈非常快速，并且是 Rust 默认分配内存的地方。不过这个分配位于函数调用的本地，并有大小限制。堆，相反，更慢，并且需要被你的程序显式分配。不过它无事实上的大小限制，并且是全局可访问的。注意这里堆的意义，它意味着已任意顺序分配任意大小的内存块，这与堆数据结构有很大不同</p>
+<h3 id="模式匹配-pattern-match"><a href="#模式匹配-pattern-match" class="headerlink" title="模式匹配 pattern match"></a>模式匹配 pattern match</h3><p><code>match</code>可以在一堆东西中把具有你所期望的特征的东西找出来的功能，这也叫做模式匹配</p>
+<p>这里不做详细介绍</p>
+<h3 id="宏"><a href="#宏" class="headerlink" title="宏"></a>宏</h3><p>十分有用（但挺难懂）的高级抽象，例子随处都是，具体的描述可以参考<a href="[https://kaisery.gitbooks.io/rust-book-chinese/content/content/Macros%20%E5%AE%8F.html](https://kaisery.gitbooks.io/rust-book-chinese/content/content/Macros 宏.html">宏</a>)，这篇易读又全面。下面只是列举一下宏里面的基本概念</p>
+<p>我们通过阅读标准库或者其他地方的一些宏定义，比如<code>vec!</code>的简化版</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="built_in">macro_rules!</span> vec &#123;</span><br><span class="line">    ( $( $x:expr ),* ) =&gt; &#123;</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">let</span> <span class="keyword">mut</span> temp_vec = <span class="built_in">Vec</span>::new();</span><br><span class="line">            $(</span><br><span class="line">                temp_vec.push($x);</span><br><span class="line">            )*</span><br><span class="line">            temp_vec</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>多少可以看出，宏的定义有那么一丝模式匹配的味道</p>
+<p>我们把<code>=&gt;</code>左侧的称为匹配器，<code>expr</code>被称为分段标识符（这不是任意变量名，而是分段标识符的一系列规范名称之一）    </p>
+<h4 id="句法要求"><a href="#句法要求" class="headerlink" title="句法要求"></a>句法要求</h4><p>即使 Rust 代码中含有未展开的宏，它也可以被解析为一个完整的<a href="https://kaisery.gitbooks.io/rust-book-chinese/content/content/7.Glossary 词汇表.md#abstract-syntax-tree" target="_blank" rel="noopener">语法树</a>。这个属性对于编辑器或其它处理代码的工具来说十分有用。这里也有一些关于 Rust 宏系统设计的推论。</p>
+<p>一个推论是 Rust 必须确定，当它解析一个宏展开时，宏是否代替了</p>
 <ul>
-<li>Rust编程更加熟练了，对于Rust本身的一些有趣的特性的理解也更加深刻了。比起C++和Python之类的语言，Rust可以明显让人感到要过编译其实不太容易。但是其实稍微入门一点以后就会习惯了，Rust编译器给你的各种提示比C++友好多了。另一方面，Rust花在测试Debug上的时间显著减少了，基本算法正确的情况下一遍过是没问题的。</li>
-<li>当然，上面的这些收获还是次要的。在这次rCore的活动中，我对于RISC-V指令集有了更加深刻的认知，以前上计算机体系结构的时候讲的也是这玩意儿，但因为Soren本身是做Robotics的，其实讲的就没那么仔细了，关于页表、中断这种概念我是看了清华的OS课以后才有了一种恍然大悟的感觉（捂脸）</li>
-<li>我比较认真地通读了当前rcore-tutorial的所有源代码，包括Rust和汇编，应证了以前的一个观点：“一个涉及合理的架构远胜于细节的精雕细琢”。可以看到，tutorial v3的代码比前两个版本组织的更好了，它是循序渐进的，而且模块化也做得更好了，分隔出来的六个实验基本上你看看过源码之后就可以知道该如何修改，这些对于接口的抽象也是我应该学习的。</li>
+<li>0个或多个项</li>
+<li>0个或多个方法</li>
+<li>一个表达式</li>
+<li>一个语句</li>
+<li>一个模式</li>
 </ul>
-<p>关于下一步：</p>
+<p>一个块中的宏展开代表一些项，或者一个表达式/语句。Rust 使用一个简单的规则来解决这些二义性。一个代表项的宏展开必须是</p>
 <ul>
-<li>如果可以进入下一轮的话，我比较感兴趣的工作是zCore的文档和单元测试完善，这一部分看起来容易，但是要做好还是需要花不少工夫的。</li>
+<li>用大括号界定的，例如<code>foo! { ... }</code></li>
+<li>分号结尾的，例如<code>foo!(...);</code></li>
 </ul>
-<p>曾经遇到的困难：</p>
+<p>另一个展开前解析的推论是宏展开必须包含有效的Rust记号。更进一步，括号，中括号，大括号在宏展开中必须是封闭的。例如，<code>foo!([)</code>是不允许的。这让Rust知道宏何时结束。</p>
+<p>更正式一点，宏展开体必须是一个<strong>记号树</strong>（<em>token trees</em>）的序列。一个记号树是一系列递归的</p>
 <ul>
-<li>关于OS和RISC-V这部分其实还可以再深挖一下，但就目前的需求而言，可以点到为止了。</li>
+<li>一个由<code>()</code>，<code>[]</code>或<code>{}</code>包围的记号树序列</li>
+<li>任何其它单个记号</li>
 </ul>
-]]></content>
+<p>在一个匹配器中，每一个元变量都有一个<strong>片段分类符</strong>（<em>fragment specifier</em>），确定它匹配的哪种句法。</p>
+<ul>
+<li><code>ident</code>：一个标识符。例如：<code>x</code>，<code>foo</code></li>
+<li><code>path</code>：一个受限的名字。例如：<code>T::SpecialA</code></li>
+<li><code>expr</code>：一个表达式。例如：<code>2 + 2</code>；<code>if true then { 1 } else { 2 }</code>；<code>f(42)</code></li>
+<li><code>ty</code>：一个类型。例如：<code>i32</code>；<code>Vec&lt;(char, String)&gt;</code>；<code>&amp;T</code></li>
+<li><code>pat</code>：一个模式。例如：<code>Some(t)</code>；<code>(17, &#39;a&#39;)</code>；<code>_</code></li>
+<li><code>stmt</code>：一个单独语句。例如：<code>let x = 3</code></li>
+<li><code>block</code>：一个大括号界定的语句序列，或者一个表达式。例如：<code>{ log(error, &quot;hi&quot;); return 12; }</code></li>
+<li><code>item</code>：一个<a href="http://doc.rust-lang.org/stable/reference.html#items" target="_blank" rel="noopener">项</a>。例如：<code>fn foo() { }</code>，<code>struct Bar</code></li>
+<li><code>meta</code>：一个“元数据项”，可以在属性中找到。例如：<code>cfg(target_os = &quot;windows&quot;)</code></li>
+<li><code>tt</code>：一个单独的记号树</li>
+</ul>
+<p>对于一个元变量（metavariable）后面的一个记号有一些额外的规则：</p>
+<ul>
+<li><code>expr</code>和<code>stmt</code>变量必须后跟任意一个：<code>=&gt; , ;</code></li>
+<li><code>ty</code>和<code>path</code>变量必须后跟任意一个：<code>=&gt; , = | ; : &gt; [ { as where</code></li>
+<li><code>pat</code>变量必须后跟任意一个：<code>=&gt; , = | if in</code></li>
+<li>其它变量可以后跟任何记号</li>
+</ul>
+<p>这些规则为 Rust 语法提供了一些灵活性以便将来的展开不会破坏现有的宏。</p>
+<p>宏系统完全不处理解析模糊。例如，<code>$($i:ident)* $e:expr</code>语法总是会解析失败，因为解析器会被强制在解析<code>$i</code>和解析<code>$e</code>之间做出选择。改变展开在它们之前分别加上一个记号可以解决这个问题。在这个例子中，你可以写成<code>$(I $i:ident)* E $e:expr</code>。</p>
+<h4 id="常见宏"><a href="#常见宏" class="headerlink" title="常见宏"></a>常见宏</h4><p><code>panic!</code></p>
+<p>这个宏导致当前线程恐慌。你可以传给这个宏一个信息通过：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">panic!(&quot;oh no!&quot;);</span><br></pre></td></tr></table></figure>
+<p><code>vec!</code></p>
+<p>它方便创建<code>Vec&lt;T&gt;</code>：</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> v = <span class="built_in">vec!</span>[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>];</span><br></pre></td></tr></table></figure>
+<p>它也让你可以用重复值创建vector。例如，100个<code>0</code>：</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> v = <span class="built_in">vec!</span>[<span class="number">0</span>; <span class="number">100</span>];</span><br></pre></td></tr></table></figure>
+<p><code>assert!</code>和<code>assert_eq!</code></p>
+<p>这两个宏用在测试中。<code>assert!</code>获取一个布尔值，而<code>assert_eq!</code>获取两个值并比较它们。<code>true</code> 就通过，<code>false</code>就<code>panic!</code>。像这样：</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="comment">// A-ok!</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">assert!</span>(<span class="literal">true</span>);</span><br><span class="line"><span class="built_in">assert_eq!</span>(<span class="number">5</span>, <span class="number">3</span> + <span class="number">2</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Nope :(</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">assert!</span>(<span class="number">5</span> &lt; <span class="number">3</span>);</span><br><span class="line"><span class="built_in">assert_eq!</span>(<span class="number">5</span>, <span class="number">3</span>);</span><br></pre></td></tr></table></figure>
+<p><code>try!</code></p>
+<p><code>try!</code>用来进行错误处理。它获取一些可以返回<code>Result&lt;T, E&gt;</code>的数据，并返回<code>T</code>如果它是<code>Ok&lt;T&gt;</code>，或<code>return</code>一个<code>Err(E)</code>如果出错了。像这样：</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">use</span> std::fs::File;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">foo</span></span>() -&gt; std::io::<span class="built_in">Result</span>&lt;()&gt; &#123;</span><br><span class="line">    <span class="keyword">let</span> f = <span class="built_in">try!</span>(File::create(<span class="string">"foo.txt"</span>));</span><br><span class="line"></span><br><span class="line">    <span class="literal">Ok</span>(())</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>它比这么写要更简明：</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">use</span> std::fs::File;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">foo</span></span>() -&gt; std::io::<span class="built_in">Result</span>&lt;()&gt; &#123;</span><br><span class="line">    <span class="keyword">let</span> f = File::create(<span class="string">"foo.txt"</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> f = <span class="keyword">match</span> f &#123;</span><br><span class="line">        <span class="literal">Ok</span>(t) =&gt; t,</span><br><span class="line">        <span class="literal">Err</span>(e) =&gt; <span class="keyword">return</span> <span class="literal">Err</span>(e),</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="literal">Ok</span>(())</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>unreachable!</code></p>
+<p>这个宏用于当你认为一些代码不应该被执行的时候：</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="literal">false</span> &#123;</span><br><span class="line">    <span class="built_in">unreachable!</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>有时，编译器可能会让你编写一个你认为将永远不会执行的不同分支。在这个例子中，用这个宏，这样如果最终你错了，你会为此得到一个<code>panic!</code>。</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> x: <span class="built_in">Option</span>&lt;<span class="built_in">i32</span>&gt; = <span class="literal">None</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">match</span> x &#123;</span><br><span class="line">    <span class="literal">Some</span>(_) =&gt; <span class="built_in">unreachable!</span>(),</span><br><span class="line">    <span class="literal">None</span> =&gt; <span class="built_in">println!</span>(<span class="string">"I know x is None!"</span>),</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>unimplemented!</code></p>
+<p><code>unimplemented!</code>宏可以被用来当你尝试去让你的函数通过类型检查，同时你又不想操心去写函数体的时候。一个这种情况的例子是实现一个要求多个方法的特性，而你只想一次搞定一个。用<code>unimplemented!</code>定义其它的直到你准备好去写它们了。</p>
+<h2 id="尾声"><a href="#尾声" class="headerlink" title="尾声"></a>尾声</h2>]]></content>
       <tags>
         <tag>Rust</tag>
       </tags>
@@ -224,124 +289,108 @@ F\times W \to F</script><p>那么子空间就有了。</p>
       </categories>
   </entry>
   <entry>
-    <title>Rust进阶</title>
-    <url>/2020/02/02/Rust%E8%BF%9B%E9%98%B6/</url>
-    <content><![CDATA[<h1 id="Rust进阶"><a href="#Rust进阶" class="headerlink" title="Rust进阶"></a>Rust进阶</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>如果看过了前面的《Rust入门语法归纳》或者是对Rust语法已经有了基本了解，那么就可以进入进阶阶段了。</p>
-<p>在进阶阶段，我们依然从类型系统和控制流两个主要方面来展开。另外，还有相关的编程概念也需要交代。</p>
-<p>文章暂时没有写完。</p>
+    <title>cmake构建系统</title>
+    <url>/2020/08/09/cmake%E6%9E%84%E5%BB%BA%E7%B3%BB%E7%BB%9F/</url>
+    <content><![CDATA[<p>C++在代码复用这一块做的一言难尽，一些依赖第三方库的项目往往很难直接拿来跑，有一大堆的依赖问题需要处理。在这一块，目前比较好的方案只有cmake了。委员会其实可以学学Rust，考虑出个包管理器。</p>
 <a id="more"></a>
-<h2 id="类型进阶"><a href="#类型进阶" class="headerlink" title="类型进阶"></a>类型进阶</h2><h3 id="数字运算"><a href="#数字运算" class="headerlink" title="数字运算"></a>数字运算</h3><p>主要五个运算符<code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, <code>%</code>，对应了加减乘除和取余。 </p>
-<h3 id="数组操作"><a href="#数组操作" class="headerlink" title="数组操作"></a>数组操作</h3><p>一个数组可以用索引来获取相关元素的值，如果要得到数组长度，那么可以用<code>len()</code>来获取</p>
-<p>例子</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> x:[<span class="built_in">i32</span>;<span class="number">3</span>]=[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>];</span><br><span class="line"><span class="built_in">println!</span>(<span class="string">"First element of x is &#123;&#125;, the size of x is &#123;&#125;"</span>,x[<span class="number">0</span>],x.len());</span><br></pre></td></tr></table></figure>
-<h3 id="用户定义类型（UDT）"><a href="#用户定义类型（UDT）" class="headerlink" title="用户定义类型（UDT）"></a>用户定义类型（UDT）</h3><h2 id="控制流进阶"><a href="#控制流进阶" class="headerlink" title="控制流进阶"></a>控制流进阶</h2><h3 id="匹配-match"><a href="#匹配-match" class="headerlink" title="匹配 match"></a>匹配 match</h3><p>先放例子，不难看出来<code>match</code>和C语言中的<code>switch</code>类似：</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> x = <span class="number">5</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">match</span> x &#123;</span><br><span class="line">    <span class="number">1</span> =&gt; <span class="built_in">println!</span>(<span class="string">"one"</span>),</span><br><span class="line">    <span class="number">2</span> =&gt; <span class="built_in">println!</span>(<span class="string">"two"</span>),</span><br><span class="line">    <span class="number">3</span> =&gt; <span class="built_in">println!</span>(<span class="string">"three"</span>),</span><br><span class="line">    <span class="number">4</span> =&gt; <span class="built_in">println!</span>(<span class="string">"four"</span>),</span><br><span class="line">    <span class="number">5</span> =&gt; <span class="built_in">println!</span>(<span class="string">"five"</span>),</span><br><span class="line">    _ =&gt; <span class="built_in">println!</span>(<span class="string">"something else"</span>),</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>下划线<code>_</code>代表通配符（什么都可以和它匹配上）</p>
-<p>匹配的语法一个很重要的点是它要求所有情况都枚举一遍，在没有通配符的情况下，上面的代码就不只是<code>1,2,3,4,5</code>这些匹配分支了，编译器会让你把所有<code>i32</code>范围内的数字都加上，不妨想象一下这个壮观场面……（多亏有通配符）</p>
-<p>前面讲判断语句有这样的一个用法，匹配也是类似的</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> x = <span class="number">5</span>;</span><br><span class="line"><span class="keyword">let</span> y = <span class="keyword">if</span> x==<span class="number">5</span> &#123; <span class="number">6</span> &#125; <span class="keyword">else</span> &#123; <span class="number">7</span> &#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//等价表述</span></span><br><span class="line"><span class="keyword">let</span> x = <span class="number">5</span>;</span><br><span class="line"><span class="keyword">let</span> y = <span class="keyword">match</span> x&#123;</span><br><span class="line">    <span class="number">5</span> =&gt; <span class="number">6</span>,</span><br><span class="line">    _ =&gt; <span class="number">7</span>,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p><code>match</code>和<code>enum</code>是一对好搭档</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">enum</span> <span class="title">Message</span></span> &#123;</span><br><span class="line">    Quit,</span><br><span class="line">    ChangeColor(<span class="built_in">i32</span>, <span class="built_in">i32</span>, <span class="built_in">i32</span>),</span><br><span class="line">    Move &#123; x: <span class="built_in">i32</span>, y: <span class="built_in">i32</span> &#125;,</span><br><span class="line">    Write(<span class="built_in">String</span>),</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">quit</span></span>() &#123; <span class="comment">/* ... */</span> &#125;</span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">change_color</span></span>(r: <span class="built_in">i32</span>, g: <span class="built_in">i32</span>, b: <span class="built_in">i32</span>) &#123; <span class="comment">/* ... */</span> &#125;</span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">move_cursor</span></span>(x: <span class="built_in">i32</span>, y: <span class="built_in">i32</span>) &#123; <span class="comment">/* ... */</span> &#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">process_message</span></span>(msg: Message) &#123;</span><br><span class="line">    <span class="keyword">match</span> msg &#123;</span><br><span class="line">        Message::Quit =&gt; quit(),</span><br><span class="line">        Message::ChangeColor(r, g, b) =&gt; change_color(r, g, b),</span><br><span class="line">        Message::Move &#123; x, y: new_name_for_y &#125; =&gt; move_cursor(x, new_name_for_y),</span><br><span class="line">        Message::Write(s) =&gt; <span class="built_in">println!</span>(<span class="string">"&#123;&#125;"</span>, s),</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>匹配还有多重匹配，下面的代码就会把<code>one or two</code>打印出来</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> x = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">match</span> x &#123;</span><br><span class="line">    <span class="number">1</span> | <span class="number">2</span> =&gt; <span class="built_in">println!</span>(<span class="string">"one or two"</span>),</span><br><span class="line">    <span class="number">3</span> =&gt; <span class="built_in">println!</span>(<span class="string">"three"</span>),</span><br><span class="line">    _ =&gt; <span class="built_in">println!</span>(<span class="string">"anything"</span>),</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="抽象概念"><a href="#抽象概念" class="headerlink" title="抽象概念"></a>抽象概念</h2><h3 id="所有权系统"><a href="#所有权系统" class="headerlink" title="所有权系统"></a>所有权系统</h3><p>所有权系统包括三个部分：所有权，借用与引用，生命周期</p>
-<p>在变量绑定的同时，所有权也随之声明。</p>
-<p>例如</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> sentence = <span class="built_in">String</span>::from(<span class="string">"Hello!"</span>);</span><br></pre></td></tr></table></figure>
-<p>这一句里面，变量<code>sentence</code>拥有了字符串<code>&quot;Hello&quot;</code>的所有权。所有数据的所有权只能被一个变量所占有。当一个变量名有一个数据的所有权的时候，理所当然地可以对它拥有的数据进行种种操作。</p>
-<p>那么，有一个问题，其他变量想要使用这个数据的时候，应该怎么办呢？</p>
-<p>我们自然就可以想到几种方案，比如说，可以考虑把所有权移交出去。</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> sentence = <span class="built_in">String</span>::from(<span class="string">"Hello!"</span>);</span><br><span class="line"><span class="keyword">let</span> another_sentence = sentence;</span><br><span class="line"><span class="built_in">println!</span>(<span class="string">"&#123;&#125;"</span>,another_sentence);	<span class="comment">//It's OK</span></span><br><span class="line"><span class="built_in">println!</span>(<span class="string">"&#123;&#125;"</span>,sentence);			<span class="comment">//Errors happened</span></span><br></pre></td></tr></table></figure>
-<p>在第二条语句中，原本字符串<code>&quot;Hello&quot;</code>的所有权从<code>sentence</code>转移到了<code>another_sentence</code>， 自然而然地，第三条语句可以把字符串打印出来。而第四条语句则不然，在失去了所有权以后，<code>sentence</code>已经无法访问该字符串了，会产生报错。</p>
-<p>再来展示一个迷惑操作</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> x:<span class="built_in">i32</span> = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">let</span> y = x;</span><br><span class="line"><span class="built_in">println!</span>(<span class="string">"&#123;&#125;"</span>,x);	<span class="comment">//It's OK</span></span><br><span class="line"><span class="built_in">println!</span>(<span class="string">"&#123;&#125;"</span>,y);	<span class="comment">//It's OK</span></span><br></pre></td></tr></table></figure>
-<p>两条都可以顺利打印，照理来说，<code>x</code>对<code>1</code>的所有权转移到了<code>y</code>上，那么为什么第三行没有报错。对比上面的例子，要想知道答案，就需要着眼于第二行。表面上同样是变量绑定，但是，<code>let y = x;</code>当中所执行的实际语义是把<code>1</code>拷贝一份，再把它的所有权绑到<code>y</code>上。<code>x,y</code>两个变量人手一份所有权，那么自然也就解释的通了。</p>
-<p>上面讲的是所有权的转移方法，也叫做移动语义。那么能不能只是授权其他人使用数据而自己继续保留该数据的所有权呢？</p>
-<p>方法是有的，这就是借用的概念，这和我们在日常生活中的认识没有多少区别。</p>
-<p>借用的实现依托关键词<code>ref</code>或者<code>&amp;</code>，遵循了<code>ref 类型名</code>或者<code>&amp;类型名</code>，这种实现借用功能的形式我们称之为应用，比如</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> x:<span class="built_in">i32</span> = <span class="number">5</span>;</span><br><span class="line"><span class="keyword">let</span> y = &amp;x;</span><br></pre></td></tr></table></figure>
-<p><code>y</code>就是<code>x</code>的一个引用，他借用了<code>x</code>所拥有的数据的所有权（会还回去的）</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> s1 = <span class="built_in">String</span>::from(<span class="string">"hello"</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> len = calculate_length(&amp;s1);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"The length of '&#123;&#125;' is &#123;&#125;."</span>, s1, len);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">calculate_length</span></span>(s: &amp;<span class="built_in">String</span>) -&gt; <span class="built_in">usize</span> &#123;</span><br><span class="line">    s.len()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>在下面这个例子中，我们注意到函数<code>calculate_length</code>要求的参数类型是<code>&amp;String</code>也就是一个<code>String</code>变量的引用，在第四行函数执行的时候，<code>s1</code>的所有权被借了出去当做参数，也就是<code>&amp;s1</code>。在这里，规定函数的参数为引用是有必要的，否则，我们可以预想到<code>s1</code>的本体会被传进函数的作用域，然后随着函数的结束，它会在离开作用域的时候面临一个问题—资源被释放了（相当于<code>&quot;Hello&quot;</code>字符串已经在内存中被销毁），我们无法在后续的程序中调用<code>s1</code>，可谓一去不复返。（除非<code>s1</code>是<code>i32</code>之类的基本类型，那么实际上程序会重新拷贝一份当成参数传入函数，也就是说后续依然可以使用<code>s1</code>）</p>
-<p>程序中的每一个对象都有生命周期，一般来说，编译器会自动推导，而当遇到和引用相关的地方，编译器时常难以自行推导生命周期，就会发生错误，这个时候需要我们自己手动显式地去声明。关于这一部分的语法规则，先挖个坑，以后填。</p>
-<h3 id="内存管理"><a href="#内存管理" class="headerlink" title="内存管理"></a>内存管理</h3><p>关于内存，主要有两个讨论的对象：堆和栈</p>
-<p>栈非常快速，并且是 Rust 默认分配内存的地方。不过这个分配位于函数调用的本地，并有大小限制。堆，相反，更慢，并且需要被你的程序显式分配。不过它无事实上的大小限制，并且是全局可访问的。注意这里堆的意义，它意味着已任意顺序分配任意大小的内存块，这与堆数据结构有很大不同</p>
-<h3 id="模式匹配-pattern-match"><a href="#模式匹配-pattern-match" class="headerlink" title="模式匹配 pattern match"></a>模式匹配 pattern match</h3><p><code>match</code>可以在一堆东西中把具有你所期望的特征的东西找出来的功能，这也叫做模式匹配</p>
-<p>这里不做详细介绍</p>
-<h3 id="宏"><a href="#宏" class="headerlink" title="宏"></a>宏</h3><p>十分有用（但挺难懂）的高级抽象，例子随处都是，具体的描述可以参考<a href="[https://kaisery.gitbooks.io/rust-book-chinese/content/content/Macros%20%E5%AE%8F.html](https://kaisery.gitbooks.io/rust-book-chinese/content/content/Macros 宏.html">宏</a>)，这篇易读又全面。下面只是列举一下宏里面的基本概念</p>
-<p>我们通过阅读标准库或者其他地方的一些宏定义，比如<code>vec!</code>的简化版</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="built_in">macro_rules!</span> vec &#123;</span><br><span class="line">    ( $( $x:expr ),* ) =&gt; &#123;</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">let</span> <span class="keyword">mut</span> temp_vec = <span class="built_in">Vec</span>::new();</span><br><span class="line">            $(</span><br><span class="line">                temp_vec.push($x);</span><br><span class="line">            )*</span><br><span class="line">            temp_vec</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>多少可以看出，宏的定义有那么一丝模式匹配的味道</p>
-<p>我们把<code>=&gt;</code>左侧的称为匹配器，<code>expr</code>被称为分段标识符（这不是任意变量名，而是分段标识符的一系列规范名称之一）    </p>
-<h4 id="句法要求"><a href="#句法要求" class="headerlink" title="句法要求"></a>句法要求</h4><p>即使 Rust 代码中含有未展开的宏，它也可以被解析为一个完整的<a href="https://kaisery.gitbooks.io/rust-book-chinese/content/content/7.Glossary 词汇表.md#abstract-syntax-tree" target="_blank" rel="noopener">语法树</a>。这个属性对于编辑器或其它处理代码的工具来说十分有用。这里也有一些关于 Rust 宏系统设计的推论。</p>
-<p>一个推论是 Rust 必须确定，当它解析一个宏展开时，宏是否代替了</p>
+<p>SLAM领域的工作还是要用到不少第三方库的，比如<code>sophus</code>,<code>eigen</code>,<code>g2o</code></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>rCore2020总结</title>
+    <url>/2020/07/26/rCore2020%E6%80%BB%E7%BB%93/</url>
+    <content><![CDATA[<p>不知不觉一个月都要过去了，整了将近一个月（中间因为各种事情咕咕了一周多）的 rCoreLab， 在这里做一个小小的总结。</p>
+<a id="more"></a>
+<p>关于收获：</p>
 <ul>
-<li>0个或多个项</li>
-<li>0个或多个方法</li>
-<li>一个表达式</li>
-<li>一个语句</li>
-<li>一个模式</li>
+<li>Rust编程更加熟练了，对于Rust本身的一些有趣的特性的理解也更加深刻了。比起C++和Python之类的语言，Rust可以明显让人感到要过编译其实不太容易。但是其实稍微入门一点以后就会习惯了，Rust编译器给你的各种提示比C++友好多了。另一方面，Rust花在测试Debug上的时间显著减少了，基本算法正确的情况下一遍过是没问题的。</li>
+<li>当然，上面的这些收获还是次要的。在这次rCore的活动中，我对于RISC-V指令集有了更加深刻的认知，以前上计算机体系结构的时候讲的也是这玩意儿，但因为Soren本身是做Robotics的，其实讲的就没那么仔细了，关于页表、中断这种概念我是看了清华的OS课以后才有了一种恍然大悟的感觉（捂脸）</li>
+<li>我比较认真地通读了当前rcore-tutorial的所有源代码，包括Rust和汇编，应证了以前的一个观点：“一个涉及合理的架构远胜于细节的精雕细琢”。可以看到，tutorial v3的代码比前两个版本组织的更好了，它是循序渐进的，而且模块化也做得更好了，分隔出来的六个实验基本上你看看过源码之后就可以知道该如何修改，这些对于接口的抽象也是我应该学习的。</li>
 </ul>
-<p>一个块中的宏展开代表一些项，或者一个表达式/语句。Rust 使用一个简单的规则来解决这些二义性。一个代表项的宏展开必须是</p>
+<p>关于下一步：</p>
 <ul>
-<li>用大括号界定的，例如<code>foo! { ... }</code></li>
-<li>分号结尾的，例如<code>foo!(...);</code></li>
+<li>如果可以进入下一轮的话，我比较感兴趣的工作是zCore的文档和单元测试完善，这一部分看起来容易，但是要做好还是需要花不少工夫的。</li>
 </ul>
-<p>另一个展开前解析的推论是宏展开必须包含有效的Rust记号。更进一步，括号，中括号，大括号在宏展开中必须是封闭的。例如，<code>foo!([)</code>是不允许的。这让Rust知道宏何时结束。</p>
-<p>更正式一点，宏展开体必须是一个<strong>记号树</strong>（<em>token trees</em>）的序列。一个记号树是一系列递归的</p>
+<p>曾经遇到的困难：</p>
 <ul>
-<li>一个由<code>()</code>，<code>[]</code>或<code>{}</code>包围的记号树序列</li>
-<li>任何其它单个记号</li>
+<li>关于OS和RISC-V这部分其实还可以再深挖一下，但就目前的需求而言，可以点到为止了。</li>
 </ul>
-<p>在一个匹配器中，每一个元变量都有一个<strong>片段分类符</strong>（<em>fragment specifier</em>），确定它匹配的哪种句法。</p>
-<ul>
-<li><code>ident</code>：一个标识符。例如：<code>x</code>，<code>foo</code></li>
-<li><code>path</code>：一个受限的名字。例如：<code>T::SpecialA</code></li>
-<li><code>expr</code>：一个表达式。例如：<code>2 + 2</code>；<code>if true then { 1 } else { 2 }</code>；<code>f(42)</code></li>
-<li><code>ty</code>：一个类型。例如：<code>i32</code>；<code>Vec&lt;(char, String)&gt;</code>；<code>&amp;T</code></li>
-<li><code>pat</code>：一个模式。例如：<code>Some(t)</code>；<code>(17, &#39;a&#39;)</code>；<code>_</code></li>
-<li><code>stmt</code>：一个单独语句。例如：<code>let x = 3</code></li>
-<li><code>block</code>：一个大括号界定的语句序列，或者一个表达式。例如：<code>{ log(error, &quot;hi&quot;); return 12; }</code></li>
-<li><code>item</code>：一个<a href="http://doc.rust-lang.org/stable/reference.html#items" target="_blank" rel="noopener">项</a>。例如：<code>fn foo() { }</code>，<code>struct Bar</code></li>
-<li><code>meta</code>：一个“元数据项”，可以在属性中找到。例如：<code>cfg(target_os = &quot;windows&quot;)</code></li>
-<li><code>tt</code>：一个单独的记号树</li>
-</ul>
-<p>对于一个元变量（metavariable）后面的一个记号有一些额外的规则：</p>
-<ul>
-<li><code>expr</code>和<code>stmt</code>变量必须后跟任意一个：<code>=&gt; , ;</code></li>
-<li><code>ty</code>和<code>path</code>变量必须后跟任意一个：<code>=&gt; , = | ; : &gt; [ { as where</code></li>
-<li><code>pat</code>变量必须后跟任意一个：<code>=&gt; , = | if in</code></li>
-<li>其它变量可以后跟任何记号</li>
-</ul>
-<p>这些规则为 Rust 语法提供了一些灵活性以便将来的展开不会破坏现有的宏。</p>
-<p>宏系统完全不处理解析模糊。例如，<code>$($i:ident)* $e:expr</code>语法总是会解析失败，因为解析器会被强制在解析<code>$i</code>和解析<code>$e</code>之间做出选择。改变展开在它们之前分别加上一个记号可以解决这个问题。在这个例子中，你可以写成<code>$(I $i:ident)* E $e:expr</code>。</p>
-<h4 id="常见宏"><a href="#常见宏" class="headerlink" title="常见宏"></a>常见宏</h4><p><code>panic!</code></p>
-<p>这个宏导致当前线程恐慌。你可以传给这个宏一个信息通过：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">panic!(&quot;oh no!&quot;);</span><br></pre></td></tr></table></figure>
-<p><code>vec!</code></p>
-<p>它方便创建<code>Vec&lt;T&gt;</code>：</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> v = <span class="built_in">vec!</span>[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>];</span><br></pre></td></tr></table></figure>
-<p>它也让你可以用重复值创建vector。例如，100个<code>0</code>：</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> v = <span class="built_in">vec!</span>[<span class="number">0</span>; <span class="number">100</span>];</span><br></pre></td></tr></table></figure>
-<p><code>assert!</code>和<code>assert_eq!</code></p>
-<p>这两个宏用在测试中。<code>assert!</code>获取一个布尔值，而<code>assert_eq!</code>获取两个值并比较它们。<code>true</code> 就通过，<code>false</code>就<code>panic!</code>。像这样：</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="comment">// A-ok!</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">assert!</span>(<span class="literal">true</span>);</span><br><span class="line"><span class="built_in">assert_eq!</span>(<span class="number">5</span>, <span class="number">3</span> + <span class="number">2</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Nope :(</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">assert!</span>(<span class="number">5</span> &lt; <span class="number">3</span>);</span><br><span class="line"><span class="built_in">assert_eq!</span>(<span class="number">5</span>, <span class="number">3</span>);</span><br></pre></td></tr></table></figure>
-<p><code>try!</code></p>
-<p><code>try!</code>用来进行错误处理。它获取一些可以返回<code>Result&lt;T, E&gt;</code>的数据，并返回<code>T</code>如果它是<code>Ok&lt;T&gt;</code>，或<code>return</code>一个<code>Err(E)</code>如果出错了。像这样：</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">use</span> std::fs::File;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">foo</span></span>() -&gt; std::io::<span class="built_in">Result</span>&lt;()&gt; &#123;</span><br><span class="line">    <span class="keyword">let</span> f = <span class="built_in">try!</span>(File::create(<span class="string">"foo.txt"</span>));</span><br><span class="line"></span><br><span class="line">    <span class="literal">Ok</span>(())</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>它比这么写要更简明：</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">use</span> std::fs::File;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">foo</span></span>() -&gt; std::io::<span class="built_in">Result</span>&lt;()&gt; &#123;</span><br><span class="line">    <span class="keyword">let</span> f = File::create(<span class="string">"foo.txt"</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> f = <span class="keyword">match</span> f &#123;</span><br><span class="line">        <span class="literal">Ok</span>(t) =&gt; t,</span><br><span class="line">        <span class="literal">Err</span>(e) =&gt; <span class="keyword">return</span> <span class="literal">Err</span>(e),</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="literal">Ok</span>(())</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><code>unreachable!</code></p>
-<p>这个宏用于当你认为一些代码不应该被执行的时候：</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="literal">false</span> &#123;</span><br><span class="line">    <span class="built_in">unreachable!</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>有时，编译器可能会让你编写一个你认为将永远不会执行的不同分支。在这个例子中，用这个宏，这样如果最终你错了，你会为此得到一个<code>panic!</code>。</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> x: <span class="built_in">Option</span>&lt;<span class="built_in">i32</span>&gt; = <span class="literal">None</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">match</span> x &#123;</span><br><span class="line">    <span class="literal">Some</span>(_) =&gt; <span class="built_in">unreachable!</span>(),</span><br><span class="line">    <span class="literal">None</span> =&gt; <span class="built_in">println!</span>(<span class="string">"I know x is None!"</span>),</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><code>unimplemented!</code></p>
-<p><code>unimplemented!</code>宏可以被用来当你尝试去让你的函数通过类型检查，同时你又不想操心去写函数体的时候。一个这种情况的例子是实现一个要求多个方法的特性，而你只想一次搞定一个。用<code>unimplemented!</code>定义其它的直到你准备好去写它们了。</p>
-<h2 id="尾声"><a href="#尾声" class="headerlink" title="尾声"></a>尾声</h2>]]></content>
+]]></content>
       <tags>
         <tag>Rust</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>仿射几何</title>
+    <url>/2020/08/07/%E4%BB%BF%E5%B0%84%E5%87%A0%E4%BD%95/</url>
+    <content><![CDATA[<p>在数域$K$上的仿射空间包含了四样东西：</p>
+<ul>
+<li><p>非空点集$E$</p>
+</li>
+<li><p>一个向量空间$V$</p>
+</li>
+<li><p>二元运算符</p>
+<script type="math/tex; mode=display">
+E\times E \to V\\
+E\times V \to E</script></li>
+</ul>
+<a id="more"></a>
+<p>满足下面的公理</p>
+<script type="math/tex; mode=display">
+\vec{AB}+\vec{BC}=\vec{AC}\\
+A+\vec{AB}=B\\
+\overrightarrow{A(A+v)}=v</script><p>关于仿射子空间，和仿射空间的定义类似，只要找出$E,V$的子集或者子空间也即$F\subset E, W\subset V$，再加上两种二元运算</p>
+<script type="math/tex; mode=display">
+F\times F \to W\\
+F\times W \to F</script><p>那么子空间就有了。</p>
+<p>另外这个向量子空间$W$代表了仿射子空间的方向，如果两个仿射子空间的方向相同，那么他们就是平行的仿射子空间了。</p>
+<p>注意到：向量空间$W$的维度决定了仿射空间的维度，比如$dim(W)=1$的情况下，这个仿射空间就是一条线（也叫仿射线）</p>
+<p>仿射平面的构成条件也呼之欲出。</p>
+<p>点集的生成子空间：包含一系列的点的最小的仿射子空间。</p>
+<p>仿射空间中的不同的点都是仿射独立的</p>
+<p>关于仿射空间还有一个质心坐标，在epnp算法里面有相关描述，这里略过</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>浅析DTAM: Dense Tracking and Mapping in Real-Time</title>
+    <url>/2020/08/08/%E6%B5%85%E6%9E%90DTAM-Dense-Tracking-and-Mapping-in-Real-Time/</url>
+    <content><![CDATA[<p>这篇文章讲的是实时的稠密追踪和建图，时间有点早，应该不算state of art了，但还是挺典型的</p>
+<a id="more"></a>
+<p>在这篇文章之前，学术界在做实时SFM的时候一般采用稀疏的思路，不过现在时机已到，是时候该稠密一波了。</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>浅析LSD-SLAM</title>
+    <url>/2020/08/08/%E6%B5%85%E6%9E%90LSD-SLAM/</url>
+    <content><![CDATA[<p>大规模建图+精确位姿估计</p>
+<a id="more"></a>
+<p>Feature-Based Methods的目的：从图片中得到几何信息。</p>
+<p>方法论就是两步走：先把特征从图片中提取出来，再从提取的特征中恢复出包含的几何信息（三维结构，相机位姿等等）</p>
+<p>但这类方法有局限性，未必可以利用好所有的特征（线面基本都被抛弃了）</p>
+<p>Direct Visual Odometery的办法规避了这个问题（这里感觉它应该是指光流法</p>
+<p>类似的图像对齐方法在RGB-D或者双目视觉体系中已经有了成熟的算法</p>
+<p>单目相机下图像的对准方案也有，但是比较吃计算资源。有一种半稠密的深度滤波可以降低计算量。</p>
+<p>有的方案把直接对准和特征点一起用，实现了实时性</p>
+<p>LSD-SLAM的一个很重要的点是要理解上面说的半稠密深度图的滤波算法</p>
+<p>这里涉及到了一个比较陌生的概念：逆深度图</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>双目匹配基本原理</title>
+    <url>/2020/08/09/%E5%8F%8C%E7%9B%AE%E5%8C%B9%E9%85%8D%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/</url>
+    <content><![CDATA[<p>双目深度相机的基本流程如下：</p>
+<ul>
+<li>标定两个摄像头，得到相机矩阵，以及相应的单应矩阵</li>
+<li>校正两张图像（也就是Rectify Stereo，校正后的两张图片是相互平行而且位于同一平面的）</li>
+<li>对校正过后的两张图片进行像素点匹配</li>
+<li>根据像素点的视差进行深度的计算，得到最后的深度图</li>
+</ul>
+<a id="more"></a>
+<p>注意：进行像素点之间的匹配的时候，只用在相应的对极线附近进行搜索就足够了。</p>
+<p>图像矫正是通过分别对两张图片用单应（homography）矩阵变换（可以通过标定获得）得到的，的目的就是把两个不同方向的图像平面（下图中灰色平面）重新投影到同一个平面且光轴互相平行（下图中黄色平面）</p>
+<p>一个常识是，视差越大，那么这组对应的像素点的深度就越小</p>
+<p>关于像素点的匹配，有一种方案是滑动窗口匹配，采用的是误差平方和法（Sum of Squared Differences，简称SSD）</p>
+]]></content>
   </entry>
   <entry>
     <title>浅析Semi-Dense Visual Odometry for a Monocular Camera</title>
@@ -379,14 +428,6 @@ F\times W \to F</script><p>那么子空间就有了。</p>
 ]]></content>
   </entry>
   <entry>
-    <title>浅析DTAM: Dense Tracking and Mapping in Real-Time</title>
-    <url>/2020/08/08/%E6%B5%85%E6%9E%90DTAM-Dense-Tracking-and-Mapping-in-Real-Time/</url>
-    <content><![CDATA[<p>这篇文章讲的是实时的稠密追踪和建图，时间有点早，应该不算state of art了，但还是挺典型的</p>
-<a id="more"></a>
-<p>在这篇文章之前，学术界在做实时SFM的时候一般采用稀疏的思路，不过现在时机已到，是时候该稠密一波了。</p>
-]]></content>
-  </entry>
-  <entry>
     <title>逆深度参数化</title>
     <url>/2020/08/08/%E9%80%86%E6%B7%B1%E5%BA%A6%E5%8F%82%E6%95%B0%E5%8C%96/</url>
     <content><![CDATA[<p>逆深度图在DTAM以及后续的相关工作中都有提及，这里稍微介绍一下逆深度参数化的相关知识</p>
@@ -395,45 +436,6 @@ F\times W \to F</script><p>那么子空间就有了。</p>
 <script type="math/tex; mode=display">
 \mathbb{y}=[x_0,y_0,z_0,\theta,\phi,\rho]^T</script><p><img src="\images\1596865193479.png" alt=""></p>
 <p>前三个标量表示了摄像机光心位置（在参考系$(e_1,e_2,e_3)$下，后两个标量编码了旋转角（想想经度和纬度），最后一个$\rho=\frac{1}{||p-c_0||}$，也就是点的深度的倒数。</p>
-]]></content>
-  </entry>
-  <entry>
-    <title>cmake构建系统</title>
-    <url>/2020/08/09/cmake%E6%9E%84%E5%BB%BA%E7%B3%BB%E7%BB%9F/</url>
-    <content><![CDATA[<p>C++在代码复用这一块做的一言难尽，一些依赖第三方库的项目往往很难直接拿来跑，有一大堆的依赖问题需要处理。在这一块，目前比较好的方案只有cmake了。委员会其实可以学学Rust，考虑出个包管理器。</p>
-<a id="more"></a>
-<p>SLAM领域的工作还是要用到不少第三方库的，比如<code>sophus</code>,<code>eigen</code>,<code>g2o</code></p>
-]]></content>
-  </entry>
-  <entry>
-    <title>双目匹配基本原理</title>
-    <url>/2020/08/09/%E5%8F%8C%E7%9B%AE%E5%8C%B9%E9%85%8D%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/</url>
-    <content><![CDATA[<p>双目深度相机的基本流程如下：</p>
-<ul>
-<li>标定两个摄像头，得到相机矩阵，以及相应的单应矩阵</li>
-<li>校正两张图像（也就是Rectify Stereo，校正后的两张图片是相互平行而且位于同一平面的）</li>
-<li>对校正过后的两张图片进行像素点匹配</li>
-<li>根据像素点的视差进行深度的计算，得到最后的深度图</li>
-</ul>
-<p>注意：进行像素点之间的匹配的时候，只用在相应的对极线附近进行搜索就足够了。</p>
-<p>图像矫正是通过分别对两张图片用单应（homography）矩阵变换（可以通过标定获得）得到的，的目的就是把两个不同方向的图像平面（下图中灰色平面）重新投影到同一个平面且光轴互相平行（下图中黄色平面）</p>
-<p>一个常识是，视差越大，那么这组对应的像素点的深度就越小</p>
-]]></content>
-  </entry>
-  <entry>
-    <title>浅析LSD-SLAM</title>
-    <url>/2020/08/08/%E6%B5%85%E6%9E%90LSD-SLAM/</url>
-    <content><![CDATA[<p>大规模建图+精确位姿估计</p>
-<a id="more"></a>
-<p>Feature-Based Methods的目的：从图片中得到几何信息。</p>
-<p>方法论就是两步走：先把特征从图片中提取出来，再从提取的特征中恢复出包含的几何信息（三维结构，相机位姿等等）</p>
-<p>但这类方法有局限性，未必可以利用好所有的特征（线面基本都被抛弃了）</p>
-<p>Direct Visual Odometery的办法规避了这个问题（这里感觉它应该是指光流法</p>
-<p>类似的图像对齐方法在RGB-D或者双目视觉体系中已经有了成熟的算法</p>
-<p>单目相机下图像的对准方案也有，但是比较吃计算资源。有一种半稠密的深度滤波可以降低计算量。</p>
-<p>有的方案把直接对准和特征点一起用，实现了实时性</p>
-<p>LSD-SLAM的一个很重要的点是要理解上面说的半稠密深度图的滤波算法</p>
-<p>这里涉及到了一个比较陌生的概念：逆深度图</p>
 ]]></content>
   </entry>
 </search>
