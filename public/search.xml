@@ -1,6 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Rust Trait 多态</title>
+    <url>/2020/07/06/Rust-Trait-%E5%A4%9A%E6%80%81/</url>
+    <content><![CDATA[<h1 id="Trait-in-Rust"><a href="#Trait-in-Rust" class="headerlink" title="Trait in Rust"></a>Trait in Rust</h1><p>Trait是Rust实现多态的一个重要方式</p>
+<p>可以把他理解为特性</p>
+<p>每一个struct可以拥有多个特性Trait</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>VDO-SLAM</title>
+    <url>/2020/08/08/VDO-SLAM/</url>
+    <content><![CDATA[<p>2020年刚刚挂在arXiv的文章，对于静态和动态的位姿估计做了一个统一。</p>
+<a id="more"></a>]]></content>
+  </entry>
+  <entry>
+    <title>Rust 错误处理</title>
+    <url>/2020/07/05/Rust-%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86/</url>
+    <content><![CDATA[<h1 id="Rust-错误处理"><a href="#Rust-错误处理" class="headerlink" title="Rust 错误处理"></a>Rust 错误处理</h1><p>在这之前有一个必要重要的点需要交代一下</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">enum</span> <span class="title">Result</span></span>&lt;T,E&gt;&#123;</span><br><span class="line">    <span class="literal">Ok</span>(T),</span><br><span class="line">    <span class="literal">Err</span>(E),</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个<code>enum</code>表示结果要么是对的要么是错的，T和E是类型变量（模板变量），如果结果符合要求那么就会用到关联的类型<code>T</code>, 反之就是<code>Err(E)</code></p>
+<a id="more"></a>
+<p>那么当进行一个操作之后，我们就有必要对他的结果进行探讨（对了的话程序继续，错的的话返回错误）</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">use</span> std::fs::File;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> f = File::open(<span class="string">"./updated_time.txt"</span>);</span><br><span class="line">    <span class="keyword">let</span> f = <span class="keyword">match</span> f &#123;</span><br><span class="line">        <span class="literal">Ok</span>(file) =&gt; file,</span><br><span class="line">        <span class="literal">Err</span>(error) =&gt; &#123;</span><br><span class="line">            <span class="built_in">panic!</span>(<span class="string">"Problem in opening file: &#123;:?&#125;"</span>, error);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这段代码就是对打开文件这一操作做了一个分类讨论，对了的话就打开文件，错了的话就panic。</p>
+<p>这里面<code>panic!</code>会让程序中断，可以在运行的时候打开回溯开关来检查此时的堆栈信息</p>
+<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line">RUST_BACKTRACE = <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<p><code>?</code>操作符对一个合法的值进行unwrap，或者当是错误类型的时候，向上传播错误，该操作符仅能作用于类型<code>Result&lt;T, E&gt;</code>和<code>Option&lt;T&gt;</code></p>
+<p>当作用于<code>Result&lt;T, E&gt;</code>类型的值时：</p>
+<ul>
+<li>如果值是<code>Err(e)</code>，则该函数或者闭包返回 <code>Err(From::from(e))</code></li>
+<li>如果值是<code>Ok(x)</code>，则将值unwrap为<code>x</code></li>
+</ul>
+<p>当作用于<code>Option&lt;T&gt;</code>类型的值时：</p>
+<ul>
+<li>如果值是<code>None</code>，则该函数或者闭包返回<code>None</code></li>
+<li>如果值是<code>Some(x)</code>，则将值unwrap为<code>x</code></li>
+</ul>
+<p>特别的是：</p>
+<ul>
+<li>同一个函数中使用<code>?</code>操作符的地方必须返回同一个错误类型，否则会编译失败</li>
+<li>main函数有两个有效返回值，分别为<code>()</code>，<code>Result&lt;T, E&gt;</code></li>
+</ul>
+]]></content>
+  </entry>
+  <entry>
+    <title>仿射几何</title>
+    <url>/2020/08/07/%E4%BB%BF%E5%B0%84%E5%87%A0%E4%BD%95/</url>
+    <content><![CDATA[<p>在数域$K$上的仿射空间包含了四样东西：</p>
+<ul>
+<li><p>非空点集$E$</p>
+</li>
+<li><p>一个向量空间$V$</p>
+</li>
+<li><p>二元运算符</p>
+<script type="math/tex; mode=display">
+E\times E \to V\\
+E\times V \to E</script></li>
+</ul>
+<a id="more"></a>
+<p>满足下面的公理</p>
+<script type="math/tex; mode=display">
+\vec{AB}+\vec{BC}=\vec{AC}\\
+A+\vec{AB}=B\\
+\overrightarrow{A(A+v)}=v</script><p>关于仿射子空间，和仿射空间的定义类似，只要找出$E,V$的子集或者子空间也即$F\subset E, W\subset V$，再加上两种二元运算</p>
+<script type="math/tex; mode=display">
+F\times F \to W\\
+F\times W \to F</script><p>那么子空间就有了。</p>
+<p>另外这个向量子空间$W$代表了仿射子空间的方向，如果两个仿射子空间的方向相同，那么他们就是平行的仿射子空间了。</p>
+<p>注意到：向量空间$W$的维度决定了仿射空间的维度，比如$dim(W)=1$的情况下，这个仿射空间就是一条线（也叫仿射线）</p>
+<p>仿射平面的构成条件也呼之欲出。</p>
+<p>点集的生成子空间：包含一系列的点的最小的仿射子空间。</p>
+<p>仿射空间中的不同的点都是仿射独立的</p>
+<p>关于仿射空间还有一个质心坐标，在epnp算法里面有相关描述，这里略过</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>rCore2020总结</title>
+    <url>/2020/07/26/rCore2020%E6%80%BB%E7%BB%93/</url>
+    <content><![CDATA[<p>不知不觉一个月都要过去了，整了将近一个月（中间因为各种事情咕咕了一周多）的 rCoreLab， 在这里做一个小小的总结。</p>
+<a id="more"></a>
+<p>关于收获：</p>
+<ul>
+<li>Rust编程更加熟练了，对于Rust本身的一些有趣的特性的理解也更加深刻了。比起C++和Python之类的语言，Rust可以明显让人感到要过编译其实不太容易。但是其实稍微入门一点以后就会习惯了，Rust编译器给你的各种提示比C++友好多了。另一方面，Rust花在测试Debug上的时间显著减少了，基本算法正确的情况下一遍过是没问题的。</li>
+<li>当然，上面的这些收获还是次要的。在这次rCore的活动中，我对于RISC-V指令集有了更加深刻的认知，以前上计算机体系结构的时候讲的也是这玩意儿，但因为Soren本身是做Robotics的，其实讲的就没那么仔细了，关于页表、中断这种概念我是看了清华的OS课以后才有了一种恍然大悟的感觉（捂脸）</li>
+<li>我比较认真地通读了当前rcore-tutorial的所有源代码，包括Rust和汇编，应证了以前的一个观点：“一个涉及合理的架构远胜于细节的精雕细琢”。可以看到，tutorial v3的代码比前两个版本组织的更好了，它是循序渐进的，而且模块化也做得更好了，分隔出来的六个实验基本上你看看过源码之后就可以知道该如何修改，这些对于接口的抽象也是我应该学习的。</li>
+</ul>
+<p>关于下一步：</p>
+<ul>
+<li>如果可以进入下一轮的话，我比较感兴趣的工作是zCore的文档和单元测试完善，这一部分看起来容易，但是要做好还是需要花不少工夫的。</li>
+</ul>
+<p>曾经遇到的困难：</p>
+<ul>
+<li>关于OS和RISC-V这部分其实还可以再深挖一下，但就目前的需求而言，可以点到为止了。</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>Rust</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Rust入门语法归纳</title>
     <url>/2020/02/01/Rust%E5%85%A5%E9%97%A8%E8%AF%AD%E6%B3%95%E5%BD%92%E7%BA%B3/</url>
     <content><![CDATA[<h1 id="Rust入门语法归纳"><a href="#Rust入门语法归纳" class="headerlink" title="Rust入门语法归纳"></a>Rust入门语法归纳</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>Rust是一门学习曲线极其陡峭的编程语言，里面的语法规则比较庞杂。不得不承认，Rust可读性是很高的，但是写出正确的代码又是另外一回事了。</p>
@@ -8,7 +107,6 @@
 <p>此外，如果在一门或者多门其他编程语言上已经有了相当的基础，那么学习Rust会快上一些。这也是本文面向的主要对象。</p>
 <p>友情提示：把Rust作为一门入门语言是一个不太理智的决定。</p>
 <a id="more"></a>
-
 <h2 id="类型系统"><a href="#类型系统" class="headerlink" title="类型系统"></a>类型系统</h2><h3 id="类型签名"><a href="#类型签名" class="headerlink" title="类型签名"></a>类型签名</h3><p>遵循<code>变量名: 变量类型</code>的格式，冒号前面是变量名，后面是变量类型</p>
 <p>在C语言中的<code>char a</code>到了Rust里面就变成了<code>a : char</code></p>
 <p>这与Haskell里面的类型签名是一致的。</p>
@@ -23,47 +121,36 @@
 <p>比如一个数组<code>[1，2，3]</code>，它的类型签名就是<code>[i32;3]</code></p>
 <p>如果要用动态数组，就需要用到<code>vec!</code>的宏(或者<code>Vec&lt;T&gt;</code>)，直接用例子来演示</p>
 <figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> array:[<span class="built_in">i32</span>;<span class="number">3</span>]=[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>];</span><br><span class="line"><span class="keyword">let</span> vector:<span class="built_in">Vec</span>&lt;<span class="built_in">i32</span>&gt;=<span class="built_in">vec!</span>[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>];</span><br></pre></td></tr></table></figure>
-
 <h4 id="函数类型"><a href="#函数类型" class="headerlink" title="函数类型"></a>函数类型</h4><p>一个函数类型可以表示为<code>fn (参数类型)-&gt;(返回值类型)</code></p>
 <p>对应C语言中的函数指针。</p>
 <h4 id="字符串类型"><a href="#字符串类型" class="headerlink" title="字符串类型"></a>字符串类型</h4><p>Rust里面有两种主要的字符串类型：<code>String</code>和<code>str</code>，其中<code>str</code>是内建类型，而<code>String</code>由标准库提供。</p>
 <p>其中<code>String</code>类型是分配在堆(heap)上的，它是可变的，还有所有权，而<code>str</code>一般以被借用的形式出现，即<code>&amp;str</code>。</p>
 <p>值得一提的是字符串常量，在下面的赋值语句</p>
 <figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> sentence = <span class="string">"hello, my friend!"</span>;</span><br></pre></td></tr></table></figure>
-
 <p>变量<code>sentence</code>的类型是<code>&amp;&#39;static str</code></p>
 <p><code>&amp;str</code>的类型可以用来表示字符串片段。</p>
 <h4 id="元组-（tuple）"><a href="#元组-（tuple）" class="headerlink" title="元组 （tuple）"></a>元组 （tuple）</h4><p>这里的元组和Python中的元组类似，是固定大小的有序列表，用小括号<code>()</code>包住，看一眼例子就明白了</p>
 <figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> x: (<span class="built_in">i32</span>, &amp;<span class="built_in">str</span>) = (<span class="number">1</span>, <span class="string">"hello"</span>);</span><br></pre></td></tr></table></figure>
-
-
-
 <h3 id="用户定义类型（UDT）"><a href="#用户定义类型（UDT）" class="headerlink" title="用户定义类型（UDT）"></a>用户定义类型（UDT）</h3><h4 id="结构体struct"><a href="#结构体struct" class="headerlink" title="结构体struct"></a>结构体<code>struct</code></h4><p>定义结构体的关键字就是<code>struct</code></p>
 <p>它的定义规则为<code>struct 结构体名称 {结构体内变量:对应变量的类型}</code></p>
 <p>当然也可以用<code>{结构体内部变量：对应类型}</code>的方式来描述一个匿名结构体。</p>
 <p>例如我们要定义类型<code>Point</code>来表示平面内的一个点：</p>
 <figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Point</span></span> &#123;</span><br><span class="line">    x:<span class="built_in">f32</span>,</span><br><span class="line">    y:<span class="built_in">i32</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>需要注意的是，在为类型命名的时候，我们一般遵循首字母大写的驼峰命名法。</p>
 <p>另外一点比较有趣的是，Rust中的<code>struct</code>更像C++当中的<code>class</code>，原因是它也可以通过<code>impl</code>关键字来定义方法<code>method</code>。</p>
 <p>示例如下:</p>
 <figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Rectangle</span></span> &#123;</span><br><span class="line">    width: <span class="built_in">u32</span>,</span><br><span class="line">    height: <span class="built_in">u32</span>,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">impl</span> Rectangle &#123;</span><br><span class="line">    <span class="function"><span class="keyword">fn</span> <span class="title">area</span></span>(&amp;<span class="keyword">self</span>) -&gt; <span class="built_in">u32</span> &#123;</span><br><span class="line">        <span class="keyword">self</span>.width * <span class="keyword">self</span>.height</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">fn</span> <span class="title">square</span></span>(size: <span class="built_in">u32</span>) -&gt; Rectangle &#123;</span><br><span class="line">        Rectangle &#123; width: size, height: size &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>这里需要强调一点，与<code>area</code>不同，<code>square</code>并不叫方法，而是叫做关联函数，原因是它的参数里面没有<code>&amp;self</code></p>
 <p>这里的<code>self</code>不难联想到python当中的方法定义</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Foo</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">foo</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
-
 <h4 id="枚举体"><a href="#枚举体" class="headerlink" title="枚举体"></a>枚举体</h4><p>定义枚举体依赖于关键字<code>enum</code>，最基本的使用规则是<code>enum 枚举体名称 {成员}</code></p>
 <p>比如IP地址包括了IPv4和IPv6两种，用枚举体来描述就是：</p>
 <figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">enum</span> <span class="title">IpAddrKind</span></span>&#123;</span><br><span class="line">    v4,</span><br><span class="line">    v6,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p><code>v4、v6</code>两者是枚举体的成员(variants)，他们位于<code>IpAddrKind</code>的命名空间中。这也就意味着我们可以通过如下方式来创建对应的实例</p>
 <figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> v4addr=IpAddrKind::v4;</span><br></pre></td></tr></table></figure>
-
 <p>在这时，我们的<code>v4</code>和<code>v6</code>只能起到一个类型标识的作用，不能表示具体的数据。我们通过数据关联来解决这个问题。加上了数据关联之后，枚举体的使用规则被扩展为<code>enum 枚举体名称 {成员 (关联数据)}</code></p>
 <p>例子如下：</p>
 <figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">enum</span> <span class="title">Message</span></span> &#123;</span><br><span class="line">    Quit,</span><br><span class="line">    Move &#123; x: <span class="built_in">i32</span>, y: <span class="built_in">i32</span> &#125;,</span><br><span class="line">    Write(<span class="built_in">String</span>),</span><br><span class="line">    ChangeColor(<span class="built_in">i32</span>, <span class="built_in">i32</span>, <span class="built_in">i32</span>),</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//扩展示例</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">QuitMessage</span></span>; <span class="comment">// 类单元结构体</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">MoveMessage</span></span> &#123;</span><br><span class="line">    x: <span class="built_in">i32</span>,</span><br><span class="line">    y: <span class="built_in">i32</span>,</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">WriteMessage</span></span>(<span class="built_in">String</span>); <span class="comment">// 元组结构体</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">ChangeColorMessage</span></span>(<span class="built_in">i32</span>, <span class="built_in">i32</span>, <span class="built_in">i32</span>); <span class="comment">// 元组结构体</span></span><br></pre></td></tr></table></figure>
-
 <p>这个枚举有四个含有不同类型的成员：</p>
 <ul>
 <li><code>Quit</code> 没有关联任何数据。</li>
@@ -73,20 +160,17 @@
 </ul>
 <h5 id="一个重要的枚举Option-lt-T-gt"><a href="#一个重要的枚举Option-lt-T-gt" class="headerlink" title="一个重要的枚举Option&lt;T&gt;"></a>一个重要的枚举<code>Option&lt;T&gt;</code></h5><p><code>Option&lt;T&gt;</code>由标准库定义</p>
 <figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">enum</span> <span class="title">Option</span></span>&lt;T&gt; &#123;</span><br><span class="line">    <span class="literal">Some</span>(T),</span><br><span class="line">    <span class="literal">None</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>整个枚举体的精髓就体现在了成员<code>None</code>上，<code>Option&lt;T&gt;::None</code>是Rust里唯一一种表示空值的方式。也就是说，如果一个变量的类型不是<code>Option&lt;T&gt;</code>，你就不用担心它是空值。</p>
 <h3 id="类型别名"><a href="#类型别名" class="headerlink" title="类型别名"></a>类型别名</h3><p>依赖关键词<code>type</code></p>
 <p>遵循规则：<code>type 别名 = 类型名</code></p>
 <p>例如：</p>
 <figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">type</span> <span class="title">Name</span></span> = <span class="built_in">String</span>;</span><br><span class="line"><span class="keyword">let</span> x: Name = <span class="string">"Hello"</span>.to_string();</span><br></pre></td></tr></table></figure>
-
 <h2 id="控制流"><a href="#控制流" class="headerlink" title="控制流"></a>控制流</h2><p>关于Rust类型系统的介绍就告一段落，下面我们来了解一下Rust的控制流。</p>
 <h3 id="变量绑定"><a href="#变量绑定" class="headerlink" title="变量绑定"></a>变量绑定</h3><p>依赖于关键字<code>let</code></p>
 <p>遵循规则：<code>let 变量名:类型签名 = 值</code></p>
 <p>注意：不绑定变量<code>let 变量名:类型签名</code>会有警告，不绑定变量且无类型签名<code>let 变量名</code>无法编译，而在绑定变量的时候没有类型签名<code>let 变量名 = 值</code>可以正常编译</p>
 <p>示例</p>
 <figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> x:<span class="built_in">i32</span> = <span class="number">5</span>;</span><br><span class="line"><span class="keyword">let</span> y = <span class="number">6</span>;</span><br><span class="line"><span class="keyword">let</span> z:<span class="built_in">f64</span>;</span><br></pre></td></tr></table></figure>
-
 <p>这一语句把对应的值绑定到了变量名上。</p>
 <p>变量绑定和赋值不能够等同视之。</p>
 <p>如果期望以上的<code>x,y,z</code>是可变的，那么在变量名之前要加上关键字<code>mut</code></p>
@@ -96,37 +180,27 @@
 <p>注意：<code>if</code>后面的表达式必须是<code>bool</code>类型的</p>
 <p>此外，条件语句可以用于变量绑定</p>
 <figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> x = <span class="number">5</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> y = <span class="keyword">if</span> x == <span class="number">5</span> &#123;</span><br><span class="line">    <span class="number">10</span></span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="number">15</span></span><br><span class="line">&#125;; <span class="comment">// y: i32</span></span><br></pre></td></tr></table></figure>
-
 <h3 id="循环语句"><a href="#循环语句" class="headerlink" title="循环语句"></a>循环语句</h3><p>有三种表达迭代的关键字<code>loop</code>, <code>for</code>, <code>while</code></p>
 <h4 id="loop"><a href="#loop" class="headerlink" title="loop"></a>loop</h4><p>简单粗暴：<code>loop 语句块</code></p>
 <figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">loop</span> &#123;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"Loop forever!"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>依赖语句块中的内容来跳出循环。</p>
 <p>我们可以思考一下C语言中的两种相同语义的表述方式</p>
 <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">int</span> i=<span class="number">0</span></span><br><span class="line"><span class="keyword">while</span>(i&lt;<span class="number">10</span>)&#123;</span><br><span class="line">    i++;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> j;</span><br><span class="line"><span class="keyword">while</span> (<span class="number">1</span>)&#123;</span><br><span class="line">    <span class="keyword">if</span> (j&lt;<span class="number">10</span>) <span class="keyword">break</span>;</span><br><span class="line">    j++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <h4 id="while"><a href="#while" class="headerlink" title="while"></a>while</h4><p>看起来像略微机智的<code>loop</code></p>
 <p>遵循规则：<code>while 条件表达式 语句块</code></p>
 <p>示例如下：</p>
 <figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="keyword">mut</span> x = <span class="number">5</span>; <span class="comment">// mut x: i32</span></span><br><span class="line"><span class="keyword">let</span> <span class="keyword">mut</span> done = <span class="literal">false</span>; <span class="comment">// mut done: bool</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> !done &#123;</span><br><span class="line">    x += x - <span class="number">3</span>;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"&#123;&#125;"</span>, x);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> x % <span class="number">5</span> == <span class="number">0</span> &#123;</span><br><span class="line">        done = <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>注意：条件表达式需要一个<code>bool</code>类型</p>
 <h4 id="for"><a href="#for" class="headerlink" title="for"></a>for</h4><p>Rust的<code>for</code>循环的设计范式和C语言中的有很大不同，更加接近Python中的。</p>
 <p>遵循规则  <code>for 变量名 in 迭代器 代码块</code></p>
 <p>也即</p>
 <figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> var <span class="keyword">in</span> expression &#123;</span><br><span class="line">    code</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>这个<code>expression</code>是一个迭代器。迭代器返回一系列的元素。每次迭代循环中的一个元素。然后它的值与<code>var</code>绑定，它在循环体中有效。每当循环体执行完后，我们从迭代器中取出下一个值，然后我们再重复一遍。当迭代器中不再有值时，<code>for</code>循环结束。</p>
 <p>下面提供C和Rust里面打印0到9的等价表述</p>
 <figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> (x = <span class="number">0</span>; x &lt; <span class="number">10</span>; x++) &#123;</span><br><span class="line">    <span class="built_in">printf</span>( <span class="string">"%d\n"</span>, x );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> <span class="number">0</span>..<span class="number">10</span> &#123;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"&#123;&#125;"</span>, x); <span class="comment">// x: i32</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <h4 id="循环标签"><a href="#循环标签" class="headerlink" title="循环标签"></a>循环标签</h4><p>且看例子：</p>
 <figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="symbol">'outer</span>: <span class="keyword">for</span> x <span class="keyword">in</span> <span class="number">0</span>..<span class="number">10</span> &#123;</span><br><span class="line">    <span class="symbol">'inner</span>: <span class="keyword">for</span> y <span class="keyword">in</span> <span class="number">0</span>..<span class="number">10</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> x % <span class="number">2</span> == <span class="number">0</span> &#123; <span class="keyword">continue</span> <span class="symbol">'outer</span>; &#125; <span class="comment">// Continues the loop over `x`.</span></span><br><span class="line">        <span class="keyword">if</span> y % <span class="number">2</span> == <span class="number">0</span> &#123; <span class="keyword">continue</span> <span class="symbol">'inner</span>; &#125; <span class="comment">// Continues the loop over `y`.</span></span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">"x: &#123;&#125;, y: &#123;&#125;"</span>, x, y);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
 <p>这里的<code>&#39;outer</code>和<code>&#39;inner</code>两个循环标签分别标记了外层的循环和内部的循环，而语句中的<code>continue</code>就对他们标记的循环起作用。</p>
 <p>值得注意的是，循环标签名字前面的单引号<code>&#39;</code>是不可省略哟。</p>
 <h3 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h3><p>简而言之，</p>
@@ -134,12 +208,10 @@
 <p>文档注释<code>///</code>，并且它支持Markdown语法</p>
 <p>例子如下</p>
 <figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="comment">/// 将给定的数字加一</span></span><br><span class="line"><span class="comment">///</span></span><br><span class="line"><span class="comment">/// # Examples</span></span><br><span class="line"><span class="comment">///</span></span><br><span class="line"><span class="comment">/// </span></span><br><span class="line"><span class="comment">/// let arg = 5;</span></span><br><span class="line"><span class="comment">/// let answer = my_crate::add_one(arg);</span></span><br><span class="line"><span class="comment">///</span></span><br><span class="line"><span class="comment">/// assert_eq!(6, answer);</span></span><br><span class="line"><span class="comment">/// </span></span><br><span class="line"><span class="keyword">pub</span> <span class="function"><span class="keyword">fn</span> <span class="title">add_one</span></span>(x: <span class="built_in">i32</span>) -&gt; <span class="built_in">i32</span> &#123;</span><br><span class="line">    x + <span class="number">1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <h3 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h3><p>函数声明遵循 <code>fn (参数:参数值类型)-&gt;返回值类型</code></p>
 <p>参数可以是一个或者多个，Rust里面的返回值只能是一个。</p>
 <p>举个例子</p>
 <figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">two_sum</span></span>(a:<span class="built_in">i32</span>, b:<span class="built_in">i32</span>) -&gt; <span class="built_in">i32</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a+b;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//另一个版本</span></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">two_sum</span></span>(a:<span class="built_in">i32</span>, b:<span class="built_in">i32</span>) -&gt; <span class="built_in">i32</span>&#123;</span><br><span class="line">    a+b</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>在另一个版本中，大概有读者会感到疑惑，这里是不是少了什么？</p>
 <p>不过请放心，一个不少。第二个版本才是有Rust特色的表述，他会把放在最后的那个表达式作为返回值。第一种类C的表述其实很少会在函数结尾处用到，它一般的作用是在函数中间跳出。</p>
 <p>（提醒一下：第二个版本里面不要写成<code>a+b;</code>呦</p>
@@ -157,62 +229,50 @@
 <p>在进阶阶段，我们依然从类型系统和控制流两个主要方面来展开。另外，还有相关的编程概念也需要交代。</p>
 <p>文章暂时没有写完。</p>
 <a id="more"></a>
-
 <h2 id="类型进阶"><a href="#类型进阶" class="headerlink" title="类型进阶"></a>类型进阶</h2><h3 id="数字运算"><a href="#数字运算" class="headerlink" title="数字运算"></a>数字运算</h3><p>主要五个运算符<code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, <code>%</code>，对应了加减乘除和取余。 </p>
 <h3 id="数组操作"><a href="#数组操作" class="headerlink" title="数组操作"></a>数组操作</h3><p>一个数组可以用索引来获取相关元素的值，如果要得到数组长度，那么可以用<code>len()</code>来获取</p>
 <p>例子</p>
 <figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> x:[<span class="built_in">i32</span>;<span class="number">3</span>]=[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>];</span><br><span class="line"><span class="built_in">println!</span>(<span class="string">"First element of x is &#123;&#125;, the size of x is &#123;&#125;"</span>,x[<span class="number">0</span>],x.len());</span><br></pre></td></tr></table></figure>
-
 <h3 id="用户定义类型（UDT）"><a href="#用户定义类型（UDT）" class="headerlink" title="用户定义类型（UDT）"></a>用户定义类型（UDT）</h3><h2 id="控制流进阶"><a href="#控制流进阶" class="headerlink" title="控制流进阶"></a>控制流进阶</h2><h3 id="匹配-match"><a href="#匹配-match" class="headerlink" title="匹配 match"></a>匹配 match</h3><p>先放例子，不难看出来<code>match</code>和C语言中的<code>switch</code>类似：</p>
 <figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> x = <span class="number">5</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">match</span> x &#123;</span><br><span class="line">    <span class="number">1</span> =&gt; <span class="built_in">println!</span>(<span class="string">"one"</span>),</span><br><span class="line">    <span class="number">2</span> =&gt; <span class="built_in">println!</span>(<span class="string">"two"</span>),</span><br><span class="line">    <span class="number">3</span> =&gt; <span class="built_in">println!</span>(<span class="string">"three"</span>),</span><br><span class="line">    <span class="number">4</span> =&gt; <span class="built_in">println!</span>(<span class="string">"four"</span>),</span><br><span class="line">    <span class="number">5</span> =&gt; <span class="built_in">println!</span>(<span class="string">"five"</span>),</span><br><span class="line">    _ =&gt; <span class="built_in">println!</span>(<span class="string">"something else"</span>),</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>下划线<code>_</code>代表通配符（什么都可以和它匹配上）</p>
 <p>匹配的语法一个很重要的点是它要求所有情况都枚举一遍，在没有通配符的情况下，上面的代码就不只是<code>1,2,3,4,5</code>这些匹配分支了，编译器会让你把所有<code>i32</code>范围内的数字都加上，不妨想象一下这个壮观场面……（多亏有通配符）</p>
 <p>前面讲判断语句有这样的一个用法，匹配也是类似的</p>
 <figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> x = <span class="number">5</span>;</span><br><span class="line"><span class="keyword">let</span> y = <span class="keyword">if</span> x==<span class="number">5</span> &#123; <span class="number">6</span> &#125; <span class="keyword">else</span> &#123; <span class="number">7</span> &#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//等价表述</span></span><br><span class="line"><span class="keyword">let</span> x = <span class="number">5</span>;</span><br><span class="line"><span class="keyword">let</span> y = <span class="keyword">match</span> x&#123;</span><br><span class="line">    <span class="number">5</span> =&gt; <span class="number">6</span>,</span><br><span class="line">    _ =&gt; <span class="number">7</span>,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
 <p><code>match</code>和<code>enum</code>是一对好搭档</p>
 <figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">enum</span> <span class="title">Message</span></span> &#123;</span><br><span class="line">    Quit,</span><br><span class="line">    ChangeColor(<span class="built_in">i32</span>, <span class="built_in">i32</span>, <span class="built_in">i32</span>),</span><br><span class="line">    Move &#123; x: <span class="built_in">i32</span>, y: <span class="built_in">i32</span> &#125;,</span><br><span class="line">    Write(<span class="built_in">String</span>),</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">quit</span></span>() &#123; <span class="comment">/* ... */</span> &#125;</span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">change_color</span></span>(r: <span class="built_in">i32</span>, g: <span class="built_in">i32</span>, b: <span class="built_in">i32</span>) &#123; <span class="comment">/* ... */</span> &#125;</span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">move_cursor</span></span>(x: <span class="built_in">i32</span>, y: <span class="built_in">i32</span>) &#123; <span class="comment">/* ... */</span> &#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">process_message</span></span>(msg: Message) &#123;</span><br><span class="line">    <span class="keyword">match</span> msg &#123;</span><br><span class="line">        Message::Quit =&gt; quit(),</span><br><span class="line">        Message::ChangeColor(r, g, b) =&gt; change_color(r, g, b),</span><br><span class="line">        Message::Move &#123; x, y: new_name_for_y &#125; =&gt; move_cursor(x, new_name_for_y),</span><br><span class="line">        Message::Write(s) =&gt; <span class="built_in">println!</span>(<span class="string">"&#123;&#125;"</span>, s),</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>匹配还有多重匹配，下面的代码就会把<code>one or two</code>打印出来</p>
 <figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> x = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">match</span> x &#123;</span><br><span class="line">    <span class="number">1</span> | <span class="number">2</span> =&gt; <span class="built_in">println!</span>(<span class="string">"one or two"</span>),</span><br><span class="line">    <span class="number">3</span> =&gt; <span class="built_in">println!</span>(<span class="string">"three"</span>),</span><br><span class="line">    _ =&gt; <span class="built_in">println!</span>(<span class="string">"anything"</span>),</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <h2 id="抽象概念"><a href="#抽象概念" class="headerlink" title="抽象概念"></a>抽象概念</h2><h3 id="所有权系统"><a href="#所有权系统" class="headerlink" title="所有权系统"></a>所有权系统</h3><p>所有权系统包括三个部分：所有权，借用与引用，生命周期</p>
 <p>在变量绑定的同时，所有权也随之声明。</p>
 <p>例如</p>
 <figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> sentence = <span class="built_in">String</span>::from(<span class="string">"Hello!"</span>);</span><br></pre></td></tr></table></figure>
-
 <p>这一句里面，变量<code>sentence</code>拥有了字符串<code>&quot;Hello&quot;</code>的所有权。所有数据的所有权只能被一个变量所占有。当一个变量名有一个数据的所有权的时候，理所当然地可以对它拥有的数据进行种种操作。</p>
 <p>那么，有一个问题，其他变量想要使用这个数据的时候，应该怎么办呢？</p>
 <p>我们自然就可以想到几种方案，比如说，可以考虑把所有权移交出去。</p>
 <figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> sentence = <span class="built_in">String</span>::from(<span class="string">"Hello!"</span>);</span><br><span class="line"><span class="keyword">let</span> another_sentence = sentence;</span><br><span class="line"><span class="built_in">println!</span>(<span class="string">"&#123;&#125;"</span>,another_sentence);	<span class="comment">//It's OK</span></span><br><span class="line"><span class="built_in">println!</span>(<span class="string">"&#123;&#125;"</span>,sentence);			<span class="comment">//Errors happened</span></span><br></pre></td></tr></table></figure>
-
 <p>在第二条语句中，原本字符串<code>&quot;Hello&quot;</code>的所有权从<code>sentence</code>转移到了<code>another_sentence</code>， 自然而然地，第三条语句可以把字符串打印出来。而第四条语句则不然，在失去了所有权以后，<code>sentence</code>已经无法访问该字符串了，会产生报错。</p>
 <p>再来展示一个迷惑操作</p>
 <figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> x:<span class="built_in">i32</span> = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">let</span> y = x;</span><br><span class="line"><span class="built_in">println!</span>(<span class="string">"&#123;&#125;"</span>,x);	<span class="comment">//It's OK</span></span><br><span class="line"><span class="built_in">println!</span>(<span class="string">"&#123;&#125;"</span>,y);	<span class="comment">//It's OK</span></span><br></pre></td></tr></table></figure>
-
 <p>两条都可以顺利打印，照理来说，<code>x</code>对<code>1</code>的所有权转移到了<code>y</code>上，那么为什么第三行没有报错。对比上面的例子，要想知道答案，就需要着眼于第二行。表面上同样是变量绑定，但是，<code>let y = x;</code>当中所执行的实际语义是把<code>1</code>拷贝一份，再把它的所有权绑到<code>y</code>上。<code>x,y</code>两个变量人手一份所有权，那么自然也就解释的通了。</p>
 <p>上面讲的是所有权的转移方法，也叫做移动语义。那么能不能只是授权其他人使用数据而自己继续保留该数据的所有权呢？</p>
 <p>方法是有的，这就是借用的概念，这和我们在日常生活中的认识没有多少区别。</p>
 <p>借用的实现依托关键词<code>ref</code>或者<code>&amp;</code>，遵循了<code>ref 类型名</code>或者<code>&amp;类型名</code>，这种实现借用功能的形式我们称之为应用，比如</p>
 <figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> x:<span class="built_in">i32</span> = <span class="number">5</span>;</span><br><span class="line"><span class="keyword">let</span> y = &amp;x;</span><br></pre></td></tr></table></figure>
-
 <p><code>y</code>就是<code>x</code>的一个引用，他借用了<code>x</code>所拥有的数据的所有权（会还回去的）</p>
 <figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> s1 = <span class="built_in">String</span>::from(<span class="string">"hello"</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> len = calculate_length(&amp;s1);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"The length of '&#123;&#125;' is &#123;&#125;."</span>, s1, len);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">calculate_length</span></span>(s: &amp;<span class="built_in">String</span>) -&gt; <span class="built_in">usize</span> &#123;</span><br><span class="line">    s.len()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>在下面这个例子中，我们注意到函数<code>calculate_length</code>要求的参数类型是<code>&amp;String</code>也就是一个<code>String</code>变量的引用，在第四行函数执行的时候，<code>s1</code>的所有权被借了出去当做参数，也就是<code>&amp;s1</code>。在这里，规定函数的参数为引用是有必要的，否则，我们可以预想到<code>s1</code>的本体会被传进函数的作用域，然后随着函数的结束，它会在离开作用域的时候面临一个问题—资源被释放了（相当于<code>&quot;Hello&quot;</code>字符串已经在内存中被销毁），我们无法在后续的程序中调用<code>s1</code>，可谓一去不复返。（除非<code>s1</code>是<code>i32</code>之类的基本类型，那么实际上程序会重新拷贝一份当成参数传入函数，也就是说后续依然可以使用<code>s1</code>）</p>
 <p>程序中的每一个对象都有生命周期，一般来说，编译器会自动推导，而当遇到和引用相关的地方，编译器时常难以自行推导生命周期，就会发生错误，这个时候需要我们自己手动显式地去声明。关于这一部分的语法规则，先挖个坑，以后填。</p>
 <h3 id="内存管理"><a href="#内存管理" class="headerlink" title="内存管理"></a>内存管理</h3><p>关于内存，主要有两个讨论的对象：堆和栈</p>
 <p>栈非常快速，并且是 Rust 默认分配内存的地方。不过这个分配位于函数调用的本地，并有大小限制。堆，相反，更慢，并且需要被你的程序显式分配。不过它无事实上的大小限制，并且是全局可访问的。注意这里堆的意义，它意味着已任意顺序分配任意大小的内存块，这与堆数据结构有很大不同</p>
 <h3 id="模式匹配-pattern-match"><a href="#模式匹配-pattern-match" class="headerlink" title="模式匹配 pattern match"></a>模式匹配 pattern match</h3><p><code>match</code>可以在一堆东西中把具有你所期望的特征的东西找出来的功能，这也叫做模式匹配</p>
 <p>这里不做详细介绍</p>
-<h3 id="宏"><a href="#宏" class="headerlink" title="宏"></a>宏</h3><p>十分有用（但挺难懂）的高级抽象，例子随处都是，具体的描述可以参考[宏]([<a href="https://kaisery.gitbooks.io/rust-book-chinese/content/content/Macros%20%E5%AE%8F.html]" target="_blank" rel="noopener">https://kaisery.gitbooks.io/rust-book-chinese/content/content/Macros%20%E5%AE%8F.html]</a>(<a href="https://kaisery.gitbooks.io/rust-book-chinese/content/content/Macros" target="_blank" rel="noopener">https://kaisery.gitbooks.io/rust-book-chinese/content/content/Macros</a> 宏.html))，这篇易读又全面。下面只是列举一下宏里面的基本概念</p>
+<h3 id="宏"><a href="#宏" class="headerlink" title="宏"></a>宏</h3><p>十分有用（但挺难懂）的高级抽象，例子随处都是，具体的描述可以参考<a href="[https://kaisery.gitbooks.io/rust-book-chinese/content/content/Macros%20%E5%AE%8F.html](https://kaisery.gitbooks.io/rust-book-chinese/content/content/Macros 宏.html">宏</a>)，这篇易读又全面。下面只是列举一下宏里面的基本概念</p>
 <p>我们通过阅读标准库或者其他地方的一些宏定义，比如<code>vec!</code>的简化版</p>
 <figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="built_in">macro_rules!</span> vec &#123;</span><br><span class="line">    ( $( $x:expr ),* ) =&gt; &#123;</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">let</span> <span class="keyword">mut</span> temp_vec = <span class="built_in">Vec</span>::new();</span><br><span class="line">            $(</span><br><span class="line">                temp_vec.push($x);</span><br><span class="line">            )*</span><br><span class="line">            temp_vec</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>多少可以看出，宏的定义有那么一丝模式匹配的味道</p>
 <p>我们把<code>=&gt;</code>左侧的称为匹配器，<code>expr</code>被称为分段标识符（这不是任意变量名，而是分段标识符的一系列规范名称之一）    </p>
-<h4 id="句法要求"><a href="#句法要求" class="headerlink" title="句法要求"></a>句法要求</h4><p>即使 Rust 代码中含有未展开的宏，它也可以被解析为一个完整的[语法树](<a href="https://kaisery.gitbooks.io/rust-book-chinese/content/content/7.Glossary" target="_blank" rel="noopener">https://kaisery.gitbooks.io/rust-book-chinese/content/content/7.Glossary</a> 词汇表.md#abstract-syntax-tree)。这个属性对于编辑器或其它处理代码的工具来说十分有用。这里也有一些关于 Rust 宏系统设计的推论。</p>
+<h4 id="句法要求"><a href="#句法要求" class="headerlink" title="句法要求"></a>句法要求</h4><p>即使 Rust 代码中含有未展开的宏，它也可以被解析为一个完整的<a href="https://kaisery.gitbooks.io/rust-book-chinese/content/content/7.Glossary 词汇表.md#abstract-syntax-tree" target="_blank" rel="noopener">语法树</a>。这个属性对于编辑器或其它处理代码的工具来说十分有用。这里也有一些关于 Rust 宏系统设计的推论。</p>
 <p>一个推论是 Rust 必须确定，当它解析一个宏展开时，宏是否代替了</p>
 <ul>
 <li>0个或多个项</li>
@@ -257,32 +317,24 @@
 <h4 id="常见宏"><a href="#常见宏" class="headerlink" title="常见宏"></a>常见宏</h4><p><code>panic!</code></p>
 <p>这个宏导致当前线程恐慌。你可以传给这个宏一个信息通过：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">panic!(&quot;oh no!&quot;);</span><br></pre></td></tr></table></figure>
-
 <p><code>vec!</code></p>
 <p>它方便创建<code>Vec&lt;T&gt;</code>：</p>
 <figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> v = <span class="built_in">vec!</span>[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>];</span><br></pre></td></tr></table></figure>
-
 <p>它也让你可以用重复值创建vector。例如，100个<code>0</code>：</p>
 <figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> v = <span class="built_in">vec!</span>[<span class="number">0</span>; <span class="number">100</span>];</span><br></pre></td></tr></table></figure>
-
 <p><code>assert!</code>和<code>assert_eq!</code></p>
 <p>这两个宏用在测试中。<code>assert!</code>获取一个布尔值，而<code>assert_eq!</code>获取两个值并比较它们。<code>true</code> 就通过，<code>false</code>就<code>panic!</code>。像这样：</p>
 <figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="comment">// A-ok!</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">assert!</span>(<span class="literal">true</span>);</span><br><span class="line"><span class="built_in">assert_eq!</span>(<span class="number">5</span>, <span class="number">3</span> + <span class="number">2</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Nope :(</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">assert!</span>(<span class="number">5</span> &lt; <span class="number">3</span>);</span><br><span class="line"><span class="built_in">assert_eq!</span>(<span class="number">5</span>, <span class="number">3</span>);</span><br></pre></td></tr></table></figure>
-
 <p><code>try!</code></p>
 <p><code>try!</code>用来进行错误处理。它获取一些可以返回<code>Result&lt;T, E&gt;</code>的数据，并返回<code>T</code>如果它是<code>Ok&lt;T&gt;</code>，或<code>return</code>一个<code>Err(E)</code>如果出错了。像这样：</p>
 <figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">use</span> std::fs::File;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">foo</span></span>() -&gt; std::io::<span class="built_in">Result</span>&lt;()&gt; &#123;</span><br><span class="line">    <span class="keyword">let</span> f = <span class="built_in">try!</span>(File::create(<span class="string">"foo.txt"</span>));</span><br><span class="line"></span><br><span class="line">    <span class="literal">Ok</span>(())</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>它比这么写要更简明：</p>
 <figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">use</span> std::fs::File;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">foo</span></span>() -&gt; std::io::<span class="built_in">Result</span>&lt;()&gt; &#123;</span><br><span class="line">    <span class="keyword">let</span> f = File::create(<span class="string">"foo.txt"</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> f = <span class="keyword">match</span> f &#123;</span><br><span class="line">        <span class="literal">Ok</span>(t) =&gt; t,</span><br><span class="line">        <span class="literal">Err</span>(e) =&gt; <span class="keyword">return</span> <span class="literal">Err</span>(e),</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="literal">Ok</span>(())</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p><code>unreachable!</code></p>
 <p>这个宏用于当你认为一些代码不应该被执行的时候：</p>
 <figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="literal">false</span> &#123;</span><br><span class="line">    <span class="built_in">unreachable!</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>有时，编译器可能会让你编写一个你认为将永远不会执行的不同分支。在这个例子中，用这个宏，这样如果最终你错了，你会为此得到一个<code>panic!</code>。</p>
 <figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> x: <span class="built_in">Option</span>&lt;<span class="built_in">i32</span>&gt; = <span class="literal">None</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">match</span> x &#123;</span><br><span class="line">    <span class="literal">Some</span>(_) =&gt; <span class="built_in">unreachable!</span>(),</span><br><span class="line">    <span class="literal">None</span> =&gt; <span class="built_in">println!</span>(<span class="string">"I know x is None!"</span>),</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p><code>unimplemented!</code></p>
 <p><code>unimplemented!</code>宏可以被用来当你尝试去让你的函数通过类型检查，同时你又不想操心去写函数体的时候。一个这种情况的例子是实现一个要求多个方法的特性，而你只想一次搞定一个。用<code>unimplemented!</code>定义其它的直到你准备好去写它们了。</p>
 <h2 id="尾声"><a href="#尾声" class="headerlink" title="尾声"></a>尾声</h2>]]></content>
@@ -291,239 +343,73 @@
       </tags>
   </entry>
   <entry>
-    <title>chip-8模拟器概述</title>
-    <url>/2020/01/30/chip-8-emulator/chip-8%E6%A6%82%E8%BF%B0/</url>
-    <content><![CDATA[<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>模拟器是用以模拟某种系统环境的计算机程序。</p>
-<p>chip-8模拟器是所有模拟器项目最适合新手入门的一种，可谓麻雀虽小，五脏俱全。</p>
-<p>通过这个小项目，你可以了解到CPU的工作原理和机器码的执行过程。一般来说，一周的时间就足以完成这个小项目。</p>
+    <title>浅析Semi-Dense Visual Odometry for a Monocular Camera</title>
+    <url>/2020/08/08/%E6%B5%85%E6%9E%90Semi-Dense-Visual-Odometry-for-a-Monocular-Camera/</url>
+    <content><![CDATA[<p>这篇论文介绍的方法在LSD-SLAM里面得到了发扬</p>
+<p>要想实时持续追踪一个手持摄像头的位姿同时恢复出景物的三维结构是非常困难的。</p>
+<p>稠密流派要么对于算力要求过高，要么需要直接从传感器得到深度数据，这些都不是我们希望看到的。</p>
+<p>这里做出了一点改变 ：“稠密” $\to$“半稠密”</p>
+<p>半稠密的方法既有feature-based方法的效率，又有稠密流派的精准与鲁棒</p>
 <a id="more"></a>
-
-<h2 id="开始之前"><a href="#开始之前" class="headerlink" title="开始之前"></a>开始之前</h2><p>在开始之前，有一些事情先行完成：</p>
+<p>半稠密方法的核心在于从单目图像计算出高精度的深度图 </p>
+<p>这里详细讲一下feature-based method的小缺陷，首先是对于feature利用有限，一般只用特征点（线或者面往往被忽略）。此外，特征之间需要用到比较耗时的匹配算法，还需要利用RANSAC这类方法来保证没有外点outlier</p>
+<p>关于稠密流派也有很多可以说的，与前面的feature-based方法不太一样，他们眼中的的世界可以被看作一个稠密的平面，他们把整张图拿去和已有的几何信息配准。</p>
+<p>本论文的贡献如下：</p>
 <ul>
-<li><p>选择一门合适的编程语言？</p>
-</li>
-<li><p>了解位操作 (bitwise operation)</p>
-</li>
-<li><p>了解关于音频、图像、用户输入的第三方库 (third party libraries)</p>
-</li>
+<li>概率深度图表示</li>
+<li>图片级配准的追踪</li>
+<li>归约到包含主要信息的图片区域（半稠密的由来）</li>
+<li>把双目测量的不确定度也一并纳入</li>
 </ul>
-<h2 id="关于chip-8的一些硬件参数"><a href="#关于chip-8的一些硬件参数" class="headerlink" title="关于chip-8的一些硬件参数"></a>关于chip-8的一些硬件参数</h2><ul>
-<li><p>chip-8模拟器有35种不同的操作数，每个操作数占两字节大小</p>
-</li>
-<li><p>chip-8模拟器有4KB内存</p>
-</li>
-<li><p>chip-8模拟器的CPU有16个寄存器</p>
-</li>
-<li><p>chip-8的模拟器的显示器有2048(64*32)个像素</p>
-</li>
-<li><p>chip-8有16种按键输入</p>
-</li>
-<li><p>chip-8内部有计时器</p>
-</li>
-</ul>
-<h2 id="CPU运行的流程"><a href="#CPU运行的流程" class="headerlink" title="CPU运行的流程"></a>CPU运行的流程</h2><p>CPU获取指令 =&gt; CPU执行指令 =&gt; CPU获取指令…</p>
-<h2 id="内存分布情况"><a href="#内存分布情况" class="headerlink" title="内存分布情况"></a>内存分布情况</h2><p>4KB： 0x000-0xFFF</p>
+<p>总之，它足以在一颗普通的CPU上面运行。</p>
+<p><img src="\images\1596812263417.png" alt=""></p>
+<p>接下来讲一下这套方案的两个部分：</p>
 <ol>
-<li>chip-8模拟器本体： 0x000-0x1FF （包含字体集0x050-0x0A0）</li>
-<li>运行内存： 0x200-0xFFF </li>
+<li>估计半稠密深度图</li>
+<li>稠密追踪</li>
 </ol>
-<h2 id="寄存器"><a href="#寄存器" class="headerlink" title="寄存器"></a>寄存器</h2><p>每个寄存器占1字节</p>
-<h2 id="计时器"><a href="#计时器" class="headerlink" title="计时器"></a>计时器</h2><p>计时器有两个，分别用来处理游戏时间和游戏音效，负责维持60HZ的频率</p>
+<p>关于构建半稠密的深度图，又分了三个部分：</p>
+<ol>
+<li>双目方法估计深度</li>
+<li>深度图在帧与帧之间的传播</li>
+<li>在每个迭代中对已有深度图的正则化</li>
+</ol>
+<p>这里提一句，对于双目视觉而言，精确度和精准度不可得兼</p>
 ]]></content>
-      <categories>
-        <category>emulator</category>
-      </categories>
   </entry>
   <entry>
-    <title>位操作概述</title>
-    <url>/2020/01/31/chip-8-emulator/%E4%BD%8D%E6%93%8D%E4%BD%9C/</url>
-    <content><![CDATA[<p>位操作又基础又容易掌握，如果还不会的最好去看一下。</p>
-<h2 id="位逻辑运算"><a href="#位逻辑运算" class="headerlink" title="位逻辑运算"></a>位逻辑运算</h2><table>
-<thead>
-<tr>
-<th align="center">操作符</th>
-<th align="center">含义</th>
-<th align="center">例子</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">&amp;</td>
-<td align="center">与</td>
-<td align="center">1&amp;0=1</td>
-</tr>
-<tr>
-<td align="center">|</td>
-<td align="center">或</td>
-<td align="center">1&amp;0=0</td>
-</tr>
-<tr>
-<td align="center">~</td>
-<td align="center">非</td>
-<td align="center">~1=0</td>
-</tr>
-<tr>
-<td align="center">^</td>
-<td align="center">异或</td>
-<td align="center">1^0=1</td>
-</tr>
-</tbody></table>
+    <title>LSD-SLAM</title>
+    <url>/2020/08/08/LSD-SLAM/</url>
+    <content><![CDATA[<p>大规模建图+精确位姿估计</p>
 <a id="more"></a>
-
-<p>逻辑运算是计算机的基础知识，在这里就一笔带过了。</p>
-<h2 id="位移操作"><a href="#位移操作" class="headerlink" title="位移操作"></a>位移操作</h2><table>
-<thead>
-<tr>
-<th align="center">操作符</th>
-<th align="center">含义</th>
-<th align="center">例子</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">&lt;&lt;</td>
-<td align="center">左移</td>
-<td align="center">10&lt;&lt;2=40</td>
-</tr>
-<tr>
-<td align="center">&gt;&gt;</td>
-<td align="center">右移</td>
-<td align="center">10&gt;&gt;1=5</td>
-</tr>
-</tbody></table>
-<h2 id="一些问题"><a href="#一些问题" class="headerlink" title="一些问题"></a>一些问题</h2><p>我们注意到这些位操作都是在正数上进行的，但如果遇到负数又该如何处理呢？</p>
-<p>我们不得不去了解一下三种可以编码负数二进制表示的方案。</p>
-<h2 id="补充：原码、反码、补码"><a href="#补充：原码、反码、补码" class="headerlink" title="补充：原码、反码、补码"></a>补充：原码、反码、补码</h2><p>一个数字的二进制表示有如上三种编码形式，最易于理解的是原码，而在计算机中用于储存数字的编码格式则是补码。</p>
-<p>（关于为何不用原码或者反码，而用看起来不太直观的补码来储存数字，背后有深刻原因的，这里先挖个坑，日后再填，有兴趣的读者可以思考一下0该如何用原码或者反码来表示）</p>
-<ol>
-<li><p>原码</p>
-<p>最为直观，就是在一个数字的二进制表示前面再加上一位数字代表正负（思路就是符号位），这和我们用<code>+</code>和<code>-</code>来代表整数的正负是一致的。</p>
-<p>比如：</p>
-<table>
-<thead>
-<tr>
-<th align="center">数字</th>
-<th align="center">十进制</th>
-<th align="center">二进制（原码）</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">13</td>
-<td align="center">+13</td>
-<td align="center">01101</td>
-</tr>
-<tr>
-<td align="center">-12</td>
-<td align="center">-12</td>
-<td align="center">11100</td>
-</tr>
-</tbody></table>
-</li>
-<li><p>反码</p>
-<p>顾名思义，反码里面涉及到了取反操作。</p>
-<p>由于原码、补码、反码都是用来扩充负数操作的，并不影响原来就可以进行操作的正数，所以这些编码方案里面，所有的正数的表达方式都是一致的，换言之，正数的反码就是正数的原码。</p>
-<p>对于负数，得到反码要遵循规则：在原码基础上符号位不变，数值位取反。</p>
-<p>以13为例，13=&gt;01101=&gt;01101就是它从十进制到二进制原码再到反码的过程。</p>
-<p>以-12为例，-12=&gt;11100=&gt;10011</p>
-<p>反码看起来也不太直观，也没有实际上的作用，但为了得到一个数的补码（也就是计算机最终期望的编码形式），反码是从原码到补码的一个过渡。</p>
-</li>
-<li><p>补码</p>
-<p>计算规则:</p>
-<ul>
-<li>对于正数，它的原码和补码是一致的</li>
-<li>对于负数，有这样的公式：补码=反码+1</li>
-</ul>
-<p>例如-12，</p>
-<table>
-<thead>
-<tr>
-<th align="center">编码方式</th>
-<th align="center">二进制表示</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">原码</td>
-<td align="center">11100</td>
-</tr>
-<tr>
-<td align="center">反码</td>
-<td align="center">10011</td>
-</tr>
-<tr>
-<td align="center">补码</td>
-<td align="center">10100</td>
-</tr>
-</tbody></table>
-</li>
-<li><p>补码好处都有啥？</p>
-<p>补码使符号位能与有效值部分一起参加运算,从而简化运算规则.</p>
-<p>补码使减法运算转换为加法运算,进一步简化计算机中运算器的线路设计</p>
-</li>
-</ol>
-]]></content>
-      <categories>
-        <category>emulator</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Rust Trait 多态</title>
-    <url>/2020/07/06/Rust-Trait-%E5%A4%9A%E6%80%81/</url>
-    <content><![CDATA[<h1 id="Trait-in-Rust"><a href="#Trait-in-Rust" class="headerlink" title="Trait in Rust"></a>Trait in Rust</h1><p>Trait是Rust实现多态的一个重要方式</p>
-<p>可以把他理解为特性</p>
-<p>每一个struct可以拥有多个特性Trait</p>
+<p>Feature-Based Methods的目的：从图片中得到几何信息。</p>
+<p>方法论就是两步走：先把特征从图片中提取出来，再从提取的特征中恢复出包含的几何信息（三维结构，相机位姿等等）</p>
+<p>但这类方法有局限性，未必可以利用好所有的特征（线面基本都被抛弃了）</p>
+<p>Direct Visual Odometery的办法规避了这个问题（这里感觉它应该是指光流法</p>
+<p>类似的图像对齐方法在RGB-D或者双目视觉体系中已经有了成熟的算法</p>
+<p>单目相机下图像的对准方案也有，但是比较吃计算资源。有一种半稠密的深度滤波可以降低计算量。</p>
+<p>有的方案把直接对准和特征点一起用，实现了实时性</p>
+<p>LSD-SLAM的一个很重要的点是要理解上面说的半稠密深度图的滤波算法</p>
+<p>这里涉及到了一个比较陌生的概念：逆深度图</p>
 ]]></content>
   </entry>
   <entry>
-    <title>Rust 错误处理</title>
-    <url>/2020/07/05/Rust-%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86/</url>
-    <content><![CDATA[<h1 id="Rust-错误处理"><a href="#Rust-错误处理" class="headerlink" title="Rust 错误处理"></a>Rust 错误处理</h1><p>在这之前有一个必要重要的点需要交代一下</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">enum</span> <span class="title">Result</span></span>&lt;T,E&gt;&#123;</span><br><span class="line">    <span class="literal">Ok</span>(T),</span><br><span class="line">    <span class="literal">Err</span>(E),</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这个<code>enum</code>表示结果要么是对的要么是错的，T和E是类型变量（模板变量），如果结果符合要求那么就会用到关联的类型<code>T</code>, 反之就是<code>Err(E)</code></p>
-<p>那么当进行一个操作之后，我们就有必要对他的结果进行探讨（对了的话程序继续，错的的话返回错误）</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line"><span class="keyword">use</span> std::fs::File;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> f = File::open(<span class="string">"./updated_time.txt"</span>);</span><br><span class="line">    <span class="keyword">let</span> f = <span class="keyword">match</span> f &#123;</span><br><span class="line">        <span class="literal">Ok</span>(file) =&gt; file,</span><br><span class="line">        <span class="literal">Err</span>(error) =&gt; &#123;</span><br><span class="line">            <span class="built_in">panic!</span>(<span class="string">"Problem in opening file: &#123;:?&#125;"</span>, error);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这段代码就是对打开文件这一操作做了一个分类讨论，对了的话就打开文件，错了的话就panic。</p>
-<p>这里面<code>panic!</code>会让程序中断，可以在运行的时候打开回溯开关来检查此时的堆栈信息</p>
-<figure class="highlight rust"><table><tr><td class="code"><pre><span class="line">RUST_BACKTRACE = <span class="number">1</span></span><br></pre></td></tr></table></figure>
-
-<p><code>?</code>操作符对一个合法的值进行unwrap，或者当是错误类型的时候，向上传播错误，该操作符仅能作用于类型<code>Result&lt;T, E&gt;</code>和<code>Option&lt;T&gt;</code></p>
-<p>当作用于<code>Result&lt;T, E&gt;</code>类型的值时：</p>
-<ul>
-<li>如果值是<code>Err(e)</code>，则该函数或者闭包返回 <code>Err(From::from(e))</code></li>
-<li>如果值是<code>Ok(x)</code>，则将值unwrap为<code>x</code></li>
-</ul>
-<p>当作用于<code>Option&lt;T&gt;</code>类型的值时：</p>
-<ul>
-<li>如果值是<code>None</code>，则该函数或者闭包返回<code>None</code></li>
-<li>如果值是<code>Some(x)</code>，则将值unwrap为<code>x</code></li>
-</ul>
-<p>特别的是：</p>
-<ul>
-<li>同一个函数中使用<code>?</code>操作符的地方必须返回同一个错误类型，否则会编译失败</li>
-<li>main函数有两个有效返回值，分别为<code>()</code>，<code>Result&lt;T, E&gt;</code></li>
-</ul>
+    <title>浅析DTAM: Dense Tracking and Mapping in Real-Time</title>
+    <url>/2020/08/08/%E6%B5%85%E6%9E%90DTAM-Dense-Tracking-and-Mapping-in-Real-Time/</url>
+    <content><![CDATA[<p>这篇文章讲的是实时的稠密追踪和建图，时间有点早，应该不算state of art了，但还是挺典型的</p>
+<a id="more"></a>
+<p>在这篇文章之前，学术界在做实时SFM的时候一般采用稀疏的思路，不过现在时机已到，是时候该稠密一波了。</p>
 ]]></content>
   </entry>
   <entry>
-    <title>rCore2020总结</title>
-    <url>/2020/07/26/rCore2020%E6%80%BB%E7%BB%93/</url>
-    <content><![CDATA[<p>不知不觉一个月都要过去了，整了将近一个月（中间因为各种事情咕咕了一周多）的 rCoreLab， 在这里做一个小小的总结。</p>
-<p>关于收获：</p>
-<ul>
-<li>Rust编程更加熟练了，对于Rust本身的一些有趣的特性的理解也更加深刻了。比起C++和Python之类的语言，Rust可以明显让人感到要过编译其实不太容易。但是其实稍微入门一点以后就会习惯了，Rust编译器给你的各种提示比C++友好多了。另一方面，Rust花在测试Debug上的时间显著减少了，基本算法正确的情况下一遍过是没问题的。</li>
-<li>当然，上面的这些收获还是次要的。在这次rCore的活动中，我对于RISC-V指令集有了更加深刻的认知，以前上计算机体系结构的时候讲的也是这玩意儿，但因为Soren本身是做Robotics的，其实讲的就没那么仔细了，关于页表、中断这种概念我是看了清华的OS课以后才有了一种恍然大悟的感觉（捂脸）</li>
-<li>我比较认真地通读了当前rcore-tutorial的所有源代码，包括Rust和汇编，应证了以前的一个观点：“一个涉及合理的架构远胜于细节的精雕细琢”。可以看到，tutorial v3的代码比前两个版本组织的更好了，它是循序渐进的，而且模块化也做得更好了，分隔出来的六个实验基本上你看看过源码之后就可以知道该如何修改，这些对于接口的抽象也是我应该学习的。</li>
-</ul>
-<p>关于下一步：</p>
-<ul>
-<li>如果可以进入下一轮的话，我比较感兴趣的工作是zCore的文档和单元测试完善，这一部分看起来容易，但是要做好还是需要花不少工夫的。</li>
-</ul>
-<p>曾经遇到的困难：</p>
-<ul>
-<li>关于OS和RISC-V这部分其实还可以再深挖一下，但就目前的需求而言，可以点到为止了。</li>
-</ul>
+    <title>逆深度参数化</title>
+    <url>/2020/08/08/%E9%80%86%E6%B7%B1%E5%BA%A6%E5%8F%82%E6%95%B0%E5%8C%96/</url>
+    <content><![CDATA[<p>逆深度图在DTAM以及后续的相关工作中都有提及，这里稍微介绍一下逆深度参数化的相关知识</p>
+<a id="more"></a>
+<p>逆深度参数化的编码是由一个六维向量组成</p>
+<script type="math/tex; mode=display">
+\mathbb{y}=[x_0,y_0,z_0,\theta,\phi,\rho]^T</script><p><img src="C:\Users\lenovo\Documents\hexo\source\images\1596865193479.png" alt="1596865193479"></p>
+<p>前三个标量表示了摄像机光心位置（在参考系$(e_1,e_2,e_3)$下，后两个标量编码了旋转角（想想经度和纬度），最后一个$\rho=\frac{1}{||p-c_0||}$，也就是点的深度的倒数。</p>
 ]]></content>
-      <tags>
-        <tag>Rust</tag>
-      </tags>
   </entry>
 </search>

@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 4.2.0">
+<meta name="generator" content="Hexo 4.2.1">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -152,12 +152,12 @@
   </li>
         <li class="menu-item menu-item-categories">
 
-    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories<span class="badge">2</span></a>
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories<span class="badge">1</span></a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives<span class="badge">7</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives<span class="badge">11</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -269,62 +269,50 @@
 <p>在进阶阶段，我们依然从类型系统和控制流两个主要方面来展开。另外，还有相关的编程概念也需要交代。</p>
 <p>文章暂时没有写完。</p>
 <a id="more"></a>
-
 <h2 id="类型进阶"><a href="#类型进阶" class="headerlink" title="类型进阶"></a>类型进阶</h2><h3 id="数字运算"><a href="#数字运算" class="headerlink" title="数字运算"></a>数字运算</h3><p>主要五个运算符<code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, <code>%</code>，对应了加减乘除和取余。 </p>
 <h3 id="数组操作"><a href="#数组操作" class="headerlink" title="数组操作"></a>数组操作</h3><p>一个数组可以用索引来获取相关元素的值，如果要得到数组长度，那么可以用<code>len()</code>来获取</p>
 <p>例子</p>
 <figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> x:[<span class="built_in">i32</span>;<span class="number">3</span>]=[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>];</span><br><span class="line"><span class="built_in">println!</span>(<span class="string">"First element of x is &#123;&#125;, the size of x is &#123;&#125;"</span>,x[<span class="number">0</span>],x.len());</span><br></pre></td></tr></table></figure>
-
 <h3 id="用户定义类型（UDT）"><a href="#用户定义类型（UDT）" class="headerlink" title="用户定义类型（UDT）"></a>用户定义类型（UDT）</h3><h2 id="控制流进阶"><a href="#控制流进阶" class="headerlink" title="控制流进阶"></a>控制流进阶</h2><h3 id="匹配-match"><a href="#匹配-match" class="headerlink" title="匹配 match"></a>匹配 match</h3><p>先放例子，不难看出来<code>match</code>和C语言中的<code>switch</code>类似：</p>
 <figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> x = <span class="number">5</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">match</span> x &#123;</span><br><span class="line">    <span class="number">1</span> =&gt; <span class="built_in">println!</span>(<span class="string">"one"</span>),</span><br><span class="line">    <span class="number">2</span> =&gt; <span class="built_in">println!</span>(<span class="string">"two"</span>),</span><br><span class="line">    <span class="number">3</span> =&gt; <span class="built_in">println!</span>(<span class="string">"three"</span>),</span><br><span class="line">    <span class="number">4</span> =&gt; <span class="built_in">println!</span>(<span class="string">"four"</span>),</span><br><span class="line">    <span class="number">5</span> =&gt; <span class="built_in">println!</span>(<span class="string">"five"</span>),</span><br><span class="line">    _ =&gt; <span class="built_in">println!</span>(<span class="string">"something else"</span>),</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>下划线<code>_</code>代表通配符（什么都可以和它匹配上）</p>
 <p>匹配的语法一个很重要的点是它要求所有情况都枚举一遍，在没有通配符的情况下，上面的代码就不只是<code>1,2,3,4,5</code>这些匹配分支了，编译器会让你把所有<code>i32</code>范围内的数字都加上，不妨想象一下这个壮观场面……（多亏有通配符）</p>
 <p>前面讲判断语句有这样的一个用法，匹配也是类似的</p>
 <figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> x = <span class="number">5</span>;</span><br><span class="line"><span class="keyword">let</span> y = <span class="keyword">if</span> x==<span class="number">5</span> &#123; <span class="number">6</span> &#125; <span class="keyword">else</span> &#123; <span class="number">7</span> &#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//等价表述</span></span><br><span class="line"><span class="keyword">let</span> x = <span class="number">5</span>;</span><br><span class="line"><span class="keyword">let</span> y = <span class="keyword">match</span> x&#123;</span><br><span class="line">    <span class="number">5</span> =&gt; <span class="number">6</span>,</span><br><span class="line">    _ =&gt; <span class="number">7</span>,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
 <p><code>match</code>和<code>enum</code>是一对好搭档</p>
 <figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">enum</span> <span class="title">Message</span></span> &#123;</span><br><span class="line">    Quit,</span><br><span class="line">    ChangeColor(<span class="built_in">i32</span>, <span class="built_in">i32</span>, <span class="built_in">i32</span>),</span><br><span class="line">    Move &#123; x: <span class="built_in">i32</span>, y: <span class="built_in">i32</span> &#125;,</span><br><span class="line">    Write(<span class="built_in">String</span>),</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">quit</span></span>() &#123; <span class="comment">/* ... */</span> &#125;</span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">change_color</span></span>(r: <span class="built_in">i32</span>, g: <span class="built_in">i32</span>, b: <span class="built_in">i32</span>) &#123; <span class="comment">/* ... */</span> &#125;</span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">move_cursor</span></span>(x: <span class="built_in">i32</span>, y: <span class="built_in">i32</span>) &#123; <span class="comment">/* ... */</span> &#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">process_message</span></span>(msg: Message) &#123;</span><br><span class="line">    <span class="keyword">match</span> msg &#123;</span><br><span class="line">        Message::Quit =&gt; quit(),</span><br><span class="line">        Message::ChangeColor(r, g, b) =&gt; change_color(r, g, b),</span><br><span class="line">        Message::Move &#123; x, y: new_name_for_y &#125; =&gt; move_cursor(x, new_name_for_y),</span><br><span class="line">        Message::Write(s) =&gt; <span class="built_in">println!</span>(<span class="string">"&#123;&#125;"</span>, s),</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>匹配还有多重匹配，下面的代码就会把<code>one or two</code>打印出来</p>
 <figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> x = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">match</span> x &#123;</span><br><span class="line">    <span class="number">1</span> | <span class="number">2</span> =&gt; <span class="built_in">println!</span>(<span class="string">"one or two"</span>),</span><br><span class="line">    <span class="number">3</span> =&gt; <span class="built_in">println!</span>(<span class="string">"three"</span>),</span><br><span class="line">    _ =&gt; <span class="built_in">println!</span>(<span class="string">"anything"</span>),</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <h2 id="抽象概念"><a href="#抽象概念" class="headerlink" title="抽象概念"></a>抽象概念</h2><h3 id="所有权系统"><a href="#所有权系统" class="headerlink" title="所有权系统"></a>所有权系统</h3><p>所有权系统包括三个部分：所有权，借用与引用，生命周期</p>
 <p>在变量绑定的同时，所有权也随之声明。</p>
 <p>例如</p>
 <figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> sentence = <span class="built_in">String</span>::from(<span class="string">"Hello!"</span>);</span><br></pre></td></tr></table></figure>
-
 <p>这一句里面，变量<code>sentence</code>拥有了字符串<code>&quot;Hello&quot;</code>的所有权。所有数据的所有权只能被一个变量所占有。当一个变量名有一个数据的所有权的时候，理所当然地可以对它拥有的数据进行种种操作。</p>
 <p>那么，有一个问题，其他变量想要使用这个数据的时候，应该怎么办呢？</p>
 <p>我们自然就可以想到几种方案，比如说，可以考虑把所有权移交出去。</p>
 <figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> sentence = <span class="built_in">String</span>::from(<span class="string">"Hello!"</span>);</span><br><span class="line"><span class="keyword">let</span> another_sentence = sentence;</span><br><span class="line"><span class="built_in">println!</span>(<span class="string">"&#123;&#125;"</span>,another_sentence);	<span class="comment">//It's OK</span></span><br><span class="line"><span class="built_in">println!</span>(<span class="string">"&#123;&#125;"</span>,sentence);			<span class="comment">//Errors happened</span></span><br></pre></td></tr></table></figure>
-
 <p>在第二条语句中，原本字符串<code>&quot;Hello&quot;</code>的所有权从<code>sentence</code>转移到了<code>another_sentence</code>， 自然而然地，第三条语句可以把字符串打印出来。而第四条语句则不然，在失去了所有权以后，<code>sentence</code>已经无法访问该字符串了，会产生报错。</p>
 <p>再来展示一个迷惑操作</p>
 <figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> x:<span class="built_in">i32</span> = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">let</span> y = x;</span><br><span class="line"><span class="built_in">println!</span>(<span class="string">"&#123;&#125;"</span>,x);	<span class="comment">//It's OK</span></span><br><span class="line"><span class="built_in">println!</span>(<span class="string">"&#123;&#125;"</span>,y);	<span class="comment">//It's OK</span></span><br></pre></td></tr></table></figure>
-
 <p>两条都可以顺利打印，照理来说，<code>x</code>对<code>1</code>的所有权转移到了<code>y</code>上，那么为什么第三行没有报错。对比上面的例子，要想知道答案，就需要着眼于第二行。表面上同样是变量绑定，但是，<code>let y = x;</code>当中所执行的实际语义是把<code>1</code>拷贝一份，再把它的所有权绑到<code>y</code>上。<code>x,y</code>两个变量人手一份所有权，那么自然也就解释的通了。</p>
 <p>上面讲的是所有权的转移方法，也叫做移动语义。那么能不能只是授权其他人使用数据而自己继续保留该数据的所有权呢？</p>
 <p>方法是有的，这就是借用的概念，这和我们在日常生活中的认识没有多少区别。</p>
 <p>借用的实现依托关键词<code>ref</code>或者<code>&amp;</code>，遵循了<code>ref 类型名</code>或者<code>&amp;类型名</code>，这种实现借用功能的形式我们称之为应用，比如</p>
 <figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> x:<span class="built_in">i32</span> = <span class="number">5</span>;</span><br><span class="line"><span class="keyword">let</span> y = &amp;x;</span><br></pre></td></tr></table></figure>
-
 <p><code>y</code>就是<code>x</code>的一个引用，他借用了<code>x</code>所拥有的数据的所有权（会还回去的）</p>
 <figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> s1 = <span class="built_in">String</span>::from(<span class="string">"hello"</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> len = calculate_length(&amp;s1);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"The length of '&#123;&#125;' is &#123;&#125;."</span>, s1, len);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">calculate_length</span></span>(s: &amp;<span class="built_in">String</span>) -&gt; <span class="built_in">usize</span> &#123;</span><br><span class="line">    s.len()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>在下面这个例子中，我们注意到函数<code>calculate_length</code>要求的参数类型是<code>&amp;String</code>也就是一个<code>String</code>变量的引用，在第四行函数执行的时候，<code>s1</code>的所有权被借了出去当做参数，也就是<code>&amp;s1</code>。在这里，规定函数的参数为引用是有必要的，否则，我们可以预想到<code>s1</code>的本体会被传进函数的作用域，然后随着函数的结束，它会在离开作用域的时候面临一个问题—资源被释放了（相当于<code>&quot;Hello&quot;</code>字符串已经在内存中被销毁），我们无法在后续的程序中调用<code>s1</code>，可谓一去不复返。（除非<code>s1</code>是<code>i32</code>之类的基本类型，那么实际上程序会重新拷贝一份当成参数传入函数，也就是说后续依然可以使用<code>s1</code>）</p>
 <p>程序中的每一个对象都有生命周期，一般来说，编译器会自动推导，而当遇到和引用相关的地方，编译器时常难以自行推导生命周期，就会发生错误，这个时候需要我们自己手动显式地去声明。关于这一部分的语法规则，先挖个坑，以后填。</p>
 <h3 id="内存管理"><a href="#内存管理" class="headerlink" title="内存管理"></a>内存管理</h3><p>关于内存，主要有两个讨论的对象：堆和栈</p>
 <p>栈非常快速，并且是 Rust 默认分配内存的地方。不过这个分配位于函数调用的本地，并有大小限制。堆，相反，更慢，并且需要被你的程序显式分配。不过它无事实上的大小限制，并且是全局可访问的。注意这里堆的意义，它意味着已任意顺序分配任意大小的内存块，这与堆数据结构有很大不同</p>
 <h3 id="模式匹配-pattern-match"><a href="#模式匹配-pattern-match" class="headerlink" title="模式匹配 pattern match"></a>模式匹配 pattern match</h3><p><code>match</code>可以在一堆东西中把具有你所期望的特征的东西找出来的功能，这也叫做模式匹配</p>
 <p>这里不做详细介绍</p>
-<h3 id="宏"><a href="#宏" class="headerlink" title="宏"></a>宏</h3><p>十分有用（但挺难懂）的高级抽象，例子随处都是，具体的描述可以参考[宏]([<a href="https://kaisery.gitbooks.io/rust-book-chinese/content/content/Macros%20%E5%AE%8F.html]" target="_blank" rel="noopener">https://kaisery.gitbooks.io/rust-book-chinese/content/content/Macros%20%E5%AE%8F.html]</a>(<a href="https://kaisery.gitbooks.io/rust-book-chinese/content/content/Macros" target="_blank" rel="noopener">https://kaisery.gitbooks.io/rust-book-chinese/content/content/Macros</a> 宏.html))，这篇易读又全面。下面只是列举一下宏里面的基本概念</p>
+<h3 id="宏"><a href="#宏" class="headerlink" title="宏"></a>宏</h3><p>十分有用（但挺难懂）的高级抽象，例子随处都是，具体的描述可以参考<a href="[https://kaisery.gitbooks.io/rust-book-chinese/content/content/Macros%20%E5%AE%8F.html](https://kaisery.gitbooks.io/rust-book-chinese/content/content/Macros 宏.html">宏</a>)，这篇易读又全面。下面只是列举一下宏里面的基本概念</p>
 <p>我们通过阅读标准库或者其他地方的一些宏定义，比如<code>vec!</code>的简化版</p>
 <figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">macro_rules!</span> vec &#123;</span><br><span class="line">    ( $( $x:expr ),* ) =&gt; &#123;</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">let</span> <span class="keyword">mut</span> temp_vec = <span class="built_in">Vec</span>::new();</span><br><span class="line">            $(</span><br><span class="line">                temp_vec.push($x);</span><br><span class="line">            )*</span><br><span class="line">            temp_vec</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>多少可以看出，宏的定义有那么一丝模式匹配的味道</p>
 <p>我们把<code>=&gt;</code>左侧的称为匹配器，<code>expr</code>被称为分段标识符（这不是任意变量名，而是分段标识符的一系列规范名称之一）    </p>
-<h4 id="句法要求"><a href="#句法要求" class="headerlink" title="句法要求"></a>句法要求</h4><p>即使 Rust 代码中含有未展开的宏，它也可以被解析为一个完整的[语法树](<a href="https://kaisery.gitbooks.io/rust-book-chinese/content/content/7.Glossary" target="_blank" rel="noopener">https://kaisery.gitbooks.io/rust-book-chinese/content/content/7.Glossary</a> 词汇表.md#abstract-syntax-tree)。这个属性对于编辑器或其它处理代码的工具来说十分有用。这里也有一些关于 Rust 宏系统设计的推论。</p>
+<h4 id="句法要求"><a href="#句法要求" class="headerlink" title="句法要求"></a>句法要求</h4><p>即使 Rust 代码中含有未展开的宏，它也可以被解析为一个完整的<a href="https://kaisery.gitbooks.io/rust-book-chinese/content/content/7.Glossary 词汇表.md#abstract-syntax-tree" target="_blank" rel="noopener">语法树</a>。这个属性对于编辑器或其它处理代码的工具来说十分有用。这里也有一些关于 Rust 宏系统设计的推论。</p>
 <p>一个推论是 Rust 必须确定，当它解析一个宏展开时，宏是否代替了</p>
 <ul>
 <li>0个或多个项</li>
@@ -369,32 +357,24 @@
 <h4 id="常见宏"><a href="#常见宏" class="headerlink" title="常见宏"></a>常见宏</h4><p><code>panic!</code></p>
 <p>这个宏导致当前线程恐慌。你可以传给这个宏一个信息通过：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">panic!(&quot;oh no!&quot;);</span><br></pre></td></tr></table></figure>
-
 <p><code>vec!</code></p>
 <p>它方便创建<code>Vec&lt;T&gt;</code>：</p>
 <figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> v = <span class="built_in">vec!</span>[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>];</span><br></pre></td></tr></table></figure>
-
 <p>它也让你可以用重复值创建vector。例如，100个<code>0</code>：</p>
 <figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> v = <span class="built_in">vec!</span>[<span class="number">0</span>; <span class="number">100</span>];</span><br></pre></td></tr></table></figure>
-
 <p><code>assert!</code>和<code>assert_eq!</code></p>
 <p>这两个宏用在测试中。<code>assert!</code>获取一个布尔值，而<code>assert_eq!</code>获取两个值并比较它们。<code>true</code> 就通过，<code>false</code>就<code>panic!</code>。像这样：</p>
 <figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// A-ok!</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">assert!</span>(<span class="literal">true</span>);</span><br><span class="line"><span class="built_in">assert_eq!</span>(<span class="number">5</span>, <span class="number">3</span> + <span class="number">2</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Nope :(</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">assert!</span>(<span class="number">5</span> &lt; <span class="number">3</span>);</span><br><span class="line"><span class="built_in">assert_eq!</span>(<span class="number">5</span>, <span class="number">3</span>);</span><br></pre></td></tr></table></figure>
-
 <p><code>try!</code></p>
 <p><code>try!</code>用来进行错误处理。它获取一些可以返回<code>Result&lt;T, E&gt;</code>的数据，并返回<code>T</code>如果它是<code>Ok&lt;T&gt;</code>，或<code>return</code>一个<code>Err(E)</code>如果出错了。像这样：</p>
 <figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> std::fs::File;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">foo</span></span>() -&gt; std::io::<span class="built_in">Result</span>&lt;()&gt; &#123;</span><br><span class="line">    <span class="keyword">let</span> f = <span class="built_in">try!</span>(File::create(<span class="string">"foo.txt"</span>));</span><br><span class="line"></span><br><span class="line">    <span class="literal">Ok</span>(())</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>它比这么写要更简明：</p>
 <figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> std::fs::File;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">foo</span></span>() -&gt; std::io::<span class="built_in">Result</span>&lt;()&gt; &#123;</span><br><span class="line">    <span class="keyword">let</span> f = File::create(<span class="string">"foo.txt"</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> f = <span class="keyword">match</span> f &#123;</span><br><span class="line">        <span class="literal">Ok</span>(t) =&gt; t,</span><br><span class="line">        <span class="literal">Err</span>(e) =&gt; <span class="keyword">return</span> <span class="literal">Err</span>(e),</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="literal">Ok</span>(())</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p><code>unreachable!</code></p>
 <p>这个宏用于当你认为一些代码不应该被执行的时候：</p>
 <figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="literal">false</span> &#123;</span><br><span class="line">    <span class="built_in">unreachable!</span>();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>有时，编译器可能会让你编写一个你认为将永远不会执行的不同分支。在这个例子中，用这个宏，这样如果最终你错了，你会为此得到一个<code>panic!</code>。</p>
 <figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> x: <span class="built_in">Option</span>&lt;<span class="built_in">i32</span>&gt; = <span class="literal">None</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">match</span> x &#123;</span><br><span class="line">    <span class="literal">Some</span>(_) =&gt; <span class="built_in">unreachable!</span>(),</span><br><span class="line">    <span class="literal">None</span> =&gt; <span class="built_in">println!</span>(<span class="string">"I know x is None!"</span>),</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p><code>unimplemented!</code></p>
 <p><code>unimplemented!</code>宏可以被用来当你尝试去让你的函数通过类型检查，同时你又不想操心去写函数体的时候。一个这种情况的例子是实现一个要求多个方法的特性，而你只想一次搞定一个。用<code>unimplemented!</code>定义其它的直到你准备好去写它们了。</p>
 <h2 id="尾声"><a href="#尾声" class="headerlink" title="尾声"></a>尾声</h2>
@@ -495,14 +475,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-count">11</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">1</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -547,7 +527,7 @@
   </span>
   <span class="author" itemprop="copyrightHolder">greatoyster</span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.2.0
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.2.1
   </div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">Theme – <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.7.0

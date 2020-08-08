@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 4.2.0">
+<meta name="generator" content="Hexo 4.2.1">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -152,12 +152,12 @@
   </li>
         <li class="menu-item menu-item-categories">
 
-    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories<span class="badge">2</span></a>
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories<span class="badge">1</span></a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives<span class="badge">7</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives<span class="badge">11</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -281,7 +281,6 @@
 <p>此外，如果在一门或者多门其他编程语言上已经有了相当的基础，那么学习Rust会快上一些。这也是本文面向的主要对象。</p>
 <p>友情提示：把Rust作为一门入门语言是一个不太理智的决定。</p>
 <a id="more"></a>
-
 <h2 id="类型系统"><a href="#类型系统" class="headerlink" title="类型系统"></a>类型系统</h2><h3 id="类型签名"><a href="#类型签名" class="headerlink" title="类型签名"></a>类型签名</h3><p>遵循<code>变量名: 变量类型</code>的格式，冒号前面是变量名，后面是变量类型</p>
 <p>在C语言中的<code>char a</code>到了Rust里面就变成了<code>a : char</code></p>
 <p>这与Haskell里面的类型签名是一致的。</p>
@@ -296,47 +295,36 @@
 <p>比如一个数组<code>[1，2，3]</code>，它的类型签名就是<code>[i32;3]</code></p>
 <p>如果要用动态数组，就需要用到<code>vec!</code>的宏(或者<code>Vec&lt;T&gt;</code>)，直接用例子来演示</p>
 <figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> array:[<span class="built_in">i32</span>;<span class="number">3</span>]=[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>];</span><br><span class="line"><span class="keyword">let</span> vector:<span class="built_in">Vec</span>&lt;<span class="built_in">i32</span>&gt;=<span class="built_in">vec!</span>[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>];</span><br></pre></td></tr></table></figure>
-
 <h4 id="函数类型"><a href="#函数类型" class="headerlink" title="函数类型"></a>函数类型</h4><p>一个函数类型可以表示为<code>fn (参数类型)-&gt;(返回值类型)</code></p>
 <p>对应C语言中的函数指针。</p>
 <h4 id="字符串类型"><a href="#字符串类型" class="headerlink" title="字符串类型"></a>字符串类型</h4><p>Rust里面有两种主要的字符串类型：<code>String</code>和<code>str</code>，其中<code>str</code>是内建类型，而<code>String</code>由标准库提供。</p>
 <p>其中<code>String</code>类型是分配在堆(heap)上的，它是可变的，还有所有权，而<code>str</code>一般以被借用的形式出现，即<code>&amp;str</code>。</p>
 <p>值得一提的是字符串常量，在下面的赋值语句</p>
 <figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> sentence = <span class="string">"hello, my friend!"</span>;</span><br></pre></td></tr></table></figure>
-
 <p>变量<code>sentence</code>的类型是<code>&amp;&#39;static str</code></p>
 <p><code>&amp;str</code>的类型可以用来表示字符串片段。</p>
 <h4 id="元组-（tuple）"><a href="#元组-（tuple）" class="headerlink" title="元组 （tuple）"></a>元组 （tuple）</h4><p>这里的元组和Python中的元组类似，是固定大小的有序列表，用小括号<code>()</code>包住，看一眼例子就明白了</p>
 <figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> x: (<span class="built_in">i32</span>, &amp;<span class="built_in">str</span>) = (<span class="number">1</span>, <span class="string">"hello"</span>);</span><br></pre></td></tr></table></figure>
-
-
-
 <h3 id="用户定义类型（UDT）"><a href="#用户定义类型（UDT）" class="headerlink" title="用户定义类型（UDT）"></a>用户定义类型（UDT）</h3><h4 id="结构体struct"><a href="#结构体struct" class="headerlink" title="结构体struct"></a>结构体<code>struct</code></h4><p>定义结构体的关键字就是<code>struct</code></p>
 <p>它的定义规则为<code>struct 结构体名称 {结构体内变量:对应变量的类型}</code></p>
 <p>当然也可以用<code>{结构体内部变量：对应类型}</code>的方式来描述一个匿名结构体。</p>
 <p>例如我们要定义类型<code>Point</code>来表示平面内的一个点：</p>
 <figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Point</span></span> &#123;</span><br><span class="line">    x:<span class="built_in">f32</span>,</span><br><span class="line">    y:<span class="built_in">i32</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>需要注意的是，在为类型命名的时候，我们一般遵循首字母大写的驼峰命名法。</p>
 <p>另外一点比较有趣的是，Rust中的<code>struct</code>更像C++当中的<code>class</code>，原因是它也可以通过<code>impl</code>关键字来定义方法<code>method</code>。</p>
 <p>示例如下:</p>
 <figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Rectangle</span></span> &#123;</span><br><span class="line">    width: <span class="built_in">u32</span>,</span><br><span class="line">    height: <span class="built_in">u32</span>,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">impl</span> Rectangle &#123;</span><br><span class="line">    <span class="function"><span class="keyword">fn</span> <span class="title">area</span></span>(&amp;<span class="keyword">self</span>) -&gt; <span class="built_in">u32</span> &#123;</span><br><span class="line">        <span class="keyword">self</span>.width * <span class="keyword">self</span>.height</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">fn</span> <span class="title">square</span></span>(size: <span class="built_in">u32</span>) -&gt; Rectangle &#123;</span><br><span class="line">        Rectangle &#123; width: size, height: size &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>这里需要强调一点，与<code>area</code>不同，<code>square</code>并不叫方法，而是叫做关联函数，原因是它的参数里面没有<code>&amp;self</code></p>
 <p>这里的<code>self</code>不难联想到python当中的方法定义</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Foo</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">foo</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
-
 <h4 id="枚举体"><a href="#枚举体" class="headerlink" title="枚举体"></a>枚举体</h4><p>定义枚举体依赖于关键字<code>enum</code>，最基本的使用规则是<code>enum 枚举体名称 {成员}</code></p>
 <p>比如IP地址包括了IPv4和IPv6两种，用枚举体来描述就是：</p>
 <figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">enum</span> <span class="title">IpAddrKind</span></span>&#123;</span><br><span class="line">    v4,</span><br><span class="line">    v6,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p><code>v4、v6</code>两者是枚举体的成员(variants)，他们位于<code>IpAddrKind</code>的命名空间中。这也就意味着我们可以通过如下方式来创建对应的实例</p>
 <figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> v4addr=IpAddrKind::v4;</span><br></pre></td></tr></table></figure>
-
 <p>在这时，我们的<code>v4</code>和<code>v6</code>只能起到一个类型标识的作用，不能表示具体的数据。我们通过数据关联来解决这个问题。加上了数据关联之后，枚举体的使用规则被扩展为<code>enum 枚举体名称 {成员 (关联数据)}</code></p>
 <p>例子如下：</p>
 <figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">enum</span> <span class="title">Message</span></span> &#123;</span><br><span class="line">    Quit,</span><br><span class="line">    Move &#123; x: <span class="built_in">i32</span>, y: <span class="built_in">i32</span> &#125;,</span><br><span class="line">    Write(<span class="built_in">String</span>),</span><br><span class="line">    ChangeColor(<span class="built_in">i32</span>, <span class="built_in">i32</span>, <span class="built_in">i32</span>),</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//扩展示例</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">QuitMessage</span></span>; <span class="comment">// 类单元结构体</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">MoveMessage</span></span> &#123;</span><br><span class="line">    x: <span class="built_in">i32</span>,</span><br><span class="line">    y: <span class="built_in">i32</span>,</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">WriteMessage</span></span>(<span class="built_in">String</span>); <span class="comment">// 元组结构体</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">ChangeColorMessage</span></span>(<span class="built_in">i32</span>, <span class="built_in">i32</span>, <span class="built_in">i32</span>); <span class="comment">// 元组结构体</span></span><br></pre></td></tr></table></figure>
-
 <p>这个枚举有四个含有不同类型的成员：</p>
 <ul>
 <li><code>Quit</code> 没有关联任何数据。</li>
@@ -346,20 +334,17 @@
 </ul>
 <h5 id="一个重要的枚举Option-lt-T-gt"><a href="#一个重要的枚举Option-lt-T-gt" class="headerlink" title="一个重要的枚举Option&lt;T&gt;"></a>一个重要的枚举<code>Option&lt;T&gt;</code></h5><p><code>Option&lt;T&gt;</code>由标准库定义</p>
 <figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">enum</span> <span class="title">Option</span></span>&lt;T&gt; &#123;</span><br><span class="line">    <span class="literal">Some</span>(T),</span><br><span class="line">    <span class="literal">None</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>整个枚举体的精髓就体现在了成员<code>None</code>上，<code>Option&lt;T&gt;::None</code>是Rust里唯一一种表示空值的方式。也就是说，如果一个变量的类型不是<code>Option&lt;T&gt;</code>，你就不用担心它是空值。</p>
 <h3 id="类型别名"><a href="#类型别名" class="headerlink" title="类型别名"></a>类型别名</h3><p>依赖关键词<code>type</code></p>
 <p>遵循规则：<code>type 别名 = 类型名</code></p>
 <p>例如：</p>
 <figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">type</span> <span class="title">Name</span></span> = <span class="built_in">String</span>;</span><br><span class="line"><span class="keyword">let</span> x: Name = <span class="string">"Hello"</span>.to_string();</span><br></pre></td></tr></table></figure>
-
 <h2 id="控制流"><a href="#控制流" class="headerlink" title="控制流"></a>控制流</h2><p>关于Rust类型系统的介绍就告一段落，下面我们来了解一下Rust的控制流。</p>
 <h3 id="变量绑定"><a href="#变量绑定" class="headerlink" title="变量绑定"></a>变量绑定</h3><p>依赖于关键字<code>let</code></p>
 <p>遵循规则：<code>let 变量名:类型签名 = 值</code></p>
 <p>注意：不绑定变量<code>let 变量名:类型签名</code>会有警告，不绑定变量且无类型签名<code>let 变量名</code>无法编译，而在绑定变量的时候没有类型签名<code>let 变量名 = 值</code>可以正常编译</p>
 <p>示例</p>
 <figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> x:<span class="built_in">i32</span> = <span class="number">5</span>;</span><br><span class="line"><span class="keyword">let</span> y = <span class="number">6</span>;</span><br><span class="line"><span class="keyword">let</span> z:<span class="built_in">f64</span>;</span><br></pre></td></tr></table></figure>
-
 <p>这一语句把对应的值绑定到了变量名上。</p>
 <p>变量绑定和赋值不能够等同视之。</p>
 <p>如果期望以上的<code>x,y,z</code>是可变的，那么在变量名之前要加上关键字<code>mut</code></p>
@@ -369,37 +354,27 @@
 <p>注意：<code>if</code>后面的表达式必须是<code>bool</code>类型的</p>
 <p>此外，条件语句可以用于变量绑定</p>
 <figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> x = <span class="number">5</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> y = <span class="keyword">if</span> x == <span class="number">5</span> &#123;</span><br><span class="line">    <span class="number">10</span></span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="number">15</span></span><br><span class="line">&#125;; <span class="comment">// y: i32</span></span><br></pre></td></tr></table></figure>
-
 <h3 id="循环语句"><a href="#循环语句" class="headerlink" title="循环语句"></a>循环语句</h3><p>有三种表达迭代的关键字<code>loop</code>, <code>for</code>, <code>while</code></p>
 <h4 id="loop"><a href="#loop" class="headerlink" title="loop"></a>loop</h4><p>简单粗暴：<code>loop 语句块</code></p>
 <figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">loop</span> &#123;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"Loop forever!"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>依赖语句块中的内容来跳出循环。</p>
 <p>我们可以思考一下C语言中的两种相同语义的表述方式</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> i=<span class="number">0</span></span><br><span class="line"><span class="keyword">while</span>(i&lt;<span class="number">10</span>)&#123;</span><br><span class="line">    i++;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> j;</span><br><span class="line"><span class="keyword">while</span> (<span class="number">1</span>)&#123;</span><br><span class="line">    <span class="keyword">if</span> (j&lt;<span class="number">10</span>) <span class="keyword">break</span>;</span><br><span class="line">    j++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <h4 id="while"><a href="#while" class="headerlink" title="while"></a>while</h4><p>看起来像略微机智的<code>loop</code></p>
 <p>遵循规则：<code>while 条件表达式 语句块</code></p>
 <p>示例如下：</p>
 <figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="keyword">mut</span> x = <span class="number">5</span>; <span class="comment">// mut x: i32</span></span><br><span class="line"><span class="keyword">let</span> <span class="keyword">mut</span> done = <span class="literal">false</span>; <span class="comment">// mut done: bool</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> !done &#123;</span><br><span class="line">    x += x - <span class="number">3</span>;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"&#123;&#125;"</span>, x);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> x % <span class="number">5</span> == <span class="number">0</span> &#123;</span><br><span class="line">        done = <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>注意：条件表达式需要一个<code>bool</code>类型</p>
 <h4 id="for"><a href="#for" class="headerlink" title="for"></a>for</h4><p>Rust的<code>for</code>循环的设计范式和C语言中的有很大不同，更加接近Python中的。</p>
 <p>遵循规则  <code>for 变量名 in 迭代器 代码块</code></p>
 <p>也即</p>
 <figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> var <span class="keyword">in</span> expression &#123;</span><br><span class="line">    code</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>这个<code>expression</code>是一个迭代器。迭代器返回一系列的元素。每次迭代循环中的一个元素。然后它的值与<code>var</code>绑定，它在循环体中有效。每当循环体执行完后，我们从迭代器中取出下一个值，然后我们再重复一遍。当迭代器中不再有值时，<code>for</code>循环结束。</p>
 <p>下面提供C和Rust里面打印0到9的等价表述</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (x = <span class="number">0</span>; x &lt; <span class="number">10</span>; x++) &#123;</span><br><span class="line">    <span class="built_in">printf</span>( <span class="string">"%d\n"</span>, x );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> x <span class="keyword">in</span> <span class="number">0</span>..<span class="number">10</span> &#123;</span><br><span class="line">    <span class="built_in">println!</span>(<span class="string">"&#123;&#125;"</span>, x); <span class="comment">// x: i32</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <h4 id="循环标签"><a href="#循环标签" class="headerlink" title="循环标签"></a>循环标签</h4><p>且看例子：</p>
 <figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">'outer</span>: <span class="keyword">for</span> x <span class="keyword">in</span> <span class="number">0</span>..<span class="number">10</span> &#123;</span><br><span class="line">    <span class="symbol">'inner</span>: <span class="keyword">for</span> y <span class="keyword">in</span> <span class="number">0</span>..<span class="number">10</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> x % <span class="number">2</span> == <span class="number">0</span> &#123; <span class="keyword">continue</span> <span class="symbol">'outer</span>; &#125; <span class="comment">// Continues the loop over `x`.</span></span><br><span class="line">        <span class="keyword">if</span> y % <span class="number">2</span> == <span class="number">0</span> &#123; <span class="keyword">continue</span> <span class="symbol">'inner</span>; &#125; <span class="comment">// Continues the loop over `y`.</span></span><br><span class="line">        <span class="built_in">println!</span>(<span class="string">"x: &#123;&#125;, y: &#123;&#125;"</span>, x, y);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
 <p>这里的<code>&#39;outer</code>和<code>&#39;inner</code>两个循环标签分别标记了外层的循环和内部的循环，而语句中的<code>continue</code>就对他们标记的循环起作用。</p>
 <p>值得注意的是，循环标签名字前面的单引号<code>&#39;</code>是不可省略哟。</p>
 <h3 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h3><p>简而言之，</p>
@@ -407,12 +382,10 @@
 <p>文档注释<code>///</code>，并且它支持Markdown语法</p>
 <p>例子如下</p>
 <figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// 将给定的数字加一</span></span><br><span class="line"><span class="comment">///</span></span><br><span class="line"><span class="comment">/// # Examples</span></span><br><span class="line"><span class="comment">///</span></span><br><span class="line"><span class="comment">/// </span></span><br><span class="line"><span class="comment">/// let arg = 5;</span></span><br><span class="line"><span class="comment">/// let answer = my_crate::add_one(arg);</span></span><br><span class="line"><span class="comment">///</span></span><br><span class="line"><span class="comment">/// assert_eq!(6, answer);</span></span><br><span class="line"><span class="comment">/// </span></span><br><span class="line"><span class="keyword">pub</span> <span class="function"><span class="keyword">fn</span> <span class="title">add_one</span></span>(x: <span class="built_in">i32</span>) -&gt; <span class="built_in">i32</span> &#123;</span><br><span class="line">    x + <span class="number">1</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <h3 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h3><p>函数声明遵循 <code>fn (参数:参数值类型)-&gt;返回值类型</code></p>
 <p>参数可以是一个或者多个，Rust里面的返回值只能是一个。</p>
 <p>举个例子</p>
 <figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">two_sum</span></span>(a:<span class="built_in">i32</span>, b:<span class="built_in">i32</span>) -&gt; <span class="built_in">i32</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> a+b;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//另一个版本</span></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">two_sum</span></span>(a:<span class="built_in">i32</span>, b:<span class="built_in">i32</span>) -&gt; <span class="built_in">i32</span>&#123;</span><br><span class="line">    a+b</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>在另一个版本中，大概有读者会感到疑惑，这里是不是少了什么？</p>
 <p>不过请放心，一个不少。第二个版本才是有Rust特色的表述，他会把放在最后的那个表达式作为返回值。第一种类C的表述其实很少会在函数结尾处用到，它一般的作用是在函数中间跳出。</p>
 <p>（提醒一下：第二个版本里面不要写成<code>a+b;</code>呦</p>
@@ -432,10 +405,7 @@
 
         
     <div class="post-nav">
-      <div class="post-nav-item">
-    <a href="/2020/01/31/chip-8-emulator/%E4%BD%8D%E6%93%8D%E4%BD%9C/" rel="prev" title="位操作概述">
-      <i class="fa fa-chevron-left"></i> 位操作概述
-    </a></div>
+      <div class="post-nav-item"></div>
       <div class="post-nav-item">
     <a href="/2020/02/02/Rust%E8%BF%9B%E9%98%B6/" rel="next" title="Rust进阶">
       Rust进阶 <i class="fa fa-chevron-right"></i>
@@ -513,14 +483,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-count">11</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">1</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -565,7 +535,7 @@
   </span>
   <span class="author" itemprop="copyrightHolder">greatoyster</span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.2.0
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.2.1
   </div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">Theme – <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.7.0

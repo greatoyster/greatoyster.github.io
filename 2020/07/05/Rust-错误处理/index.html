@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 4.2.0">
+<meta name="generator" content="Hexo 4.2.1">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
@@ -47,15 +47,15 @@
   };
 </script>
 
-  <meta name="description" content="Rust 错误处理在这之前有一个必要重要的点需要交代一下 1234enum Result&lt;T,E&gt;&amp;#123;    Ok(T),    Err(E),&amp;#125;  这个enum表示结果要么是对的要么是错的，T和E是类型变量（模板变量），如果结果符合要求那么就会用到关联的类型T, 反之就是Err(E) 那么当进行一个操作之后，我们就有必要对他的结果进行探讨（对了的话程序继续，错的的话">
+  <meta name="description" content="Rust 错误处理在这之前有一个必要重要的点需要交代一下 1234enum Result&lt;T,E&gt;&amp;#123;    Ok(T),    Err(E),&amp;#125; 这个enum表示结果要么是对的要么是错的，T和E是类型变量（模板变量），如果结果符合要求那么就会用到关联的类型T, 反之就是Err(E)">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Rust 错误处理">
 <meta property="og:url" content="http://yoursite.com/2020/07/05/Rust-%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86/index.html">
 <meta property="og:site_name" content="Greatoyster">
-<meta property="og:description" content="Rust 错误处理在这之前有一个必要重要的点需要交代一下 1234enum Result&lt;T,E&gt;&amp;#123;    Ok(T),    Err(E),&amp;#125;  这个enum表示结果要么是对的要么是错的，T和E是类型变量（模板变量），如果结果符合要求那么就会用到关联的类型T, 反之就是Err(E) 那么当进行一个操作之后，我们就有必要对他的结果进行探讨（对了的话程序继续，错的的话">
+<meta property="og:description" content="Rust 错误处理在这之前有一个必要重要的点需要交代一下 1234enum Result&lt;T,E&gt;&amp;#123;    Ok(T),    Err(E),&amp;#125; 这个enum表示结果要么是对的要么是错的，T和E是类型变量（模板变量），如果结果符合要求那么就会用到关联的类型T, 反之就是Err(E)">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-07-05T15:12:51.000Z">
-<meta property="article:modified_time" content="2020-07-05T08:03:31.759Z">
+<meta property="article:modified_time" content="2020-08-07T16:33:33.056Z">
 <meta property="article:author" content="greatoyster">
 <meta property="article:tag" content="greatoyster">
 <meta name="twitter:card" content="summary">
@@ -152,12 +152,12 @@
   </li>
         <li class="menu-item menu-item-categories">
 
-    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories<span class="badge">2</span></a>
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories<span class="badge">1</span></a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives<span class="badge">7</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives<span class="badge">11</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -236,10 +236,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2020-07-05 15:12:51 / Modified: 08:03:31" itemprop="dateCreated datePublished" datetime="2020-07-05T15:12:51Z">2020-07-05</time>
+              <time title="Created: 2020-07-05 15:12:51" itemprop="dateCreated datePublished" datetime="2020-07-05T15:12:51Z">2020-07-05</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-08-07 16:33:33" itemprop="dateModified" datetime="2020-08-07T16:33:33Z">2020-08-07</time>
+              </span>
 
           
             <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
@@ -261,15 +267,13 @@
       
         <h1 id="Rust-错误处理"><a href="#Rust-错误处理" class="headerlink" title="Rust 错误处理"></a>Rust 错误处理</h1><p>在这之前有一个必要重要的点需要交代一下</p>
 <figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">enum</span> <span class="title">Result</span></span>&lt;T,E&gt;&#123;</span><br><span class="line">    <span class="literal">Ok</span>(T),</span><br><span class="line">    <span class="literal">Err</span>(E),</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>这个<code>enum</code>表示结果要么是对的要么是错的，T和E是类型变量（模板变量），如果结果符合要求那么就会用到关联的类型<code>T</code>, 反之就是<code>Err(E)</code></p>
+<a id="more"></a>
 <p>那么当进行一个操作之后，我们就有必要对他的结果进行探讨（对了的话程序继续，错的的话返回错误）</p>
 <figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> std::fs::File;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">fn</span> <span class="title">main</span></span>() &#123;</span><br><span class="line">    <span class="keyword">let</span> f = File::open(<span class="string">"./updated_time.txt"</span>);</span><br><span class="line">    <span class="keyword">let</span> f = <span class="keyword">match</span> f &#123;</span><br><span class="line">        <span class="literal">Ok</span>(file) =&gt; file,</span><br><span class="line">        <span class="literal">Err</span>(error) =&gt; &#123;</span><br><span class="line">            <span class="built_in">panic!</span>(<span class="string">"Problem in opening file: &#123;:?&#125;"</span>, error);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>这段代码就是对打开文件这一操作做了一个分类讨论，对了的话就打开文件，错了的话就panic。</p>
 <p>这里面<code>panic!</code>会让程序中断，可以在运行的时候打开回溯开关来检查此时的堆栈信息</p>
 <figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RUST_BACKTRACE = <span class="number">1</span></span><br></pre></td></tr></table></figure>
-
 <p><code>?</code>操作符对一个合法的值进行unwrap，或者当是错误类型的时候，向上传播错误，该操作符仅能作用于类型<code>Result&lt;T, E&gt;</code>和<code>Option&lt;T&gt;</code></p>
 <p>当作用于<code>Result&lt;T, E&gt;</code>类型的值时：</p>
 <ul>
@@ -381,14 +385,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-count">11</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">1</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -433,7 +437,7 @@
   </span>
   <span class="author" itemprop="copyrightHolder">greatoyster</span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.2.0
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.2.1
   </div>
   <span class="post-meta-divider">|</span>
   <div class="theme-info">Theme – <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.7.0
