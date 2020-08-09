@@ -1,21 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Rust Trait 多态</title>
-    <url>/2020/07/06/Rust-Trait-%E5%A4%9A%E6%80%81/</url>
-    <content><![CDATA[<h1 id="Trait-in-Rust"><a href="#Trait-in-Rust" class="headerlink" title="Trait in Rust"></a>Trait in Rust</h1><p>Trait是Rust实现多态的一个重要方式</p>
-<p>可以把他理解为特性</p>
-<p>每一个struct可以拥有多个特性Trait</p>
-<a id="more"></a>
-]]></content>
-  </entry>
-  <entry>
-    <title>VDO-SLAM</title>
-    <url>/2020/08/08/VDO-SLAM/</url>
-    <content><![CDATA[<p>2020年刚刚挂在arXiv的文章，对于静态和动态的位姿估计做了一个统一。</p>
-<a id="more"></a>]]></content>
-  </entry>
-  <entry>
     <title>Rust 错误处理</title>
     <url>/2020/07/05/Rust-%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86/</url>
     <content><![CDATA[<h1 id="Rust-错误处理"><a href="#Rust-错误处理" class="headerlink" title="Rust 错误处理"></a>Rust 错误处理</h1><p>在这之前有一个必要重要的点需要交代一下</p>
@@ -43,6 +28,15 @@
 <li>同一个函数中使用<code>?</code>操作符的地方必须返回同一个错误类型，否则会编译失败</li>
 <li>main函数有两个有效返回值，分别为<code>()</code>，<code>Result&lt;T, E&gt;</code></li>
 </ul>
+]]></content>
+  </entry>
+  <entry>
+    <title>Rust Trait 多态</title>
+    <url>/2020/07/06/Rust-Trait-%E5%A4%9A%E6%80%81/</url>
+    <content><![CDATA[<h1 id="Trait-in-Rust"><a href="#Trait-in-Rust" class="headerlink" title="Trait in Rust"></a>Trait in Rust</h1><p>Trait是Rust实现多态的一个重要方式</p>
+<p>可以把他理解为特性</p>
+<p>每一个struct可以拥有多个特性Trait</p>
+<a id="more"></a>
 ]]></content>
   </entry>
   <entry>
@@ -289,6 +283,12 @@
       </categories>
   </entry>
   <entry>
+    <title>VDO-SLAM</title>
+    <url>/2020/08/08/VDO-SLAM/</url>
+    <content><![CDATA[<p>2020年刚刚挂在arXiv的文章，对于静态和动态的位姿估计做了一个统一。</p>
+<a id="more"></a>]]></content>
+  </entry>
+  <entry>
     <title>cmake构建系统</title>
     <url>/2020/08/09/cmake%E6%9E%84%E5%BB%BA%E7%B3%BB%E7%BB%9F/</url>
     <content><![CDATA[<p>C++在代码复用这一块做的一言难尽，一些依赖第三方库的项目往往很难直接拿来跑，有一大堆的依赖问题需要处理。在这一块，目前比较好的方案只有cmake了。委员会其实可以学学Rust，考虑出个包管理器。但想到种种历史包袱，大概是有生之年了，C++50标准再见咯。</p>
@@ -332,6 +332,26 @@
       <tags>
         <tag>Rust</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>双目匹配基本原理</title>
+    <url>/2020/08/09/%E5%8F%8C%E7%9B%AE%E5%8C%B9%E9%85%8D%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/</url>
+    <content><![CDATA[<p>双目深度相机的基本流程如下：</p>
+<ul>
+<li>标定两个摄像头，得到相机矩阵，以及相应的单应矩阵</li>
+<li>校正两张图像（也就是Rectify Stereo，校正后的两张图片是相互平行而且位于同一平面的）</li>
+<li>对校正过后的两张图片进行像素点匹配</li>
+<li>根据像素点的视差进行深度的计算，得到最后的深度图</li>
+</ul>
+<a id="more"></a>
+<p>注意：进行像素点之间的匹配的时候，只用在相应的对极线附近进行搜索就足够了。</p>
+<p>图像矫正是通过分别对两张图片用单应（homography）矩阵变换（可以通过标定获得）得到的，的目的就是把两个不同方向的图像平面（下图中灰色平面）重新投影到同一个平面且光轴互相平行（下图中黄色平面）</p>
+<p>一个常识是，视差越大，那么这组对应的像素点的深度就越小</p>
+<p>关于像素点的匹配，有一种方案是滑动窗口匹配，采用的是误差平方和法（Sum of Squared Differences，简称SSD）或者SAD（Sum of Absolute Difference）</p>
+<p>除了SAD和SSD，还有一种度量方法叫NCC(Normalized Cross Correlation)（归一化互相关），这一方法表征了两个小块的相关性。</p>
+<script type="math/tex; mode=display">
+S(A,B)_{NCC}=\frac{\Sigma A(i,j)B(i,j)}{\sqrt{\Sigma A(i,j)^2\Sigma B(i,j)^2}}</script><p>里面精华部分概括一下就是极线搜索＋块匹配，基本上稠密流派都是这个思路。</p>
+]]></content>
   </entry>
   <entry>
     <title>仿射几何</title>
@@ -386,26 +406,6 @@ F\times W \to F</script><p>那么子空间就有了。</p>
 <p>有的方案把直接对准和特征点一起用，实现了实时性</p>
 <p>LSD-SLAM的一个很重要的点是要理解上面说的半稠密深度图的滤波算法</p>
 <p>这里涉及到了一个比较陌生的概念：逆深度图</p>
-]]></content>
-  </entry>
-  <entry>
-    <title>双目匹配基本原理</title>
-    <url>/2020/08/09/%E5%8F%8C%E7%9B%AE%E5%8C%B9%E9%85%8D%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/</url>
-    <content><![CDATA[<p>双目深度相机的基本流程如下：</p>
-<ul>
-<li>标定两个摄像头，得到相机矩阵，以及相应的单应矩阵</li>
-<li>校正两张图像（也就是Rectify Stereo，校正后的两张图片是相互平行而且位于同一平面的）</li>
-<li>对校正过后的两张图片进行像素点匹配</li>
-<li>根据像素点的视差进行深度的计算，得到最后的深度图</li>
-</ul>
-<a id="more"></a>
-<p>注意：进行像素点之间的匹配的时候，只用在相应的对极线附近进行搜索就足够了。</p>
-<p>图像矫正是通过分别对两张图片用单应（homography）矩阵变换（可以通过标定获得）得到的，的目的就是把两个不同方向的图像平面（下图中灰色平面）重新投影到同一个平面且光轴互相平行（下图中黄色平面）</p>
-<p>一个常识是，视差越大，那么这组对应的像素点的深度就越小</p>
-<p>关于像素点的匹配，有一种方案是滑动窗口匹配，采用的是误差平方和法（Sum of Squared Differences，简称SSD）或者SAD（Sum of Absolute Difference）</p>
-<p>除了SAD和SSD，还有一种度量方法叫NCC(Normalized Cross Correlation)（归一化互相关），这一方法表征了两个小块的相关性。</p>
-<script type="math/tex; mode=display">
-S(A,B)_{NCC}=\frac{\Sigma A(i,j)B(i,j)}{\sqrt{\Sigma A(i,j)^2\Sigma B(i,j)^2}}</script><p>里面精华部分概括一下就是极线搜索＋块匹配，基本上稠密流派都是这个思路。</p>
 ]]></content>
   </entry>
   <entry>
