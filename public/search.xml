@@ -381,15 +381,57 @@ F\times W \to F</script><p>那么子空间就有了。</p>
 <p>仿射平面的构成条件也呼之欲出。</p>
 <p>点集的生成子空间：包含一系列的点的最小的仿射子空间。</p>
 <p>仿射空间中的不同的点都是仿射独立的</p>
-<p>关于仿射空间还有一个质心坐标，在epnp算法里面有相关描述，这里略过</p>
+<p>关于仿射空间还有一个质心坐标，在<code>epnp</code>算法里面有相关描述，这里略过</p>
 ]]></content>
   </entry>
   <entry>
     <title>浅析DTAM: Dense Tracking and Mapping in Real-Time</title>
     <url>/2020/08/08/%E6%B5%85%E6%9E%90DTAM-Dense-Tracking-and-Mapping-in-Real-Time/</url>
-    <content><![CDATA[<p>这篇文章讲的是实时的稠密追踪和建图，时间有点早，应该不算state of art了，但还是挺典型的</p>
+    <content><![CDATA[<p>这篇文章讲的是实时的稠密追踪和建图，时间有点早，应该不算state of the art了，但还是挺典型的。本文主要讲的是他的建图过程。</p>
 <a id="more"></a>
-<p>在这篇文章之前，学术界在做实时SFM的时候一般采用稀疏的思路，不过现在时机已到，是时候该稠密一波了。</p>
+<p>在这篇文章之前，学术界在做实时SFM的时候一般采用稀疏的思路，不过现在时机已到，可以借助GPU来稠密一波了。</p>
+<p><img src="\images\1597069754875.png" alt="图1"></p>
+<p>这个工作的原创性和实现难度都很高</p>
+<p>现在讲一下他的关于深度图Formulation</p>
+<ul>
+<li><p>$\pi(\cdot)$代表透视投影函数</p>
+</li>
+<li><p>$x_c=(x,y,z)^T$代表相机坐标系下的三维点</p>
+</li>
+<li><p>$u$代表了一个像素</p>
+</li>
+<li><p>深度图由$\xi$表示</p>
+</li>
+<li><p>那么$\pi^{-1}(u,d)$可以表现给定深度$d=\xi(u)$下的逆投影（也就是把像素还原到3D点）</p>
+</li>
+<li><p>关于稠密图，损失函数由光度误差组成</p>
+</li>
+<li><p>这里定义了一个projective cost volume（不知道该怎么翻译）$C_r$，这里稍稍有些复杂，建议参照上面的图片</p>
+</li>
+<li><p>和参考帧比较近的图片索引表示为$m\in \mathcal {I}(r)$</p>
+</li>
+<li><p>相机的位姿被表示为$T_{cw}$</p>
+</li>
+<li><p>cost volume的平均光度损失被定义为​</p>
+<script type="math/tex; mode=display">
+C_r(u,d)=\frac{1}{|\mathcal{I}(r)|}\sum_{m\in\mathcal{I(r)}}||\rho_r(I_m,u,d)||</script><p>其中的$p_r(I_m,u,d)$可以被表示为$(u,d)$确定的三维点投影在$I_m$中的点和原来的点$u$的光度差</p>
+<script type="math/tex; mode=display">
+\rho_r=I_r(u)-I_m(\pi(KT_{mc}\pi^{-1}(u,d)))</script></li>
+</ul>
+<p>  对于每个点$u$而言，随着深度的变化，误差也会不断变化，我们可以找到一个误差项最大的深度$d$，如图2所示</p>
+<p>  <img src="\images\1597072266956.png" alt="图2"></p>
+<p>  那么通过这些深度$d$，就可以得到深度图$\xi$了</p>
+<p>到了这一步，一张最原始的深度图就已经有了，不过显然还不够，为了对深度图做一个进一步的优化</p>
+<ul>
+<li><p>可以想见，这张深度图既有变化不太明显的平滑区域，也有一些由于物体边界等原因导致的不连续的剧烈变化，为了更加平滑的重建，我们需要对深度图的梯度用加权的Huber Norm来正则化$g(u)||\nabla{\xi(u)} ||_{\epsilon}$，$g(u)$是权重，后一项是参数为$\epsilon$的Huber Norm</p>
+<script type="math/tex; mode=display">
+g(u)=e^{-\alpha||\nabla{I_r(u)}||^\beta_2}\\</script></li>
+<li><p>总的能量的表达式为</p>
+<script type="math/tex; mode=display">
+E_{\xi}=\int_{\Omega}\{g(u)||\nabla{\xi(u)} ||_{\epsilon}+\lambda C(u,\xi(u)) \}du</script></li>
+<li><p>后面的描述都围绕着如何优化损失$E_\xi$以及加速运算，数学标记就更为复杂了，这里暂且不表，先挖一个坑。</p>
+</li>
+</ul>
 ]]></content>
   </entry>
   <entry>
@@ -405,7 +447,6 @@ F\times W \to F</script><p>那么子空间就有了。</p>
 <p>单目相机下图像的对准方案也有，但是比较吃计算资源。有一种半稠密的深度滤波可以降低计算量。</p>
 <p>有的方案把直接对准和特征点一起用，实现了实时性</p>
 <p>LSD-SLAM的一个很重要的点是要理解上面说的半稠密深度图的滤波算法</p>
-<p>这里涉及到了一个比较陌生的概念：逆深度图</p>
 ]]></content>
   </entry>
   <entry>
@@ -452,6 +493,32 @@ F\times W \to F</script><p>那么子空间就有了。</p>
 <script type="math/tex; mode=display">
 \mathbb{y}=[x_0,y_0,z_0,\theta,\phi,\rho]^T</script><p><img src="\images\1596865193479.png" alt=""></p>
 <p>前三个标量表示了摄像机光心位置（在参考系$(e_1,e_2,e_3)$下，后两个标量编码了旋转角（想想经度和纬度），最后一个$\rho=\frac{1}{||p-c_0||}$，也就是点的深度的倒数。</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>浅析Atlas: End-to-End 3D Scene Reconstruction from Posed Images</title>
+    <url>/2020/08/09/%E6%B5%85%E6%9E%90Atlas-End-to-End-3D-Scene-Reconstruction-from-Posed-Images/</url>
+    <content><![CDATA[<p>这是ECCV2020接受的一篇很有意思的三维重建工作，代码已经开源，YouTube上面有相关的演示视频可以参照。</p>
+<a id="more"></a>
+<p>当进行三维重建的时候，需要融合不同的传感器提供的深度信息，比如结构光，飞行时间，激光雷达等等。很少直接依靠一个RGB相机解决问题的。这种方法呢，以来对噪声干扰比较敏感，二来受反射或者景物本身的遮挡会有偏差。</p>
+<p>另一种不那么直接的办法是利用多视角的单目相机来计算深度图，继而重建三维结构，最大的缺点嘛，就是不太准。</p>
+<p>这项工作的基本构想就是：给你一系列的RGB图像作为输入放进神经网络，然后直接输出3D模型。这种做法可以让神经网络在最开始就融合尽可能多的信息，其次，整个系统的复杂程度也就大幅度下降了，包括frame selection的环节就可以直接跳过了。</p>
+<p><img src="\images\1596977658395.png" alt="这里先挂上一张比较形象的图片"></p>
+<p>这篇工作的实现细节非常精炼。接下来讲一下他的Formulation部分。</p>
+<ol>
+<li><p>我们的输入是长度为$T$的视频序列，每一张图片可以表示为$I_t\in\mathbb{R}^{3\times h\times w}$，其中3是三个颜色通道，$w$和$h$表示图片的宽度和高度</p>
+</li>
+<li><p>把它输入二维神经网络以后，每一张图像的每一个像素都带上了一个$c$维的向量作为特征，那么提取出来的特征就可以被表示为$F_t=F(I_t)\in\mathbb{R}^{c\times H\times W\times D}$</p>
+</li>
+<li><p>那么我们如何生成带有特征的体素块？这一点不难想象，每个体素根据相机位姿位姿都可以对应图像中的一个像素，那么我们只要把像素带有特征传播给对应体素即可</p>
+<script type="math/tex; mode=display">
+V_t(:,i,j,k)=F_t(:,\hat{i},\hat{j})</script></li>
+</ol>
+<p>注意，由于相机的位姿是已知的的，所以才可以知道体素和像素的对应关系，每个体素上的特征会以类似于TSDF Fusion的方式不断更新</p>
+<ol>
+<li>当我们把所有的体素更新完了以后，把整个volume扔进3D CNN里面做一个回归，就得到了优化过后的的TSDF体素空间以及语义标签</li>
+</ol>
+<p>从结果上来看，他和几个SOTA进行了对比，一言以蔽之就是多快好。不过，我认为这些结果没有很大的意义，毕竟他们都是在相机位姿的情况下进行的。CNN出来的3D mesh确实较为平滑，而且甚至可以补全ground truth中缺失的部分。以我个人的看法，这篇文章可能没有很大的实际意义，但是它的Demo和论文图片做的很精美，是一个亮点。</p>
 ]]></content>
   </entry>
 </search>

@@ -47,18 +47,21 @@
   };
 </script>
 
-  <meta name="description" content="这篇文章讲的是实时的稠密追踪和建图，时间有点早，应该不算state of art了，但还是挺典型的">
+  <meta name="description" content="这篇文章讲的是实时的稠密追踪和建图，时间有点早，应该不算state of the art了，但还是挺典型的。本文主要讲的是他的建图过程。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="浅析DTAM: Dense Tracking and Mapping in Real-Time">
 <meta property="og:url" content="http://yoursite.com/2020/08/08/%E6%B5%85%E6%9E%90DTAM-Dense-Tracking-and-Mapping-in-Real-Time/index.html">
 <meta property="og:site_name" content="Greatoyster">
-<meta property="og:description" content="这篇文章讲的是实时的稠密追踪和建图，时间有点早，应该不算state of art了，但还是挺典型的">
+<meta property="og:description" content="这篇文章讲的是实时的稠密追踪和建图，时间有点早，应该不算state of the art了，但还是挺典型的。本文主要讲的是他的建图过程。">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://yoursite.com/images/1597069754875.png">
+<meta property="og:image" content="http://yoursite.com/images/1597072266956.png">
 <meta property="article:published_time" content="2020-08-08T00:27:22.000Z">
-<meta property="article:modified_time" content="2020-08-07T16:38:47.105Z">
+<meta property="article:modified_time" content="2020-08-11T12:14:24.266Z">
 <meta property="article:author" content="greatoyster">
 <meta property="article:tag" content="greatoyster">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/images/1597069754875.png">
 
 <link rel="canonical" href="http://yoursite.com/2020/08/08/%E6%B5%85%E6%9E%90DTAM-Dense-Tracking-and-Mapping-in-Real-Time/">
 
@@ -157,7 +160,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives<span class="badge">13</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives<span class="badge">14</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -244,7 +247,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-08-07 16:38:47" itemprop="dateModified" datetime="2020-08-07T16:38:47Z">2020-08-07</time>
+                <time title="Modified: 2020-08-11 12:14:24" itemprop="dateModified" datetime="2020-08-11T12:14:24Z">2020-08-11</time>
               </span>
 
           
@@ -265,9 +268,51 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>这篇文章讲的是实时的稠密追踪和建图，时间有点早，应该不算state of art了，但还是挺典型的</p>
+        <p>这篇文章讲的是实时的稠密追踪和建图，时间有点早，应该不算state of the art了，但还是挺典型的。本文主要讲的是他的建图过程。</p>
 <a id="more"></a>
-<p>在这篇文章之前，学术界在做实时SFM的时候一般采用稀疏的思路，不过现在时机已到，是时候该稠密一波了。</p>
+<p>在这篇文章之前，学术界在做实时SFM的时候一般采用稀疏的思路，不过现在时机已到，可以借助GPU来稠密一波了。</p>
+<p><img src="\images\1597069754875.png" alt="图1"></p>
+<p>这个工作的原创性和实现难度都很高</p>
+<p>现在讲一下他的关于深度图Formulation</p>
+<ul>
+<li><p>$\pi(\cdot)$代表透视投影函数</p>
+</li>
+<li><p>$x_c=(x,y,z)^T$代表相机坐标系下的三维点</p>
+</li>
+<li><p>$u$代表了一个像素</p>
+</li>
+<li><p>深度图由$\xi$表示</p>
+</li>
+<li><p>那么$\pi^{-1}(u,d)$可以表现给定深度$d=\xi(u)$下的逆投影（也就是把像素还原到3D点）</p>
+</li>
+<li><p>关于稠密图，损失函数由光度误差组成</p>
+</li>
+<li><p>这里定义了一个projective cost volume（不知道该怎么翻译）$C_r$，这里稍稍有些复杂，建议参照上面的图片</p>
+</li>
+<li><p>和参考帧比较近的图片索引表示为$m\in \mathcal {I}(r)$</p>
+</li>
+<li><p>相机的位姿被表示为$T_{cw}$</p>
+</li>
+<li><p>cost volume的平均光度损失被定义为​</p>
+<script type="math/tex; mode=display">
+C_r(u,d)=\frac{1}{|\mathcal{I}(r)|}\sum_{m\in\mathcal{I(r)}}||\rho_r(I_m,u,d)||</script><p>其中的$p_r(I_m,u,d)$可以被表示为$(u,d)$确定的三维点投影在$I_m$中的点和原来的点$u$的光度差</p>
+<script type="math/tex; mode=display">
+\rho_r=I_r(u)-I_m(\pi(KT_{mc}\pi^{-1}(u,d)))</script></li>
+</ul>
+<p>  对于每个点$u$而言，随着深度的变化，误差也会不断变化，我们可以找到一个误差项最大的深度$d$，如图2所示</p>
+<p>  <img src="\images\1597072266956.png" alt="图2"></p>
+<p>  那么通过这些深度$d$，就可以得到深度图$\xi$了</p>
+<p>到了这一步，一张最原始的深度图就已经有了，不过显然还不够，为了对深度图做一个进一步的优化</p>
+<ul>
+<li><p>可以想见，这张深度图既有变化不太明显的平滑区域，也有一些由于物体边界等原因导致的不连续的剧烈变化，为了更加平滑的重建，我们需要对深度图的梯度用加权的Huber Norm来正则化$g(u)||\nabla{\xi(u)} ||_{\epsilon}$，$g(u)$是权重，后一项是参数为$\epsilon$的Huber Norm</p>
+<script type="math/tex; mode=display">
+g(u)=e^{-\alpha||\nabla{I_r(u)}||^\beta_2}\\</script></li>
+<li><p>总的能量的表达式为</p>
+<script type="math/tex; mode=display">
+E_{\xi}=\int_{\Omega}\{g(u)||\nabla{\xi(u)} ||_{\epsilon}+\lambda C(u,\xi(u)) \}du</script></li>
+<li><p>后面的描述都围绕着如何优化损失$E_\xi$以及加速运算，数学标记就更为复杂了，这里暂且不表，先挖一个坑。</p>
+</li>
+</ul>
 
     </div>
 
@@ -362,7 +407,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-count">14</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
