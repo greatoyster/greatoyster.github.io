@@ -521,4 +521,27 @@ V_t(:,i,j,k)=F_t(:,\hat{i},\hat{j})</script></li>
 <p>从结果上来看，他和几个SOTA进行了对比，一言以蔽之就是多快好。不过，我认为这些结果没有很大的意义，毕竟他们都是在相机位姿的情况下进行的。CNN出来的3D mesh确实较为平滑，而且甚至可以补全ground truth中缺失的部分。以我个人的看法，这篇文章可能没有很大的实际意义，但是它的Demo和论文图片做的很精美，是一个亮点。</p>
 ]]></content>
   </entry>
+  <entry>
+    <title>DLT直接线性法</title>
+    <url>/2020/08/15/DLT%E7%9B%B4%E6%8E%A5%E7%BA%BF%E6%80%A7%E6%B3%95/</url>
+    <content><![CDATA[<p>直接线性变换法可以用来解决很多问题，他的核心思想就是根据得到的多组约束再通过SVD求得特定代价函数（很多情况下都是L2 Norm）下的最优解</p>
+<a id="more"></a>
+]]></content>
+  </entry>
+  <entry>
+    <title>相机外参</title>
+    <url>/2020/08/16/%E7%9B%B8%E6%9C%BA%E5%A4%96%E5%8F%82/</url>
+    <content><![CDATA[<p>我们可以用内参和外参两个参数矩阵来描述。一般来说内参是固定不变的，而外参则是实时改变的（除非相机保持不动）。</p>
+<p>我们一般可以用外参来表示相机位姿</p>
+<a id="more"></a>
+<p>一般来说，我们会把相机当成一个刚体来处理，那么一个三维刚体的位姿可以用一个旋转加上一个平移来描述，也就是一个欧氏变换。</p>
+<p>放到齐次坐标的语义下，我们把这个欧氏变换$T$给一个确切定义</p>
+<script type="math/tex; mode=display">
+T_{cw}=\left[\begin{matrix}
+R & t\\
+\bold{0}^t &1
+\end{matrix}\right]</script><p>下标$cw$代表把一个三维的世界点在世界参考系中的坐标转为了相机系中的坐标，即</p>
+<script type="math/tex; mode=display">
+p_c=Rp_w+t</script>]]></content>
+  </entry>
 </search>
