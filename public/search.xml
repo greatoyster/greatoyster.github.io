@@ -377,7 +377,7 @@ A+\vec{AB}=B\\
 F\times F \to W\\
 F\times W \to F</script><p>那么子空间就有了。</p>
 <p>另外这个向量子空间$W$代表了仿射子空间的方向，如果两个仿射子空间的方向相同，那么他们就是平行的仿射子空间了。</p>
-<p>注意到：向量空间$W$的维度决定了仿射空间的维度，比如$dim(W)=1$的情况下，这个仿射空间就是一条线（也叫仿射线）</p>
+<p>注意到：向量空间$W$的维度决定了仿射空间的维度，比如$\text{dim}(W)=1$的情况下，这个仿射空间就是一条线（也叫仿射线）</p>
 <p>仿射平面的构成条件也呼之欲出。</p>
 <p>点集的生成子空间：包含一系列的点的最小的仿射子空间。</p>
 <p>仿射空间中的不同的点都是仿射独立的</p>
@@ -438,9 +438,10 @@ E_{\xi}=\int_{\Omega}\{g(u)||\nabla{\xi(u)} ||_{\epsilon}+\lambda C(u,\xi(u)) \}
     <title>浅析LSD-SLAM</title>
     <url>/2020/08/08/%E6%B5%85%E6%9E%90LSD-SLAM/</url>
     <content><![CDATA[<p>大规模建图+精确位姿估计</p>
-<a id="more"></a>
+<p>这篇论文的工作可以概括为：大规模建图+精确位姿估计</p>
 <p>Feature-Based Methods的目的：从图片中得到几何信息。</p>
 <p>方法论就是两步走：先把特征从图片中提取出来，再从提取的特征中恢复出包含的几何信息（三维结构，相机位姿等等）</p>
+<a id="more"></a>
 <p>但这类方法有局限性，未必可以利用好所有的特征（线面基本都被抛弃了）</p>
 <p>Direct Visual Odometery的办法规避了这个问题（这里感觉它应该是指光流法</p>
 <p>类似的图像对齐方法在RGB-D或者双目视觉体系中已经有了成熟的算法</p>
@@ -543,5 +544,10 @@ R & t\\
 \end{matrix}\right]</script><p>下标$cw$代表把一个三维的世界点在世界参考系中的坐标转为了相机系中的坐标，即</p>
 <script type="math/tex; mode=display">
 p_c=Rp_w+t</script>]]></content>
+  </entry>
+  <entry>
+    <title>射影几何</title>
+    <url>/2020/08/16/%E5%B0%84%E5%BD%B1%E5%87%A0%E4%BD%95/</url>
+    <content><![CDATA[]]></content>
   </entry>
 </search>
