@@ -402,7 +402,10 @@ S(A,B)_{NCC}=\frac{\Sigma A(i,j)B(i,j)}{\sqrt{\Sigma A(i,j)^2\Sigma B(i,j)^2}}</
   <entry>
     <title>射影几何</title>
     <url>/2020/08/16/%E5%B0%84%E5%BD%B1%E5%87%A0%E4%BD%95/</url>
-    <content><![CDATA[]]></content>
+    <content><![CDATA[<p>射影几何在MVG这本书的前几章里面有所提及，我个人感觉对于3D视觉领域，缺少这一块的知识可能也不影响一些简单的小实践，但是如果不能系统的去了解他们，就缺少了一种全局感，所以在这里把相关内容补上</p>
+<a id="more"></a>
+<p>先挖一个坑，会来补的。</p>
+]]></content>
   </entry>
   <entry>
     <title>浅析Atlas: End-to-End 3D Scene Reconstruction from Posed Images</title>
