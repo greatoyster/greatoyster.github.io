@@ -47,22 +47,20 @@
   };
 </script>
 
-  <meta name="description" content="逆深度图在DTAM以及后续的相关工作中都有提及，这里稍微介绍一下逆深度参数化的相关知识">
+  <meta name="description" content="这篇工作发表在了ECCV2018上面，以前关于双目重建的文章关注了不少，但这次是又加上了stereo event camera. 关于event camera，会在另一个章节里详细讲解，ETHz最近很多工作都和这个event camera有关。 先来关注一下event camera的优点：  低延时 可以适应高动态场景 数据量更小">
 <meta property="og:type" content="article">
-<meta property="og:title" content="逆深度参数化">
-<meta property="og:url" content="http://yoursite.com/2020/08/08/%E9%80%86%E6%B7%B1%E5%BA%A6%E5%8F%82%E6%95%B0%E5%8C%96/index.html">
+<meta property="og:title" content="浅析Semi-Dense 3D Reconstruction with a Stereo Event Camera">
+<meta property="og:url" content="http://yoursite.com/2020/08/19/%E6%B5%85%E6%9E%90Semi-Dense-3D-Reconstruction-with-a-Stereo-Event-Camera/index.html">
 <meta property="og:site_name" content="Greatoyster">
-<meta property="og:description" content="逆深度图在DTAM以及后续的相关工作中都有提及，这里稍微介绍一下逆深度参数化的相关知识">
+<meta property="og:description" content="这篇工作发表在了ECCV2018上面，以前关于双目重建的文章关注了不少，但这次是又加上了stereo event camera. 关于event camera，会在另一个章节里详细讲解，ETHz最近很多工作都和这个event camera有关。 先来关注一下event camera的优点：  低延时 可以适应高动态场景 数据量更小">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://yoursite.com/images/1596865193479.png">
-<meta property="article:published_time" content="2020-08-08T13:33:43.000Z">
-<meta property="article:modified_time" content="2020-08-09T04:36:06.020Z">
+<meta property="article:published_time" content="2020-08-18T17:01:03.000Z">
+<meta property="article:modified_time" content="2020-08-18T16:59:35.119Z">
 <meta property="article:author" content="greatoyster">
 <meta property="article:tag" content="greatoyster">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://yoursite.com/images/1596865193479.png">
 
-<link rel="canonical" href="http://yoursite.com/2020/08/08/%E9%80%86%E6%B7%B1%E5%BA%A6%E5%8F%82%E6%95%B0%E5%8C%96/">
+<link rel="canonical" href="http://yoursite.com/2020/08/19/%E6%B5%85%E6%9E%90Semi-Dense-3D-Reconstruction-with-a-Stereo-Event-Camera/">
 
 
 <script id="page-configurations">
@@ -74,7 +72,7 @@
   };
 </script>
 
-  <title>逆深度参数化 | Greatoyster</title>
+  <title>浅析Semi-Dense 3D Reconstruction with a Stereo Event Camera | Greatoyster</title>
   
 
 
@@ -216,7 +214,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/08/%E9%80%86%E6%B7%B1%E5%BA%A6%E5%8F%82%E6%95%B0%E5%8C%96/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/19/%E6%B5%85%E6%9E%90Semi-Dense-3D-Reconstruction-with-a-Stereo-Event-Camera/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -229,7 +227,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          逆深度参数化
+          浅析Semi-Dense 3D Reconstruction with a Stereo Event Camera
         </h1>
 
         <div class="post-meta">
@@ -238,16 +236,10 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
+              
 
-              <time title="Created: 2020-08-08 13:33:43" itemprop="dateCreated datePublished" datetime="2020-08-08T13:33:43Z">2020-08-08</time>
+              <time title="Created: 2020-08-18 17:01:03 / Modified: 16:59:35" itemprop="dateCreated datePublished" datetime="2020-08-18T17:01:03Z">2020-08-18</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-08-09 04:36:06" itemprop="dateModified" datetime="2020-08-09T04:36:06Z">2020-08-09</time>
-              </span>
 
           
             <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
@@ -267,12 +259,17 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>逆深度图在DTAM以及后续的相关工作中都有提及，这里稍微介绍一下逆深度参数化的相关知识</p>
+        <p>这篇工作发表在了ECCV2018上面，以前关于双目重建的文章关注了不少，但这次是又加上了stereo event camera.</p>
+<p>关于event camera，会在另一个章节里详细讲解，ETHz最近很多工作都和这个event camera有关。</p>
+<p>先来关注一下event camera的优点：</p>
+<ul>
+<li>低延时</li>
+<li>可以适应高动态场景</li>
+<li>数据量更小</li>
+</ul>
 <a id="more"></a>
-<p>逆深度参数化的编码是由一个六维向量组成</p>
-<script type="math/tex; mode=display">
-\mathbb{y}=[x_0,y_0,z_0,\theta,\phi,\rho]^T</script><p><img src="\images\1596865193479.png" alt=""></p>
-<p>前三个标量表示了摄像机光心位置（在参考系$(e_1,e_2,e_3)$下，后两个标量编码了旋转角（想想经度和纬度），最后一个$\rho=\frac{1}{||p-c_0||}$，也就是点的深度的倒数。</p>
+<p>但也因为DVS的图片是稀疏的，并且并不是同时更新（也就是异步的），所以一般的图像算法很难应用在上面。前人的一些工作基本都是把其他传感器，比如标准相机，或者其他的深度传感器和他一起应用，但这些迟缓的设备拖累了DVS发挥它的全部性能。</p>
+<p>这篇工作要做的就是在只用DVS的时候去完成定位和重建的任务。</p>
 
     </div>
 
@@ -288,12 +285,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/08/08/%E6%B5%85%E6%9E%90DTAM-Dense-Tracking-and-Mapping-in-Real-Time/" rel="prev" title="浅析DTAM: Dense Tracking and Mapping in Real-Time">
-      <i class="fa fa-chevron-left"></i> 浅析DTAM: Dense Tracking and Mapping in Real-Time
+    <a href="/2020/08/19/Daily-Plan-in-MPL/" rel="prev" title="Daily Plan in MPL">
+      <i class="fa fa-chevron-left"></i> Daily Plan in MPL
     </a></div>
       <div class="post-nav-item">
-    <a href="/2020/08/09/cmake%E6%9E%84%E5%BB%BA%E7%B3%BB%E7%BB%9F/" rel="next" title="cmake构建系统">
-      cmake构建系统 <i class="fa fa-chevron-right"></i>
+    <a href="/2020/08/19/%E6%B5%85%E6%9E%90event-camera/" rel="next" title="浅析event camera">
+      浅析event camera <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
