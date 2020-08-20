@@ -54,11 +54,15 @@
 <meta property="og:site_name" content="Greatoyster">
 <meta property="og:description" content="这篇工作发表在了ECCV2018上面，以前关于双目重建的文章关注了不少，但这次是又加上了stereo event camera. 关于event camera，会在另一个章节里详细讲解，ETHz最近很多工作都和这个event camera有关。 先来关注一下event camera的优点：  低延时 可以适应高动态场景 数据量更小">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="c:/Users/lenovo/Documents/hexo/source/images/1597916488136.png">
+<meta property="og:image" content="c:/Users/lenovo/Documents/hexo/source/images/1597918582335.png">
+<meta property="og:image" content="c:/Users/lenovo/Documents/hexo/source/images/1597919823100.png">
 <meta property="article:published_time" content="2020-08-18T17:01:03.000Z">
-<meta property="article:modified_time" content="2020-08-18T16:59:35.119Z">
+<meta property="article:modified_time" content="2020-08-20T10:46:17.452Z">
 <meta property="article:author" content="greatoyster">
 <meta property="article:tag" content="greatoyster">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="c:/Users/lenovo/Documents/hexo/source/images/1597916488136.png">
 
 <link rel="canonical" href="http://yoursite.com/2020/08/19/%E6%B5%85%E6%9E%90Semi-Dense-3D-Reconstruction-with-a-Stereo-Event-Camera/">
 
@@ -236,10 +240,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2020-08-18 17:01:03 / Modified: 16:59:35" itemprop="dateCreated datePublished" datetime="2020-08-18T17:01:03Z">2020-08-18</time>
+              <time title="Created: 2020-08-18 17:01:03" itemprop="dateCreated datePublished" datetime="2020-08-18T17:01:03Z">2020-08-18</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-08-20 10:46:17" itemprop="dateModified" datetime="2020-08-20T10:46:17Z">2020-08-20</time>
+              </span>
 
           
             <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
@@ -270,6 +280,37 @@
 <a id="more"></a>
 <p>但也因为DVS的图片是稀疏的，并且并不是同时更新（也就是异步的），所以一般的图像算法很难应用在上面。前人的一些工作基本都是把其他传感器，比如标准相机，或者其他的深度传感器和他一起应用，但这些迟缓的设备拖累了DVS发挥它的全部性能。</p>
 <p>这篇工作要做的就是在只用DVS的时候去完成定位和重建的任务。</p>
+<p>纵观SLAM领域的文章，抛开玄学炼丹，大体都是抽象出问题的数学模型，找准一个目标函数，找到他的最值点，本文也不例外。</p>
+<p>这里提出了一个事件时间表面图的概念（Event Time-Surface Maps），下面附图一张</p>
+<p><img src="C:\Users\lenovo\Documents\hexo\source\images\1597916488136.png" alt="Event Time-Surface Maps"></p>
+<p>这个map的形式化表述是</p>
+<script type="math/tex; mode=display">
+\mathcal{T}(x,t)=\exp(-\frac{t-t_{last}(x)}{\delta})</script><p>下面依旧是本文的Formulation部分</p>
+<ul>
+<li>参考帧$\text{RV}$，在它附近可以有一系列的观察（observations）$s\in\mathcal{S}_{RV}$</li>
+<li>在时刻$t$双目相机观察到的$(\mathcal T_{left}(\cdot,t),\mathcal T_{right}(\cdot,t)) $</li>
+<li>逆深度$\rho=\frac{1}{z}$</li>
+<li>代价函数$C(x,\rho)$</li>
+</ul>
+<p>整个问题就是找一个使得代价函数最小化的逆深度</p>
+<ul>
+<li><script type="math/tex; mode=display">
+\rho^*=\arg\min_{\rho}C(x,\rho)</script></li>
+<li><p><img src="C:\Users\lenovo\Documents\hexo\source\images\1597918582335.png" alt=""></p>
+</li>
+</ul>
+<ul>
+<li><p>其中代价函数衡量的是双目相机观察到的这些事件在时间上的一致性，定义如下</p>
+<script type="math/tex; mode=display">
+C(x,p)=\frac{1}{||\mathcal S_{RV}|}\sum_{s\in\mathcal S_{RV}}|\mathcal T_{left}^s(x_1(\rho))-\mathcal T_{right}^s(x_2(\rho))||^2_2</script><p>注意，这里用了块匹配的思想，这些差值是在$w\times w$的块上进行的。</p>
+</li>
+<li><p>残差的定义也就比较明显了</p>
+<script type="math/tex; mode=display">
+r(\rho)=||\mathcal T_{left}^s(x_1(\rho))-\mathcal T_{right}^s(x_2(\rho))||_2</script><p>对$\text{RV}$里面的每一个像素求解出一个最佳的逆深度（借助一个非线性优化的办法，细节略过），也就可以恢复出大概的三维结构了,可以明显地找到一个代价函数最小值对应的逆深度</p>
+<p><img src="C:\Users\lenovo\Documents\hexo\source\images\1597919823100.png" alt=""></p>
+</li>
+</ul>
+<p>在做完这一步以后，其实实验结果还不能看，有很多粗糙的地方，。我们需要对所有参考帧里面恢复出来的三维结构做一个融合。关于深度融合和不确定性传播的内容会在其他地方提及</p>
 
     </div>
 
@@ -289,8 +330,8 @@
       <i class="fa fa-chevron-left"></i> Daily Plan in MPL
     </a></div>
       <div class="post-nav-item">
-    <a href="/2020/08/19/%E6%B5%85%E6%9E%90event-camera/" rel="next" title="浅析event camera">
-      浅析event camera <i class="fa fa-chevron-right"></i>
+    <a href="/2020/08/19/%E6%B5%85%E6%9E%90event-camera/" rel="next" title="浅析Event Camera">
+      浅析Event Camera <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>

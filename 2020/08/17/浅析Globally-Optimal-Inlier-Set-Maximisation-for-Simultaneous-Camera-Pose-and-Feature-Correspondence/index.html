@@ -56,7 +56,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="c:/Users/lenovo/Documents/hexo/source/images/1597630391972.png">
 <meta property="article:published_time" content="2020-08-17T09:30:03.000Z">
-<meta property="article:modified_time" content="2020-08-18T09:02:19.437Z">
+<meta property="article:modified_time" content="2020-08-20T09:54:18.064Z">
 <meta property="article:author" content="greatoyster">
 <meta property="article:tag" content="greatoyster">
 <meta name="twitter:card" content="summary">
@@ -246,7 +246,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-08-18 09:02:19" itemprop="dateModified" datetime="2020-08-18T09:02:19Z">2020-08-18</time>
+                <time title="Modified: 2020-08-20 09:54:18" itemprop="dateModified" datetime="2020-08-20T09:54:18Z">2020-08-20</time>
               </span>
 
           
@@ -270,6 +270,7 @@
         <p>这一工作是ICCV2017的Marr Prize</p>
 <p>在已知三维点集的情况下，根据单张图片恢复出相机六个自由度（6DoF）的位姿是一个很重要的任务，比较典型的有PnP算法，在给定2D-3D对应关系确定的时候，事情就比较好办，但如何提供较为精准的对应关系是一个比较麻烦的事情，尤其是在只有几何信息作为先验知识的时候。</p>
 <p>比起前人在pose and correspondence这个问题上应用的办法，这项工作提出了一种全局的算法，同时寻找最佳的位姿和最佳的对应关系。</p>
+<a id="more"></a>
 <p>文章在一开始和RANSAC这种常见的假设检验的方法做了比较。一般来说PnP算法对于2D-3D对应关系的敏感度比较高。尽管特征点检测的技术可以相对鲁棒地找出这种对应关系，但并不适用于所有场合，比如一个纹理缺失的场景，重复的特征点，物体的遮挡，投射投影带来的失真，光照条件带来的变化。</p>
 <p>全局最优的位姿和对应关系估计的算法，以前也曾经出现过，可以称之为$\epsilon-\text{suboptimal}$，在没有先验位姿信息的情况下求解了一个次优的解</p>
 <p>文章解释了在噪声的存在下，对于目标函数的最优化不一定能够得到全局的最优点。</p>

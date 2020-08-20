@@ -49,13 +49,13 @@
 
   <meta name="description" content="Event Camera也可以把他称作Dynamic Vision Sensor。下文简称DVS。 DVS捕获的是每个像素点的光度变化，不用记录图片上每个像素点的信息（因为他关心的是变化量） 此外DVS还有HDR特性（140dB，普通相机一般是60dB）。 可以说DVS有着很多的良好特性，但是存在着一些挑战。 因为DVS的图片是稀疏的，并且并不是同时更新（也就是异步的），所以一般的图像算法很难应用">
 <meta property="og:type" content="article">
-<meta property="og:title" content="浅析event camera">
+<meta property="og:title" content="浅析Event Camera">
 <meta property="og:url" content="http://yoursite.com/2020/08/19/%E6%B5%85%E6%9E%90event-camera/index.html">
 <meta property="og:site_name" content="Greatoyster">
 <meta property="og:description" content="Event Camera也可以把他称作Dynamic Vision Sensor。下文简称DVS。 DVS捕获的是每个像素点的光度变化，不用记录图片上每个像素点的信息（因为他关心的是变化量） 此外DVS还有HDR特性（140dB，普通相机一般是60dB）。 可以说DVS有着很多的良好特性，但是存在着一些挑战。 因为DVS的图片是稀疏的，并且并不是同时更新（也就是异步的），所以一般的图像算法很难应用">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-08-18T17:15:52.000Z">
-<meta property="article:modified_time" content="2020-08-18T09:48:05.098Z">
+<meta property="article:modified_time" content="2020-08-20T09:54:02.813Z">
 <meta property="article:author" content="greatoyster">
 <meta property="article:tag" content="greatoyster">
 <meta name="twitter:card" content="summary">
@@ -72,7 +72,7 @@
   };
 </script>
 
-  <title>浅析event camera | Greatoyster</title>
+  <title>浅析Event Camera | Greatoyster</title>
   
 
 
@@ -227,7 +227,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          浅析event camera
+          浅析Event Camera
         </h1>
 
         <div class="post-meta">
@@ -236,10 +236,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2020-08-18 17:15:52 / Modified: 09:48:05" itemprop="dateCreated datePublished" datetime="2020-08-18T17:15:52Z">2020-08-18</time>
+              <time title="Created: 2020-08-18 17:15:52" itemprop="dateCreated datePublished" datetime="2020-08-18T17:15:52Z">2020-08-18</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-08-20 09:54:02" itemprop="dateModified" datetime="2020-08-20T09:54:02Z">2020-08-20</time>
+              </span>
 
           
             <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
@@ -264,7 +270,7 @@
 <p>此外DVS还有HDR特性（140dB，普通相机一般是60dB）。</p>
 <p>可以说DVS有着很多的良好特性，但是存在着一些挑战。</p>
 <p>因为DVS的图片是稀疏的，并且并不是同时更新（也就是异步的），所以一般的图像算法很难应用在上面。前人的一些工作基本都是把其他传感器，比如标准相机，或者其他的深度传感器和他一起应用，但这些迟缓的设备拖累了DVS发挥它的全部性能。</p>
-
+<a id="more"></a>
     </div>
 
     
