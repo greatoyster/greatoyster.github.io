@@ -54,15 +54,15 @@
 <meta property="og:site_name" content="Greatoyster">
 <meta property="og:description" content="这篇工作发表在了ECCV2018上面，以前关于双目重建的文章关注了不少，但这次是又加上了stereo event camera. 关于event camera，会在另一个章节里详细讲解，ETHz最近很多工作都和这个event camera有关。 先来关注一下event camera的优点：  低延时 可以适应高动态场景 数据量更小">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="c:/Users/lenovo/Documents/hexo/source/images/1597916488136.png">
-<meta property="og:image" content="c:/Users/lenovo/Documents/hexo/source/images/1597918582335.png">
-<meta property="og:image" content="c:/Users/lenovo/Documents/hexo/source/images/1597919823100.png">
+<meta property="og:image" content="http://yoursite.com/images/1597916488136.png">
+<meta property="og:image" content="http://yoursite.com/images/1597918582335.png">
+<meta property="og:image" content="http://yoursite.com/images/1597919823100.png">
 <meta property="article:published_time" content="2020-08-18T17:01:03.000Z">
-<meta property="article:modified_time" content="2020-08-20T10:46:17.452Z">
+<meta property="article:modified_time" content="2020-08-20T12:27:23.107Z">
 <meta property="article:author" content="greatoyster">
 <meta property="article:tag" content="greatoyster">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="c:/Users/lenovo/Documents/hexo/source/images/1597916488136.png">
+<meta name="twitter:image" content="http://yoursite.com/images/1597916488136.png">
 
 <link rel="canonical" href="http://yoursite.com/2020/08/19/%E6%B5%85%E6%9E%90Semi-Dense-3D-Reconstruction-with-a-Stereo-Event-Camera/">
 
@@ -161,7 +161,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives<span class="badge">22</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives<span class="badge">23</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -248,7 +248,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-08-20 10:46:17" itemprop="dateModified" datetime="2020-08-20T10:46:17Z">2020-08-20</time>
+                <time title="Modified: 2020-08-20 12:27:23" itemprop="dateModified" datetime="2020-08-20T12:27:23Z">2020-08-20</time>
               </span>
 
           
@@ -282,7 +282,7 @@
 <p>这篇工作要做的就是在只用DVS的时候去完成定位和重建的任务。</p>
 <p>纵观SLAM领域的文章，抛开玄学炼丹，大体都是抽象出问题的数学模型，找准一个目标函数，找到他的最值点，本文也不例外。</p>
 <p>这里提出了一个事件时间表面图的概念（Event Time-Surface Maps），下面附图一张</p>
-<p><img src="C:\Users\lenovo\Documents\hexo\source\images\1597916488136.png" alt="Event Time-Surface Maps"></p>
+<p><img src="\images\1597916488136.png" alt="Event Time-Surface Maps"></p>
 <p>这个map的形式化表述是</p>
 <script type="math/tex; mode=display">
 \mathcal{T}(x,t)=\exp(-\frac{t-t_{last}(x)}{\delta})</script><p>下面依旧是本文的Formulation部分</p>
@@ -296,7 +296,7 @@
 <ul>
 <li><script type="math/tex; mode=display">
 \rho^*=\arg\min_{\rho}C(x,\rho)</script></li>
-<li><p><img src="C:\Users\lenovo\Documents\hexo\source\images\1597918582335.png" alt=""></p>
+<li><p><img src="\images\1597918582335.png" alt=""></p>
 </li>
 </ul>
 <ul>
@@ -307,7 +307,7 @@ C(x,p)=\frac{1}{||\mathcal S_{RV}|}\sum_{s\in\mathcal S_{RV}}|\mathcal T_{left}^
 <li><p>残差的定义也就比较明显了</p>
 <script type="math/tex; mode=display">
 r(\rho)=||\mathcal T_{left}^s(x_1(\rho))-\mathcal T_{right}^s(x_2(\rho))||_2</script><p>对$\text{RV}$里面的每一个像素求解出一个最佳的逆深度（借助一个非线性优化的办法，细节略过），也就可以恢复出大概的三维结构了,可以明显地找到一个代价函数最小值对应的逆深度</p>
-<p><img src="C:\Users\lenovo\Documents\hexo\source\images\1597919823100.png" alt=""></p>
+<p><img src="\images\1597919823100.png" alt=""></p>
 </li>
 </ul>
 <p>在做完这一步以后，其实实验结果还不能看，有很多粗糙的地方，。我们需要对所有参考帧里面恢复出来的三维结构做一个融合。关于深度融合和不确定性传播的内容会在其他地方提及</p>
@@ -405,7 +405,7 @@ r(\rho)=||\mathcal T_{left}^s(x_1(\rho))-\mathcal T_{right}^s(x_2(\rho))||_2</sc
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-count">23</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

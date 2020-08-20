@@ -601,7 +601,7 @@ V_t(:,i,j,k)=F_t(:,\hat{i},\hat{j})</script></li>
 <p>这篇工作要做的就是在只用DVS的时候去完成定位和重建的任务。</p>
 <p>纵观SLAM领域的文章，抛开玄学炼丹，大体都是抽象出问题的数学模型，找准一个目标函数，找到他的最值点，本文也不例外。</p>
 <p>这里提出了一个事件时间表面图的概念（Event Time-Surface Maps），下面附图一张</p>
-<p><img src="C:\Users\lenovo\Documents\hexo\source\images\1597916488136.png" alt="Event Time-Surface Maps"></p>
+<p><img src="\images\1597916488136.png" alt="Event Time-Surface Maps"></p>
 <p>这个map的形式化表述是</p>
 <script type="math/tex; mode=display">
 \mathcal{T}(x,t)=\exp(-\frac{t-t_{last}(x)}{\delta})</script><p>下面依旧是本文的Formulation部分</p>
@@ -615,7 +615,7 @@ V_t(:,i,j,k)=F_t(:,\hat{i},\hat{j})</script></li>
 <ul>
 <li><script type="math/tex; mode=display">
 \rho^*=\arg\min_{\rho}C(x,\rho)</script></li>
-<li><p><img src="C:\Users\lenovo\Documents\hexo\source\images\1597918582335.png" alt=""></p>
+<li><p><img src="\images\1597918582335.png" alt=""></p>
 </li>
 </ul>
 <ul>
@@ -626,7 +626,7 @@ C(x,p)=\frac{1}{||\mathcal S_{RV}|}\sum_{s\in\mathcal S_{RV}}|\mathcal T_{left}^
 <li><p>残差的定义也就比较明显了</p>
 <script type="math/tex; mode=display">
 r(\rho)=||\mathcal T_{left}^s(x_1(\rho))-\mathcal T_{right}^s(x_2(\rho))||_2</script><p>对$\text{RV}$里面的每一个像素求解出一个最佳的逆深度（借助一个非线性优化的办法，细节略过），也就可以恢复出大概的三维结构了,可以明显地找到一个代价函数最小值对应的逆深度</p>
-<p><img src="C:\Users\lenovo\Documents\hexo\source\images\1597919823100.png" alt=""></p>
+<p><img src="\images\1597919823100.png" alt=""></p>
 </li>
 </ul>
 <p>在做完这一步以后，其实实验结果还不能看，有很多粗糙的地方，。我们需要对所有参考帧里面恢复出来的三维结构做一个融合。关于深度融合和不确定性传播的内容会在其他地方提及</p>
@@ -703,5 +703,10 @@ p_c=Rp_w+t</script>]]></content>
 \mathbb{y}=[x_0,y_0,z_0,\theta,\phi,\rho]^T</script><p><img src="\images\1596865193479.png" alt=""></p>
 <p>前三个标量表示了摄像机光心位置（在参考系$(e_1,e_2,e_3)$下，后两个标量编码了旋转角（想想经度和纬度），最后一个$\rho=\frac{1}{||p-c_0||}$，也就是点的深度的倒数。</p>
 ]]></content>
+  </entry>
+  <entry>
+    <title>不确定性传播</title>
+    <url>/2020/08/21/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E4%BC%A0%E6%92%AD/</url>
+    <content><![CDATA[]]></content>
   </entry>
 </search>
