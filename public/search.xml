@@ -166,11 +166,14 @@
     <content><![CDATA[<h1 id="2020-8-17"><a href="#2020-8-17" class="headerlink" title="2020.8.17"></a>2020.8.17</h1><p>Today is the first day to join MPL Lab. I talked to Prof. Laurent about my future plan. And he gave me a lot of useful suggestions. </p>
 <p>As planed, I will join MPL Lab after I graduate from Shanghaitech University. The most important thing at this stage is to decide the sub-direction of my research work.</p>
 <p>I will update this blog daily to record my track of research.</p>
-<h1 id="2018-8-18"><a href="#2018-8-18" class="headerlink" title="2018.8.18"></a>2018.8.18</h1><p>I read some work about event camera,  the event camera is amazing. I am likely to do further research about this field.</p>
+<a id="more"></a>
+<h1 id="2020-8-18"><a href="#2020-8-18" class="headerlink" title="2020.8.18"></a>2020.8.18</h1><p>I read some work about event camera,  the event camera is amazing. I am likely to do further research about this field.</p>
 <p>I also had a talk with my potential collaborator Jiaben Chen. But he still have a long way to go. And I felt somehow worried.</p>
 <p>I did a further study about event-based camera, and the paper “Semi-Dense 3D Reconstruction with a Stereo Event Camera”, which is similar to DTAM in modeling and formulation.</p>
 <p>The plan of tomorrow is to figure out the uncertainty propagation and more detailed information about event-based vision.</p>
-]]></content>
+<h1 id="2020-8-19"><a href="#2020-8-19" class="headerlink" title="2020.8.19"></a>2020.8.19</h1><p>Today I had a talk with Ling Gao about event camera and his previous work. I also learned more about MPL, such as tracking system.</p>
+<p>I also suggested Jiaben Chen to learn some basic knowledge about SLAM and coding skills.</p>
+<h1 id="2020-8-20"><a href="#2020-8-20" class="headerlink" title="2020.8.20"></a>2020.8.20</h1>]]></content>
   </entry>
   <entry>
     <title>Rust进阶</title>
@@ -438,10 +441,41 @@ S(A,B)_{NCC}=\frac{\Sigma A(i,j)B(i,j)}{\sqrt{\Sigma A(i,j)^2\Sigma B(i,j)^2}}</
 <p>这里再讲一下关于event camera里面的event的定义：</p>
 <ul>
 <li><script type="math/tex; mode=display">
-e= \{\bold{x},t,s\}</script></li>
-<li><p>其中$\bold{x}=[x,y]^T$是像素位置，$t$是时间戳，$s$是正负号，表示亮度的增减</p>
+e= \{x,t,s\}</script></li>
+<li><p>其中$ {x}=[x,y]^T$是像素位置，$t$是时间戳，$s$是正负号，表示亮度的增减</p>
 </li>
 </ul>
+<p>接下来是一个比较重要的概念是Image of Warped Events（IWE）</p>
+<p>关于Formulation的部分整理如下：</p>
+<ul>
+<li><p>给定$N$个事件$\varepsilon=\{e^k\}_{k=1}^N $</p>
+</li>
+<li><p>定义了$  x_k’=W(  x_k,t_k; \theta)$，这样子的一个warping function，他的返回值是一个事件$e_k$在$t_{ref}$时刻的像素位置</p>
+</li>
+<li><p>IWE的定义：</p>
+<script type="math/tex; mode=display">
+I(p_{ij};\theta)=\sum^{N}_{k=1}1(p_{ij}-x'_k)=\sum^{N}_{k=1}1(p_{ij}-W( x_k,t_k;\theta))</script></li>
+<li><p>$ 1()$是指示函数，一个和参数阈值$\epsilon=0.5$相关的指示函数,这个阈值是为了防止一个事件影响两个像素点</p>
+</li>
+<li><p>总的来说IWE，可以看作一段时间内的所有事件在图像平面上的线性累计</p>
+</li>
+</ul>
+<p>下面要做的就是提高IWE的锐度或者对比度（sharpness or contrast ），下面又是一波Formulation</p>
+<ul>
+<li><p>$\mu_I$是IWE $I(p_{ij};\theta)$的均值</p>
+</li>
+<li><p>$\delta$是shift factor</p>
+</li>
+<li><p>所有积累像素的集合是$\mathcal{P}$，他们的数量是$N_p$</p>
+</li>
+<li><p>文章提供了一系列的object function以供参考</p>
+<p><img src="\images\1597889740116.png" alt="目标函数"></p>
+</li>
+</ul>
+<p>好了，说了这么多，回到最开始的主题，我们要最大化目标函数，因为用了BnB（Branch and Bound）的全局搜索策略，所以要决定的就是每个搜索子空间的上界和下界</p>
+<p><img src="\images\1597895500252.png" alt="界限"></p>
+<p>注意到这个界限可以通过递归的方法快速求得，具体推导过程这里略过，这里直接上算法流程了</p>
+<p><img src="\images\1597895706976.png" alt="相关算法"></p>
 ]]></content>
   </entry>
   <entry>

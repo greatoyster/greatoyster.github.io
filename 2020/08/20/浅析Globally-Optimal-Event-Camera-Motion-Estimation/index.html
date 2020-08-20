@@ -54,11 +54,15 @@
 <meta property="og:site_name" content="Greatoyster">
 <meta property="og:description" content="这是ECCV2020上的一篇工作，第一眼看到关键词，就大概明白了这也是ICCV2017 Marr Prize的那篇工作的一个延续，同属Globally-Optimal系。 下面进入正文的解读">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://yoursite.com/images/1597889740116.png">
+<meta property="og:image" content="http://yoursite.com/images/1597895500252.png">
+<meta property="og:image" content="http://yoursite.com/images/1597895706976.png">
 <meta property="article:published_time" content="2020-08-19T17:04:22.000Z">
-<meta property="article:modified_time" content="2020-08-19T09:31:07.869Z">
+<meta property="article:modified_time" content="2020-08-20T03:55:36.810Z">
 <meta property="article:author" content="greatoyster">
 <meta property="article:tag" content="greatoyster">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/images/1597889740116.png">
 
 <link rel="canonical" href="http://yoursite.com/2020/08/20/%E6%B5%85%E6%9E%90Globally-Optimal-Event-Camera-Motion-Estimation/">
 
@@ -236,10 +240,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2020-08-19 17:04:22 / Modified: 09:31:07" itemprop="dateCreated datePublished" datetime="2020-08-19T17:04:22Z">2020-08-19</time>
+              <time title="Created: 2020-08-19 17:04:22" itemprop="dateCreated datePublished" datetime="2020-08-19T17:04:22Z">2020-08-19</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-08-20 03:55:36" itemprop="dateModified" datetime="2020-08-20T03:55:36Z">2020-08-20</time>
+              </span>
 
           
             <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
@@ -277,10 +287,41 @@
 <p>这里再讲一下关于event camera里面的event的定义：</p>
 <ul>
 <li><script type="math/tex; mode=display">
-e= \{\bold{x},t,s\}</script></li>
-<li><p>其中$\bold{x}=[x,y]^T$是像素位置，$t$是时间戳，$s$是正负号，表示亮度的增减</p>
+e= \{x,t,s\}</script></li>
+<li><p>其中$ {x}=[x,y]^T$是像素位置，$t$是时间戳，$s$是正负号，表示亮度的增减</p>
 </li>
 </ul>
+<p>接下来是一个比较重要的概念是Image of Warped Events（IWE）</p>
+<p>关于Formulation的部分整理如下：</p>
+<ul>
+<li><p>给定$N$个事件$\varepsilon=\{e^k\}_{k=1}^N $</p>
+</li>
+<li><p>定义了$  x_k’=W(  x_k,t_k; \theta)$，这样子的一个warping function，他的返回值是一个事件$e_k$在$t_{ref}$时刻的像素位置</p>
+</li>
+<li><p>IWE的定义：</p>
+<script type="math/tex; mode=display">
+I(p_{ij};\theta)=\sum^{N}_{k=1}1(p_{ij}-x'_k)=\sum^{N}_{k=1}1(p_{ij}-W( x_k,t_k;\theta))</script></li>
+<li><p>$ 1()$是指示函数，一个和参数阈值$\epsilon=0.5$相关的指示函数,这个阈值是为了防止一个事件影响两个像素点</p>
+</li>
+<li><p>总的来说IWE，可以看作一段时间内的所有事件在图像平面上的线性累计</p>
+</li>
+</ul>
+<p>下面要做的就是提高IWE的锐度或者对比度（sharpness or contrast ），下面又是一波Formulation</p>
+<ul>
+<li><p>$\mu_I$是IWE $I(p_{ij};\theta)$的均值</p>
+</li>
+<li><p>$\delta$是shift factor</p>
+</li>
+<li><p>所有积累像素的集合是$\mathcal{P}$，他们的数量是$N_p$</p>
+</li>
+<li><p>文章提供了一系列的object function以供参考</p>
+<p><img src="\images\1597889740116.png" alt="目标函数"></p>
+</li>
+</ul>
+<p>好了，说了这么多，回到最开始的主题，我们要最大化目标函数，因为用了BnB（Branch and Bound）的全局搜索策略，所以要决定的就是每个搜索子空间的上界和下界</p>
+<p><img src="\images\1597895500252.png" alt="界限"></p>
+<p>注意到这个界限可以通过递归的方法快速求得，具体推导过程这里略过，这里直接上算法流程了</p>
+<p><img src="\images\1597895706976.png" alt="相关算法"></p>
 
     </div>
 
