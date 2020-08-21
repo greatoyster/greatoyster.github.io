@@ -50,17 +50,17 @@
   <meta name="description" content="Event Camera也可以把他称作Dynamic Vision Sensor。下文简称DVS。 DVS捕获的是每个像素点的光度变化，不用记录图片上每个像素点的信息（因为他关心的是变化量） 此外DVS还有HDR特性（140dB，普通相机一般是60dB）。 可以说DVS有着很多的良好特性，但是存在着一些挑战。 因为DVS的图片是稀疏的，并且并不是同时更新（也就是异步的），所以一般的图像算法很难应用">
 <meta property="og:type" content="article">
 <meta property="og:title" content="浅析Event Camera">
-<meta property="og:url" content="http://yoursite.com/2020/08/19/%E6%B5%85%E6%9E%90event-camera/index.html">
+<meta property="og:url" content="http://yoursite.com/2020/08/19/%E6%B5%85%E6%9E%90Event-Camera/index.html">
 <meta property="og:site_name" content="Greatoyster">
 <meta property="og:description" content="Event Camera也可以把他称作Dynamic Vision Sensor。下文简称DVS。 DVS捕获的是每个像素点的光度变化，不用记录图片上每个像素点的信息（因为他关心的是变化量） 此外DVS还有HDR特性（140dB，普通相机一般是60dB）。 可以说DVS有着很多的良好特性，但是存在着一些挑战。 因为DVS的图片是稀疏的，并且并不是同时更新（也就是异步的），所以一般的图像算法很难应用">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-08-18T17:15:52.000Z">
-<meta property="article:modified_time" content="2020-08-20T09:54:02.813Z">
+<meta property="article:modified_time" content="2020-08-21T06:47:35.042Z">
 <meta property="article:author" content="greatoyster">
 <meta property="article:tag" content="greatoyster">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://yoursite.com/2020/08/19/%E6%B5%85%E6%9E%90event-camera/">
+<link rel="canonical" href="http://yoursite.com/2020/08/19/%E6%B5%85%E6%9E%90Event-Camera/">
 
 
 <script id="page-configurations">
@@ -214,7 +214,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/19/%E6%B5%85%E6%9E%90event-camera/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/19/%E6%B5%85%E6%9E%90Event-Camera/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -244,7 +244,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-08-20 09:54:02" itemprop="dateModified" datetime="2020-08-20T09:54:02Z">2020-08-20</time>
+                <time title="Modified: 2020-08-21 06:47:35" itemprop="dateModified" datetime="2020-08-21T06:47:35Z">2020-08-21</time>
               </span>
 
           
@@ -271,6 +271,35 @@
 <p>可以说DVS有着很多的良好特性，但是存在着一些挑战。</p>
 <p>因为DVS的图片是稀疏的，并且并不是同时更新（也就是异步的），所以一般的图像算法很难应用在上面。前人的一些工作基本都是把其他传感器，比如标准相机，或者其他的深度传感器和他一起应用，但这些迟缓的设备拖累了DVS发挥它的全部性能。</p>
 <a id="more"></a>
+<p>关于异步更新，这里稍微解释一下，传统相机会以一个固定的帧率来更新图片，比如30FPS，但DVS的每一个像素只有在事件触发的时候才会更新，没有固定帧率的限制。这种异步更新就支持了高动态物体的识别和追踪。</p>
+<p>既然DVS有如此优势，作为一款2008年左右就可以商业生产的传感器，到现在为止却还是没多少热度，它的确面临着不小的挑战</p>
+<ul>
+<li>我们需要应付他与众不同的时空间输出</li>
+<li>它与传统的光度传感也有很大的不同</li>
+<li>噪声依然存在而且干扰不小</li>
+</ul>
+<p>一个比较真实的事件生成模型把噪声和半导体的错误匹配也考虑了进去，是一个基于概率的模型</p>
+<p>关于DVS，受限于异步的电路，他的像素普遍比传统相机要大很多，空间分辨率其实不高（可以说很低）</p>
+<p>另外值得一提的是，DVS成本很高，上千美元一台</p>
+<p>关于高级事件相机（Advanced Event Camera）,这些设备一般市面上是没有，一般用于生产厂商和科研单位的研究中，有几个例子</p>
+<ul>
+<li>带有颜色信息的DVS</li>
+<li>更高灵敏度的对比传感</li>
+</ul>
+<p>如果要研究DVS相关的问题的话，Formulation必不可少，下面讲的就是这些</p>
+<ul>
+<li>单个事件一般可以编码成$e_k=\{\text{x}_k,t_k,p_k\}$</li>
+<li>一系列事件可以编码成$\varepsilon=\{e_k\}_{k=1}^{N_e}$</li>
+<li>关于DVS的输出的表征方式<ul>
+<li>时间表面图 Time Surface Map</li>
+<li>事件图 Event frame/image，一种简单的转化形式</li>
+<li>3D体素网格，每一个体素可以表征一个像素点再加上一个时间戳</li>
+<li>3D点集$(x_k,y_k,t_k)$</li>
+<li>运动补偿</li>
+</ul>
+</li>
+</ul>
+
     </div>
 
     
