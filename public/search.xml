@@ -176,7 +176,12 @@
 <p>I also suggested Jiaben Chen to learn some basic knowledge about SLAM and coding skills.</p>
 <h1 id="2020-8-20"><a href="#2020-8-20" class="headerlink" title="2020.8.20"></a>2020.8.20</h1><p>Today I kept learning about event camera, related material such as paper notes are uploaded to my GitHub pages. I found some useful materials about all kinds of object functions and minimization in event-based vision. I planed to do further study on these works. </p>
 <h1 id="2020-8-21"><a href="#2020-8-21" class="headerlink" title="2020.8.21"></a>2020.8.21</h1><p>Today I read the survey about event-based vision and went through the big picture of that. It is a challenging field. I thought it is a high-return-rate topics as well as with high risks. I still need to be careful and careful while choosing sub-direction. </p>
-]]></content>
+<h1 id="2020-8-22"><a href="#2020-8-22" class="headerlink" title="2020.8.22"></a>2020.8.22</h1><p>Today I had a rest and enjoy a nice weekend.</p>
+<h1 id="2020-8-23"><a href="#2020-8-23" class="headerlink" title="2020.8.23"></a>2020.8.23</h1><p>Today I had a survey on all kinds of optimization framework about event-based vision. The main stream is to maximize the contrast of IWE(Images of Warped Events), which is a motion-compensated representation of event-based output.</p>
+<p>In this field, I thought I have had a basic understanding, so I started to consider my next step. </p>
+<h1 id="2020-8-24"><a href="#2020-8-24" class="headerlink" title="2020.8.24"></a>2020.8.24</h1><p>Today I watched some demos of event-based vision, including the tasks of tracking and depth estimation. And I also learned about VIO + event-based vision. Related material will update soon in my GitHub Pages. </p>
+<p>By the way, I read some material about mathematics as well.</p>
+<h1 id="2020-8-25"><a href="#2020-8-25" class="headerlink" title="2020.8.25"></a>2020.8.25</h1>]]></content>
   </entry>
   <entry>
     <title>Rust进阶</title>
@@ -738,5 +743,65 @@ p_c=Rp_w+t</script>]]></content>
 </li>
 </ul>
 ]]></content>
+  </entry>
+  <entry>
+    <title>EVO: A Geometric Approach to Event-based 6-DOF Parallel Tracking and Mapping in Real-time</title>
+    <url>/2020/08/25/EVO-A-Geometric-Approach-to-Event-based-6-DOF-Parallel-Tracking-and-Mapping-in-Real-time/</url>
+    <content><![CDATA[<p>这篇文章的相关Demo可以在Youtube上看到，不难看出，在线条丰富的场景里面event camera的表现还是相当不错的。</p>
+<p><img src="\images\1598337409328.png" alt=""></p>
+<a id="more"></a>
+<p>关于event camera的优缺点在这里就不赘述了，直接讲贡献吧。这项工作主要解决的一个问题是基于event-based vision的6DoF的实时追踪与建图。前人在这个问题上已经做过一些工作，但往往需要额外的硬件支持（GPU）</p>
+<p>文章的设计思路相当明了，就是照着PTAM，把整个系统分成了两个子模块：追踪和建图</p>
+<p>下面是整个系统的流程图</p>
+<p><img src="\images\1598337607774.png" alt=""></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>浅析LK-光流法</title>
+    <url>/2020/08/25/%E6%B5%85%E6%9E%90LK-%E5%85%89%E6%B5%81%E6%B3%95/</url>
+    <content><![CDATA[<p>本文节选自知乎</p>
+<p>LK算法是一种两帧差分的光流估计算法，其基本思想基于以下三个假设。</p>
+<ul>
+<li>亮度恒定：场景中目标图像的像素看起来在帧到帧移动是不发生改变。对于灰度图像（对于彩色图像同适用）这意味着像素的灰度值不会随着帧的跟踪改变。</li>
+<li>时间持续性（微小移动）：图像上相机的移动随时间变化缓慢。实际上，这意味着时间的变化不会引起像素位置的剧烈变化，这样像素的灰度值才能对位置求对应的偏导数。</li>
+<li>空间一致性：场景中相同表面的相邻点具有相似的运动，并且其投影到图像平面上的距离也比较近。</li>
+</ul>
+<p>三个基本假设中前两个是光流法的基本假设，第三个是LK算法特有的。</p>
+<p>基于前两个假设，我们得到图像的约束方程：</p>
+<script type="math/tex; mode=display">
+I(x,y,t)=I(x+\delta x,y+\delta y , t+ \delta t)</script><p>其中$I(x,y,t)$是$t$时刻图像在$(x,y)$位置的亮度。</p>
+<p>利用泰勒公式对函数$I(x+\delta x,y+\delta y,t+\delta t)$在$(x,y,t)$处展开可得：</p>
+<script type="math/tex; mode=display">
+I(x,y,t)=I(x+\delta x,y+\delta y , t+ \delta t)=I(x,y,t)+\frac{\partial I}{\partial x}\delta x+\frac{\partial I}{\partial y}\delta y+\frac{\partial I}{\partial t}\delta t+R(x,y,t)</script><p>其中$R(x,y,t)$为泰勒公式的高阶余项近似为0。</p>
+<p>联立公式(1)和(2)可以得到</p>
+<script type="math/tex; mode=display">
+\frac{\partial I}{\partial x}\delta x+\frac{\partial I}{\partial y}\delta y+\frac{\partial I}{\partial t}\delta t=0</script><p>等价为</p>
+<script type="math/tex; mode=display">
+\frac{\partial I}{\partial x}\frac{\delta x}{\delta t}+\frac{\partial I}{\partial y}\frac{\delta y}{\delta t}+\frac{\partial I}{\partial t}=0</script><p>其中$\frac{\partial I}{\partial x}$和$\frac{\partial I}{\partial y}$分别为像素点沿着$x$和$y$方向的导数，沿$x$和$y$方向的速度分量分别记为$u$和$v$ ，可以将以上式子简写为：</p>
+<script type="math/tex; mode=display">
+I_x u+I_y v +I_t=0</script><p>进一步简化为矩阵形式：</p>
+<script type="math/tex; mode=display">
+\nabla I^T\cdot\vec{V}=-I_t</script><p>由于以上的方程有$u$和$v$两个未知数，所以无法求解，那们我们就要基于第三条假设得到一些其他的方程进行联立求解。</p>
+<p>回到第三条假设，我和可以假设在一个大小为$n=m\times m$的窗口内，图像的光流是一个恒定值。那么就可以得到以下方程组：</p>
+<script type="math/tex; mode=display">
+I_{xn}u+I_{yn}v=-I_{tn},(n=1,2,3,...m^2)</script><p>为了求解以上过度约束的系统可以采用最小二乘法对以上的方程还是进行最小化，将以上方程采用矩阵形式进行表示：</p>
+<script type="math/tex; mode=display">
+\left[\begin{matrix}
+I_{x1}&I_{y1}\\
+\vdots&\vdots\\
+I_{xn}&I_{yn}
+\end{matrix}\right]
+\left[\begin{matrix}
+u\\
+v
+\end{matrix}\right]
+=
+\left[\begin{matrix}
+-I_{t1}\\
+\vdots\\
+-I_{tn}
+\end{matrix}\right]</script><p>记做$A\vec{v}=-b$,采用最小二乘法就可以得到光流的速度矢量了</p>
+<script type="math/tex; mode=display">
+\vec{v}=(A^TA)^TA^T(-b)</script>]]></content>
   </entry>
 </search>

@@ -47,20 +47,20 @@
   };
 </script>
 
-  <meta name="description" content="大规模建图+精确位姿估计 这篇论文的工作可以概括为：大规模建图+精确位姿估计 Feature-Based Methods的目的：从图片中得到几何信息。 方法论就是两步走：先把特征从图片中提取出来，再从提取的特征中恢复出包含的几何信息（三维结构，相机位姿等等）">
+  <meta name="description" content="本文节选自知乎 LK算法是一种两帧差分的光流估计算法，其基本思想基于以下三个假设。  亮度恒定：场景中目标图像的像素看起来在帧到帧移动是不发生改变。对于灰度图像（对于彩色图像同适用）这意味着像素的灰度值不会随着帧的跟踪改变。 时间持续性（微小移动）：图像上相机的移动随时间变化缓慢。实际上，这意味着时间的变化不会引起像素位置的剧烈变化，这样像素的灰度值才能对位置求对应的偏导数。 空间一致性：场景中相">
 <meta property="og:type" content="article">
-<meta property="og:title" content="浅析LSD-SLAM">
-<meta property="og:url" content="http://yoursite.com/2020/08/08/%E6%B5%85%E6%9E%90LSD-SLAM/index.html">
+<meta property="og:title" content="浅析LK-光流法">
+<meta property="og:url" content="http://yoursite.com/2020/08/25/%E6%B5%85%E6%9E%90LK-%E5%85%89%E6%B5%81%E6%B3%95/index.html">
 <meta property="og:site_name" content="Greatoyster">
-<meta property="og:description" content="大规模建图+精确位姿估计 这篇论文的工作可以概括为：大规模建图+精确位姿估计 Feature-Based Methods的目的：从图片中得到几何信息。 方法论就是两步走：先把特征从图片中提取出来，再从提取的特征中恢复出包含的几何信息（三维结构，相机位姿等等）">
+<meta property="og:description" content="本文节选自知乎 LK算法是一种两帧差分的光流估计算法，其基本思想基于以下三个假设。  亮度恒定：场景中目标图像的像素看起来在帧到帧移动是不发生改变。对于灰度图像（对于彩色图像同适用）这意味着像素的灰度值不会随着帧的跟踪改变。 时间持续性（微小移动）：图像上相机的移动随时间变化缓慢。实际上，这意味着时间的变化不会引起像素位置的剧烈变化，这样像素的灰度值才能对位置求对应的偏导数。 空间一致性：场景中相">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2020-08-07T18:54:06.000Z">
-<meta property="article:modified_time" content="2020-08-16T06:01:13.699Z">
+<meta property="article:published_time" content="2020-08-25T15:20:24.000Z">
+<meta property="article:modified_time" content="2020-08-25T07:53:26.126Z">
 <meta property="article:author" content="greatoyster">
 <meta property="article:tag" content="greatoyster">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://yoursite.com/2020/08/08/%E6%B5%85%E6%9E%90LSD-SLAM/">
+<link rel="canonical" href="http://yoursite.com/2020/08/25/%E6%B5%85%E6%9E%90LK-%E5%85%89%E6%B5%81%E6%B3%95/">
 
 
 <script id="page-configurations">
@@ -72,7 +72,7 @@
   };
 </script>
 
-  <title>浅析LSD-SLAM | Greatoyster</title>
+  <title>浅析LK-光流法 | Greatoyster</title>
   
 
 
@@ -214,7 +214,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/08/%E6%B5%85%E6%9E%90LSD-SLAM/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/25/%E6%B5%85%E6%9E%90LK-%E5%85%89%E6%B5%81%E6%B3%95/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -227,7 +227,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          浅析LSD-SLAM
+          浅析LK-光流法
         </h1>
 
         <div class="post-meta">
@@ -236,16 +236,10 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
+              
 
-              <time title="Created: 2020-08-07 18:54:06" itemprop="dateCreated datePublished" datetime="2020-08-07T18:54:06Z">2020-08-07</time>
+              <time title="Created: 2020-08-25 15:20:24 / Modified: 07:53:26" itemprop="dateCreated datePublished" datetime="2020-08-25T15:20:24Z">2020-08-25</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-08-16 06:01:13" itemprop="dateModified" datetime="2020-08-16T06:01:13Z">2020-08-16</time>
-              </span>
 
           
             <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
@@ -265,18 +259,50 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>大规模建图+精确位姿估计</p>
-<p>这篇论文的工作可以概括为：大规模建图+精确位姿估计</p>
-<p>Feature-Based Methods的目的：从图片中得到几何信息。</p>
-<p>方法论就是两步走：先把特征从图片中提取出来，再从提取的特征中恢复出包含的几何信息（三维结构，相机位姿等等）</p>
-<a id="more"></a>
-<p>但这类方法有局限性，未必可以利用好所有的特征（线面基本都被抛弃了）</p>
-<p>Direct Visual Odometery的办法规避了这个问题（这里感觉它应该是指光流法</p>
-<p>类似的图像对齐方法在RGB-D或者双目视觉体系中已经有了成熟的算法</p>
-<p>单目相机下图像的对准方案也有，但是比较吃计算资源。有一种半稠密的深度滤波可以降低计算量。</p>
-<p>有的方案把直接对准和特征点一起用，实现了实时性</p>
-<p>LSD-SLAM的一个很重要的点是要理解上面说的半稠密深度图的滤波算法</p>
-
+        <p>本文节选自知乎</p>
+<p>LK算法是一种两帧差分的光流估计算法，其基本思想基于以下三个假设。</p>
+<ul>
+<li>亮度恒定：场景中目标图像的像素看起来在帧到帧移动是不发生改变。对于灰度图像（对于彩色图像同适用）这意味着像素的灰度值不会随着帧的跟踪改变。</li>
+<li>时间持续性（微小移动）：图像上相机的移动随时间变化缓慢。实际上，这意味着时间的变化不会引起像素位置的剧烈变化，这样像素的灰度值才能对位置求对应的偏导数。</li>
+<li>空间一致性：场景中相同表面的相邻点具有相似的运动，并且其投影到图像平面上的距离也比较近。</li>
+</ul>
+<p>三个基本假设中前两个是光流法的基本假设，第三个是LK算法特有的。</p>
+<p>基于前两个假设，我们得到图像的约束方程：</p>
+<script type="math/tex; mode=display">
+I(x,y,t)=I(x+\delta x,y+\delta y , t+ \delta t)</script><p>其中$I(x,y,t)$是$t$时刻图像在$(x,y)$位置的亮度。</p>
+<p>利用泰勒公式对函数$I(x+\delta x,y+\delta y,t+\delta t)$在$(x,y,t)$处展开可得：</p>
+<script type="math/tex; mode=display">
+I(x,y,t)=I(x+\delta x,y+\delta y , t+ \delta t)=I(x,y,t)+\frac{\partial I}{\partial x}\delta x+\frac{\partial I}{\partial y}\delta y+\frac{\partial I}{\partial t}\delta t+R(x,y,t)</script><p>其中$R(x,y,t)$为泰勒公式的高阶余项近似为0。</p>
+<p>联立公式(1)和(2)可以得到</p>
+<script type="math/tex; mode=display">
+\frac{\partial I}{\partial x}\delta x+\frac{\partial I}{\partial y}\delta y+\frac{\partial I}{\partial t}\delta t=0</script><p>等价为</p>
+<script type="math/tex; mode=display">
+\frac{\partial I}{\partial x}\frac{\delta x}{\delta t}+\frac{\partial I}{\partial y}\frac{\delta y}{\delta t}+\frac{\partial I}{\partial t}=0</script><p>其中$\frac{\partial I}{\partial x}$和$\frac{\partial I}{\partial y}$分别为像素点沿着$x$和$y$方向的导数，沿$x$和$y$方向的速度分量分别记为$u$和$v$ ，可以将以上式子简写为：</p>
+<script type="math/tex; mode=display">
+I_x u+I_y v +I_t=0</script><p>进一步简化为矩阵形式：</p>
+<script type="math/tex; mode=display">
+\nabla I^T\cdot\vec{V}=-I_t</script><p>由于以上的方程有$u$和$v$两个未知数，所以无法求解，那们我们就要基于第三条假设得到一些其他的方程进行联立求解。</p>
+<p>回到第三条假设，我和可以假设在一个大小为$n=m\times m$的窗口内，图像的光流是一个恒定值。那么就可以得到以下方程组：</p>
+<script type="math/tex; mode=display">
+I_{xn}u+I_{yn}v=-I_{tn},(n=1,2,3,...m^2)</script><p>为了求解以上过度约束的系统可以采用最小二乘法对以上的方程还是进行最小化，将以上方程采用矩阵形式进行表示：</p>
+<script type="math/tex; mode=display">
+\left[\begin{matrix}
+I_{x1}&I_{y1}\\
+\vdots&\vdots\\
+I_{xn}&I_{yn}
+\end{matrix}\right]
+\left[\begin{matrix}
+u\\
+v
+\end{matrix}\right]
+=
+\left[\begin{matrix}
+-I_{t1}\\
+\vdots\\
+-I_{tn}
+\end{matrix}\right]</script><p>记做$A\vec{v}=-b$,采用最小二乘法就可以得到光流的速度矢量了</p>
+<script type="math/tex; mode=display">
+\vec{v}=(A^TA)^TA^T(-b)</script>
     </div>
 
     
@@ -291,13 +317,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/08/07/%E4%BB%BF%E5%B0%84%E5%87%A0%E4%BD%95/" rel="prev" title="仿射几何">
-      <i class="fa fa-chevron-left"></i> 仿射几何
+    <a href="/2020/08/25/EVO-A-Geometric-Approach-to-Event-based-6-DOF-Parallel-Tracking-and-Mapping-in-Real-time/" rel="prev" title="EVO: A Geometric Approach to Event-based 6-DOF Parallel Tracking and Mapping in Real-time">
+      <i class="fa fa-chevron-left"></i> EVO: A Geometric Approach to Event-based 6-DOF Parallel Tracking and Mapping in Real-time
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2020/08/08/VDO-SLAM/" rel="next" title="VDO-SLAM">
-      VDO-SLAM <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
