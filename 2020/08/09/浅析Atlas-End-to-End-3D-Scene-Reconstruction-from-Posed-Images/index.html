@@ -56,7 +56,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://yoursite.com/images/1596977658395.png">
 <meta property="article:published_time" content="2020-08-09T15:10:48.000Z">
-<meta property="article:modified_time" content="2020-08-20T10:03:30.270Z">
+<meta property="article:modified_time" content="2020-08-25T10:17:58.522Z">
 <meta property="article:author" content="greatoyster">
 <meta property="article:tag" content="greatoyster">
 <meta name="twitter:card" content="summary">
@@ -246,7 +246,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-08-20 10:03:30" itemprop="dateModified" datetime="2020-08-20T10:03:30Z">2020-08-20</time>
+                <time title="Modified: 2020-08-25 10:17:58" itemprop="dateModified" datetime="2020-08-25T10:17:58Z">2020-08-25</time>
               </span>
 
           
@@ -272,7 +272,7 @@
 <p>当进行三维重建的时候，需要融合不同的传感器提供的深度信息，比如结构光，飞行时间，激光雷达等等。很少直接依靠一个RGB相机解决问题的。这种方法呢，以来对噪声干扰比较敏感，二来受反射或者景物本身的遮挡会有偏差。</p>
 <p>另一种不那么直接的办法是利用多视角的单目相机来计算深度图，继而重建三维结构，最大的缺点嘛，就是不太准。</p>
 <p>这项工作的基本构想就是：给你一系列的RGB图像作为输入放进神经网络，然后直接输出3D模型。这种做法可以让神经网络在最开始就融合尽可能多的信息，其次，整个系统的复杂程度也就大幅度下降了，包括frame selection的环节就可以直接跳过了。</p>
-<p><img src="\images\1596977658395.png" alt="这里先挂上一张比较形象的图片"></p>
+<p><img src="\images\1596977658395.png" alt="一张比较形象的图片"></p>
 <p>这篇工作的实现细节非常精炼。接下来讲一下他的Formulation部分。</p>
 <ol>
 <li><p>我们的输入是长度为$T$的视频序列，每一张图片可以表示为$I_t\in\mathbb{R}^{3\times h\times w}$，其中3是三个颜色通道，$w$和$h$表示图片的宽度和高度</p>

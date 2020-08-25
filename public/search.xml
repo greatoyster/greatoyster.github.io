@@ -9,6 +9,40 @@
 ]]></content>
   </entry>
   <entry>
+    <title>EVO: A Geometric Approach to Event-based 6-DOF Parallel Tracking and Mapping in Real-time</title>
+    <url>/2020/08/25/EVO-A-Geometric-Approach-to-Event-based-6-DOF-Parallel-Tracking-and-Mapping-in-Real-time/</url>
+    <content><![CDATA[<p>这篇文章的相关Demo可以在Youtube上看到，不难看出，在线条丰富的场景里面event camera的表现还是相当不错的。</p>
+<p><img src="\images\1598337409328.png" alt=""></p>
+<a id="more"></a>
+<p>关于event camera的优缺点在这里就不赘述了，直接讲贡献吧。这项工作主要解决的一个问题是基于event-based vision的6DoF的实时追踪与建图。前人在这个问题上已经做过一些工作，但往往需要额外的硬件支持（GPU）</p>
+<p>文章的设计思路相当明了，就是照着PTAM，把整个系统分成了两个子模块：追踪和建图</p>
+<p>下面是整个系统的流程图</p>
+<p><img src="\images\1598337607774.png" alt=""></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>Daily Plan in MPL</title>
+    <url>/2020/08/19/Daily-Plan-in-MPL/</url>
+    <content><![CDATA[<h1 id="2020-8-17"><a href="#2020-8-17" class="headerlink" title="2020.8.17"></a>2020.8.17</h1><p>Today is the first day to join MPL Lab. I talked to Prof. Laurent about my future plan. And he gave me a lot of useful suggestions. </p>
+<p>As planed, I will join MPL Lab after I graduate from Shanghaitech University. The most important thing at this stage is to decide the sub-direction of my research work.</p>
+<p>I will update this blog daily to record my track of research.</p>
+<a id="more"></a>
+<h1 id="2020-8-18"><a href="#2020-8-18" class="headerlink" title="2020.8.18"></a>2020.8.18</h1><p>I read some work about event camera,  the event camera is amazing. I am likely to do further research about this field.</p>
+<p>I also had a talk with my potential collaborator Jiaben Chen. But he still have a long way to go. And I felt somehow worried.</p>
+<p>I did a further study about event-based camera, and the paper “Semi-Dense 3D Reconstruction with a Stereo Event Camera”, which is similar to DTAM in modeling and formulation.</p>
+<p>The plan of tomorrow is to figure out the uncertainty propagation and more detailed information about event-based vision.</p>
+<h1 id="2020-8-19"><a href="#2020-8-19" class="headerlink" title="2020.8.19"></a>2020.8.19</h1><p>Today I had a talk with Ling Gao about event camera and his previous work. I also learned more about MPL, such as tracking system.</p>
+<p>I also suggested Jiaben Chen to learn some basic knowledge about SLAM and coding skills.</p>
+<h1 id="2020-8-20"><a href="#2020-8-20" class="headerlink" title="2020.8.20"></a>2020.8.20</h1><p>Today I kept learning about event camera, related material such as paper notes are uploaded to my GitHub pages. I found some useful materials about all kinds of object functions and minimization in event-based vision. I planed to do further study on these works. </p>
+<h1 id="2020-8-21"><a href="#2020-8-21" class="headerlink" title="2020.8.21"></a>2020.8.21</h1><p>Today I read the survey about event-based vision and went through the big picture of that. It is a challenging field. I thought it is a high-return-rate topics as well as with high risks. I still need to be careful and careful while choosing sub-direction. </p>
+<h1 id="2020-8-22"><a href="#2020-8-22" class="headerlink" title="2020.8.22"></a>2020.8.22</h1><p>Today I had a rest and enjoy a nice weekend.</p>
+<h1 id="2020-8-23"><a href="#2020-8-23" class="headerlink" title="2020.8.23"></a>2020.8.23</h1><p>Today I had a survey on all kinds of optimization framework about event-based vision. The main stream is to maximize the contrast of IWE(Images of Warped Events), which is a motion-compensated representation of event-based output.</p>
+<p>In this field, I thought I have had a basic understanding, so I started to consider my next step. </p>
+<h1 id="2020-8-24"><a href="#2020-8-24" class="headerlink" title="2020.8.24"></a>2020.8.24</h1><p>Today I watched some demos of event-based vision, including the tasks of tracking and depth estimation. And I also learned about VIO + event-based vision. Related material will update soon in my GitHub Pages. </p>
+<p>By the way, I read some material about mathematics as well.</p>
+<h1 id="2020-8-25"><a href="#2020-8-25" class="headerlink" title="2020.8.25"></a>2020.8.25</h1>]]></content>
+  </entry>
+  <entry>
     <title>Rust 错误处理</title>
     <url>/2020/07/05/Rust-%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86/</url>
     <content><![CDATA[<h1 id="Rust-错误处理"><a href="#Rust-错误处理" class="headerlink" title="Rust 错误处理"></a>Rust 错误处理</h1><p>在这之前有一个必要重要的点需要交代一下</p>
@@ -36,6 +70,35 @@
 <li>同一个函数中使用<code>?</code>操作符的地方必须返回同一个错误类型，否则会编译失败</li>
 <li>main函数有两个有效返回值，分别为<code>()</code>，<code>Result&lt;T, E&gt;</code></li>
 </ul>
+]]></content>
+  </entry>
+  <entry>
+    <title>VDO-SLAM</title>
+    <url>/2020/08/08/VDO-SLAM/</url>
+    <content><![CDATA[<p>2020年刚刚挂在arXiv的文章，对于静态和动态的位姿估计做了一个统一。</p>
+<a id="more"></a>
+]]></content>
+  </entry>
+  <entry>
+    <title>cmake构建系统</title>
+    <url>/2020/08/09/cmake%E6%9E%84%E5%BB%BA%E7%B3%BB%E7%BB%9F/</url>
+    <content><![CDATA[<p>C++在代码复用这一块做的一言难尽，一些依赖第三方库的项目往往很难直接拿来跑，有一大堆的依赖问题需要处理。在这一块，目前比较好的方案只有cmake了。委员会其实可以学学Rust，考虑出个包管理器。但想到种种历史包袱，大概是有生之年了，C++50标准再见咯。</p>
+<a id="more"></a>
+<p>SLAM领域的工作还是要用到不少第三方库的，比如<code>sophus</code>,<code>eigen</code>,<code>g2o</code>，所以cmake还是得好好用起来。</p>
+<p>cmake最基本的功能</p>
+<ul>
+<li>添加版本号</li>
+<li>确定CXX标准</li>
+<li>构建</li>
+<li>测试</li>
+<li>添加库并且给库添加特殊要求</li>
+<li>安装</li>
+</ul>
+<p>对于cmake的种种操作都包含在一个叫做<code>CMakeLists.txt</code>的文件中，在项目的目录下面创建这个文件就好了。</p>
+<p>关于cmake最好的学习方式我认为不是官方的tutorial，官方文档作为一个参考就可以了，反而应该看看优秀的开源代码是怎么运用cmake的。</p>
+<p>下面贴一段<code>opengv</code>的<code>CMakeLists.txt</code>，不难发现，稍微大型一点的项目，这个文件超过三百行是一件非常平常的事情。</p>
+<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="keyword">cmake_minimum_required</span>(VERSION <span class="number">3.1</span>.<span class="number">3</span>)</span><br><span class="line"><span class="keyword">project</span>(opengv VERSION <span class="number">1.0</span> LANGUAGES CXX)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Set the build type.  Options are:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#  None (CMAKE_C_FLAGS or CMAKE_CXX_FLAGS used)</span></span><br><span class="line"><span class="comment">#  Debug (CMAKE_C_FLAGS_DEBUG or CMAKE_CXX_FLAGS_DEBUG)</span></span><br><span class="line"><span class="comment">#  Release (CMAKE_C_FLAGS_RELEASE or CMAKE_CXX_FLAGS_RELEASE)</span></span><br><span class="line"><span class="comment">#  RelWithDebInfo (CMAKE_C_FLAGS_RELWITHDEBINFO or CMAKE_CXX_FLAGS_RELWITHDEBINFO)</span></span><br><span class="line"><span class="comment">#  MinSizeRel (CMAKE_C_FLAGS_MINSIZEREL or CMAKE_CXX_FLAGS_MINSIZEREL)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">set</span>(CMAKE_BUILD_TYPE Release)</span><br><span class="line"></span><br><span class="line"><span class="comment">#set the default path for built executables to the "bin" directory</span></span><br><span class="line"><span class="keyword">set</span>(EXECUTABLE_OUTPUT_PATH <span class="variable">$&#123;CMAKE_BINARY_DIR&#125;</span>/bin)</span><br><span class="line"><span class="comment">#set the default path for built libraries to the "lib" directory</span></span><br><span class="line"><span class="keyword">set</span>(LIBRARY_OUTPUT_PATH <span class="variable">$&#123;CMAKE_BINARY_DIR&#125;</span>/lib)</span><br><span class="line"></span><br><span class="line"><span class="keyword">OPTION</span>(BUILD_TESTS <span class="string">"Build tests"</span> <span class="keyword">ON</span>)</span><br><span class="line"><span class="keyword">OPTION</span>(BUILD_PYTHON <span class="string">"Build Python extension"</span> <span class="keyword">OFF</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">IF</span>(MSVC)</span><br><span class="line">  <span class="keyword">set</span>(BUILD_SHARED_LIBS <span class="keyword">OFF</span>)</span><br><span class="line"><span class="keyword">ELSE</span>()</span><br><span class="line">  <span class="keyword">OPTION</span>(BUILD_SHARED_LIBS <span class="string">"Build shared libraries"</span> <span class="keyword">OFF</span>)</span><br><span class="line">  <span class="keyword">OPTION</span>(BUILD_POSITION_INDEPENDENT_CODE <span class="string">"Build position independent code (-fPIC)"</span> <span class="keyword">ON</span>)</span><br><span class="line"><span class="keyword">ENDIF</span>()</span><br><span class="line"></span><br><span class="line"><span class="keyword">IF</span>(MSVC)</span><br><span class="line">  <span class="keyword">add_compile_options</span>(/wd4514 /wd4267 /bigobj)</span><br><span class="line">  <span class="keyword">add_definitions</span>(-D_USE_MATH_DEFINES)</span><br><span class="line"><span class="keyword">ELSE</span>()</span><br><span class="line">  <span class="keyword">IF</span> (CMAKE_SYSTEM_PROCESSOR <span class="keyword">MATCHES</span> <span class="string">"(arm64)|(ARM64)|(aarch64)|(AARCH64)"</span>)</span><br><span class="line">    <span class="keyword">add_definitions</span> (-march=armv8-a)</span><br><span class="line">  <span class="keyword">ELSEIF</span> (CMAKE_SYSTEM_PROCESSOR <span class="keyword">MATCHES</span> </span><br><span class="line">          <span class="string">"(arm)|(ARM)|(armhf)|(ARMHF)|(armel)|(ARMEL)"</span>)</span><br><span class="line">    <span class="keyword">add_definitions</span> (-march=armv7-a)</span><br><span class="line">  <span class="keyword">ELSE</span> ()</span><br><span class="line">    <span class="keyword">add_definitions</span> (-march=native) <span class="comment">#TODO use correct c++11 def once everybody has moved to gcc 4.7 # for now I even removed std=gnu++0x</span></span><br><span class="line">  <span class="keyword">ENDIF</span>()</span><br><span class="line">  <span class="keyword">add_definitions</span> (</span><br><span class="line">    -O3</span><br><span class="line">    -Wall</span><br><span class="line">    -Wextra</span><br><span class="line">    <span class="comment">#-Werror</span></span><br><span class="line">    -Wwrite-strings</span><br><span class="line">    -Wno-unused-parameter</span><br><span class="line">    -fno-strict-aliasing</span><br><span class="line">  )</span><br><span class="line"><span class="keyword">ENDIF</span>()</span><br><span class="line"></span><br><span class="line"><span class="keyword">IF</span>(BUILD_POSITION_INDEPENDENT_CODE)</span><br><span class="line">  <span class="keyword">add_definitions</span>( -fPIC )</span><br><span class="line"><span class="keyword">ENDIF</span>()</span><br><span class="line"></span><br><span class="line"><span class="keyword">set</span>(CMAKE_MODULE_PATH <span class="variable">$&#123;CMAKE_MODULE_PATH&#125;</span> <span class="string">"$&#123;PROJECT_SOURCE_DIR&#125;/modules/"</span>)</span><br><span class="line"><span class="keyword">find_package</span>(Eigen REQUIRED)</span><br><span class="line"><span class="keyword">set</span>(ADDITIONAL_INCLUDE_DIRS <span class="variable">$&#123;EIGEN_INCLUDE_DIRS&#125;</span> <span class="variable">$&#123;EIGEN_INCLUDE_DIR&#125;</span>/unsupported)</span><br><span class="line"></span><br><span class="line"><span class="keyword">set</span>( OPENGV_SOURCE_FILES</span><br><span class="line">  src/absolute_pose/modules/main.cpp</span><br><span class="line">  src/absolute_pose/modules/gp3p/code.cpp</span><br><span class="line">  src/absolute_pose/modules/gp3p/init.cpp</span><br><span class="line">  src/absolute_pose/modules/gp3p/reductors.cpp</span><br><span class="line">  src/absolute_pose/modules/gp3p/spolynomials.cpp</span><br><span class="line">  src/absolute_pose/modules/Epnp.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp1/code.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp1/init.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp1/reductors.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp1/spolynomials.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp2/code.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp2/init.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp2/reductors.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp2/spolynomials.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp3/code.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp3/init.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp3/reductors.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp3/spolynomials.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp4/code.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp4/init.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp4/reductors.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp4/spolynomials.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp5/code.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp5/init.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp5/reductors.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp5/spolynomials.cpp</span><br><span class="line">  src/absolute_pose/modules/upnp2.cpp</span><br><span class="line">  src/absolute_pose/modules/upnp4.cpp</span><br><span class="line">  src/relative_pose/modules/main.cpp</span><br><span class="line">  src/relative_pose/modules/fivept_nister/modules.cpp</span><br><span class="line">  src/relative_pose/modules/fivept_stewenius/modules.cpp</span><br><span class="line">  src/relative_pose/modules/fivept_kneip/code.cpp</span><br><span class="line">  src/relative_pose/modules/fivept_kneip/init.cpp</span><br><span class="line">  src/relative_pose/modules/fivept_kneip/reductors.cpp</span><br><span class="line">  src/relative_pose/modules/fivept_kneip/spolynomials.cpp</span><br><span class="line">  src/relative_pose/modules/sixpt/modules2.cpp</span><br><span class="line">  src/relative_pose/modules/eigensolver/modules.cpp</span><br><span class="line">  src/relative_pose/modules/ge/modules.cpp</span><br><span class="line">  src/<span class="keyword">math</span>/cayley.cpp</span><br><span class="line">  src/<span class="keyword">math</span>/quaternion.cpp</span><br><span class="line">  src/<span class="keyword">math</span>/arun.cpp</span><br><span class="line">  src/<span class="keyword">math</span>/Sturm.cpp</span><br><span class="line">  src/<span class="keyword">math</span>/roots.cpp</span><br><span class="line">  src/<span class="keyword">math</span>/gauss_jordan.cpp</span><br><span class="line">  src/absolute_pose/methods.cpp</span><br><span class="line">  src/absolute_pose/CentralAbsoluteAdapter.cpp</span><br><span class="line">  src/absolute_pose/NoncentralAbsoluteAdapter.cpp</span><br><span class="line">  src/absolute_pose/NoncentralAbsoluteMultiAdapter.cpp</span><br><span class="line">  src/relative_pose/methods.cpp</span><br><span class="line">  src/relative_pose/CentralRelativeAdapter.cpp</span><br><span class="line">  src/relative_pose/CentralRelativeWeightingAdapter.cpp</span><br><span class="line">  src/relative_pose/NoncentralRelativeAdapter.cpp</span><br><span class="line">  src/relative_pose/CentralRelativeMultiAdapter.cpp</span><br><span class="line">  src/relative_pose/NoncentralRelativeMultiAdapter.cpp</span><br><span class="line">  src/triangulation/methods.cpp</span><br><span class="line">  src/point_cloud/methods.cpp</span><br><span class="line">  src/point_cloud/PointCloudAdapter.cpp</span><br><span class="line">  src/sac_problems/absolute_pose/AbsolutePoseSacProblem.cpp</span><br><span class="line">  src/sac_problems/absolute_pose/MultiNoncentralAbsolutePoseSacProblem.cpp</span><br><span class="line">  src/sac_problems/relative_pose/CentralRelativePoseSacProblem.cpp</span><br><span class="line">  src/sac_problems/relative_pose/NoncentralRelativePoseSacProblem.cpp</span><br><span class="line">  src/sac_problems/relative_pose/RotationOnlySacProblem.cpp</span><br><span class="line">  src/sac_problems/relative_pose/TranslationOnlySacProblem.cpp</span><br><span class="line">  src/sac_problems/relative_pose/EigensolverSacProblem.cpp</span><br><span class="line">  src/sac_problems/relative_pose/MultiCentralRelativePoseSacProblem.cpp</span><br><span class="line">  src/sac_problems/relative_pose/MultiNoncentralRelativePoseSacProblem.cpp</span><br><span class="line">  src/sac_problems/point_cloud/PointCloudSacProblem.cpp</span><br><span class="line">  src/absolute_pose/MACentralAbsolute.cpp</span><br><span class="line">  src/absolute_pose/MANoncentralAbsolute.cpp</span><br><span class="line">  src/relative_pose/MACentralRelative.cpp</span><br><span class="line">  src/relative_pose/MANoncentralRelative.cpp</span><br><span class="line">  src/relative_pose/MANoncentralRelativeMulti.cpp</span><br><span class="line">  src/point_cloud/MAPointCloud.cpp )</span><br><span class="line"></span><br><span class="line"><span class="keyword">set</span>( OPENGV_HEADER_FILES</span><br><span class="line">  <span class="keyword">include</span>/opengv/types.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/OptimizationFunctor.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/absolute_pose/methods.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/relative_pose/methods.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/triangulation/methods.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/point_cloud/methods.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/<span class="keyword">math</span>/cayley.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/<span class="keyword">math</span>/quaternion.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/<span class="keyword">math</span>/arun.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/<span class="keyword">math</span>/Sturm.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/<span class="keyword">math</span>/roots.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/<span class="keyword">math</span>/gauss_jordan.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/absolute_pose/AbsoluteAdapterBase.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/absolute_pose/CentralAbsoluteAdapter.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/absolute_pose/NoncentralAbsoluteAdapter.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/absolute_pose/NoncentralAbsoluteMultiAdapter.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/absolute_pose/AbsoluteMultiAdapterBase.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/relative_pose/RelativeAdapterBase.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/relative_pose/RelativeMultiAdapterBase.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/relative_pose/CentralRelativeAdapter.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/relative_pose/CentralRelativeWeightingAdapter.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/relative_pose/NoncentralRelativeAdapter.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/relative_pose/CentralRelativeMultiAdapter.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/relative_pose/NoncentralRelativeMultiAdapter.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/point_cloud/PointCloudAdapterBase.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/point_cloud/PointCloudAdapter.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/sac_problems/absolute_pose/AbsolutePoseSacProblem.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/sac_problems/absolute_pose/MultiNoncentralAbsolutePoseSacProblem.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/sac_problems/relative_pose/CentralRelativePoseSacProblem.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/sac_problems/relative_pose/NoncentralRelativePoseSacProblem.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/sac_problems/relative_pose/MultiCentralRelativePoseSacProblem.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/sac_problems/relative_pose/MultiNoncentralRelativePoseSacProblem.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/sac_problems/relative_pose/EigensolverSacProblem.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/sac_problems/relative_pose/RotationOnlySacProblem.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/sac_problems/relative_pose/TranslationOnlySacProblem.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/sac_problems/point_cloud/PointCloudSacProblem.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/absolute_pose/MACentralAbsolute.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/absolute_pose/MANoncentralAbsolute.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/relative_pose/MACentralRelative.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/relative_pose/MANoncentralRelative.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/relative_pose/MANoncentralRelativeMulti.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/point_cloud/MAPointCloud.hpp )</span><br><span class="line"></span><br><span class="line"><span class="keyword">add_library</span>( opengv <span class="variable">$&#123;OPENGV_SOURCE_FILES&#125;</span> <span class="variable">$&#123;OPENGV_HEADER_FILES&#125;</span> )</span><br><span class="line"><span class="keyword">add_library</span>( random_generators <span class="keyword">test</span>/random_generators.cpp <span class="keyword">test</span>/random_generators.hpp <span class="keyword">test</span>/experiment_helpers.cpp <span class="keyword">test</span>/experiment_helpers.hpp <span class="keyword">test</span>/time_measurement.cpp <span class="keyword">test</span>/time_measurement.hpp )</span><br><span class="line"><span class="keyword">set_target_properties</span>( opengv random_generators PROPERTIES</span><br><span class="line">                    SOVERSION <span class="variable">$&#123;PROJECT_VERSION&#125;</span></span><br><span class="line">                    VERSION <span class="variable">$&#123;PROJECT_VERSION&#125;</span></span><br><span class="line">                    CXX_STANDARD <span class="number">11</span></span><br><span class="line">                    CXX_STANDARD_REQUIRED <span class="keyword">ON</span></span><br><span class="line">                    DEBUG_POSTFIX d )</span><br><span class="line"></span><br><span class="line"><span class="keyword">target_include_directories</span>( opengv PUBLIC </span><br><span class="line">                <span class="comment"># only when building from the source tree</span></span><br><span class="line">                $&lt;BUILD_INTERFACE:<span class="variable">$&#123;PROJECT_SOURCE_DIR&#125;</span>/<span class="keyword">include</span>&gt;</span><br><span class="line">                <span class="comment"># only when using the lib from the install path</span></span><br><span class="line">                $&lt;INSTALL_INTERFACE:<span class="keyword">include</span>&gt;</span><br><span class="line">                <span class="variable">$&#123;ADDITIONAL_INCLUDE_DIRS&#125;</span> )</span><br><span class="line"></span><br><span class="line"><span class="keyword">target_include_directories</span>( random_generators PRIVATE <span class="variable">$&#123;ADDITIONAL_INCLUDE_DIRS&#125;</span> )</span><br><span class="line"></span><br><span class="line"><span class="keyword">target_link_libraries</span>( random_generators opengv )</span><br><span class="line"></span><br><span class="line"><span class="keyword">IF</span> (BUILD_TESTS)</span><br><span class="line">  <span class="keyword">enable_testing</span>()</span><br><span class="line">  <span class="keyword">include_directories</span>( <span class="variable">$&#123;ADDITIONAL_INCLUDE_DIRS&#125;</span> )</span><br><span class="line"></span><br><span class="line">  <span class="keyword">add_executable</span>( test_absolute_pose <span class="keyword">test</span>/test_absolute_pose.cpp )</span><br><span class="line">  <span class="keyword">target_link_libraries</span>( test_absolute_pose opengv random_generators )</span><br><span class="line">  <span class="keyword">add_test</span>(NAME test_absolute_pose</span><br><span class="line">    WORKING_DIRECTORY <span class="variable">$&#123;EXECUTABLE_OUTPUT_PATH&#125;</span></span><br><span class="line">    <span class="keyword">COMMAND</span> test_absolute_pose)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">add_executable</span>( test_absolute_pose_sac <span class="keyword">test</span>/test_absolute_pose_sac.cpp )</span><br><span class="line">  <span class="keyword">target_link_libraries</span>( test_absolute_pose_sac opengv random_generators )</span><br><span class="line">  <span class="keyword">add_test</span>(NAME test_absolute_pose_sac</span><br><span class="line">    WORKING_DIRECTORY <span class="variable">$&#123;CMAKE_RUNTIME_OUTPUT_DIRECTORY&#125;</span></span><br><span class="line">    <span class="keyword">COMMAND</span> test_absolute_pose_sac)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">add_executable</span>( test_noncentral_absolute_pose <span class="keyword">test</span>/test_noncentral_absolute_pose.cpp )</span><br><span class="line">  <span class="keyword">target_link_libraries</span>( test_noncentral_absolute_pose opengv random_generators )</span><br><span class="line">  <span class="keyword">add_test</span>(NAME test_noncentral_absolute_pose</span><br><span class="line">    WORKING_DIRECTORY <span class="variable">$&#123;CMAKE_RUNTIME_OUTPUT_DIRECTORY&#125;</span></span><br><span class="line">    <span class="keyword">COMMAND</span> test_noncentral_absolute_pose)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">add_executable</span>( test_noncentral_absolute_pose_sac <span class="keyword">test</span>/test_noncentral_absolute_pose_sac.cpp )</span><br><span class="line">  <span class="keyword">target_link_libraries</span>( test_noncentral_absolute_pose_sac opengv random_generators )</span><br><span class="line">  <span class="keyword">add_test</span>(NAME test_noncentral_absolute_pose_sac</span><br><span class="line">    WORKING_DIRECTORY <span class="variable">$&#123;CMAKE_RUNTIME_OUTPUT_DIRECTORY&#125;</span></span><br><span class="line">    <span class="keyword">COMMAND</span> test_noncentral_absolute_pose_sac)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">add_executable</span>( test_multi_noncentral_absolute_pose_sac <span class="keyword">test</span>/test_multi_noncentral_absolute_pose_sac.cpp )</span><br><span class="line">  <span class="keyword">target_link_libraries</span>( test_multi_noncentral_absolute_pose_sac opengv random_generators )</span><br><span class="line">  <span class="keyword">add_test</span>(NAME test_multi_noncentral_absolute_pose_sac</span><br><span class="line">    WORKING_DIRECTORY <span class="variable">$&#123;CMAKE_RUNTIME_OUTPUT_DIRECTORY&#125;</span></span><br><span class="line">    <span class="keyword">COMMAND</span> test_multi_noncentral_absolute_pose_sac)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">add_executable</span>( test_relative_pose <span class="keyword">test</span>/test_relative_pose.cpp )</span><br><span class="line">  <span class="keyword">target_link_libraries</span>( test_relative_pose opengv random_generators )</span><br><span class="line">  <span class="keyword">add_test</span>(NAME test_relative_pose</span><br><span class="line">    WORKING_DIRECTORY <span class="variable">$&#123;CMAKE_RUNTIME_OUTPUT_DIRECTORY&#125;</span></span><br><span class="line">    <span class="keyword">COMMAND</span> test_relative_pose)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">add_executable</span>( test_relative_pose_rotationOnly <span class="keyword">test</span>/test_relative_pose_rotationOnly.cpp )</span><br><span class="line">  <span class="keyword">target_link_libraries</span>( test_relative_pose_rotationOnly opengv random_generators )</span><br><span class="line">  <span class="keyword">add_test</span>(NAME test_relative_pose_rotationOnly</span><br><span class="line">    WORKING_DIRECTORY <span class="variable">$&#123;CMAKE_RUNTIME_OUTPUT_DIRECTORY&#125;</span></span><br><span class="line">    <span class="keyword">COMMAND</span> test_relative_pose_rotationOnly)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">add_executable</span>( test_relative_pose_rotationOnly_sac <span class="keyword">test</span>/test_relative_pose_rotationOnly_sac.cpp )</span><br><span class="line">  <span class="keyword">target_link_libraries</span>( test_relative_pose_rotationOnly_sac opengv random_generators )</span><br><span class="line">  <span class="keyword">add_test</span>(NAME test_relative_pose_rotationOnly_sac</span><br><span class="line">    WORKING_DIRECTORY <span class="variable">$&#123;CMAKE_RUNTIME_OUTPUT_DIRECTORY&#125;</span></span><br><span class="line">    <span class="keyword">COMMAND</span> test_relative_pose_rotationOnly_sac)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">add_executable</span>( test_relative_pose_sac <span class="keyword">test</span>/test_relative_pose_sac.cpp )</span><br><span class="line">  <span class="keyword">target_link_libraries</span>( test_relative_pose_sac opengv random_generators )</span><br><span class="line">  <span class="keyword">add_test</span>(NAME test_relative_pose_sac</span><br><span class="line">    WORKING_DIRECTORY <span class="variable">$&#123;CMAKE_RUNTIME_OUTPUT_DIRECTORY&#125;</span></span><br><span class="line">    <span class="keyword">COMMAND</span> test_relative_pose_sac)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">add_executable</span>( test_noncentral_relative_pose <span class="keyword">test</span>/test_noncentral_relative_pose.cpp )</span><br><span class="line">  <span class="keyword">target_link_libraries</span>( test_noncentral_relative_pose opengv random_generators )</span><br><span class="line">  <span class="keyword">add_test</span>(NAME test_noncentral_relative_pose</span><br><span class="line">    WORKING_DIRECTORY <span class="variable">$&#123;CMAKE_RUNTIME_OUTPUT_DIRECTORY&#125;</span></span><br><span class="line">    <span class="keyword">COMMAND</span> test_noncentral_relative_pose)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">add_executable</span>( test_noncentral_relative_pose_sac <span class="keyword">test</span>/test_noncentral_relative_pose_sac.cpp )</span><br><span class="line">  <span class="keyword">target_link_libraries</span>( test_noncentral_relative_pose_sac opengv random_generators )</span><br><span class="line">  <span class="keyword">add_test</span>(NAME test_noncentral_relative_pose_sac</span><br><span class="line">    WORKING_DIRECTORY <span class="variable">$&#123;CMAKE_RUNTIME_OUTPUT_DIRECTORY&#125;</span></span><br><span class="line">    <span class="keyword">COMMAND</span> test_noncentral_relative_pose_sac)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">add_executable</span>( test_multi_noncentral_relative_pose_sac <span class="keyword">test</span>/test_multi_noncentral_relative_pose_sac.cpp )</span><br><span class="line">  <span class="keyword">target_link_libraries</span>( test_multi_noncentral_relative_pose_sac opengv random_generators )</span><br><span class="line">  <span class="keyword">add_test</span>(NAME test_multi_noncentral_relative_pose_sac</span><br><span class="line">    WORKING_DIRECTORY <span class="variable">$&#123;CMAKE_RUNTIME_OUTPUT_DIRECTORY&#125;</span></span><br><span class="line">    <span class="keyword">COMMAND</span> test_multi_noncentral_relative_pose_sac)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">add_executable</span>( test_eigensolver_sac <span class="keyword">test</span>/test_eigensolver_sac.cpp )</span><br><span class="line">  <span class="keyword">target_link_libraries</span>( test_eigensolver_sac opengv random_generators )</span><br><span class="line">  <span class="keyword">add_test</span>(NAME test_eigensolver_sac</span><br><span class="line">    WORKING_DIRECTORY <span class="variable">$&#123;CMAKE_RUNTIME_OUTPUT_DIRECTORY&#125;</span></span><br><span class="line">    <span class="keyword">COMMAND</span> test_eigensolver_sac)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">add_executable</span>( test_triangulation <span class="keyword">test</span>/test_triangulation.cpp )</span><br><span class="line">  <span class="keyword">target_link_libraries</span>( test_triangulation opengv random_generators )</span><br><span class="line">  <span class="keyword">add_test</span>(NAME test_triangulation</span><br><span class="line">    WORKING_DIRECTORY <span class="variable">$&#123;CMAKE_RUNTIME_OUTPUT_DIRECTORY&#125;</span></span><br><span class="line">    <span class="keyword">COMMAND</span> test_triangulation)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">add_executable</span>( test_eigensolver <span class="keyword">test</span>/test_eigensolver.cpp )</span><br><span class="line">  <span class="keyword">target_link_libraries</span>( test_eigensolver opengv random_generators )</span><br><span class="line">  <span class="keyword">add_test</span>(NAME test_eigensolver</span><br><span class="line">    WORKING_DIRECTORY <span class="variable">$&#123;CMAKE_RUNTIME_OUTPUT_DIRECTORY&#125;</span></span><br><span class="line">    <span class="keyword">COMMAND</span> test_eigensolver)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">add_executable</span>( test_point_cloud <span class="keyword">test</span>/test_point_cloud.cpp )</span><br><span class="line">  <span class="keyword">target_link_libraries</span>( test_point_cloud opengv random_generators )</span><br><span class="line">  <span class="keyword">add_test</span>(NAME  test_point_cloud</span><br><span class="line">    WORKING_DIRECTORY <span class="variable">$&#123;CMAKE_RUNTIME_OUTPUT_DIRECTORY&#125;</span></span><br><span class="line">    <span class="keyword">COMMAND</span> test_point_cloud)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">add_executable</span>( test_point_cloud_sac <span class="keyword">test</span>/test_point_cloud_sac.cpp )</span><br><span class="line">  <span class="keyword">target_link_libraries</span>( test_point_cloud_sac opengv random_generators )</span><br><span class="line">  <span class="keyword">add_test</span>(NAME test_point_cloud_sac</span><br><span class="line">    WORKING_DIRECTORY <span class="variable">$&#123;CMAKE_RUNTIME_OUTPUT_DIRECTORY&#125;</span></span><br><span class="line">    <span class="keyword">COMMAND</span> test_point_cloud_sac)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">add_executable</span>( test_Sturm <span class="keyword">test</span>/test_Sturm.cpp )</span><br><span class="line">  <span class="keyword">target_link_libraries</span>( test_Sturm opengv random_generators )</span><br><span class="line">  <span class="keyword">add_test</span>(NAME test_Sturm</span><br><span class="line">    WORKING_DIRECTORY <span class="variable">$&#123;CMAKE_RUNTIME_OUTPUT_DIRECTORY&#125;</span></span><br><span class="line">    <span class="keyword">COMMAND</span> test_Sturm)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">set_target_properties</span>(</span><br><span class="line">    test_absolute_pose</span><br><span class="line">    test_absolute_pose_sac</span><br><span class="line">    test_noncentral_absolute_pose</span><br><span class="line">    test_noncentral_absolute_pose_sac</span><br><span class="line">    test_multi_noncentral_absolute_pose_sac</span><br><span class="line">    test_relative_pose</span><br><span class="line">    test_relative_pose_rotationOnly</span><br><span class="line">    test_relative_pose_rotationOnly_sac</span><br><span class="line">    test_relative_pose_sac</span><br><span class="line">    test_noncentral_relative_pose</span><br><span class="line">    test_noncentral_relative_pose_sac</span><br><span class="line">    test_multi_noncentral_relative_pose_sac</span><br><span class="line">    test_eigensolver_sac</span><br><span class="line">    test_triangulation</span><br><span class="line">    test_eigensolver</span><br><span class="line">    test_point_cloud</span><br><span class="line">    test_point_cloud_sac</span><br><span class="line">    test_Sturm</span><br><span class="line"></span><br><span class="line">    PROPERTIES</span><br><span class="line">    CXX_STANDARD <span class="number">11</span></span><br><span class="line">    CXX_STANDARD_REQUIRED <span class="keyword">ON</span></span><br><span class="line">    DEBUG_POSTFIX d )</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">ENDIF</span>()</span><br><span class="line"></span><br><span class="line"><span class="comment"># Configuration</span></span><br><span class="line"><span class="keyword">set</span>(config_install_dir <span class="string">"lib/cmake/$&#123;PROJECT_NAME&#125;-$&#123;PROJECT_VERSION&#125;"</span>)</span><br><span class="line"><span class="keyword">set</span>(include_install_dir <span class="string">"include"</span>)</span><br><span class="line"><span class="keyword">set</span>(version_config <span class="string">"$&#123;CMAKE_CURRENT_BINARY_DIR&#125;/$&#123;PROJECT_NAME&#125;ConfigVersion.cmake"</span>)</span><br><span class="line"><span class="keyword">set</span>(project_config <span class="string">"$&#123;CMAKE_CURRENT_BINARY_DIR&#125;/$&#123;PROJECT_NAME&#125;Config.cmake"</span>)</span><br><span class="line"><span class="keyword">set</span>(targets_export_name <span class="string">"$&#123;PROJECT_NAME&#125;Targets"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Include module with fuction 'write_basic_package_version_file'</span></span><br><span class="line"><span class="keyword">include</span>(CMakePackageConfigHelpers)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Configure '&lt;PROJECT-NAME&gt;ConfigVersion.cmake'</span></span><br><span class="line"><span class="comment"># <span class="doctag">Note:</span> PROJECT_VERSION is used as a VERSION</span></span><br><span class="line">write_basic_package_version_file(</span><br><span class="line">    <span class="string">"$&#123;version_config&#125;"</span> COMPATIBILITY SameMajorVersion )</span><br><span class="line"></span><br><span class="line"><span class="comment"># Configure '&lt;PROJECT-NAME&gt;Config.cmake'</span></span><br><span class="line"><span class="comment"># Use variables:</span></span><br><span class="line"><span class="comment">#   * targets_export_name</span></span><br><span class="line"><span class="comment">#   * PROJECT_NAME</span></span><br><span class="line">configure_package_config_file(</span><br><span class="line">    <span class="string">"modules/Config.cmake.in"</span></span><br><span class="line">    <span class="string">"$&#123;project_config&#125;"</span></span><br><span class="line">    INSTALL_DESTINATION <span class="string">"$&#123;config_install_dir&#125;"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Export '&lt;PROJECT-NAME&gt;Targets.cmake' to build dir (to find package in build dir without install)</span></span><br><span class="line"><span class="keyword">export</span>(TARGETS opengv <span class="keyword">FILE</span> <span class="string">"$&#123;CMAKE_CURRENT_BINARY_DIR&#125;/$&#123;targets_export_name&#125;.cmake"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Targets:</span></span><br><span class="line"><span class="keyword">install</span>(TARGETS opengv</span><br><span class="line">        <span class="keyword">EXPORT</span> <span class="string">"$&#123;targets_export_name&#125;"</span></span><br><span class="line">        LIBRARY DESTINATION <span class="string">"lib"</span></span><br><span class="line">        ARCHIVE DESTINATION <span class="string">"lib"</span></span><br><span class="line">        RUNTIME DESTINATION <span class="string">"bin"</span></span><br><span class="line">        INCLUDES DESTINATION <span class="string">"$&#123;include_install_dir&#125;"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Config</span></span><br><span class="line"><span class="comment">#   * &lt;prefix&gt;/lib/cmake/opengv/opengvConfig.cmake</span></span><br><span class="line"><span class="comment">#   * &lt;prefix&gt;/lib/cmake/opengv/opengvConfigVersion.cmake</span></span><br><span class="line"><span class="keyword">install</span>(FILES <span class="string">"$&#123;project_config&#125;"</span> <span class="string">"$&#123;version_config&#125;"</span></span><br><span class="line">        DESTINATION <span class="string">"$&#123;config_install_dir&#125;"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Config</span></span><br><span class="line"><span class="comment">#   * &lt;prefix&gt;/lib/cmake/opengv/opengvTargets.cmake</span></span><br><span class="line"><span class="keyword">install</span>(<span class="keyword">EXPORT</span> <span class="string">"$&#123;targets_export_name&#125;"</span></span><br><span class="line">        NAMESPACE <span class="string">"$&#123;namespace&#125;"</span></span><br><span class="line">        DESTINATION <span class="string">"$&#123;config_install_dir&#125;"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Headers</span></span><br><span class="line"><span class="keyword">install</span>(DIRECTORY <span class="keyword">include</span>/ </span><br><span class="line">        DESTINATION <span class="variable">$&#123;include_install_dir&#125;</span> </span><br><span class="line">        FILES_MATCHING PATTERN <span class="string">"*.h"</span> PATTERN <span class="string">"*.hpp"</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (BUILD_PYTHON)</span><br><span class="line">  <span class="keyword">add_subdirectory</span>( python )</span><br><span class="line"><span class="keyword">endif</span>()</span><br></pre></td></tr></table></figure>
+<p>就个人经验而言，我用cmake构建的时候一般是先把库编译出来，再把库链接到可执行文件上</p>
 ]]></content>
   </entry>
   <entry>
@@ -162,26 +225,13 @@
       </categories>
   </entry>
   <entry>
-    <title>Daily Plan in MPL</title>
-    <url>/2020/08/19/Daily-Plan-in-MPL/</url>
-    <content><![CDATA[<h1 id="2020-8-17"><a href="#2020-8-17" class="headerlink" title="2020.8.17"></a>2020.8.17</h1><p>Today is the first day to join MPL Lab. I talked to Prof. Laurent about my future plan. And he gave me a lot of useful suggestions. </p>
-<p>As planed, I will join MPL Lab after I graduate from Shanghaitech University. The most important thing at this stage is to decide the sub-direction of my research work.</p>
-<p>I will update this blog daily to record my track of research.</p>
-<a id="more"></a>
-<h1 id="2020-8-18"><a href="#2020-8-18" class="headerlink" title="2020.8.18"></a>2020.8.18</h1><p>I read some work about event camera,  the event camera is amazing. I am likely to do further research about this field.</p>
-<p>I also had a talk with my potential collaborator Jiaben Chen. But he still have a long way to go. And I felt somehow worried.</p>
-<p>I did a further study about event-based camera, and the paper “Semi-Dense 3D Reconstruction with a Stereo Event Camera”, which is similar to DTAM in modeling and formulation.</p>
-<p>The plan of tomorrow is to figure out the uncertainty propagation and more detailed information about event-based vision.</p>
-<h1 id="2020-8-19"><a href="#2020-8-19" class="headerlink" title="2020.8.19"></a>2020.8.19</h1><p>Today I had a talk with Ling Gao about event camera and his previous work. I also learned more about MPL, such as tracking system.</p>
-<p>I also suggested Jiaben Chen to learn some basic knowledge about SLAM and coding skills.</p>
-<h1 id="2020-8-20"><a href="#2020-8-20" class="headerlink" title="2020.8.20"></a>2020.8.20</h1><p>Today I kept learning about event camera, related material such as paper notes are uploaded to my GitHub pages. I found some useful materials about all kinds of object functions and minimization in event-based vision. I planed to do further study on these works. </p>
-<h1 id="2020-8-21"><a href="#2020-8-21" class="headerlink" title="2020.8.21"></a>2020.8.21</h1><p>Today I read the survey about event-based vision and went through the big picture of that. It is a challenging field. I thought it is a high-return-rate topics as well as with high risks. I still need to be careful and careful while choosing sub-direction. </p>
-<h1 id="2020-8-22"><a href="#2020-8-22" class="headerlink" title="2020.8.22"></a>2020.8.22</h1><p>Today I had a rest and enjoy a nice weekend.</p>
-<h1 id="2020-8-23"><a href="#2020-8-23" class="headerlink" title="2020.8.23"></a>2020.8.23</h1><p>Today I had a survey on all kinds of optimization framework about event-based vision. The main stream is to maximize the contrast of IWE(Images of Warped Events), which is a motion-compensated representation of event-based output.</p>
-<p>In this field, I thought I have had a basic understanding, so I started to consider my next step. </p>
-<h1 id="2020-8-24"><a href="#2020-8-24" class="headerlink" title="2020.8.24"></a>2020.8.24</h1><p>Today I watched some demos of event-based vision, including the tasks of tracking and depth estimation. And I also learned about VIO + event-based vision. Related material will update soon in my GitHub Pages. </p>
-<p>By the way, I read some material about mathematics as well.</p>
-<h1 id="2020-8-25"><a href="#2020-8-25" class="headerlink" title="2020.8.25"></a>2020.8.25</h1>]]></content>
+    <title>rCore2020后续</title>
+    <url>/2020/08/16/rCore2020%E5%90%8E%E7%BB%AD/</url>
+    <content><![CDATA[<p>rCore2020活动应该还在进行，不过我没有在第一阶段入围，原因未知。老师一开始通知了我，后来又说我没有入围第二阶段，让我明年继续努力，不过现在也不去纠结了。不过明年可以明确不会继续参加这个活动了。</p>
+<p>后来去了第二阶段的同学受了疫情影响，也很快就从深圳回来了，有的人选择远程工作，有人就不继续干了。</p>
+<p>在第一阶段的筛选结果出来之后，我心情有点小郁闷，开始反思自己的人生和路线，想了很多，明白了很多，比如，什么才是适合自己的领域。</p>
+<p>第一次对于自己的未来规划有了这么清晰的认识，希望可以按部就班走下去。</p>
+]]></content>
   </entry>
   <entry>
     <title>Rust进阶</title>
@@ -304,22 +354,6 @@
       </tags>
   </entry>
   <entry>
-    <title>VDO-SLAM</title>
-    <url>/2020/08/08/VDO-SLAM/</url>
-    <content><![CDATA[<p>2020年刚刚挂在arXiv的文章，对于静态和动态的位姿估计做了一个统一。</p>
-<a id="more"></a>
-]]></content>
-  </entry>
-  <entry>
-    <title>rCore2020后续</title>
-    <url>/2020/08/16/rCore2020%E5%90%8E%E7%BB%AD/</url>
-    <content><![CDATA[<p>rCore2020活动应该还在进行，不过我没有在第一阶段入围，原因未知。老师一开始通知了我，后来又说我没有入围第二阶段，让我明年继续努力，不过现在也不去纠结了。不过明年可以明确不会继续参加这个活动了。</p>
-<p>后来去了第二阶段的同学受了疫情影响，也很快就从深圳回来了，有的人选择远程工作，有人就不继续干了。</p>
-<p>在第一阶段的筛选结果出来之后，我心情有点小郁闷，开始反思自己的人生和路线，想了很多，明白了很多，比如，什么才是适合自己的领域。</p>
-<p>第一次对于自己的未来规划有了这么清晰的认识，希望可以按部就班走下去。</p>
-]]></content>
-  </entry>
-  <entry>
     <title>rCore2020总结</title>
     <url>/2020/07/26/rCore2020%E6%80%BB%E7%BB%93/</url>
     <content><![CDATA[<p>不知不觉一个月都要过去了，整了将近一个月（中间因为各种事情咕咕了一周多）的 rCoreLab， 在这里做一个小小的总结。</p>
@@ -344,25 +378,9 @@
       </tags>
   </entry>
   <entry>
-    <title>cmake构建系统</title>
-    <url>/2020/08/09/cmake%E6%9E%84%E5%BB%BA%E7%B3%BB%E7%BB%9F/</url>
-    <content><![CDATA[<p>C++在代码复用这一块做的一言难尽，一些依赖第三方库的项目往往很难直接拿来跑，有一大堆的依赖问题需要处理。在这一块，目前比较好的方案只有cmake了。委员会其实可以学学Rust，考虑出个包管理器。但想到种种历史包袱，大概是有生之年了，C++50标准再见咯。</p>
-<a id="more"></a>
-<p>SLAM领域的工作还是要用到不少第三方库的，比如<code>sophus</code>,<code>eigen</code>,<code>g2o</code>，所以cmake还是得好好用起来。</p>
-<p>cmake最基本的功能</p>
-<ul>
-<li>添加版本号</li>
-<li>确定CXX标准</li>
-<li>构建</li>
-<li>测试</li>
-<li>添加库并且给库添加特殊要求</li>
-<li>安装</li>
-</ul>
-<p>对于cmake的种种操作都包含在一个叫做<code>CMakeLists.txt</code>的文件中，在项目的目录下面创建这个文件就好了。</p>
-<p>关于cmake最好的学习方式我认为不是官方的tutorial，官方文档作为一个参考就可以了，反而应该看看优秀的开源代码是怎么运用cmake的。</p>
-<p>下面贴一段<code>opengv</code>的<code>CMakeLists.txt</code>，不难发现，稍微大型一点的项目，这个文件超过三百行是一件非常平常的事情。</p>
-<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="keyword">cmake_minimum_required</span>(VERSION <span class="number">3.1</span>.<span class="number">3</span>)</span><br><span class="line"><span class="keyword">project</span>(opengv VERSION <span class="number">1.0</span> LANGUAGES CXX)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Set the build type.  Options are:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#  None (CMAKE_C_FLAGS or CMAKE_CXX_FLAGS used)</span></span><br><span class="line"><span class="comment">#  Debug (CMAKE_C_FLAGS_DEBUG or CMAKE_CXX_FLAGS_DEBUG)</span></span><br><span class="line"><span class="comment">#  Release (CMAKE_C_FLAGS_RELEASE or CMAKE_CXX_FLAGS_RELEASE)</span></span><br><span class="line"><span class="comment">#  RelWithDebInfo (CMAKE_C_FLAGS_RELWITHDEBINFO or CMAKE_CXX_FLAGS_RELWITHDEBINFO)</span></span><br><span class="line"><span class="comment">#  MinSizeRel (CMAKE_C_FLAGS_MINSIZEREL or CMAKE_CXX_FLAGS_MINSIZEREL)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">set</span>(CMAKE_BUILD_TYPE Release)</span><br><span class="line"></span><br><span class="line"><span class="comment">#set the default path for built executables to the "bin" directory</span></span><br><span class="line"><span class="keyword">set</span>(EXECUTABLE_OUTPUT_PATH <span class="variable">$&#123;CMAKE_BINARY_DIR&#125;</span>/bin)</span><br><span class="line"><span class="comment">#set the default path for built libraries to the "lib" directory</span></span><br><span class="line"><span class="keyword">set</span>(LIBRARY_OUTPUT_PATH <span class="variable">$&#123;CMAKE_BINARY_DIR&#125;</span>/lib)</span><br><span class="line"></span><br><span class="line"><span class="keyword">OPTION</span>(BUILD_TESTS <span class="string">"Build tests"</span> <span class="keyword">ON</span>)</span><br><span class="line"><span class="keyword">OPTION</span>(BUILD_PYTHON <span class="string">"Build Python extension"</span> <span class="keyword">OFF</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">IF</span>(MSVC)</span><br><span class="line">  <span class="keyword">set</span>(BUILD_SHARED_LIBS <span class="keyword">OFF</span>)</span><br><span class="line"><span class="keyword">ELSE</span>()</span><br><span class="line">  <span class="keyword">OPTION</span>(BUILD_SHARED_LIBS <span class="string">"Build shared libraries"</span> <span class="keyword">OFF</span>)</span><br><span class="line">  <span class="keyword">OPTION</span>(BUILD_POSITION_INDEPENDENT_CODE <span class="string">"Build position independent code (-fPIC)"</span> <span class="keyword">ON</span>)</span><br><span class="line"><span class="keyword">ENDIF</span>()</span><br><span class="line"></span><br><span class="line"><span class="keyword">IF</span>(MSVC)</span><br><span class="line">  <span class="keyword">add_compile_options</span>(/wd4514 /wd4267 /bigobj)</span><br><span class="line">  <span class="keyword">add_definitions</span>(-D_USE_MATH_DEFINES)</span><br><span class="line"><span class="keyword">ELSE</span>()</span><br><span class="line">  <span class="keyword">IF</span> (CMAKE_SYSTEM_PROCESSOR <span class="keyword">MATCHES</span> <span class="string">"(arm64)|(ARM64)|(aarch64)|(AARCH64)"</span>)</span><br><span class="line">    <span class="keyword">add_definitions</span> (-march=armv8-a)</span><br><span class="line">  <span class="keyword">ELSEIF</span> (CMAKE_SYSTEM_PROCESSOR <span class="keyword">MATCHES</span> </span><br><span class="line">          <span class="string">"(arm)|(ARM)|(armhf)|(ARMHF)|(armel)|(ARMEL)"</span>)</span><br><span class="line">    <span class="keyword">add_definitions</span> (-march=armv7-a)</span><br><span class="line">  <span class="keyword">ELSE</span> ()</span><br><span class="line">    <span class="keyword">add_definitions</span> (-march=native) <span class="comment">#TODO use correct c++11 def once everybody has moved to gcc 4.7 # for now I even removed std=gnu++0x</span></span><br><span class="line">  <span class="keyword">ENDIF</span>()</span><br><span class="line">  <span class="keyword">add_definitions</span> (</span><br><span class="line">    -O3</span><br><span class="line">    -Wall</span><br><span class="line">    -Wextra</span><br><span class="line">    <span class="comment">#-Werror</span></span><br><span class="line">    -Wwrite-strings</span><br><span class="line">    -Wno-unused-parameter</span><br><span class="line">    -fno-strict-aliasing</span><br><span class="line">  )</span><br><span class="line"><span class="keyword">ENDIF</span>()</span><br><span class="line"></span><br><span class="line"><span class="keyword">IF</span>(BUILD_POSITION_INDEPENDENT_CODE)</span><br><span class="line">  <span class="keyword">add_definitions</span>( -fPIC )</span><br><span class="line"><span class="keyword">ENDIF</span>()</span><br><span class="line"></span><br><span class="line"><span class="keyword">set</span>(CMAKE_MODULE_PATH <span class="variable">$&#123;CMAKE_MODULE_PATH&#125;</span> <span class="string">"$&#123;PROJECT_SOURCE_DIR&#125;/modules/"</span>)</span><br><span class="line"><span class="keyword">find_package</span>(Eigen REQUIRED)</span><br><span class="line"><span class="keyword">set</span>(ADDITIONAL_INCLUDE_DIRS <span class="variable">$&#123;EIGEN_INCLUDE_DIRS&#125;</span> <span class="variable">$&#123;EIGEN_INCLUDE_DIR&#125;</span>/unsupported)</span><br><span class="line"></span><br><span class="line"><span class="keyword">set</span>( OPENGV_SOURCE_FILES</span><br><span class="line">  src/absolute_pose/modules/main.cpp</span><br><span class="line">  src/absolute_pose/modules/gp3p/code.cpp</span><br><span class="line">  src/absolute_pose/modules/gp3p/init.cpp</span><br><span class="line">  src/absolute_pose/modules/gp3p/reductors.cpp</span><br><span class="line">  src/absolute_pose/modules/gp3p/spolynomials.cpp</span><br><span class="line">  src/absolute_pose/modules/Epnp.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp1/code.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp1/init.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp1/reductors.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp1/spolynomials.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp2/code.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp2/init.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp2/reductors.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp2/spolynomials.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp3/code.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp3/init.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp3/reductors.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp3/spolynomials.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp4/code.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp4/init.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp4/reductors.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp4/spolynomials.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp5/code.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp5/init.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp5/reductors.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp5/spolynomials.cpp</span><br><span class="line">  src/absolute_pose/modules/upnp2.cpp</span><br><span class="line">  src/absolute_pose/modules/upnp4.cpp</span><br><span class="line">  src/relative_pose/modules/main.cpp</span><br><span class="line">  src/relative_pose/modules/fivept_nister/modules.cpp</span><br><span class="line">  src/relative_pose/modules/fivept_stewenius/modules.cpp</span><br><span class="line">  src/relative_pose/modules/fivept_kneip/code.cpp</span><br><span class="line">  src/relative_pose/modules/fivept_kneip/init.cpp</span><br><span class="line">  src/relative_pose/modules/fivept_kneip/reductors.cpp</span><br><span class="line">  src/relative_pose/modules/fivept_kneip/spolynomials.cpp</span><br><span class="line">  src/relative_pose/modules/sixpt/modules2.cpp</span><br><span class="line">  src/relative_pose/modules/eigensolver/modules.cpp</span><br><span class="line">  src/relative_pose/modules/ge/modules.cpp</span><br><span class="line">  src/<span class="keyword">math</span>/cayley.cpp</span><br><span class="line">  src/<span class="keyword">math</span>/quaternion.cpp</span><br><span class="line">  src/<span class="keyword">math</span>/arun.cpp</span><br><span class="line">  src/<span class="keyword">math</span>/Sturm.cpp</span><br><span class="line">  src/<span class="keyword">math</span>/roots.cpp</span><br><span class="line">  src/<span class="keyword">math</span>/gauss_jordan.cpp</span><br><span class="line">  src/absolute_pose/methods.cpp</span><br><span class="line">  src/absolute_pose/CentralAbsoluteAdapter.cpp</span><br><span class="line">  src/absolute_pose/NoncentralAbsoluteAdapter.cpp</span><br><span class="line">  src/absolute_pose/NoncentralAbsoluteMultiAdapter.cpp</span><br><span class="line">  src/relative_pose/methods.cpp</span><br><span class="line">  src/relative_pose/CentralRelativeAdapter.cpp</span><br><span class="line">  src/relative_pose/CentralRelativeWeightingAdapter.cpp</span><br><span class="line">  src/relative_pose/NoncentralRelativeAdapter.cpp</span><br><span class="line">  src/relative_pose/CentralRelativeMultiAdapter.cpp</span><br><span class="line">  src/relative_pose/NoncentralRelativeMultiAdapter.cpp</span><br><span class="line">  src/triangulation/methods.cpp</span><br><span class="line">  src/point_cloud/methods.cpp</span><br><span class="line">  src/point_cloud/PointCloudAdapter.cpp</span><br><span class="line">  src/sac_problems/absolute_pose/AbsolutePoseSacProblem.cpp</span><br><span class="line">  src/sac_problems/absolute_pose/MultiNoncentralAbsolutePoseSacProblem.cpp</span><br><span class="line">  src/sac_problems/relative_pose/CentralRelativePoseSacProblem.cpp</span><br><span class="line">  src/sac_problems/relative_pose/NoncentralRelativePoseSacProblem.cpp</span><br><span class="line">  src/sac_problems/relative_pose/RotationOnlySacProblem.cpp</span><br><span class="line">  src/sac_problems/relative_pose/TranslationOnlySacProblem.cpp</span><br><span class="line">  src/sac_problems/relative_pose/EigensolverSacProblem.cpp</span><br><span class="line">  src/sac_problems/relative_pose/MultiCentralRelativePoseSacProblem.cpp</span><br><span class="line">  src/sac_problems/relative_pose/MultiNoncentralRelativePoseSacProblem.cpp</span><br><span class="line">  src/sac_problems/point_cloud/PointCloudSacProblem.cpp</span><br><span class="line">  src/absolute_pose/MACentralAbsolute.cpp</span><br><span class="line">  src/absolute_pose/MANoncentralAbsolute.cpp</span><br><span class="line">  src/relative_pose/MACentralRelative.cpp</span><br><span class="line">  src/relative_pose/MANoncentralRelative.cpp</span><br><span class="line">  src/relative_pose/MANoncentralRelativeMulti.cpp</span><br><span class="line">  src/point_cloud/MAPointCloud.cpp )</span><br><span class="line"></span><br><span class="line"><span class="keyword">set</span>( OPENGV_HEADER_FILES</span><br><span class="line">  <span class="keyword">include</span>/opengv/types.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/OptimizationFunctor.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/absolute_pose/methods.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/relative_pose/methods.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/triangulation/methods.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/point_cloud/methods.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/<span class="keyword">math</span>/cayley.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/<span class="keyword">math</span>/quaternion.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/<span class="keyword">math</span>/arun.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/<span class="keyword">math</span>/Sturm.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/<span class="keyword">math</span>/roots.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/<span class="keyword">math</span>/gauss_jordan.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/absolute_pose/AbsoluteAdapterBase.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/absolute_pose/CentralAbsoluteAdapter.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/absolute_pose/NoncentralAbsoluteAdapter.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/absolute_pose/NoncentralAbsoluteMultiAdapter.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/absolute_pose/AbsoluteMultiAdapterBase.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/relative_pose/RelativeAdapterBase.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/relative_pose/RelativeMultiAdapterBase.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/relative_pose/CentralRelativeAdapter.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/relative_pose/CentralRelativeWeightingAdapter.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/relative_pose/NoncentralRelativeAdapter.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/relative_pose/CentralRelativeMultiAdapter.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/relative_pose/NoncentralRelativeMultiAdapter.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/point_cloud/PointCloudAdapterBase.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/point_cloud/PointCloudAdapter.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/sac_problems/absolute_pose/AbsolutePoseSacProblem.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/sac_problems/absolute_pose/MultiNoncentralAbsolutePoseSacProblem.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/sac_problems/relative_pose/CentralRelativePoseSacProblem.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/sac_problems/relative_pose/NoncentralRelativePoseSacProblem.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/sac_problems/relative_pose/MultiCentralRelativePoseSacProblem.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/sac_problems/relative_pose/MultiNoncentralRelativePoseSacProblem.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/sac_problems/relative_pose/EigensolverSacProblem.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/sac_problems/relative_pose/RotationOnlySacProblem.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/sac_problems/relative_pose/TranslationOnlySacProblem.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/sac_problems/point_cloud/PointCloudSacProblem.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/absolute_pose/MACentralAbsolute.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/absolute_pose/MANoncentralAbsolute.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/relative_pose/MACentralRelative.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/relative_pose/MANoncentralRelative.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/relative_pose/MANoncentralRelativeMulti.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/point_cloud/MAPointCloud.hpp )</span><br><span class="line"></span><br><span class="line"><span class="keyword">add_library</span>( opengv <span class="variable">$&#123;OPENGV_SOURCE_FILES&#125;</span> <span class="variable">$&#123;OPENGV_HEADER_FILES&#125;</span> )</span><br><span class="line"><span class="keyword">add_library</span>( random_generators <span class="keyword">test</span>/random_generators.cpp <span class="keyword">test</span>/random_generators.hpp <span class="keyword">test</span>/experiment_helpers.cpp <span class="keyword">test</span>/experiment_helpers.hpp <span class="keyword">test</span>/time_measurement.cpp <span class="keyword">test</span>/time_measurement.hpp )</span><br><span class="line"><span class="keyword">set_target_properties</span>( opengv random_generators PROPERTIES</span><br><span class="line">                    SOVERSION <span class="variable">$&#123;PROJECT_VERSION&#125;</span></span><br><span class="line">                    VERSION <span class="variable">$&#123;PROJECT_VERSION&#125;</span></span><br><span class="line">                    CXX_STANDARD <span class="number">11</span></span><br><span class="line">                    CXX_STANDARD_REQUIRED <span class="keyword">ON</span></span><br><span class="line">                    DEBUG_POSTFIX d )</span><br><span class="line"></span><br><span class="line"><span class="keyword">target_include_directories</span>( opengv PUBLIC </span><br><span class="line">                <span class="comment"># only when building from the source tree</span></span><br><span class="line">                $&lt;BUILD_INTERFACE:<span class="variable">$&#123;PROJECT_SOURCE_DIR&#125;</span>/<span class="keyword">include</span>&gt;</span><br><span class="line">                <span class="comment"># only when using the lib from the install path</span></span><br><span class="line">                $&lt;INSTALL_INTERFACE:<span class="keyword">include</span>&gt;</span><br><span class="line">                <span class="variable">$&#123;ADDITIONAL_INCLUDE_DIRS&#125;</span> )</span><br><span class="line"></span><br><span class="line"><span class="keyword">target_include_directories</span>( random_generators PRIVATE <span class="variable">$&#123;ADDITIONAL_INCLUDE_DIRS&#125;</span> )</span><br><span class="line"></span><br><span class="line"><span class="keyword">target_link_libraries</span>( random_generators opengv )</span><br><span class="line"></span><br><span class="line"><span class="keyword">IF</span> (BUILD_TESTS)</span><br><span class="line">  <span class="keyword">enable_testing</span>()</span><br><span class="line">  <span class="keyword">include_directories</span>( <span class="variable">$&#123;ADDITIONAL_INCLUDE_DIRS&#125;</span> )</span><br><span class="line"></span><br><span class="line">  <span class="keyword">add_executable</span>( test_absolute_pose <span class="keyword">test</span>/test_absolute_pose.cpp )</span><br><span class="line">  <span class="keyword">target_link_libraries</span>( test_absolute_pose opengv random_generators )</span><br><span class="line">  <span class="keyword">add_test</span>(NAME test_absolute_pose</span><br><span class="line">    WORKING_DIRECTORY <span class="variable">$&#123;EXECUTABLE_OUTPUT_PATH&#125;</span></span><br><span class="line">    <span class="keyword">COMMAND</span> test_absolute_pose)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">add_executable</span>( test_absolute_pose_sac <span class="keyword">test</span>/test_absolute_pose_sac.cpp )</span><br><span class="line">  <span class="keyword">target_link_libraries</span>( test_absolute_pose_sac opengv random_generators )</span><br><span class="line">  <span class="keyword">add_test</span>(NAME test_absolute_pose_sac</span><br><span class="line">    WORKING_DIRECTORY <span class="variable">$&#123;CMAKE_RUNTIME_OUTPUT_DIRECTORY&#125;</span></span><br><span class="line">    <span class="keyword">COMMAND</span> test_absolute_pose_sac)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">add_executable</span>( test_noncentral_absolute_pose <span class="keyword">test</span>/test_noncentral_absolute_pose.cpp )</span><br><span class="line">  <span class="keyword">target_link_libraries</span>( test_noncentral_absolute_pose opengv random_generators )</span><br><span class="line">  <span class="keyword">add_test</span>(NAME test_noncentral_absolute_pose</span><br><span class="line">    WORKING_DIRECTORY <span class="variable">$&#123;CMAKE_RUNTIME_OUTPUT_DIRECTORY&#125;</span></span><br><span class="line">    <span class="keyword">COMMAND</span> test_noncentral_absolute_pose)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">add_executable</span>( test_noncentral_absolute_pose_sac <span class="keyword">test</span>/test_noncentral_absolute_pose_sac.cpp )</span><br><span class="line">  <span class="keyword">target_link_libraries</span>( test_noncentral_absolute_pose_sac opengv random_generators )</span><br><span class="line">  <span class="keyword">add_test</span>(NAME test_noncentral_absolute_pose_sac</span><br><span class="line">    WORKING_DIRECTORY <span class="variable">$&#123;CMAKE_RUNTIME_OUTPUT_DIRECTORY&#125;</span></span><br><span class="line">    <span class="keyword">COMMAND</span> test_noncentral_absolute_pose_sac)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">add_executable</span>( test_multi_noncentral_absolute_pose_sac <span class="keyword">test</span>/test_multi_noncentral_absolute_pose_sac.cpp )</span><br><span class="line">  <span class="keyword">target_link_libraries</span>( test_multi_noncentral_absolute_pose_sac opengv random_generators )</span><br><span class="line">  <span class="keyword">add_test</span>(NAME test_multi_noncentral_absolute_pose_sac</span><br><span class="line">    WORKING_DIRECTORY <span class="variable">$&#123;CMAKE_RUNTIME_OUTPUT_DIRECTORY&#125;</span></span><br><span class="line">    <span class="keyword">COMMAND</span> test_multi_noncentral_absolute_pose_sac)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">add_executable</span>( test_relative_pose <span class="keyword">test</span>/test_relative_pose.cpp )</span><br><span class="line">  <span class="keyword">target_link_libraries</span>( test_relative_pose opengv random_generators )</span><br><span class="line">  <span class="keyword">add_test</span>(NAME test_relative_pose</span><br><span class="line">    WORKING_DIRECTORY <span class="variable">$&#123;CMAKE_RUNTIME_OUTPUT_DIRECTORY&#125;</span></span><br><span class="line">    <span class="keyword">COMMAND</span> test_relative_pose)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">add_executable</span>( test_relative_pose_rotationOnly <span class="keyword">test</span>/test_relative_pose_rotationOnly.cpp )</span><br><span class="line">  <span class="keyword">target_link_libraries</span>( test_relative_pose_rotationOnly opengv random_generators )</span><br><span class="line">  <span class="keyword">add_test</span>(NAME test_relative_pose_rotationOnly</span><br><span class="line">    WORKING_DIRECTORY <span class="variable">$&#123;CMAKE_RUNTIME_OUTPUT_DIRECTORY&#125;</span></span><br><span class="line">    <span class="keyword">COMMAND</span> test_relative_pose_rotationOnly)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">add_executable</span>( test_relative_pose_rotationOnly_sac <span class="keyword">test</span>/test_relative_pose_rotationOnly_sac.cpp )</span><br><span class="line">  <span class="keyword">target_link_libraries</span>( test_relative_pose_rotationOnly_sac opengv random_generators )</span><br><span class="line">  <span class="keyword">add_test</span>(NAME test_relative_pose_rotationOnly_sac</span><br><span class="line">    WORKING_DIRECTORY <span class="variable">$&#123;CMAKE_RUNTIME_OUTPUT_DIRECTORY&#125;</span></span><br><span class="line">    <span class="keyword">COMMAND</span> test_relative_pose_rotationOnly_sac)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">add_executable</span>( test_relative_pose_sac <span class="keyword">test</span>/test_relative_pose_sac.cpp )</span><br><span class="line">  <span class="keyword">target_link_libraries</span>( test_relative_pose_sac opengv random_generators )</span><br><span class="line">  <span class="keyword">add_test</span>(NAME test_relative_pose_sac</span><br><span class="line">    WORKING_DIRECTORY <span class="variable">$&#123;CMAKE_RUNTIME_OUTPUT_DIRECTORY&#125;</span></span><br><span class="line">    <span class="keyword">COMMAND</span> test_relative_pose_sac)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">add_executable</span>( test_noncentral_relative_pose <span class="keyword">test</span>/test_noncentral_relative_pose.cpp )</span><br><span class="line">  <span class="keyword">target_link_libraries</span>( test_noncentral_relative_pose opengv random_generators )</span><br><span class="line">  <span class="keyword">add_test</span>(NAME test_noncentral_relative_pose</span><br><span class="line">    WORKING_DIRECTORY <span class="variable">$&#123;CMAKE_RUNTIME_OUTPUT_DIRECTORY&#125;</span></span><br><span class="line">    <span class="keyword">COMMAND</span> test_noncentral_relative_pose)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">add_executable</span>( test_noncentral_relative_pose_sac <span class="keyword">test</span>/test_noncentral_relative_pose_sac.cpp )</span><br><span class="line">  <span class="keyword">target_link_libraries</span>( test_noncentral_relative_pose_sac opengv random_generators )</span><br><span class="line">  <span class="keyword">add_test</span>(NAME test_noncentral_relative_pose_sac</span><br><span class="line">    WORKING_DIRECTORY <span class="variable">$&#123;CMAKE_RUNTIME_OUTPUT_DIRECTORY&#125;</span></span><br><span class="line">    <span class="keyword">COMMAND</span> test_noncentral_relative_pose_sac)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">add_executable</span>( test_multi_noncentral_relative_pose_sac <span class="keyword">test</span>/test_multi_noncentral_relative_pose_sac.cpp )</span><br><span class="line">  <span class="keyword">target_link_libraries</span>( test_multi_noncentral_relative_pose_sac opengv random_generators )</span><br><span class="line">  <span class="keyword">add_test</span>(NAME test_multi_noncentral_relative_pose_sac</span><br><span class="line">    WORKING_DIRECTORY <span class="variable">$&#123;CMAKE_RUNTIME_OUTPUT_DIRECTORY&#125;</span></span><br><span class="line">    <span class="keyword">COMMAND</span> test_multi_noncentral_relative_pose_sac)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">add_executable</span>( test_eigensolver_sac <span class="keyword">test</span>/test_eigensolver_sac.cpp )</span><br><span class="line">  <span class="keyword">target_link_libraries</span>( test_eigensolver_sac opengv random_generators )</span><br><span class="line">  <span class="keyword">add_test</span>(NAME test_eigensolver_sac</span><br><span class="line">    WORKING_DIRECTORY <span class="variable">$&#123;CMAKE_RUNTIME_OUTPUT_DIRECTORY&#125;</span></span><br><span class="line">    <span class="keyword">COMMAND</span> test_eigensolver_sac)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">add_executable</span>( test_triangulation <span class="keyword">test</span>/test_triangulation.cpp )</span><br><span class="line">  <span class="keyword">target_link_libraries</span>( test_triangulation opengv random_generators )</span><br><span class="line">  <span class="keyword">add_test</span>(NAME test_triangulation</span><br><span class="line">    WORKING_DIRECTORY <span class="variable">$&#123;CMAKE_RUNTIME_OUTPUT_DIRECTORY&#125;</span></span><br><span class="line">    <span class="keyword">COMMAND</span> test_triangulation)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">add_executable</span>( test_eigensolver <span class="keyword">test</span>/test_eigensolver.cpp )</span><br><span class="line">  <span class="keyword">target_link_libraries</span>( test_eigensolver opengv random_generators )</span><br><span class="line">  <span class="keyword">add_test</span>(NAME test_eigensolver</span><br><span class="line">    WORKING_DIRECTORY <span class="variable">$&#123;CMAKE_RUNTIME_OUTPUT_DIRECTORY&#125;</span></span><br><span class="line">    <span class="keyword">COMMAND</span> test_eigensolver)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">add_executable</span>( test_point_cloud <span class="keyword">test</span>/test_point_cloud.cpp )</span><br><span class="line">  <span class="keyword">target_link_libraries</span>( test_point_cloud opengv random_generators )</span><br><span class="line">  <span class="keyword">add_test</span>(NAME  test_point_cloud</span><br><span class="line">    WORKING_DIRECTORY <span class="variable">$&#123;CMAKE_RUNTIME_OUTPUT_DIRECTORY&#125;</span></span><br><span class="line">    <span class="keyword">COMMAND</span> test_point_cloud)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">add_executable</span>( test_point_cloud_sac <span class="keyword">test</span>/test_point_cloud_sac.cpp )</span><br><span class="line">  <span class="keyword">target_link_libraries</span>( test_point_cloud_sac opengv random_generators )</span><br><span class="line">  <span class="keyword">add_test</span>(NAME test_point_cloud_sac</span><br><span class="line">    WORKING_DIRECTORY <span class="variable">$&#123;CMAKE_RUNTIME_OUTPUT_DIRECTORY&#125;</span></span><br><span class="line">    <span class="keyword">COMMAND</span> test_point_cloud_sac)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">add_executable</span>( test_Sturm <span class="keyword">test</span>/test_Sturm.cpp )</span><br><span class="line">  <span class="keyword">target_link_libraries</span>( test_Sturm opengv random_generators )</span><br><span class="line">  <span class="keyword">add_test</span>(NAME test_Sturm</span><br><span class="line">    WORKING_DIRECTORY <span class="variable">$&#123;CMAKE_RUNTIME_OUTPUT_DIRECTORY&#125;</span></span><br><span class="line">    <span class="keyword">COMMAND</span> test_Sturm)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">set_target_properties</span>(</span><br><span class="line">    test_absolute_pose</span><br><span class="line">    test_absolute_pose_sac</span><br><span class="line">    test_noncentral_absolute_pose</span><br><span class="line">    test_noncentral_absolute_pose_sac</span><br><span class="line">    test_multi_noncentral_absolute_pose_sac</span><br><span class="line">    test_relative_pose</span><br><span class="line">    test_relative_pose_rotationOnly</span><br><span class="line">    test_relative_pose_rotationOnly_sac</span><br><span class="line">    test_relative_pose_sac</span><br><span class="line">    test_noncentral_relative_pose</span><br><span class="line">    test_noncentral_relative_pose_sac</span><br><span class="line">    test_multi_noncentral_relative_pose_sac</span><br><span class="line">    test_eigensolver_sac</span><br><span class="line">    test_triangulation</span><br><span class="line">    test_eigensolver</span><br><span class="line">    test_point_cloud</span><br><span class="line">    test_point_cloud_sac</span><br><span class="line">    test_Sturm</span><br><span class="line"></span><br><span class="line">    PROPERTIES</span><br><span class="line">    CXX_STANDARD <span class="number">11</span></span><br><span class="line">    CXX_STANDARD_REQUIRED <span class="keyword">ON</span></span><br><span class="line">    DEBUG_POSTFIX d )</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">ENDIF</span>()</span><br><span class="line"></span><br><span class="line"><span class="comment"># Configuration</span></span><br><span class="line"><span class="keyword">set</span>(config_install_dir <span class="string">"lib/cmake/$&#123;PROJECT_NAME&#125;-$&#123;PROJECT_VERSION&#125;"</span>)</span><br><span class="line"><span class="keyword">set</span>(include_install_dir <span class="string">"include"</span>)</span><br><span class="line"><span class="keyword">set</span>(version_config <span class="string">"$&#123;CMAKE_CURRENT_BINARY_DIR&#125;/$&#123;PROJECT_NAME&#125;ConfigVersion.cmake"</span>)</span><br><span class="line"><span class="keyword">set</span>(project_config <span class="string">"$&#123;CMAKE_CURRENT_BINARY_DIR&#125;/$&#123;PROJECT_NAME&#125;Config.cmake"</span>)</span><br><span class="line"><span class="keyword">set</span>(targets_export_name <span class="string">"$&#123;PROJECT_NAME&#125;Targets"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Include module with fuction 'write_basic_package_version_file'</span></span><br><span class="line"><span class="keyword">include</span>(CMakePackageConfigHelpers)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Configure '&lt;PROJECT-NAME&gt;ConfigVersion.cmake'</span></span><br><span class="line"><span class="comment"># <span class="doctag">Note:</span> PROJECT_VERSION is used as a VERSION</span></span><br><span class="line">write_basic_package_version_file(</span><br><span class="line">    <span class="string">"$&#123;version_config&#125;"</span> COMPATIBILITY SameMajorVersion )</span><br><span class="line"></span><br><span class="line"><span class="comment"># Configure '&lt;PROJECT-NAME&gt;Config.cmake'</span></span><br><span class="line"><span class="comment"># Use variables:</span></span><br><span class="line"><span class="comment">#   * targets_export_name</span></span><br><span class="line"><span class="comment">#   * PROJECT_NAME</span></span><br><span class="line">configure_package_config_file(</span><br><span class="line">    <span class="string">"modules/Config.cmake.in"</span></span><br><span class="line">    <span class="string">"$&#123;project_config&#125;"</span></span><br><span class="line">    INSTALL_DESTINATION <span class="string">"$&#123;config_install_dir&#125;"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Export '&lt;PROJECT-NAME&gt;Targets.cmake' to build dir (to find package in build dir without install)</span></span><br><span class="line"><span class="keyword">export</span>(TARGETS opengv <span class="keyword">FILE</span> <span class="string">"$&#123;CMAKE_CURRENT_BINARY_DIR&#125;/$&#123;targets_export_name&#125;.cmake"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Targets:</span></span><br><span class="line"><span class="keyword">install</span>(TARGETS opengv</span><br><span class="line">        <span class="keyword">EXPORT</span> <span class="string">"$&#123;targets_export_name&#125;"</span></span><br><span class="line">        LIBRARY DESTINATION <span class="string">"lib"</span></span><br><span class="line">        ARCHIVE DESTINATION <span class="string">"lib"</span></span><br><span class="line">        RUNTIME DESTINATION <span class="string">"bin"</span></span><br><span class="line">        INCLUDES DESTINATION <span class="string">"$&#123;include_install_dir&#125;"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Config</span></span><br><span class="line"><span class="comment">#   * &lt;prefix&gt;/lib/cmake/opengv/opengvConfig.cmake</span></span><br><span class="line"><span class="comment">#   * &lt;prefix&gt;/lib/cmake/opengv/opengvConfigVersion.cmake</span></span><br><span class="line"><span class="keyword">install</span>(FILES <span class="string">"$&#123;project_config&#125;"</span> <span class="string">"$&#123;version_config&#125;"</span></span><br><span class="line">        DESTINATION <span class="string">"$&#123;config_install_dir&#125;"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Config</span></span><br><span class="line"><span class="comment">#   * &lt;prefix&gt;/lib/cmake/opengv/opengvTargets.cmake</span></span><br><span class="line"><span class="keyword">install</span>(<span class="keyword">EXPORT</span> <span class="string">"$&#123;targets_export_name&#125;"</span></span><br><span class="line">        NAMESPACE <span class="string">"$&#123;namespace&#125;"</span></span><br><span class="line">        DESTINATION <span class="string">"$&#123;config_install_dir&#125;"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Headers</span></span><br><span class="line"><span class="keyword">install</span>(DIRECTORY <span class="keyword">include</span>/ </span><br><span class="line">        DESTINATION <span class="variable">$&#123;include_install_dir&#125;</span> </span><br><span class="line">        FILES_MATCHING PATTERN <span class="string">"*.h"</span> PATTERN <span class="string">"*.hpp"</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (BUILD_PYTHON)</span><br><span class="line">  <span class="keyword">add_subdirectory</span>( python )</span><br><span class="line"><span class="keyword">endif</span>()</span><br></pre></td></tr></table></figure>
-]]></content>
+    <title>不确定性传播</title>
+    <url>/2020/08/21/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E4%BC%A0%E6%92%AD/</url>
+    <content><![CDATA[]]></content>
   </entry>
   <entry>
     <title>仿射几何</title>
@@ -429,6 +447,121 @@ S(A,B)_{NCC}=\frac{\Sigma A(i,j)B(i,j)}{\sqrt{\Sigma A(i,j)^2\Sigma B(i,j)^2}}</
 ]]></content>
   </entry>
   <entry>
+    <title>浅析Atlas: End-to-End 3D Scene Reconstruction from Posed Images</title>
+    <url>/2020/08/09/%E6%B5%85%E6%9E%90Atlas-End-to-End-3D-Scene-Reconstruction-from-Posed-Images/</url>
+    <content><![CDATA[<p>这是ECCV2020接受的一篇很有意思的三维重建工作，代码已经开源，YouTube上面有相关的演示视频可以参照。</p>
+<a id="more"></a>
+<p>当进行三维重建的时候，需要融合不同的传感器提供的深度信息，比如结构光，飞行时间，激光雷达等等。很少直接依靠一个RGB相机解决问题的。这种方法呢，以来对噪声干扰比较敏感，二来受反射或者景物本身的遮挡会有偏差。</p>
+<p>另一种不那么直接的办法是利用多视角的单目相机来计算深度图，继而重建三维结构，最大的缺点嘛，就是不太准。</p>
+<p>这项工作的基本构想就是：给你一系列的RGB图像作为输入放进神经网络，然后直接输出3D模型。这种做法可以让神经网络在最开始就融合尽可能多的信息，其次，整个系统的复杂程度也就大幅度下降了，包括frame selection的环节就可以直接跳过了。</p>
+<p><img src="\images\1596977658395.png" alt="一张比较形象的图片"></p>
+<p>这篇工作的实现细节非常精炼。接下来讲一下他的Formulation部分。</p>
+<ol>
+<li><p>我们的输入是长度为$T$的视频序列，每一张图片可以表示为$I_t\in\mathbb{R}^{3\times h\times w}$，其中3是三个颜色通道，$w$和$h$表示图片的宽度和高度</p>
+</li>
+<li><p>把它输入二维神经网络以后，每一张图像的每一个像素都带上了一个$c$维的向量作为特征，那么提取出来的特征就可以被表示为$F_t=F(I_t)\in\mathbb{R}^{c\times H\times W\times D}$</p>
+</li>
+<li><p>那么我们如何生成带有特征的体素块？这一点不难想象，每个体素根据相机位姿位姿都可以对应图像中的一个像素，那么我们只要把像素带有特征传播给对应体素即可</p>
+<script type="math/tex; mode=display">
+V_t(:,i,j,k)=F_t(:,\hat{i},\hat{j})</script></li>
+</ol>
+<p>注意，由于相机的位姿是已知的的，所以才可以知道体素和像素的对应关系，每个体素上的特征会以类似于TSDF Fusion的方式不断更新</p>
+<ol>
+<li>当我们把所有的体素更新完了以后，把整个volume扔进3D CNN里面做一个回归，就得到了优化过后的的TSDF体素空间以及语义标签</li>
+</ol>
+<p>从结果上来看，他和几个SOTA进行了对比，一言以蔽之就是多快好。不过，我认为这些结果没有很大的意义，毕竟他们都是在相机位姿的情况下进行的。CNN出来的3D mesh确实较为平滑，而且甚至可以补全ground truth中缺失的部分。以我个人的看法，这篇文章可能没有很大的实际意义，但是它的Demo和论文图片做的很精美，是一个亮点。</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>浅析Event Camera</title>
+    <url>/2020/08/19/%E6%B5%85%E6%9E%90Event-Camera/</url>
+    <content><![CDATA[<p>Event Camera也可以把他称作Dynamic Vision Sensor。下文简称DVS。</p>
+<p>DVS捕获的是每个像素点的光度变化，不用记录图片上每个像素点的信息（因为他关心的是变化量）</p>
+<p>此外DVS还有HDR特性（140dB，普通相机一般是60dB）。</p>
+<p>可以说DVS有着很多的良好特性，但是存在着一些挑战。</p>
+<p>因为DVS的图片是稀疏的，并且并不是同时更新（也就是异步的），所以一般的图像算法很难应用在上面。前人的一些工作基本都是把其他传感器，比如标准相机，或者其他的深度传感器和他一起应用，但这些迟缓的设备拖累了DVS发挥它的全部性能。</p>
+<a id="more"></a>
+<p>关于异步更新，这里稍微解释一下，传统相机会以一个固定的帧率来更新图片，比如30FPS，但DVS的每一个像素只有在事件触发的时候才会更新，没有固定帧率的限制。这种异步更新就支持了高动态物体的识别和追踪。</p>
+<p>既然DVS有如此优势，作为一款2008年左右就可以商业生产的传感器，到现在为止却还是没多少热度，它的确面临着不小的挑战</p>
+<ul>
+<li>我们需要应付他与众不同的时空间输出</li>
+<li>它与传统的光度传感也有很大的不同</li>
+<li>噪声依然存在而且干扰不小</li>
+</ul>
+<p>一个比较真实的事件生成模型把噪声和半导体的错误匹配也考虑了进去，是一个基于概率的模型</p>
+<p>关于DVS，受限于异步的电路，他的像素普遍比传统相机要大很多，空间分辨率其实不高（可以说很低）</p>
+<p>另外值得一提的是，DVS成本很高，上千美元一台</p>
+<p>关于高级事件相机（Advanced Event Camera）,这些设备一般市面上是没有，一般用于生产厂商和科研单位的研究中，有几个例子</p>
+<ul>
+<li>带有颜色信息的DVS</li>
+<li>更高灵敏度的对比传感</li>
+</ul>
+<p>如果要研究DVS相关的问题的话，Formulation必不可少，下面讲的就是这些</p>
+<ul>
+<li>单个事件一般可以编码成$e_k=\{\text{x}_k,t_k,p_k\}$</li>
+<li>一系列事件可以编码成$\varepsilon=\{e_k\}_{k=1}^{N_e}$</li>
+<li>关于DVS的输出的表征方式<ul>
+<li>时间表面图 Time Surface Map</li>
+<li>事件图 Event frame/image，一种简单的转化形式</li>
+<li>3D体素网格，每一个体素可以表征一个像素点再加上一个时间戳</li>
+<li>3D点集$(x_k,y_k,t_k)$</li>
+<li>基于运动补偿的一个模型也就是IWE（Image of Warped Events）</li>
+</ul>
+</li>
+</ul>
+]]></content>
+  </entry>
+  <entry>
+    <title>浅析DTAM: Dense Tracking and Mapping in Real-Time</title>
+    <url>/2020/08/08/%E6%B5%85%E6%9E%90DTAM-Dense-Tracking-and-Mapping-in-Real-Time/</url>
+    <content><![CDATA[<p>这篇文章讲的是实时的稠密追踪和建图，时间有点早，应该不算state of the art了，但还是挺典型的。本文主要讲的是他的建图过程。</p>
+<a id="more"></a>
+<p>在这篇文章之前，学术界在做实时SFM的时候一般采用稀疏的思路，不过现在时机已到，可以借助GPU来稠密一波了。</p>
+<p><img src="\images\1597069754875.png" alt="图1"></p>
+<p>这个工作的原创性和实现难度都很高</p>
+<p>现在讲一下他的关于深度图Formulation</p>
+<ul>
+<li><p>$\pi(\cdot)$代表透视投影函数</p>
+</li>
+<li><p>$x_c=(x,y,z)^T$代表相机坐标系下的三维点</p>
+</li>
+<li><p>$u$代表了一个像素</p>
+</li>
+<li><p>深度图由$\xi$表示</p>
+</li>
+<li><p>那么$\pi^{-1}(u,d)$可以表现给定深度$d=\xi(u)$下的逆投影（也就是把像素还原到3D点）</p>
+</li>
+<li><p>关于稠密图，损失函数由光度误差组成</p>
+</li>
+<li><p>这里定义了一个projective cost volume（不知道该怎么翻译）$C_r$，这里稍稍有些复杂，建议参照上面的图片</p>
+</li>
+<li><p>和参考帧比较近的图片索引表示为$m\in \mathcal {I}(r)$</p>
+</li>
+<li><p>相机的位姿被表示为$T_{cw}$</p>
+</li>
+<li><p>cost volume的平均光度损失被定义为​</p>
+<script type="math/tex; mode=display">
+C_r(u,d)=\frac{1}{|\mathcal{I}(r)|}\sum_{m\in\mathcal{I(r)}}||\rho_r(I_m,u,d)||</script><p>其中的$p_r(I_m,u,d)$可以被表示为$(u,d)$确定的三维点投影在$I_m$中的点和原来的点$u$的光度差</p>
+<script type="math/tex; mode=display">
+\rho_r=I_r(u)-I_m(\pi(KT_{mc}\pi^{-1}(u,d)))</script></li>
+</ul>
+<p>  对于每个点$u$而言，随着深度的变化，误差也会不断变化，我们可以找到一个误差项最大的深度$d$，如图2所示</p>
+<p>  <img src="\images\1597072266956.png" alt="图2"></p>
+<p>  那么通过这些深度$d$，就可以得到深度图$\xi$了</p>
+<p>到了这一步，一张最原始的深度图就已经有了，不过显然还不够，为了对深度图做一个进一步的优化</p>
+<ul>
+<li><p>可以想见，这张深度图既有变化不太明显的平滑区域，也有一些由于物体边界等原因导致的不连续的剧烈变化，为了更加平滑的重建，我们需要对深度图的梯度用加权的Huber Norm来正则化$g(u)||\nabla{\xi(u)} ||_{\epsilon}$，$g(u)$是权重，后一项是参数为$\epsilon$的Huber Norm</p>
+<script type="math/tex; mode=display">
+g(u)=e^{-\alpha||\nabla{I_r(u)}||^\beta_2}\\</script></li>
+<li><p>总的能量的表达式为</p>
+<script type="math/tex; mode=display">
+E_{\xi}=\int_{\Omega}\{g(u)||\nabla{\xi(u)} ||_{\epsilon}+\lambda C(u,\xi(u)) \}du</script></li>
+<li><p>后面的描述都围绕着如何优化损失$E_\xi$以及加速运算，数学标记就更为复杂了，这里暂且不表，先挖一个坑。</p>
+</li>
+</ul>
+]]></content>
+  </entry>
+  <entry>
     <title>浅析Globally-Optimal Event Camera Motion Estimation</title>
     <url>/2020/08/20/%E6%B5%85%E6%9E%90Globally-Optimal-Event-Camera-Motion-Estimation/</url>
     <content><![CDATA[<p>这是ECCV2020上的一篇工作，第一眼看到关键词，就大概明白了这也是ICCV2017 Marr Prize的那篇工作的一个延续，同属Globally-Optimal系。</p>
@@ -487,82 +620,6 @@ I(p_{ij};\theta)=\sum^{N}_{k=1}1(p_{ij}-x'_k)=\sum^{N}_{k=1}1(p_{ij}-W( x_k,t_k;
 ]]></content>
   </entry>
   <entry>
-    <title>浅析DTAM: Dense Tracking and Mapping in Real-Time</title>
-    <url>/2020/08/08/%E6%B5%85%E6%9E%90DTAM-Dense-Tracking-and-Mapping-in-Real-Time/</url>
-    <content><![CDATA[<p>这篇文章讲的是实时的稠密追踪和建图，时间有点早，应该不算state of the art了，但还是挺典型的。本文主要讲的是他的建图过程。</p>
-<a id="more"></a>
-<p>在这篇文章之前，学术界在做实时SFM的时候一般采用稀疏的思路，不过现在时机已到，可以借助GPU来稠密一波了。</p>
-<p><img src="\images\1597069754875.png" alt="图1"></p>
-<p>这个工作的原创性和实现难度都很高</p>
-<p>现在讲一下他的关于深度图Formulation</p>
-<ul>
-<li><p>$\pi(\cdot)$代表透视投影函数</p>
-</li>
-<li><p>$x_c=(x,y,z)^T$代表相机坐标系下的三维点</p>
-</li>
-<li><p>$u$代表了一个像素</p>
-</li>
-<li><p>深度图由$\xi$表示</p>
-</li>
-<li><p>那么$\pi^{-1}(u,d)$可以表现给定深度$d=\xi(u)$下的逆投影（也就是把像素还原到3D点）</p>
-</li>
-<li><p>关于稠密图，损失函数由光度误差组成</p>
-</li>
-<li><p>这里定义了一个projective cost volume（不知道该怎么翻译）$C_r$，这里稍稍有些复杂，建议参照上面的图片</p>
-</li>
-<li><p>和参考帧比较近的图片索引表示为$m\in \mathcal {I}(r)$</p>
-</li>
-<li><p>相机的位姿被表示为$T_{cw}$</p>
-</li>
-<li><p>cost volume的平均光度损失被定义为​</p>
-<script type="math/tex; mode=display">
-C_r(u,d)=\frac{1}{|\mathcal{I}(r)|}\sum_{m\in\mathcal{I(r)}}||\rho_r(I_m,u,d)||</script><p>其中的$p_r(I_m,u,d)$可以被表示为$(u,d)$确定的三维点投影在$I_m$中的点和原来的点$u$的光度差</p>
-<script type="math/tex; mode=display">
-\rho_r=I_r(u)-I_m(\pi(KT_{mc}\pi^{-1}(u,d)))</script></li>
-</ul>
-<p>  对于每个点$u$而言，随着深度的变化，误差也会不断变化，我们可以找到一个误差项最大的深度$d$，如图2所示</p>
-<p>  <img src="\images\1597072266956.png" alt="图2"></p>
-<p>  那么通过这些深度$d$，就可以得到深度图$\xi$了</p>
-<p>到了这一步，一张最原始的深度图就已经有了，不过显然还不够，为了对深度图做一个进一步的优化</p>
-<ul>
-<li><p>可以想见，这张深度图既有变化不太明显的平滑区域，也有一些由于物体边界等原因导致的不连续的剧烈变化，为了更加平滑的重建，我们需要对深度图的梯度用加权的Huber Norm来正则化$g(u)||\nabla{\xi(u)} ||_{\epsilon}$，$g(u)$是权重，后一项是参数为$\epsilon$的Huber Norm</p>
-<script type="math/tex; mode=display">
-g(u)=e^{-\alpha||\nabla{I_r(u)}||^\beta_2}\\</script></li>
-<li><p>总的能量的表达式为</p>
-<script type="math/tex; mode=display">
-E_{\xi}=\int_{\Omega}\{g(u)||\nabla{\xi(u)} ||_{\epsilon}+\lambda C(u,\xi(u)) \}du</script></li>
-<li><p>后面的描述都围绕着如何优化损失$E_\xi$以及加速运算，数学标记就更为复杂了，这里暂且不表，先挖一个坑。</p>
-</li>
-</ul>
-]]></content>
-  </entry>
-  <entry>
-    <title>浅析Atlas: End-to-End 3D Scene Reconstruction from Posed Images</title>
-    <url>/2020/08/09/%E6%B5%85%E6%9E%90Atlas-End-to-End-3D-Scene-Reconstruction-from-Posed-Images/</url>
-    <content><![CDATA[<p>这是ECCV2020接受的一篇很有意思的三维重建工作，代码已经开源，YouTube上面有相关的演示视频可以参照。</p>
-<a id="more"></a>
-<p>当进行三维重建的时候，需要融合不同的传感器提供的深度信息，比如结构光，飞行时间，激光雷达等等。很少直接依靠一个RGB相机解决问题的。这种方法呢，以来对噪声干扰比较敏感，二来受反射或者景物本身的遮挡会有偏差。</p>
-<p>另一种不那么直接的办法是利用多视角的单目相机来计算深度图，继而重建三维结构，最大的缺点嘛，就是不太准。</p>
-<p>这项工作的基本构想就是：给你一系列的RGB图像作为输入放进神经网络，然后直接输出3D模型。这种做法可以让神经网络在最开始就融合尽可能多的信息，其次，整个系统的复杂程度也就大幅度下降了，包括frame selection的环节就可以直接跳过了。</p>
-<p><img src="\images\1596977658395.png" alt="这里先挂上一张比较形象的图片"></p>
-<p>这篇工作的实现细节非常精炼。接下来讲一下他的Formulation部分。</p>
-<ol>
-<li><p>我们的输入是长度为$T$的视频序列，每一张图片可以表示为$I_t\in\mathbb{R}^{3\times h\times w}$，其中3是三个颜色通道，$w$和$h$表示图片的宽度和高度</p>
-</li>
-<li><p>把它输入二维神经网络以后，每一张图像的每一个像素都带上了一个$c$维的向量作为特征，那么提取出来的特征就可以被表示为$F_t=F(I_t)\in\mathbb{R}^{c\times H\times W\times D}$</p>
-</li>
-<li><p>那么我们如何生成带有特征的体素块？这一点不难想象，每个体素根据相机位姿位姿都可以对应图像中的一个像素，那么我们只要把像素带有特征传播给对应体素即可</p>
-<script type="math/tex; mode=display">
-V_t(:,i,j,k)=F_t(:,\hat{i},\hat{j})</script></li>
-</ol>
-<p>注意，由于相机的位姿是已知的的，所以才可以知道体素和像素的对应关系，每个体素上的特征会以类似于TSDF Fusion的方式不断更新</p>
-<ol>
-<li>当我们把所有的体素更新完了以后，把整个volume扔进3D CNN里面做一个回归，就得到了优化过后的的TSDF体素空间以及语义标签</li>
-</ol>
-<p>从结果上来看，他和几个SOTA进行了对比，一言以蔽之就是多快好。不过，我认为这些结果没有很大的意义，毕竟他们都是在相机位姿的情况下进行的。CNN出来的3D mesh确实较为平滑，而且甚至可以补全ground truth中缺失的部分。以我个人的看法，这篇文章可能没有很大的实际意义，但是它的Demo和论文图片做的很精美，是一个亮点。</p>
-]]></content>
-  </entry>
-  <entry>
     <title>浅析Globally-Optimal Inlier Set Maximisation for Simultaneous Camera Pose and Feature Correspondence</title>
     <url>/2020/08/17/%E6%B5%85%E6%9E%90Globally-Optimal-Inlier-Set-Maximisation-for-Simultaneous-Camera-Pose-and-Feature-Correspondence/</url>
     <content><![CDATA[<p>这一工作是ICCV2017的Marr Prize</p>
@@ -574,6 +631,54 @@ V_t(:,i,j,k)=F_t(:,\hat{i},\hat{j})</script></li>
 <p>文章解释了在噪声的存在下，对于目标函数的最优化不一定能够得到全局的最优点。</p>
 <p><img src="C:\Users\lenovo\Documents\hexo\source\images\1597630391972.png" alt="1597630391972"></p>
 ]]></content>
+  </entry>
+  <entry>
+    <title>浅析LK-光流法</title>
+    <url>/2020/08/25/%E6%B5%85%E6%9E%90LK-%E5%85%89%E6%B5%81%E6%B3%95/</url>
+    <content><![CDATA[<p>本文节选自知乎</p>
+<p>LK算法是一种两帧差分的光流估计算法，其基本思想基于以下三个假设。</p>
+<ul>
+<li>亮度恒定：场景中目标图像的像素看起来在帧到帧移动是不发生改变。对于灰度图像（对于彩色图像同适用）这意味着像素的灰度值不会随着帧的跟踪改变。</li>
+<li>时间持续性（微小移动）：图像上相机的移动随时间变化缓慢。实际上，这意味着时间的变化不会引起像素位置的剧烈变化，这样像素的灰度值才能对位置求对应的偏导数。</li>
+<li>空间一致性：场景中相同表面的相邻点具有相似的运动，并且其投影到图像平面上的距离也比较近。</li>
+</ul>
+<p>三个基本假设中前两个是光流法的基本假设，第三个是LK算法特有的。</p>
+<p>基于前两个假设，我们得到图像的约束方程：</p>
+<script type="math/tex; mode=display">
+I(x,y,t)=I(x+\delta x,y+\delta y , t+ \delta t)</script><p>其中$I(x,y,t)$是$t$时刻图像在$(x,y)$位置的亮度。</p>
+<p>利用泰勒公式对函数$I(x+\delta x,y+\delta y,t+\delta t)$在$(x,y,t)$处展开可得：</p>
+<script type="math/tex; mode=display">
+I(x,y,t)=I(x+\delta x,y+\delta y , t+ \delta t)=I(x,y,t)+\frac{\partial I}{\partial x}\delta x+\frac{\partial I}{\partial y}\delta y+\frac{\partial I}{\partial t}\delta t+R(x,y,t)</script><p>其中$R(x,y,t)$为泰勒公式的高阶余项近似为0。</p>
+<p>联立公式(1)和(2)可以得到</p>
+<script type="math/tex; mode=display">
+\frac{\partial I}{\partial x}\delta x+\frac{\partial I}{\partial y}\delta y+\frac{\partial I}{\partial t}\delta t=0</script><p>等价为</p>
+<script type="math/tex; mode=display">
+\frac{\partial I}{\partial x}\frac{\delta x}{\delta t}+\frac{\partial I}{\partial y}\frac{\delta y}{\delta t}+\frac{\partial I}{\partial t}=0</script><p>其中$\frac{\partial I}{\partial x}$和$\frac{\partial I}{\partial y}$分别为像素点沿着$x$和$y$方向的导数，沿$x$和$y$方向的速度分量分别记为$u$和$v$ ，可以将以上式子简写为：</p>
+<script type="math/tex; mode=display">
+I_x u+I_y v +I_t=0</script><p>进一步简化为矩阵形式：</p>
+<script type="math/tex; mode=display">
+\nabla I^T\cdot\vec{V}=-I_t</script><p>由于以上的方程有$u$和$v$两个未知数，所以无法求解，那们我们就要基于第三条假设得到一些其他的方程进行联立求解。</p>
+<p>回到第三条假设，我和可以假设在一个大小为$n=m\times m$的窗口内，图像的光流是一个恒定值。那么就可以得到以下方程组：</p>
+<script type="math/tex; mode=display">
+I_{xn}u+I_{yn}v=-I_{tn},(n=1,2,3,...m^2)</script><p>为了求解以上过度约束的系统可以采用最小二乘法对以上的方程还是进行最小化，将以上方程采用矩阵形式进行表示：</p>
+<script type="math/tex; mode=display">
+\left[\begin{matrix}
+I_{x1}&I_{y1}\\
+\vdots&\vdots\\
+I_{xn}&I_{yn}
+\end{matrix}\right]
+\left[\begin{matrix}
+u\\
+v
+\end{matrix}\right]
+=
+\left[\begin{matrix}
+-I_{t1}\\
+\vdots\\
+-I_{tn}
+\end{matrix}\right]</script><p>记做$A\vec{v}=-b$,采用最小二乘法就可以得到光流的速度矢量了</p>
+<script type="math/tex; mode=display">
+\vec{v}=(A^TA)^TA^T(-b)</script>]]></content>
   </entry>
   <entry>
     <title>浅析LSD-SLAM</title>
@@ -699,109 +804,5 @@ p_c=Rp_w+t</script>]]></content>
 \mathbb{y}=[x_0,y_0,z_0,\theta,\phi,\rho]^T</script><p><img src="\images\1596865193479.png" alt=""></p>
 <p>前三个标量表示了摄像机光心位置（在参考系$(e_1,e_2,e_3)$下，后两个标量编码了旋转角（想想经度和纬度），最后一个$\rho=\frac{1}{||p-c_0||}$，也就是点的深度的倒数。</p>
 ]]></content>
-  </entry>
-  <entry>
-    <title>不确定性传播</title>
-    <url>/2020/08/21/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E4%BC%A0%E6%92%AD/</url>
-    <content><![CDATA[]]></content>
-  </entry>
-  <entry>
-    <title>浅析Event Camera</title>
-    <url>/2020/08/19/%E6%B5%85%E6%9E%90Event-Camera/</url>
-    <content><![CDATA[<p>Event Camera也可以把他称作Dynamic Vision Sensor。下文简称DVS。</p>
-<p>DVS捕获的是每个像素点的光度变化，不用记录图片上每个像素点的信息（因为他关心的是变化量）</p>
-<p>此外DVS还有HDR特性（140dB，普通相机一般是60dB）。</p>
-<p>可以说DVS有着很多的良好特性，但是存在着一些挑战。</p>
-<p>因为DVS的图片是稀疏的，并且并不是同时更新（也就是异步的），所以一般的图像算法很难应用在上面。前人的一些工作基本都是把其他传感器，比如标准相机，或者其他的深度传感器和他一起应用，但这些迟缓的设备拖累了DVS发挥它的全部性能。</p>
-<a id="more"></a>
-<p>关于异步更新，这里稍微解释一下，传统相机会以一个固定的帧率来更新图片，比如30FPS，但DVS的每一个像素只有在事件触发的时候才会更新，没有固定帧率的限制。这种异步更新就支持了高动态物体的识别和追踪。</p>
-<p>既然DVS有如此优势，作为一款2008年左右就可以商业生产的传感器，到现在为止却还是没多少热度，它的确面临着不小的挑战</p>
-<ul>
-<li>我们需要应付他与众不同的时空间输出</li>
-<li>它与传统的光度传感也有很大的不同</li>
-<li>噪声依然存在而且干扰不小</li>
-</ul>
-<p>一个比较真实的事件生成模型把噪声和半导体的错误匹配也考虑了进去，是一个基于概率的模型</p>
-<p>关于DVS，受限于异步的电路，他的像素普遍比传统相机要大很多，空间分辨率其实不高（可以说很低）</p>
-<p>另外值得一提的是，DVS成本很高，上千美元一台</p>
-<p>关于高级事件相机（Advanced Event Camera）,这些设备一般市面上是没有，一般用于生产厂商和科研单位的研究中，有几个例子</p>
-<ul>
-<li>带有颜色信息的DVS</li>
-<li>更高灵敏度的对比传感</li>
-</ul>
-<p>如果要研究DVS相关的问题的话，Formulation必不可少，下面讲的就是这些</p>
-<ul>
-<li>单个事件一般可以编码成$e_k=\{\text{x}_k,t_k,p_k\}$</li>
-<li>一系列事件可以编码成$\varepsilon=\{e_k\}_{k=1}^{N_e}$</li>
-<li>关于DVS的输出的表征方式<ul>
-<li>时间表面图 Time Surface Map</li>
-<li>事件图 Event frame/image，一种简单的转化形式</li>
-<li>3D体素网格，每一个体素可以表征一个像素点再加上一个时间戳</li>
-<li>3D点集$(x_k,y_k,t_k)$</li>
-<li>运动补偿</li>
-</ul>
-</li>
-</ul>
-]]></content>
-  </entry>
-  <entry>
-    <title>EVO: A Geometric Approach to Event-based 6-DOF Parallel Tracking and Mapping in Real-time</title>
-    <url>/2020/08/25/EVO-A-Geometric-Approach-to-Event-based-6-DOF-Parallel-Tracking-and-Mapping-in-Real-time/</url>
-    <content><![CDATA[<p>这篇文章的相关Demo可以在Youtube上看到，不难看出，在线条丰富的场景里面event camera的表现还是相当不错的。</p>
-<p><img src="\images\1598337409328.png" alt=""></p>
-<a id="more"></a>
-<p>关于event camera的优缺点在这里就不赘述了，直接讲贡献吧。这项工作主要解决的一个问题是基于event-based vision的6DoF的实时追踪与建图。前人在这个问题上已经做过一些工作，但往往需要额外的硬件支持（GPU）</p>
-<p>文章的设计思路相当明了，就是照着PTAM，把整个系统分成了两个子模块：追踪和建图</p>
-<p>下面是整个系统的流程图</p>
-<p><img src="\images\1598337607774.png" alt=""></p>
-]]></content>
-  </entry>
-  <entry>
-    <title>浅析LK-光流法</title>
-    <url>/2020/08/25/%E6%B5%85%E6%9E%90LK-%E5%85%89%E6%B5%81%E6%B3%95/</url>
-    <content><![CDATA[<p>本文节选自知乎</p>
-<p>LK算法是一种两帧差分的光流估计算法，其基本思想基于以下三个假设。</p>
-<ul>
-<li>亮度恒定：场景中目标图像的像素看起来在帧到帧移动是不发生改变。对于灰度图像（对于彩色图像同适用）这意味着像素的灰度值不会随着帧的跟踪改变。</li>
-<li>时间持续性（微小移动）：图像上相机的移动随时间变化缓慢。实际上，这意味着时间的变化不会引起像素位置的剧烈变化，这样像素的灰度值才能对位置求对应的偏导数。</li>
-<li>空间一致性：场景中相同表面的相邻点具有相似的运动，并且其投影到图像平面上的距离也比较近。</li>
-</ul>
-<p>三个基本假设中前两个是光流法的基本假设，第三个是LK算法特有的。</p>
-<p>基于前两个假设，我们得到图像的约束方程：</p>
-<script type="math/tex; mode=display">
-I(x,y,t)=I(x+\delta x,y+\delta y , t+ \delta t)</script><p>其中$I(x,y,t)$是$t$时刻图像在$(x,y)$位置的亮度。</p>
-<p>利用泰勒公式对函数$I(x+\delta x,y+\delta y,t+\delta t)$在$(x,y,t)$处展开可得：</p>
-<script type="math/tex; mode=display">
-I(x,y,t)=I(x+\delta x,y+\delta y , t+ \delta t)=I(x,y,t)+\frac{\partial I}{\partial x}\delta x+\frac{\partial I}{\partial y}\delta y+\frac{\partial I}{\partial t}\delta t+R(x,y,t)</script><p>其中$R(x,y,t)$为泰勒公式的高阶余项近似为0。</p>
-<p>联立公式(1)和(2)可以得到</p>
-<script type="math/tex; mode=display">
-\frac{\partial I}{\partial x}\delta x+\frac{\partial I}{\partial y}\delta y+\frac{\partial I}{\partial t}\delta t=0</script><p>等价为</p>
-<script type="math/tex; mode=display">
-\frac{\partial I}{\partial x}\frac{\delta x}{\delta t}+\frac{\partial I}{\partial y}\frac{\delta y}{\delta t}+\frac{\partial I}{\partial t}=0</script><p>其中$\frac{\partial I}{\partial x}$和$\frac{\partial I}{\partial y}$分别为像素点沿着$x$和$y$方向的导数，沿$x$和$y$方向的速度分量分别记为$u$和$v$ ，可以将以上式子简写为：</p>
-<script type="math/tex; mode=display">
-I_x u+I_y v +I_t=0</script><p>进一步简化为矩阵形式：</p>
-<script type="math/tex; mode=display">
-\nabla I^T\cdot\vec{V}=-I_t</script><p>由于以上的方程有$u$和$v$两个未知数，所以无法求解，那们我们就要基于第三条假设得到一些其他的方程进行联立求解。</p>
-<p>回到第三条假设，我和可以假设在一个大小为$n=m\times m$的窗口内，图像的光流是一个恒定值。那么就可以得到以下方程组：</p>
-<script type="math/tex; mode=display">
-I_{xn}u+I_{yn}v=-I_{tn},(n=1,2,3,...m^2)</script><p>为了求解以上过度约束的系统可以采用最小二乘法对以上的方程还是进行最小化，将以上方程采用矩阵形式进行表示：</p>
-<script type="math/tex; mode=display">
-\left[\begin{matrix}
-I_{x1}&I_{y1}\\
-\vdots&\vdots\\
-I_{xn}&I_{yn}
-\end{matrix}\right]
-\left[\begin{matrix}
-u\\
-v
-\end{matrix}\right]
-=
-\left[\begin{matrix}
--I_{t1}\\
-\vdots\\
--I_{tn}
-\end{matrix}\right]</script><p>记做$A\vec{v}=-b$,采用最小二乘法就可以得到光流的速度矢量了</p>
-<script type="math/tex; mode=display">
-\vec{v}=(A^TA)^TA^T(-b)</script>]]></content>
   </entry>
 </search>
