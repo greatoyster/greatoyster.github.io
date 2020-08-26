@@ -40,7 +40,11 @@
 <p>In this field, I thought I have had a basic understanding, so I started to consider my next step. </p>
 <h1 id="2020-8-24"><a href="#2020-8-24" class="headerlink" title="2020.8.24"></a>2020.8.24</h1><p>Today I watched some demos of event-based vision, including the tasks of tracking and depth estimation. And I also learned about VIO + event-based vision. Related material will update soon in my GitHub Pages. </p>
 <p>By the way, I read some material about mathematics as well.</p>
-<h1 id="2020-8-25"><a href="#2020-8-25" class="headerlink" title="2020.8.25"></a>2020.8.25</h1>]]></content>
+<h1 id="2020-8-25"><a href="#2020-8-25" class="headerlink" title="2020.8.25"></a>2020.8.25</h1><p>Today I did some programing exercises and kept learning mathematics.</p>
+<p>Some event-based vision work mentioned that an ANN approach, so I also need to have some basic knowleage about that.</p>
+<p>Another topics learnt today is reinforcement learning.</p>
+<h1 id="2020-8-26"><a href="#2020-8-26" class="headerlink" title="2020.8.26"></a>2020.8.26</h1><p>Today I planed to learn the paper “Robust Homography Estimation via Dual Principal Component Pursuit”.</p>
+]]></content>
   </entry>
   <entry>
     <title>Rust 错误处理</title>
@@ -803,6 +807,32 @@ p_c=Rp_w+t</script>]]></content>
 <script type="math/tex; mode=display">
 \mathbb{y}=[x_0,y_0,z_0,\theta,\phi,\rho]^T</script><p><img src="\images\1596865193479.png" alt=""></p>
 <p>前三个标量表示了摄像机光心位置（在参考系$(e_1,e_2,e_3)$下，后两个标量编码了旋转角（想想经度和纬度），最后一个$\rho=\frac{1}{||p-c_0||}$，也就是点的深度的倒数。</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>浅析Robust Homography Estimation via Dual Principal Component Pursuit</title>
+    <url>/2020/08/26/%E6%B5%85%E6%9E%90Robust-Homography-Estimation-via-Dual-Principal-Component-Pursuit/</url>
+    <content><![CDATA[<p>这是发表在CVPR2020上的一项工作，内容如题，基于DPCP的鲁棒单应矩阵估计</p>
+<p><img src="\images\1598428002660.png" alt=""></p>
+<a id="more"></a>
+<p>所谓的单应也就是一个二维平面到二维平面的射影变换，详细细节可以参见关于射影几何的部分，考虑到齐次坐标的缘故，所以单应变换矩阵应该是一个$3\times3$的矩阵，且有8个自由度。</p>
+<p>本文主要针对的场景是围绕两视图和三视图下的单应矩阵估计展开的。</p>
+<p>对于单应矩阵的估计一个很重要的前提是你要找到一个相对准确的点与点之间的对应关系。</p>
+<p>关于点与点的对应有时候会出现错配的情况，这个时候就需要用到RANSAC来寻找鲁棒的内点，这一步往往会带来大量的计算，大幅度拖慢了算法的性能。关于RANSAC以后出现的很多衍生算法也没有解决这个问题。</p>
+<p>在另一方面，基于鲁棒子空间学习的方法开始出现，DPCP是其中的一个代表。关于子空间学习这一问题，我们需要了解的是这一系列方法的核心在于降维就足矣。</p>
+<p>DPCP把一个超平面的学习问题转化为了一个在球面上的非凸优化问题。这个优化问题就可以通过递归线性规划，Iteratively-Reweighed-Least-Squares (DPCP-IRLS) , projected sub-gradient (DPCP-PSGM)和Riemannian sub-gradient (DPCP-RSGM)等方法来解决。特别地，DPCP-PSGM可以容忍一个相当低的内点率。</p>
+<p>在关于表面法向和三焦点张量的估计问题上DPCP系列明显比RANSAC更快更好。</p>
+<p>关于两视图几何中的对极约束不做赘述，只给出具体公式：</p>
+<script type="math/tex; mode=display">
+x_i'^TFx_i=0</script><p>本文给出了对极约束的向量化形式$\phi(x_i,x_i’)^T\text{vec}(F)=0$，在这种情况下，八组对应就可以唯一确定一个无尺度的基本矩阵$F$</p>
+<p>关于单应矩阵有如下关系:</p>
+<script type="math/tex; mode=display">
+x_i'\sim Hx_i</script><p>也即</p>
+<script type="math/tex; mode=display">
+[x_i']_{\times}Hx_i=0</script><p>它也可以写成向量化的形式</p>
+<script type="math/tex; mode=display">
+\psi_j(x_i,x_i')\text{vec}(H)=0,j=1,2</script><p>注意到$[x_i’]_\times$的秩为2，所以$j=1,2$。</p>
+<p>在这种情况下，四组对应点就可以求得单应矩阵。</p>
 ]]></content>
   </entry>
 </search>
