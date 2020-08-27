@@ -41,9 +41,11 @@
 <h1 id="2020-8-24"><a href="#2020-8-24" class="headerlink" title="2020.8.24"></a>2020.8.24</h1><p>Today I watched some demos of event-based vision, including the tasks of tracking and depth estimation. And I also learned about VIO + event-based vision. Related material will update soon in my GitHub Pages. </p>
 <p>By the way, I read some material about mathematics as well.</p>
 <h1 id="2020-8-25"><a href="#2020-8-25" class="headerlink" title="2020.8.25"></a>2020.8.25</h1><p>Today I did some programing exercises and kept learning mathematics.</p>
-<p>Some event-based vision work mentioned that an ANN approach, so I also need to have some basic knowleage about that.</p>
+<p>Some event-based vision work mentioned that an ANN approach, so I also need to have some basic knowledge about that.</p>
 <p>Another topics learnt today is reinforcement learning.</p>
 <h1 id="2020-8-26"><a href="#2020-8-26" class="headerlink" title="2020.8.26"></a>2020.8.26</h1><p>Today I planed to learn the paper “Robust Homography Estimation via Dual Principal Component Pursuit”.</p>
+<p>Related materials have been updated to the GitHub pages.</p>
+<p>The following recordings will be switched to other channels such as overleaf and slack, but the blogs will be updated frequently.</p>
 ]]></content>
   </entry>
   <entry>
@@ -833,6 +835,10 @@ x_i'\sim Hx_i</script><p>也即</p>
 <script type="math/tex; mode=display">
 \psi_j(x_i,x_i')\text{vec}(H)=0,j=1,2</script><p>注意到$[x_i’]_\times$的秩为2，所以$j=1,2$。</p>
 <p>在这种情况下，四组对应点就可以求得单应矩阵。</p>
+<p>这里需要交代一下的是$[x]_{\times}$指的是向量的反对称矩阵化，是一种叉乘的等价替代。</p>
+<p>接下来这篇文章抛出了一个命题：一个单应矩阵定义了可以诱导出一个三维的向量子空间，即</p>
+<script type="math/tex; mode=display">
+\mathcal{F}_H=\{[v]_{\times}H,v\in\mathbb{R^3}\}</script><p>从另一个角度来看$\mathcal{F}_H$是由$[e_1]_{\times}H,[e_2]_{\times}H,[e_3]_{\times}H$生成的一个维度为3的向量子空间 </p>
 ]]></content>
   </entry>
 </search>
