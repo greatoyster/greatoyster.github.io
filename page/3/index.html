@@ -155,7 +155,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives<span class="badge">26</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives<span class="badge">30</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -212,7 +212,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/08/%E6%B5%85%E6%9E%90LSD-SLAM/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/17/%E6%B5%85%E6%9E%90Globally-Optimal-Inlier-Set-Maximisation-for-Simultaneous-Camera-Pose-and-Feature-Correspondence/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -226,7 +226,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2020/08/08/%E6%B5%85%E6%9E%90LSD-SLAM/" class="post-title-link" itemprop="url">浅析LSD-SLAM</a>
+            <a href="/2020/08/17/%E6%B5%85%E6%9E%90Globally-Optimal-Inlier-Set-Maximisation-for-Simultaneous-Camera-Pose-and-Feature-Correspondence/" class="post-title-link" itemprop="url">浅析Globally-Optimal Inlier Set Maximisation for Simultaneous Camera Pose and Feature Correspondence</a>
         </h1>
 
         <div class="post-meta">
@@ -236,14 +236,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2020-08-07 18:54:06" itemprop="dateCreated datePublished" datetime="2020-08-07T18:54:06Z">2020-08-07</time>
+              <time title="Created: 2020-08-17 09:30:03" itemprop="dateCreated datePublished" datetime="2020-08-17T09:30:03Z">2020-08-17</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-08-16 06:01:13" itemprop="dateModified" datetime="2020-08-16T06:01:13Z">2020-08-16</time>
+                <time title="Modified: 2020-08-20 09:54:18" itemprop="dateModified" datetime="2020-08-20T09:54:18Z">2020-08-20</time>
               </span>
 
           
@@ -257,13 +257,12 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>大规模建图+精确位姿估计</p>
-<p>这篇论文的工作可以概括为：大规模建图+精确位姿估计</p>
-<p>Feature-Based Methods的目的：从图片中得到几何信息。</p>
-<p>方法论就是两步走：先把特征从图片中提取出来，再从提取的特征中恢复出包含的几何信息（三维结构，相机位姿等等）</p>
+          <p>这一工作是ICCV2017的Marr Prize</p>
+<p>在已知三维点集的情况下，根据单张图片恢复出相机六个自由度（6DoF）的位姿是一个很重要的任务，比较典型的有PnP算法，在给定2D-3D对应关系确定的时候，事情就比较好办，但如何提供较为精准的对应关系是一个比较麻烦的事情，尤其是在只有几何信息作为先验知识的时候。</p>
+<p>比起前人在pose and correspondence这个问题上应用的办法，这项工作提出了一种全局的算法，同时寻找最佳的位姿和最佳的对应关系。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/08/08/%E6%B5%85%E6%9E%90LSD-SLAM/#more" rel="contents">
+              <a class="btn" href="/2020/08/17/%E6%B5%85%E6%9E%90Globally-Optimal-Inlier-Set-Maximisation-for-Simultaneous-Camera-Pose-and-Feature-Correspondence/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -366,6 +365,306 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/25/%E6%B5%85%E6%9E%90LK-%E5%85%89%E6%B5%81%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="greatoyster">
+      <meta itemprop="description" content="Technique-sharing station">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Greatoyster">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/08/25/%E6%B5%85%E6%9E%90LK-%E5%85%89%E6%B5%81%E6%B3%95/" class="post-title-link" itemprop="url">浅析LK-光流法</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-08-25 15:20:24 / Modified: 08:40:56" itemprop="dateCreated datePublished" datetime="2020-08-25T15:20:24Z">2020-08-25</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>本文节选自知乎</p>
+<p>LK算法是一种两帧差分的光流估计算法，其基本思想基于以下三个假设。</p>
+<ul>
+<li>亮度恒定：场景中目标图像的像素看起来在帧到帧移动是不发生改变。对于灰度图像（对于彩色图像同适用）这意味着像素的灰度值不会随着帧的跟踪改变。</li>
+<li>时间持续性（微小移动）：图像上相机的移动随时间变化缓慢。实际上，这意味着时间的变化不会引起像素位置的剧烈变化，这样像素的灰度值才能对位置求对应的偏导数。</li>
+<li>空间一致性：场景中相同表面的相邻点具有相似的运动，并且其投影到图像平面上的距离也比较近。</li>
+</ul>
+<p>三个基本假设中前两个是光流法的基本假设，第三个是LK算法特有的。</p>
+<p>基于前两个假设，我们得到图像的约束方程：</p>
+<script type="math/tex; mode=display">
+I(x,y,t)=I(x+\delta x,y+\delta y , t+ \delta t)</script><p>其中$I(x,y,t)$是$t$时刻图像在$(x,y)$位置的亮度。</p>
+<p>利用泰勒公式对函数$I(x+\delta x,y+\delta y,t+\delta t)$在$(x,y,t)$处展开可得：</p>
+<script type="math/tex; mode=display">
+I(x,y,t)=I(x+\delta x,y+\delta y , t+ \delta t)=I(x,y,t)+\frac{\partial I}{\partial x}\delta x+\frac{\partial I}{\partial y}\delta y+\frac{\partial I}{\partial t}\delta t+R(x,y,t)</script><p>其中$R(x,y,t)$为泰勒公式的高阶余项近似为0。</p>
+<p>联立公式(1)和(2)可以得到</p>
+<script type="math/tex; mode=display">
+\frac{\partial I}{\partial x}\delta x+\frac{\partial I}{\partial y}\delta y+\frac{\partial I}{\partial t}\delta t=0</script><p>等价为</p>
+<script type="math/tex; mode=display">
+\frac{\partial I}{\partial x}\frac{\delta x}{\delta t}+\frac{\partial I}{\partial y}\frac{\delta y}{\delta t}+\frac{\partial I}{\partial t}=0</script><p>其中$\frac{\partial I}{\partial x}$和$\frac{\partial I}{\partial y}$分别为像素点沿着$x$和$y$方向的导数，沿$x$和$y$方向的速度分量分别记为$u$和$v$ ，可以将以上式子简写为：</p>
+<script type="math/tex; mode=display">
+I_x u+I_y v +I_t=0</script><p>进一步简化为矩阵形式：</p>
+<script type="math/tex; mode=display">
+\nabla I^T\cdot\vec{V}=-I_t</script><p>由于以上的方程有$u$和$v$两个未知数，所以无法求解，那们我们就要基于第三条假设得到一些其他的方程进行联立求解。</p>
+<p>回到第三条假设，我和可以假设在一个大小为$n=m\times m$的窗口内，图像的光流是一个恒定值。那么就可以得到以下方程组：</p>
+<script type="math/tex; mode=display">
+I_{xn}u+I_{yn}v=-I_{tn},(n=1,2,3,...m^2)</script><p>为了求解以上过度约束的系统可以采用最小二乘法对以上的方程还是进行最小化，将以上方程采用矩阵形式进行表示：</p>
+<script type="math/tex; mode=display">
+\left[\begin{matrix}
+I_{x1}&I_{y1}\\
+\vdots&\vdots\\
+I_{xn}&I_{yn}
+\end{matrix}\right]
+\left[\begin{matrix}
+u\\
+v
+\end{matrix}\right]
+=
+\left[\begin{matrix}
+-I_{t1}\\
+\vdots\\
+-I_{tn}
+\end{matrix}\right]</script><p>记做$A\vec{v}=-b$,采用最小二乘法就可以得到光流的速度矢量了</p>
+<script type="math/tex; mode=display">
+\vec{v}=(A^TA)^TA^T(-b)</script>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/09/01/%E6%B5%85%E6%9E%90Real-time-Visual-Inertial-Odometry-for-Event-Cameras-using-Keyframe-based-Nonlinear-Optimization/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="greatoyster">
+      <meta itemprop="description" content="Technique-sharing station">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Greatoyster">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/09/01/%E6%B5%85%E6%9E%90Real-time-Visual-Inertial-Odometry-for-Event-Cameras-using-Keyframe-based-Nonlinear-Optimization/" class="post-title-link" itemprop="url">浅析Real-time Visual-Inertial Odometry for Event Cameras using Keyframe-based Nonlinear Optimization</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-09-01 10:01:05 / Modified: 02:02:32" itemprop="dateCreated datePublished" datetime="2020-09-01T10:01:05Z">2020-09-01</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>这是一篇基于Event camera的VIO的工作，很有意思。YouTube有相关的Demo可以参考。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/26/%E6%B5%85%E6%9E%90Robust-Homography-Estimation-via-Dual-Principal-Component-Pursuit/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="greatoyster">
+      <meta itemprop="description" content="Technique-sharing station">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Greatoyster">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/08/26/%E6%B5%85%E6%9E%90Robust-Homography-Estimation-via-Dual-Principal-Component-Pursuit/" class="post-title-link" itemprop="url">浅析Robust Homography Estimation via Dual Principal Component Pursuit</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-08-26 15:43:35" itemprop="dateCreated datePublished" datetime="2020-08-26T15:43:35Z">2020-08-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-08-28 12:09:45" itemprop="dateModified" datetime="2020-08-28T12:09:45Z">2020-08-28</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>这是发表在CVPR2020上的一项工作，内容如题，基于DPCP的鲁棒单应矩阵估计</p>
+<p><img src="\images\1598428002660.png" alt=""></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/08/26/%E6%B5%85%E6%9E%90Robust-Homography-Estimation-via-Dual-Principal-Component-Pursuit/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/09/03/%E6%B5%85%E6%9E%90VINS-Mono-A-Robust-and-Versatile-Monocular-Visual-Inertial-State-Estimator/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="greatoyster">
+      <meta itemprop="description" content="Technique-sharing station">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Greatoyster">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/09/03/%E6%B5%85%E6%9E%90VINS-Mono-A-Robust-and-Versatile-Monocular-Visual-Inertial-State-Estimator/" class="post-title-link" itemprop="url">浅析VINS-Mono: A Robust and Versatile Monocular Visual-Inertial State Estimator</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-09-03 01:45:19 / Modified: 14:21:46" itemprop="dateCreated datePublished" datetime="2020-09-03T01:45:19Z">2020-09-03</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>VIO领域的经典之作，利用单目相机和惯导来解决6DoF的状态估计问题</p>
+<p>由于缺乏对于深度的直接测量，事实上我们会在IMU处理，状态初始化，外参标定和非线性优化上遇到很大的挑战</p>
+<p>通过融合IMU的预积分结果和视觉特征，达到了一个较为精确的VIO状态估计。融合过程应用了非线性优化，采用的是紧耦合的模型</p>
+<p>在这以前，基于单目相机的定位和重建一直广受关注，但一个很重要的问题在于单目相机的尺度是不确定的，那么一个很自然的方案是给已有的单目相机系统加上一个IMU，最直接的好处就是我们得到了关于尺度的信息，包括旋转角的度量。IMU也在一定程度增强了系统的稳定性，尤其是当相机遇到强烈光度变化，运动模糊，纹理缺失等情况的时候。</p>
+<p>不过这些也是有代价的，为了得到尺度信息，IMU要从一个运动的状态开始初始化，此外VIO系统是非线性的，这就给估计器的初始化带来了巨大挑战</p>
+<p>整个VIO系统提供了精准的位姿和速度估计，还包括了相机的外参标定和IMU的偏移误差修正，由于IMU的roll和pitch角度已知，6DoF的姿态估计就可以退化到4DoF的位姿图优化</p>
+<p>VIO最简单的方案是IMU和相机的松耦合模型，IMU通过一个EKF，被用来在视觉估计的基础上进行状态传播。紧耦合模型是把IMU和相机的原属数据通过EKF进行融合。前面的比较流行的方案是MSCKF，以及他的衍生版本SR-ISWF。对于之后的图优化部分，极少的方案可以在资源有限的情况下实时运行，因为优化是靠不断迭代来进行的。</p>
+<p>对于视觉信息的处理，一般根据视觉残差模型的不同定义可以分为直接和间接两个流派。大致来说，直接法最小化的是光度误差，间接法最小化的是几何误差。直接法需要一个较为精准的初始估计值。间接法一般需要在检测特征和特征匹配上花费额外的计算资源。</p>
+<p>在这里，需要介绍一点关于IMU预积分的知识</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/08/%E6%B5%85%E6%9E%90Semi-Dense-Visual-Odometry-for-a-Monocular-Camera/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -389,10 +688,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2020-08-07 21:50:25 / Modified: 16:19:28" itemprop="dateCreated datePublished" datetime="2020-08-07T21:50:25Z">2020-08-07</time>
+              <time title="Created: 2020-08-07 21:50:25" itemprop="dateCreated datePublished" datetime="2020-08-07T21:50:25Z">2020-08-07</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-08-26 02:14:54" itemprop="dateModified" datetime="2020-08-26T02:14:54Z">2020-08-26</time>
+              </span>
 
           
 
@@ -503,6 +808,71 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/09/04/%E6%B5%85%E6%9E%90Visual-Inertial-Aided-Navigation-for-High-Dynamic-Motion-in-Built-Environments-Without-Initial-Conditions/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="greatoyster">
+      <meta itemprop="description" content="Technique-sharing station">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Greatoyster">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/09/04/%E6%B5%85%E6%9E%90Visual-Inertial-Aided-Navigation-for-High-Dynamic-Motion-in-Built-Environments-Without-Initial-Conditions/" class="post-title-link" itemprop="url">浅析Visual-Inertial-Aided Navigation for High-Dynamic Motion in Built Environments Without Initial Conditions</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-09-03 22:13:21" itemprop="dateCreated datePublished" datetime="2020-09-03T22:13:21Z">2020-09-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-09-04 05:01:17" itemprop="dateModified" datetime="2020-09-04T05:01:17Z">2020-09-04</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>这篇文章主要讲的是视觉信息和IMU信息的融合</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/08/%E9%80%86%E6%B7%B1%E5%BA%A6%E5%8F%82%E6%95%B0%E5%8C%96/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -552,73 +922,6 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2020/08/08/%E9%80%86%E6%B7%B1%E5%BA%A6%E5%8F%82%E6%95%B0%E5%8C%96/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/26/%E6%B5%85%E6%9E%90Robust-Homography-Estimation-via-Dual-Principal-Component-Pursuit/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="greatoyster">
-      <meta itemprop="description" content="Technique-sharing station">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Greatoyster">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/08/26/%E6%B5%85%E6%9E%90Robust-Homography-Estimation-via-Dual-Principal-Component-Pursuit/" class="post-title-link" itemprop="url">浅析Robust Homography Estimation via Dual Principal Component Pursuit</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2020-08-26 15:43:35 / Modified: 17:16:42" itemprop="dateCreated datePublished" datetime="2020-08-26T15:43:35Z">2020-08-26</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>这是发表在CVPR2020上的一项工作，内容如题，基于DPCP的鲁棒单应矩阵估计</p>
-<p><img src="\images\1598428002660.png" alt=""></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/08/26/%E6%B5%85%E6%9E%90Robust-Homography-Estimation-via-Dual-Principal-Component-Pursuit/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -708,7 +1011,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-count">30</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

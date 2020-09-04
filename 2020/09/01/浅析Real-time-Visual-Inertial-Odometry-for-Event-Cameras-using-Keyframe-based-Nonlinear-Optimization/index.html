@@ -47,23 +47,20 @@
   };
 </script>
 
-  <meta name="description" content="这篇文章的相关Demo可以在Youtube上看到，不难看出，在线条丰富的场景里面event camera的表现还是相当不错的。">
+  <meta name="description" content="这是一篇基于Event camera的VIO的工作，很有意思。YouTube有相关的Demo可以参考。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="EVO: A Geometric Approach to Event-based 6-DOF Parallel Tracking and Mapping in Real-time">
-<meta property="og:url" content="http://yoursite.com/2020/08/25/EVO-A-Geometric-Approach-to-Event-based-6-DOF-Parallel-Tracking-and-Mapping-in-Real-time/index.html">
+<meta property="og:title" content="浅析Real-time Visual-Inertial Odometry for Event Cameras using Keyframe-based Nonlinear Optimization">
+<meta property="og:url" content="http://yoursite.com/2020/09/01/%E6%B5%85%E6%9E%90Real-time-Visual-Inertial-Odometry-for-Event-Cameras-using-Keyframe-based-Nonlinear-Optimization/index.html">
 <meta property="og:site_name" content="Greatoyster">
-<meta property="og:description" content="这篇文章的相关Demo可以在Youtube上看到，不难看出，在线条丰富的场景里面event camera的表现还是相当不错的。">
+<meta property="og:description" content="这是一篇基于Event camera的VIO的工作，很有意思。YouTube有相关的Demo可以参考。">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://yoursite.com/images/1598337409328.png">
-<meta property="og:image" content="http://yoursite.com/images/1598337607774.png">
-<meta property="article:published_time" content="2020-08-25T13:58:14.000Z">
-<meta property="article:modified_time" content="2020-08-25T06:43:30.034Z">
+<meta property="article:published_time" content="2020-09-01T10:01:05.000Z">
+<meta property="article:modified_time" content="2020-09-01T02:02:32.984Z">
 <meta property="article:author" content="greatoyster">
 <meta property="article:tag" content="greatoyster">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://yoursite.com/images/1598337409328.png">
 
-<link rel="canonical" href="http://yoursite.com/2020/08/25/EVO-A-Geometric-Approach-to-Event-based-6-DOF-Parallel-Tracking-and-Mapping-in-Real-time/">
+<link rel="canonical" href="http://yoursite.com/2020/09/01/%E6%B5%85%E6%9E%90Real-time-Visual-Inertial-Odometry-for-Event-Cameras-using-Keyframe-based-Nonlinear-Optimization/">
 
 
 <script id="page-configurations">
@@ -75,7 +72,7 @@
   };
 </script>
 
-  <title>EVO: A Geometric Approach to Event-based 6-DOF Parallel Tracking and Mapping in Real-time | Greatoyster</title>
+  <title>浅析Real-time Visual-Inertial Odometry for Event Cameras using Keyframe-based Nonlinear Optimization | Greatoyster</title>
   
 
 
@@ -160,7 +157,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives<span class="badge">26</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives<span class="badge">30</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -217,7 +214,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/25/EVO-A-Geometric-Approach-to-Event-based-6-DOF-Parallel-Tracking-and-Mapping-in-Real-time/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/09/01/%E6%B5%85%E6%9E%90Real-time-Visual-Inertial-Odometry-for-Event-Cameras-using-Keyframe-based-Nonlinear-Optimization/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -230,7 +227,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          EVO: A Geometric Approach to Event-based 6-DOF Parallel Tracking and Mapping in Real-time
+          浅析Real-time Visual-Inertial Odometry for Event Cameras using Keyframe-based Nonlinear Optimization
         </h1>
 
         <div class="post-meta">
@@ -241,7 +238,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2020-08-25 13:58:14 / Modified: 06:43:30" itemprop="dateCreated datePublished" datetime="2020-08-25T13:58:14Z">2020-08-25</time>
+              <time title="Created: 2020-09-01 10:01:05 / Modified: 02:02:32" itemprop="dateCreated datePublished" datetime="2020-09-01T10:01:05Z">2020-09-01</time>
             </span>
 
           
@@ -262,13 +259,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>这篇文章的相关Demo可以在Youtube上看到，不难看出，在线条丰富的场景里面event camera的表现还是相当不错的。</p>
-<p><img src="\images\1598337409328.png" alt=""></p>
-<a id="more"></a>
-<p>关于event camera的优缺点在这里就不赘述了，直接讲贡献吧。这项工作主要解决的一个问题是基于event-based vision的6DoF的实时追踪与建图。前人在这个问题上已经做过一些工作，但往往需要额外的硬件支持（GPU）</p>
-<p>文章的设计思路相当明了，就是照着PTAM，把整个系统分成了两个子模块：追踪和建图</p>
-<p>下面是整个系统的流程图</p>
-<p><img src="\images\1598337607774.png" alt=""></p>
+        <p>这是一篇基于Event camera的VIO的工作，很有意思。YouTube有相关的Demo可以参考。</p>
 
     </div>
 
@@ -284,12 +275,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/08/21/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E4%BC%A0%E6%92%AD/" rel="prev" title="不确定性传播">
-      <i class="fa fa-chevron-left"></i> 不确定性传播
+    <a href="/2020/09/01/%E6%B5%85%E6%9E%90EMVS-Event-Based-Multi-View-Stereo/" rel="prev" title="浅析EMVS: Event-Based Multi-View Stereo">
+      <i class="fa fa-chevron-left"></i> 浅析EMVS: Event-Based Multi-View Stereo
     </a></div>
       <div class="post-nav-item">
-    <a href="/2020/08/25/%E6%B5%85%E6%9E%90LK-%E5%85%89%E6%B5%81%E6%B3%95/" rel="next" title="浅析LK-光流法">
-      浅析LK-光流法 <i class="fa fa-chevron-right"></i>
+    <a href="/2020/09/03/%E6%B5%85%E6%9E%90VINS-Mono-A-Robust-and-Versatile-Monocular-Visual-Inertial-State-Estimator/" rel="next" title="浅析VINS-Mono: A Robust and Versatile Monocular Visual-Inertial State Estimator">
+      浅析VINS-Mono: A Robust and Versatile Monocular Visual-Inertial State Estimator <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -363,7 +354,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-count">30</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
