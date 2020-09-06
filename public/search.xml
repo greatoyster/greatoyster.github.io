@@ -74,7 +74,9 @@
 <h1 id="2020-9-2"><a href="#2020-9-2" class="headerlink" title="2020.9.2"></a>2020.9.2</h1><p>Yesterday I consulted stuff about GPU acceleration, and send papers about IMU to Chenyu Wang.</p>
 <p>Now the basic framework of our new code is generated, including documentation and a installation script by cmake. The submodules of original version should also be reorganized.</p>
 <p>The work is still on the way. </p>
-<h1 id="2020-9-3"><a href="#2020-9-3" class="headerlink" title="2020.9.3"></a>2020.9.3</h1><p>Today I wirte code for refactor code, still a lot of work leaft for me to do. I also read recent publications about VIO. related materials will be updated to my GitHub Pages.</p>
+<h1 id="2020-9-3"><a href="#2020-9-3" class="headerlink" title="2020.9.3"></a>2020.9.3</h1><p>Today I write code for refactor code, still a lot of work lett for me to do. I also read recent publications about VIO. related materials will be updated to my GitHub Pages.</p>
+<h1 id="2020-9-4"><a href="#2020-9-4" class="headerlink" title="2020.9.4"></a>2020.9.4</h1><p>Today I still spent some time on reading paper about VIO. On the other hand, I tested the math module of refactored code and added document. I re-organized the framework.</p>
+<h1 id="2020-9-5"><a href="#2020-9-5" class="headerlink" title="2020.9.5"></a>2020.9.5</h1><p>I learnt about some skills about performance engineering. I run a profiler to analyze the current implementation of our project. Seems it can be real time in ideal condition(but I have to say, it is not an easy work to achieve that ideal condition.) So we will talk about this topic in next Monday’s meeting.</p>
 ]]></content>
   </entry>
   <entry>
