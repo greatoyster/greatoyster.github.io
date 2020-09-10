@@ -41,7 +41,7 @@
   <entry>
     <title>Daily Plan in MPL</title>
     <url>/2020/08/19/Daily-Plan-in-MPL/</url>
-    <content><![CDATA[<h1 id="2020-8-17"><a href="#2020-8-17" class="headerlink" title="2020.8.17"></a>2020.8.17</h1><p>Today is the first day to join MPL Lab. I talked to Prof. Laurent about my future plan. And he gave me a lot of useful suggestions. </p>
+    <content><![CDATA[<h1 id="2020-8-17"><a href="#2020-8-17" class="headerlink" title="2020.8.17"></a>2020.8.17</h1><p>Today is the first day to join MPL. I talked to Prof. Laurent about my future plan. And he gave me a lot of useful suggestions. </p>
 <p>As planed, I will join MPL Lab after I graduate from Shanghaitech University. The most important thing at this stage is to decide the sub-direction of my research work.</p>
 <p>I will update this blog daily to record my track of research.</p>
 <a id="more"></a>
@@ -81,6 +81,9 @@
 <h1 id="2020-9-7"><a href="#2020-9-7" class="headerlink" title="2020.9.7"></a>2020.9.7</h1><p>Today I refactored the load module and do some tests on that.</p>
 <p>It is also the first day of new semester.</p>
 <h1 id="2020-9-8"><a href="#2020-9-8" class="headerlink" title="2020.9.8"></a>2020.9.8</h1><p>Today I started to implement the optimization part. And I also tried to reflect myself on the previous teamwork. Maybe I should not arrange tasks for other guy in research group. </p>
+<h1 id="2020-9-9"><a href="#2020-9-9" class="headerlink" title="2020.9.9"></a>2020.9.9</h1><p>Today I learnt about some framework about non-linear optimization. There really exists some tricks while optimizing your code. And when I try to run some demo code of pybind11, it seems not work well.</p>
+<p>1f Wang recommended me a new framework which is do entropy minimization. I run the demo, really cool, but still not so computationally-efficient.</p>
+<h1 id="2020-9-10"><a href="#2020-9-10" class="headerlink" title="2020.9.10"></a>2020.9.10</h1><p>Doing a research job needs to be patient, persistence will pay off finally, come on!</p>
 ]]></content>
   </entry>
   <entry>
@@ -560,6 +563,14 @@ E_{\xi}=\int_{\Omega}\{g(u)||\nabla{\xi(u)} ||_{\epsilon}+\lambda C(u,\xi(u)) \}
 <p>文章的设计思路相当明了，就是照着PTAM，把整个系统分成了两个子模块：追踪和建图</p>
 <p>下面是整个系统的流程图</p>
 <p><img src="\images\1598337607774.png" alt=""></p>
+<p>关于Formulation部分，下面补上。</p>
+<p>他先定义了一个warping function $W(u;T)$，其中$u$代表图像中像素点的坐标，$T=\exp(\xi)\in SE(3)$代表位姿，$d_u$代表像素的深度，$\xi$是位姿的李代数形式</p>
+<script type="math/tex; mode=display">
+W(u;T)=\pi(T\cdot\pi^{-1}(u,d_u))</script><p>那么一个很简单的例子就是$W(u;Identity)=u$</p>
+<p>接着他用Inverse Compositional Method去计算位姿</p>
+<p>根据一连串的位姿，按照EMVS里面的方法来进行三维建图</p>
+<p>（注：上面的两个知识点在其他文章里面有介绍</p>
+<p><img src="\images\1599741307396.png" alt="DSI图例"></p>
 ]]></content>
   </entry>
   <entry>
@@ -657,6 +668,7 @@ I(p_{ij};\theta)=\sum^{N}_{k=1}1(p_{ij}-x'_k)=\sum^{N}_{k=1}1(p_{ij}-W( x_k,t_k;
 </ul>
 </li>
 </ul>
+<p>关于优化Warped Image的一些方案，大致分为最大化对比（Contrast Maximization）和最小化熵（Entropy Minimization）两种框架</p>
 ]]></content>
   </entry>
   <entry>
@@ -936,6 +948,62 @@ p_c=Rp_w+t</script>]]></content>
 <h4 id="自动求导"><a href="#自动求导" class="headerlink" title="自动求导"></a>自动求导</h4><p>基本和数值微分的定义类似，仅仅是<code>operator()</code>的函数签名不太一样（后者没有模板）</p>
 <p>例子如下</p>
 <figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Rat43CostFunctor</span> &#123;</span></span><br><span class="line">  Rat43CostFunctor(<span class="keyword">const</span> <span class="keyword">double</span> x, <span class="keyword">const</span> <span class="keyword">double</span> y) : x_(x), y_(y) &#123;&#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line">  <span class="function"><span class="keyword">bool</span> <span class="title">operator</span><span class="params">()</span><span class="params">(<span class="keyword">const</span> T* parameters, T* residuals)</span> <span class="keyword">const</span> </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> T b1 = parameters[<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">const</span> T b2 = parameters[<span class="number">1</span>];</span><br><span class="line">    <span class="keyword">const</span> T b3 = parameters[<span class="number">2</span>];</span><br><span class="line">    <span class="keyword">const</span> T b4 = parameters[<span class="number">3</span>];</span><br><span class="line">    residuals[<span class="number">0</span>] = b1 * <span class="built_in">pow</span>(<span class="number">1.0</span> + <span class="built_in">exp</span>(b2 -  b3 * x_), <span class="number">-1.0</span> / b4) - y_;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">double</span> x_;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">double</span> y_;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">CostFunction* cost_function =</span><br><span class="line">      <span class="keyword">new</span> AutoDiffCostFunction&lt;Rat43CostFunctor, <span class="number">1</span>, <span class="number">4</span>&gt;(</span><br><span class="line">        <span class="keyword">new</span> Rat43CostFunctor(x, y));</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>pybind11示例</title>
+    <url>/2020/09/09/pybind11%E7%A4%BA%E4%BE%8B/</url>
+    <content><![CDATA[<p><code>pybind11</code>是一个C++的库，它能够在Python和C++建立绑定，达到互相调用接口的效果</p>
+<p>在这里，假设所有的文件开头都有如下的声明</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;pybind11/pybind11.h&gt;</span></span></span><br><span class="line"><span class="keyword">namespace</span> py = pybind11;</span><br></pre></td></tr></table></figure>
+<p>一般来说，我们会分别建立函数的文件和Python的绑定文件。</p>
+<p>一个最简单的例子就是</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// file: example.cpp</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pybind11/pybind11.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> i, <span class="keyword">int</span> j)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> i + j;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">PYBIND11_MODULE(example, m) &#123;</span><br><span class="line">    m.doc() = <span class="string">"pybind11 example plugin"</span>; <span class="comment">// optional module docstring</span></span><br><span class="line"></span><br><span class="line">    m.def(<span class="string">"add"</span>, &amp;add, <span class="string">"A function which adds two numbers"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>并且通过一下命令来编译</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> c++ -O3 -Wall -shared -std=c++11 -fPIC `python3 -m pybind11 --includes` example.cpp -o example`python3-config --extension-suffix`</span></span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>浅析Inverse Compositional Method</title>
+    <url>/2020/09/11/%E6%B5%85%E6%9E%90Inverse-Compositional-Method/</url>
+    <content><![CDATA[<p>这个方法的中文名不太确定。它做的是图像之间的配准对齐。</p>
+<p>这里对他的思路略作交待</p>
+<a id="more"></a>
+<p>现在有两张图片$T,I$，前者是参考的图片，后者是要和前者对齐的一张图片</p>
+<p>下面是Formulation部分</p>
+<ul>
+<li>$x$代表像素点坐标</li>
+<li>$p$代表warping参数</li>
+<li>$W(x;p)$代表warping function</li>
+</ul>
+<p>我们要优化的变量是$p$，代价函数是累积的光度误差</p>
+<script type="math/tex; mode=display">
+\sum_x[I(W(x;p))-T(x)]^2</script><p>Inverse Compositional Method通过计算warping参数的增量$\Delta p$来更新$p=p+\Delta p$，直到收敛或者达到最小迭代次数。这个方法的一个特点就是效率高</p>
+<p>公式推导略过，直接挂结论</p>
+<script type="math/tex; mode=display">
+\Delta p = H^{-1} \sum_x[\nabla T \frac{\partial W}{\partial p}]^T[W(x;p)-T(x)]</script><p>其中海森矩阵</p>
+<script type="math/tex; mode=display">
+H=\sum_{x}[\nabla T \frac{\partial W}{\partial p}]^T[\nabla T \frac{\partial W}{\partial p}]</script><p>项$\nabla T \frac{\partial W}{\partial p}|_{(x;0)}$可以看作最陡梯度下降图，是个常量，可以在迭代过程中只计算一次</p>
+<p>那么整个过程就可以分四步走</p>
+<ul>
+<li>计算$\nabla T\frac{\partial W}{\partial p}$</li>
+<li>计算$I(W(x;p))$</li>
+<li>计算$\Delta p$</li>
+<li>更新$W(x;p)\leftarrow W(x;p)\circ W(x;\Delta p)^{-1}$</li>
+</ul>
+<p>其中第一步只要算一次，剩下的三步重复进行，直到收敛为止，（比如$|\Delta p|&lt; \epsilon$）</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>针孔相机成像过程二三事</title>
+    <url>/2020/09/09/%E9%92%88%E5%AD%94%E7%9B%B8%E6%9C%BA%E6%88%90%E5%83%8F%E8%BF%87%E7%A8%8B%E4%BA%8C%E4%B8%89%E4%BA%8B/</url>
+    <content><![CDATA[<p>当真实世界中的物体通过针孔相机投影到二维物理平面的时候，丢失了什么信息</p>
+<ul>
+<li>深度</li>
+<li>角度（除非一组平行线同样平行于成像平面）</li>
+</ul>
+<p>一组平行线会在成像平面钟相交，焦点被称为湮灭点，所有的湮灭点可以形成一条湮灭线</p>
+<p>通过透视投影，有时候会产生一个畸变</p>
 ]]></content>
   </entry>
 </search>

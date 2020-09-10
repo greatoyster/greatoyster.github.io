@@ -47,22 +47,20 @@
   };
 </script>
 
-  <meta name="description" content="这一工作是ICCV2017的Marr Prize 在已知三维点集的情况下，根据单张图片恢复出相机六个自由度（6DoF）的位姿是一个很重要的任务，比较典型的有PnP算法，在给定2D-3D对应关系确定的时候，事情就比较好办，但如何提供较为精准的对应关系是一个比较麻烦的事情，尤其是在只有几何信息作为先验知识的时候。 比起前人在pose and correspondence这个问题上应用的办法，这项工作提">
+  <meta name="description" content="pybind11是一个C++的库，它能够在Python和C++建立绑定，达到互相调用接口的效果 在这里，假设所有的文件开头都有如下的声明 12#include&lt;pybind11&#x2F;pybind11.h&gt;namespace py &#x3D; pybind11; 一般来说，我们会分别建立函数的文件和Python的绑定文件。 一个最简单的例子就是 123456789101112&#x2F;&#x2F; file: exa">
 <meta property="og:type" content="article">
-<meta property="og:title" content="浅析Globally-Optimal Inlier Set Maximisation for Simultaneous Camera Pose and Feature Correspondence">
-<meta property="og:url" content="http://yoursite.com/2020/08/17/%E6%B5%85%E6%9E%90Globally-Optimal-Inlier-Set-Maximisation-for-Simultaneous-Camera-Pose-and-Feature-Correspondence/index.html">
+<meta property="og:title" content="pybind11示例">
+<meta property="og:url" content="http://yoursite.com/2020/09/09/pybind11%E7%A4%BA%E4%BE%8B/index.html">
 <meta property="og:site_name" content="Greatoyster">
-<meta property="og:description" content="这一工作是ICCV2017的Marr Prize 在已知三维点集的情况下，根据单张图片恢复出相机六个自由度（6DoF）的位姿是一个很重要的任务，比较典型的有PnP算法，在给定2D-3D对应关系确定的时候，事情就比较好办，但如何提供较为精准的对应关系是一个比较麻烦的事情，尤其是在只有几何信息作为先验知识的时候。 比起前人在pose and correspondence这个问题上应用的办法，这项工作提">
+<meta property="og:description" content="pybind11是一个C++的库，它能够在Python和C++建立绑定，达到互相调用接口的效果 在这里，假设所有的文件开头都有如下的声明 12#include&lt;pybind11&#x2F;pybind11.h&gt;namespace py &#x3D; pybind11; 一般来说，我们会分别建立函数的文件和Python的绑定文件。 一个最简单的例子就是 123456789101112&#x2F;&#x2F; file: exa">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="c:/Users/lenovo/Documents/hexo/source/images/1597630391972.png">
-<meta property="article:published_time" content="2020-08-17T09:30:03.000Z">
-<meta property="article:modified_time" content="2020-08-20T09:54:18.064Z">
+<meta property="article:published_time" content="2020-09-09T15:12:44.000Z">
+<meta property="article:modified_time" content="2020-09-09T08:07:10.802Z">
 <meta property="article:author" content="greatoyster">
 <meta property="article:tag" content="greatoyster">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="c:/Users/lenovo/Documents/hexo/source/images/1597630391972.png">
 
-<link rel="canonical" href="http://yoursite.com/2020/08/17/%E6%B5%85%E6%9E%90Globally-Optimal-Inlier-Set-Maximisation-for-Simultaneous-Camera-Pose-and-Feature-Correspondence/">
+<link rel="canonical" href="http://yoursite.com/2020/09/09/pybind11%E7%A4%BA%E4%BE%8B/">
 
 
 <script id="page-configurations">
@@ -74,7 +72,7 @@
   };
 </script>
 
-  <title>浅析Globally-Optimal Inlier Set Maximisation for Simultaneous Camera Pose and Feature Correspondence | Greatoyster</title>
+  <title>pybind11示例 | Greatoyster</title>
   
 
 
@@ -216,7 +214,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/17/%E6%B5%85%E6%9E%90Globally-Optimal-Inlier-Set-Maximisation-for-Simultaneous-Camera-Pose-and-Feature-Correspondence/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/09/09/pybind11%E7%A4%BA%E4%BE%8B/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -229,7 +227,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          浅析Globally-Optimal Inlier Set Maximisation for Simultaneous Camera Pose and Feature Correspondence
+          pybind11示例
         </h1>
 
         <div class="post-meta">
@@ -238,16 +236,10 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
+              
 
-              <time title="Created: 2020-08-17 09:30:03" itemprop="dateCreated datePublished" datetime="2020-08-17T09:30:03Z">2020-08-17</time>
+              <time title="Created: 2020-09-09 15:12:44 / Modified: 08:07:10" itemprop="dateCreated datePublished" datetime="2020-09-09T15:12:44Z">2020-09-09</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-08-20 09:54:18" itemprop="dateModified" datetime="2020-08-20T09:54:18Z">2020-08-20</time>
-              </span>
 
           
             <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
@@ -267,14 +259,14 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>这一工作是ICCV2017的Marr Prize</p>
-<p>在已知三维点集的情况下，根据单张图片恢复出相机六个自由度（6DoF）的位姿是一个很重要的任务，比较典型的有PnP算法，在给定2D-3D对应关系确定的时候，事情就比较好办，但如何提供较为精准的对应关系是一个比较麻烦的事情，尤其是在只有几何信息作为先验知识的时候。</p>
-<p>比起前人在pose and correspondence这个问题上应用的办法，这项工作提出了一种全局的算法，同时寻找最佳的位姿和最佳的对应关系。</p>
-<a id="more"></a>
-<p>文章在一开始和RANSAC这种常见的假设检验的方法做了比较。一般来说PnP算法对于2D-3D对应关系的敏感度比较高。尽管特征点检测的技术可以相对鲁棒地找出这种对应关系，但并不适用于所有场合，比如一个纹理缺失的场景，重复的特征点，物体的遮挡，投射投影带来的失真，光照条件带来的变化。</p>
-<p>全局最优的位姿和对应关系估计的算法，以前也曾经出现过，可以称之为$\epsilon-\text{suboptimal}$，在没有先验位姿信息的情况下求解了一个次优的解</p>
-<p>文章解释了在噪声的存在下，对于目标函数的最优化不一定能够得到全局的最优点。</p>
-<p><img src="C:\Users\lenovo\Documents\hexo\source\images\1597630391972.png" alt="1597630391972"></p>
+        <p><code>pybind11</code>是一个C++的库，它能够在Python和C++建立绑定，达到互相调用接口的效果</p>
+<p>在这里，假设所有的文件开头都有如下的声明</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;pybind11/pybind11.h&gt;</span></span></span><br><span class="line"><span class="keyword">namespace</span> py = pybind11;</span><br></pre></td></tr></table></figure>
+<p>一般来说，我们会分别建立函数的文件和Python的绑定文件。</p>
+<p>一个最简单的例子就是</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// file: example.cpp</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pybind11/pybind11.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> i, <span class="keyword">int</span> j)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> i + j;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">PYBIND11_MODULE(example, m) &#123;</span><br><span class="line">    m.doc() = <span class="string">"pybind11 example plugin"</span>; <span class="comment">// optional module docstring</span></span><br><span class="line"></span><br><span class="line">    m.def(<span class="string">"add"</span>, &amp;add, <span class="string">"A function which adds two numbers"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>并且通过一下命令来编译</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> c++ -O3 -Wall -shared -std=c++11 -fPIC `python3 -m pybind11 --includes` example.cpp -o example`python3-config --extension-suffix`</span></span><br></pre></td></tr></table></figure>
 
     </div>
 
@@ -290,12 +282,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/08/16/rCore2020%E5%90%8E%E7%BB%AD/" rel="prev" title="rCore2020后续">
-      <i class="fa fa-chevron-left"></i> rCore2020后续
+    <a href="/2020/09/09/Ceres%E4%BC%98%E5%8C%96%E7%A4%BA%E4%BE%8B/" rel="prev" title="Ceres优化示例">
+      <i class="fa fa-chevron-left"></i> Ceres优化示例
     </a></div>
       <div class="post-nav-item">
-    <a href="/2020/08/19/Daily-Plan-in-MPL/" rel="next" title="Daily Plan in MPL">
-      Daily Plan in MPL <i class="fa fa-chevron-right"></i>
+    <a href="/2020/09/09/%E9%92%88%E5%AD%94%E7%9B%B8%E6%9C%BA%E6%88%90%E5%83%8F%E8%BF%87%E7%A8%8B%E4%BA%8C%E4%B8%89%E4%BA%8B/" rel="next" title="针孔相机成像过程二三事">
+      针孔相机成像过程二三事 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>

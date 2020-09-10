@@ -56,8 +56,9 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://yoursite.com/images/1598337409328.png">
 <meta property="og:image" content="http://yoursite.com/images/1598337607774.png">
+<meta property="og:image" content="http://yoursite.com/images/1599741307396.png">
 <meta property="article:published_time" content="2020-08-25T13:58:14.000Z">
-<meta property="article:modified_time" content="2020-09-08T01:29:24.199Z">
+<meta property="article:modified_time" content="2020-09-10T13:18:42.559Z">
 <meta property="article:author" content="greatoyster">
 <meta property="article:tag" content="greatoyster">
 <meta name="twitter:card" content="summary">
@@ -160,7 +161,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives<span class="badge">31</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives<span class="badge">34</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -247,7 +248,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-09-08 01:29:24" itemprop="dateModified" datetime="2020-09-08T01:29:24Z">2020-09-08</time>
+                <time title="Modified: 2020-09-10 13:18:42" itemprop="dateModified" datetime="2020-09-10T13:18:42Z">2020-09-10</time>
               </span>
 
           
@@ -275,6 +276,14 @@
 <p>文章的设计思路相当明了，就是照着PTAM，把整个系统分成了两个子模块：追踪和建图</p>
 <p>下面是整个系统的流程图</p>
 <p><img src="\images\1598337607774.png" alt=""></p>
+<p>关于Formulation部分，下面补上。</p>
+<p>他先定义了一个warping function $W(u;T)$，其中$u$代表图像中像素点的坐标，$T=\exp(\xi)\in SE(3)$代表位姿，$d_u$代表像素的深度，$\xi$是位姿的李代数形式</p>
+<script type="math/tex; mode=display">
+W(u;T)=\pi(T\cdot\pi^{-1}(u,d_u))</script><p>那么一个很简单的例子就是$W(u;Identity)=u$</p>
+<p>接着他用Inverse Compositional Method去计算位姿</p>
+<p>根据一连串的位姿，按照EMVS里面的方法来进行三维建图</p>
+<p>（注：上面的两个知识点在其他文章里面有介绍</p>
+<p><img src="\images\1599741307396.png" alt="DSI图例"></p>
 
     </div>
 
@@ -369,7 +378,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-count">34</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
