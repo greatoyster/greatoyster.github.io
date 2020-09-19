@@ -155,7 +155,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives<span class="badge">34</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives<span class="badge">37</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -212,7 +212,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/09/09/Ceres%E4%BC%98%E5%8C%96%E7%A4%BA%E4%BE%8B/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/19/%E6%B5%85%E6%9E%90Semi-Dense-3D-Reconstruction-with-a-Stereo-Event-Camera/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -226,7 +226,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2020/09/09/Ceres%E4%BC%98%E5%8C%96%E7%A4%BA%E4%BE%8B/" class="post-title-link" itemprop="url">Ceres优化示例</a>
+            <a href="/2020/08/19/%E6%B5%85%E6%9E%90Semi-Dense-3D-Reconstruction-with-a-Stereo-Event-Camera/" class="post-title-link" itemprop="url">浅析Semi-Dense 3D Reconstruction with a Stereo Event Camera</a>
         </h1>
 
         <div class="post-meta">
@@ -236,14 +236,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2020-09-08 16:10:25" itemprop="dateCreated datePublished" datetime="2020-09-08T16:10:25Z">2020-09-08</time>
+              <time title="Created: 2020-08-18 17:01:03" itemprop="dateCreated datePublished" datetime="2020-08-18T17:01:03Z">2020-08-18</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-09-09 07:07:38" itemprop="dateModified" datetime="2020-09-09T07:07:38Z">2020-09-09</time>
+                <time title="Modified: 2020-09-10 07:42:55" itemprop="dateModified" datetime="2020-09-10T07:42:55Z">2020-09-10</time>
               </span>
 
           
@@ -257,18 +257,17 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>Ceres Solver是一个比较著名的非线性最小二乘优化库，这里稍做介绍他的使用方法。</p>
-<p>这里提一下，有不错的<a href="https://izhengfan.gitbooks.io/ceres-solver-cn/content/" target="_blank" rel="noopener">中文文档</a></p>
-<p>大致流程如下:</p>
+          <p>这篇工作发表在了ECCV2018上面，以前关于双目重建的文章关注了不少，但这次是又加上了stereo event camera.</p>
+<p>关于event camera，会在另一个章节里详细讲解，ETHz最近很多工作都和这个event camera有关。</p>
+<p>先来关注一下event camera的优点：</p>
 <ul>
-<li>定义残差</li>
-<li>选择核函数</li>
-<li>初始话求解器设置</li>
-<li>求解</li>
+<li>低延时</li>
+<li>可以适应高动态场景</li>
+<li>数据量更小</li>
 </ul>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/09/09/Ceres%E4%BC%98%E5%8C%96%E7%A4%BA%E4%BE%8B/#more" rel="contents">
+              <a class="btn" href="/2020/08/19/%E6%B5%85%E6%9E%90Semi-Dense-3D-Reconstruction-with-a-Stereo-Event-Camera/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -292,7 +291,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/09/09/pybind11%E7%A4%BA%E4%BE%8B/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/08/%E6%B5%85%E6%9E%90Semi-Dense-Visual-Odometry-for-a-Monocular-Camera/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -306,7 +305,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2020/09/09/pybind11%E7%A4%BA%E4%BE%8B/" class="post-title-link" itemprop="url">pybind11示例</a>
+            <a href="/2020/08/08/%E6%B5%85%E6%9E%90Semi-Dense-Visual-Odometry-for-a-Monocular-Camera/" class="post-title-link" itemprop="url">浅析Semi-Dense Visual Odometry for a Monocular Camera</a>
         </h1>
 
         <div class="post-meta">
@@ -315,10 +314,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2020-09-09 15:12:44 / Modified: 08:07:10" itemprop="dateCreated datePublished" datetime="2020-09-09T15:12:44Z">2020-09-09</time>
+              <time title="Created: 2020-08-07 21:50:25" itemprop="dateCreated datePublished" datetime="2020-08-07T21:50:25Z">2020-08-07</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-09-10 12:12:24" itemprop="dateModified" datetime="2020-09-10T12:12:24Z">2020-09-10</time>
+              </span>
 
           
 
@@ -331,14 +336,91 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p><code>pybind11</code>是一个C++的库，它能够在Python和C++建立绑定，达到互相调用接口的效果</p>
-<p>在这里，假设所有的文件开头都有如下的声明</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;pybind11/pybind11.h&gt;</span></span></span><br><span class="line"><span class="keyword">namespace</span> py = pybind11;</span><br></pre></td></tr></table></figure>
-<p>一般来说，我们会分别建立函数的文件和Python的绑定文件。</p>
-<p>一个最简单的例子就是</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// file: example.cpp</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pybind11/pybind11.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> i, <span class="keyword">int</span> j)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> i + j;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">PYBIND11_MODULE(example, m) &#123;</span><br><span class="line">    m.doc() = <span class="string">"pybind11 example plugin"</span>; <span class="comment">// optional module docstring</span></span><br><span class="line"></span><br><span class="line">    m.def(<span class="string">"add"</span>, &amp;add, <span class="string">"A function which adds two numbers"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>并且通过一下命令来编译</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> c++ -O3 -Wall -shared -std=c++11 -fPIC `python3 -m pybind11 --includes` example.cpp -o example`python3-config --extension-suffix`</span></span><br></pre></td></tr></table></figure>
+          <p>这篇论文介绍的方法在LSD-SLAM里面得到了发扬</p>
+<p>要想实时持续追踪一个手持摄像头的位姿同时恢复出景物的三维结构是非常困难的。</p>
+<p>稠密流派要么对于算力要求过高，要么需要直接从传感器得到深度数据，这些都不是我们希望看到的。</p>
+<p>这里做出了一点改变 ：“稠密” $\to$“半稠密”</p>
+<p>半稠密的方法既有feature-based方法的效率，又有稠密流派的精准与鲁棒</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/08/08/%E6%B5%85%E6%9E%90Semi-Dense-Visual-Odometry-for-a-Monocular-Camera/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/09/03/%E6%B5%85%E6%9E%90VINS-Mono-A-Robust-and-Versatile-Monocular-Visual-Inertial-State-Estimator/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="greatoyster">
+      <meta itemprop="description" content="Technique-sharing station">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Greatoyster">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/09/03/%E6%B5%85%E6%9E%90VINS-Mono-A-Robust-and-Versatile-Monocular-Visual-Inertial-State-Estimator/" class="post-title-link" itemprop="url">浅析VINS-Mono: A Robust and Versatile Monocular Visual-Inertial State Estimator</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-09-03 01:45:19" itemprop="dateCreated datePublished" datetime="2020-09-03T01:45:19Z">2020-09-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-09-10 07:44:03" itemprop="dateModified" datetime="2020-09-10T07:44:03Z">2020-09-10</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>VIO领域的经典之作，利用单目相机和惯导来解决6DoF的状态估计问题</p>
+<p>由于缺乏对于深度的直接测量，事实上我们会在IMU处理，状态初始化，外参标定和非线性优化上遇到很大的挑战</p>
+<p>通过融合IMU的预积分结果和视觉特征，达到了一个较为精确的VIO状态估计。融合过程应用了非线性优化，采用的是紧耦合的模型</p>
+<p>在这以前，基于单目相机的定位和重建一直广受关注，但一个很重要的问题在于单目相机的尺度是不确定的，那么一个很自然的方案是给已有的单目相机系统加上一个IMU，最直接的好处就是我们得到了关于尺度的信息，包括旋转角的度量。IMU也在一定程度增强了系统的稳定性，尤其是当相机遇到强烈光度变化，运动模糊，纹理缺失等情况的时候。</p>
+<p>不过这些也是有代价的，为了得到尺度信息，IMU要从一个运动的状态开始初始化，此外VIO系统是非线性的，这就给估计器的初始化带来了巨大挑战</p>
+<p>整个VIO系统提供了精准的位姿和速度估计，还包括了相机的外参标定和IMU的偏移误差修正，由于IMU的roll和pitch角度已知，6DoF的姿态估计就可以退化到4DoF的位姿图优化</p>
+<p>VIO最简单的方案是IMU和相机的松耦合模型，IMU通过一个EKF，被用来在视觉估计的基础上进行状态传播。紧耦合模型是把IMU和相机的原属数据通过EKF进行融合。前面的比较流行的方案是MSCKF，以及他的衍生版本SR-ISWF。对于之后的图优化部分，极少的方案可以在资源有限的情况下实时运行，因为优化是靠不断迭代来进行的。</p>
+<p>对于视觉信息的处理，一般根据视觉残差模型的不同定义可以分为直接和间接两个流派。大致来说，直接法最小化的是光度误差，间接法最小化的是几何误差。直接法需要一个较为精准的初始估计值。间接法一般需要在检测特征和特征匹配上花费额外的计算资源。</p>
+<p>在这里，需要介绍一点关于IMU预积分的知识</p>
 
       
     </div>
@@ -358,7 +440,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/09/11/%E6%B5%85%E6%9E%90Inverse-Compositional-Method/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/09/04/%E6%B5%85%E6%9E%90Visual-Inertial-Aided-Navigation-for-High-Dynamic-Motion-in-Built-Environments-Without-Initial-Conditions/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -372,7 +454,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2020/09/11/%E6%B5%85%E6%9E%90Inverse-Compositional-Method/" class="post-title-link" itemprop="url">浅析Inverse Compositional Method</a>
+            <a href="/2020/09/04/%E6%B5%85%E6%9E%90Visual-Inertial-Aided-Navigation-for-High-Dynamic-Motion-in-Built-Environments-Without-Initial-Conditions/" class="post-title-link" itemprop="url">浅析Visual-Inertial-Aided Navigation for High-Dynamic Motion in Built Environments Without Initial Conditions</a>
         </h1>
 
         <div class="post-meta">
@@ -381,10 +463,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2020-09-10 16:19:10 / Modified: 12:12:00" itemprop="dateCreated datePublished" datetime="2020-09-10T16:19:10Z">2020-09-10</time>
+              <time title="Created: 2020-09-03 22:13:21" itemprop="dateCreated datePublished" datetime="2020-09-03T22:13:21Z">2020-09-03</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-09-04 05:01:17" itemprop="dateModified" datetime="2020-09-04T05:01:17Z">2020-09-04</time>
+              </span>
 
           
 
@@ -397,11 +485,148 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>这个方法的中文名不太确定。它做的是图像之间的配准对齐。</p>
-<p>这里对他的思路略作交待</p>
+          <p>这篇文章主要讲的是视觉信息和IMU信息的融合</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/16/%E7%9B%B8%E6%9C%BA%E5%A4%96%E5%8F%82/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="greatoyster">
+      <meta itemprop="description" content="Technique-sharing station">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Greatoyster">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/08/16/%E7%9B%B8%E6%9C%BA%E5%A4%96%E5%8F%82/" class="post-title-link" itemprop="url">相机外参</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-08-16 13:21:18" itemprop="dateCreated datePublished" datetime="2020-08-16T13:21:18Z">2020-08-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-09-09 07:31:53" itemprop="dateModified" datetime="2020-09-09T07:31:53Z">2020-09-09</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>我们可以用内参和外参两个参数矩阵来描述。一般来说内参是固定不变的，而外参则是实时改变的（除非相机保持不动）。</p>
+<p>我们一般可以用外参来表示相机位姿</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/09/11/%E6%B5%85%E6%9E%90Inverse-Compositional-Method/#more" rel="contents">
+              <a class="btn" href="/2020/08/16/%E7%9B%B8%E6%9C%BA%E5%A4%96%E5%8F%82/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/08/%E9%80%86%E6%B7%B1%E5%BA%A6%E5%8F%82%E6%95%B0%E5%8C%96/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="greatoyster">
+      <meta itemprop="description" content="Technique-sharing station">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Greatoyster">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/08/08/%E9%80%86%E6%B7%B1%E5%BA%A6%E5%8F%82%E6%95%B0%E5%8C%96/" class="post-title-link" itemprop="url">逆深度参数化</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-08-08 13:33:43" itemprop="dateCreated datePublished" datetime="2020-08-08T13:33:43Z">2020-08-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-08-09 04:36:06" itemprop="dateModified" datetime="2020-08-09T04:36:06Z">2020-08-09</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>逆深度图在DTAM以及后续的相关工作中都有提及，这里稍微介绍一下逆深度参数化的相关知识</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/08/08/%E9%80%86%E6%B7%B1%E5%BA%A6%E5%8F%82%E6%95%B0%E5%8C%96/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -556,7 +781,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">34</span>
+          <span class="site-state-item-count">37</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
