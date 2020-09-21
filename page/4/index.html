@@ -155,7 +155,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives<span class="badge">37</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives<span class="badge">38</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -212,6 +212,79 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/26/%E6%B5%85%E6%9E%90Robust-Homography-Estimation-via-Dual-Principal-Component-Pursuit/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="greatoyster">
+      <meta itemprop="description" content="Technique-sharing station">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Greatoyster">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/08/26/%E6%B5%85%E6%9E%90Robust-Homography-Estimation-via-Dual-Principal-Component-Pursuit/" class="post-title-link" itemprop="url">浅析Robust Homography Estimation via Dual Principal Component Pursuit</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-08-26 15:43:35" itemprop="dateCreated datePublished" datetime="2020-08-26T15:43:35Z">2020-08-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-08-28 12:09:45" itemprop="dateModified" datetime="2020-08-28T12:09:45Z">2020-08-28</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>这是发表在CVPR2020上的一项工作，内容如题，基于DPCP的鲁棒单应矩阵估计</p>
+<p><img src="\images\1598428002660.png" alt=""></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/08/26/%E6%B5%85%E6%9E%90Robust-Homography-Estimation-via-Dual-Principal-Component-Pursuit/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/19/%E6%B5%85%E6%9E%90Semi-Dense-3D-Reconstruction-with-a-Stereo-Event-Camera/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -243,7 +316,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-09-10 07:42:55" itemprop="dateModified" datetime="2020-09-10T07:42:55Z">2020-09-10</time>
+                <time title="Modified: 2020-09-20 14:36:08" itemprop="dateModified" datetime="2020-09-20T14:36:08Z">2020-09-20</time>
               </span>
 
           
@@ -398,7 +471,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-09-10 07:44:03" itemprop="dateModified" datetime="2020-09-10T07:44:03Z">2020-09-10</time>
+                <time title="Modified: 2020-09-20 14:36:23" itemprop="dateModified" datetime="2020-09-20T14:36:23Z">2020-09-20</time>
               </span>
 
           
@@ -413,15 +486,14 @@
 
       
           <p>VIO领域的经典之作，利用单目相机和惯导来解决6DoF的状态估计问题</p>
-<p>由于缺乏对于深度的直接测量，事实上我们会在IMU处理，状态初始化，外参标定和非线性优化上遇到很大的挑战</p>
-<p>通过融合IMU的预积分结果和视觉特征，达到了一个较为精确的VIO状态估计。融合过程应用了非线性优化，采用的是紧耦合的模型</p>
-<p>在这以前，基于单目相机的定位和重建一直广受关注，但一个很重要的问题在于单目相机的尺度是不确定的，那么一个很自然的方案是给已有的单目相机系统加上一个IMU，最直接的好处就是我们得到了关于尺度的信息，包括旋转角的度量。IMU也在一定程度增强了系统的稳定性，尤其是当相机遇到强烈光度变化，运动模糊，纹理缺失等情况的时候。</p>
-<p>不过这些也是有代价的，为了得到尺度信息，IMU要从一个运动的状态开始初始化，此外VIO系统是非线性的，这就给估计器的初始化带来了巨大挑战</p>
-<p>整个VIO系统提供了精准的位姿和速度估计，还包括了相机的外参标定和IMU的偏移误差修正，由于IMU的roll和pitch角度已知，6DoF的姿态估计就可以退化到4DoF的位姿图优化</p>
-<p>VIO最简单的方案是IMU和相机的松耦合模型，IMU通过一个EKF，被用来在视觉估计的基础上进行状态传播。紧耦合模型是把IMU和相机的原属数据通过EKF进行融合。前面的比较流行的方案是MSCKF，以及他的衍生版本SR-ISWF。对于之后的图优化部分，极少的方案可以在资源有限的情况下实时运行，因为优化是靠不断迭代来进行的。</p>
-<p>对于视觉信息的处理，一般根据视觉残差模型的不同定义可以分为直接和间接两个流派。大致来说，直接法最小化的是光度误差，间接法最小化的是几何误差。直接法需要一个较为精准的初始估计值。间接法一般需要在检测特征和特征匹配上花费额外的计算资源。</p>
-<p>在这里，需要介绍一点关于IMU预积分的知识</p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/09/03/%E6%B5%85%E6%9E%90VINS-Mono-A-Robust-and-Versatile-Monocular-Visual-Inertial-State-Estimator/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -471,7 +543,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-09-04 05:01:17" itemprop="dateModified" datetime="2020-09-04T05:01:17Z">2020-09-04</time>
+                <time title="Modified: 2020-09-20 14:36:31" itemprop="dateModified" datetime="2020-09-20T14:36:31Z">2020-09-20</time>
               </span>
 
           
@@ -486,7 +558,14 @@
 
       
           <p>这篇文章主要讲的是视觉信息和IMU信息的融合</p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/09/04/%E6%B5%85%E6%9E%90Visual-Inertial-Aided-Navigation-for-High-Dynamic-Motion-in-Built-Environments-Without-Initial-Conditions/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -673,10 +752,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2020-09-09 15:31:38 / Modified: 13:04:54" itemprop="dateCreated datePublished" datetime="2020-09-09T15:31:38Z">2020-09-09</time>
+              <time title="Created: 2020-09-09 15:31:38" itemprop="dateCreated datePublished" datetime="2020-09-09T15:31:38Z">2020-09-09</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-09-20 14:36:46" itemprop="dateModified" datetime="2020-09-20T14:36:46Z">2020-09-20</time>
+              </span>
 
           
 
@@ -696,7 +781,14 @@
 </ul>
 <p>一组平行线会在成像平面钟相交，焦点被称为湮灭点，所有的湮灭点可以形成一条湮灭线</p>
 <p>通过透视投影，有时候会产生一个畸变</p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/09/09/%E9%92%88%E5%AD%94%E7%9B%B8%E6%9C%BA%E6%88%90%E5%83%8F%E8%BF%87%E7%A8%8B%E4%BA%8C%E4%B8%89%E4%BA%8B/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -781,7 +873,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">37</span>
+          <span class="site-state-item-count">38</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

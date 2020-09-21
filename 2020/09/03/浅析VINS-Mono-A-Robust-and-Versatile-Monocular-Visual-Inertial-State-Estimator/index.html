@@ -47,15 +47,15 @@
   };
 </script>
 
-  <meta name="description" content="VIO领域的经典之作，利用单目相机和惯导来解决6DoF的状态估计问题 由于缺乏对于深度的直接测量，事实上我们会在IMU处理，状态初始化，外参标定和非线性优化上遇到很大的挑战 通过融合IMU的预积分结果和视觉特征，达到了一个较为精确的VIO状态估计。融合过程应用了非线性优化，采用的是紧耦合的模型 在这以前，基于单目相机的定位和重建一直广受关注，但一个很重要的问题在于单目相机的尺度是不确定的，那么一个">
+  <meta name="description" content="VIO领域的经典之作，利用单目相机和惯导来解决6DoF的状态估计问题">
 <meta property="og:type" content="article">
 <meta property="og:title" content="浅析VINS-Mono: A Robust and Versatile Monocular Visual-Inertial State Estimator">
 <meta property="og:url" content="http://yoursite.com/2020/09/03/%E6%B5%85%E6%9E%90VINS-Mono-A-Robust-and-Versatile-Monocular-Visual-Inertial-State-Estimator/index.html">
 <meta property="og:site_name" content="Greatoyster">
-<meta property="og:description" content="VIO领域的经典之作，利用单目相机和惯导来解决6DoF的状态估计问题 由于缺乏对于深度的直接测量，事实上我们会在IMU处理，状态初始化，外参标定和非线性优化上遇到很大的挑战 通过融合IMU的预积分结果和视觉特征，达到了一个较为精确的VIO状态估计。融合过程应用了非线性优化，采用的是紧耦合的模型 在这以前，基于单目相机的定位和重建一直广受关注，但一个很重要的问题在于单目相机的尺度是不确定的，那么一个">
+<meta property="og:description" content="VIO领域的经典之作，利用单目相机和惯导来解决6DoF的状态估计问题">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-09-03T01:45:19.000Z">
-<meta property="article:modified_time" content="2020-09-10T07:44:03.853Z">
+<meta property="article:modified_time" content="2020-09-20T14:36:23.575Z">
 <meta property="article:author" content="greatoyster">
 <meta property="article:tag" content="greatoyster">
 <meta name="twitter:card" content="summary">
@@ -157,7 +157,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives<span class="badge">37</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives<span class="badge">38</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -244,7 +244,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-09-10 07:44:03" itemprop="dateModified" datetime="2020-09-10T07:44:03Z">2020-09-10</time>
+                <time title="Modified: 2020-09-20 14:36:23" itemprop="dateModified" datetime="2020-09-20T14:36:23Z">2020-09-20</time>
               </span>
 
           
@@ -266,6 +266,7 @@
 
       
         <p>VIO领域的经典之作，利用单目相机和惯导来解决6DoF的状态估计问题</p>
+<a id="more"></a>
 <p>由于缺乏对于深度的直接测量，事实上我们会在IMU处理，状态初始化，外参标定和非线性优化上遇到很大的挑战</p>
 <p>通过融合IMU的预积分结果和视觉特征，达到了一个较为精确的VIO状态估计。融合过程应用了非线性优化，采用的是紧耦合的模型</p>
 <p>在这以前，基于单目相机的定位和重建一直广受关注，但一个很重要的问题在于单目相机的尺度是不确定的，那么一个很自然的方案是给已有的单目相机系统加上一个IMU，最直接的好处就是我们得到了关于尺度的信息，包括旋转角的度量。IMU也在一定程度增强了系统的稳定性，尤其是当相机遇到强烈光度变化，运动模糊，纹理缺失等情况的时候。</p>
@@ -368,7 +369,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">37</span>
+          <span class="site-state-item-count">38</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

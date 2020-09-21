@@ -155,7 +155,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives<span class="badge">37</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives<span class="badge">38</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -235,10 +235,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2020-09-09 15:12:44 / Modified: 08:07:10" itemprop="dateCreated datePublished" datetime="2020-09-09T15:12:44Z">2020-09-09</time>
+              <time title="Created: 2020-09-09 15:12:44" itemprop="dateCreated datePublished" datetime="2020-09-09T15:12:44Z">2020-09-09</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-09-20 14:37:26" itemprop="dateModified" datetime="2020-09-20T14:37:26Z">2020-09-20</time>
+              </span>
 
           
 
@@ -252,14 +258,86 @@
 
       
           <p><code>pybind11</code>是一个C++的库，它能够在Python和C++建立绑定，达到互相调用接口的效果</p>
-<p>在这里，假设所有的文件开头都有如下的声明</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;pybind11/pybind11.h&gt;</span></span></span><br><span class="line"><span class="keyword">namespace</span> py = pybind11;</span><br></pre></td></tr></table></figure>
-<p>一般来说，我们会分别建立函数的文件和Python的绑定文件。</p>
-<p>一个最简单的例子就是</p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// file: example.cpp</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pybind11/pybind11.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> i, <span class="keyword">int</span> j)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> i + j;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">PYBIND11_MODULE(example, m) &#123;</span><br><span class="line">    m.doc() = <span class="string">"pybind11 example plugin"</span>; <span class="comment">// optional module docstring</span></span><br><span class="line"></span><br><span class="line">    m.def(<span class="string">"add"</span>, &amp;add, <span class="string">"A function which adds two numbers"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>并且通过一下命令来编译</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> c++ -O3 -Wall -shared -std=c++11 -fPIC `python3 -m pybind11 --includes` example.cpp -o example`python3-config --extension-suffix`</span></span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/09/09/pybind11%E7%A4%BA%E4%BE%8B/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
 
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/09/cmake%E6%9E%84%E5%BB%BA%E7%B3%BB%E7%BB%9F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="greatoyster">
+      <meta itemprop="description" content="Technique-sharing station">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Greatoyster">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/08/09/cmake%E6%9E%84%E5%BB%BA%E7%B3%BB%E7%BB%9F/" class="post-title-link" itemprop="url">cmake构建系统</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-08-08 18:36:12" itemprop="dateCreated datePublished" datetime="2020-08-08T18:36:12Z">2020-08-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-08-25 10:19:46" itemprop="dateModified" datetime="2020-08-25T10:19:46Z">2020-08-25</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>C++在代码复用这一块做的一言难尽，一些依赖第三方库的项目往往很难直接拿来跑，有一大堆的依赖问题需要处理。在这一块，目前比较好的方案只有cmake了。委员会其实可以学学Rust，考虑出个包管理器。但想到种种历史包袱，大概是有生之年了，C++50标准再见咯。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/08/09/cmake%E6%9E%84%E5%BB%BA%E7%B3%BB%E7%BB%9F/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -301,10 +379,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2020-08-16 14:47:14 / Modified: 06:56:24" itemprop="dateCreated datePublished" datetime="2020-08-16T14:47:14Z">2020-08-16</time>
+              <time title="Created: 2020-08-16 14:47:14" itemprop="dateCreated datePublished" datetime="2020-08-16T14:47:14Z">2020-08-16</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-09-20 14:37:38" itemprop="dateModified" datetime="2020-09-20T14:37:38Z">2020-09-20</time>
+              </span>
 
           
 
@@ -321,7 +405,14 @@
 <p>后来去了第二阶段的同学受了疫情影响，也很快就从深圳回来了，有的人选择远程工作，有人就不继续干了。</p>
 <p>在第一阶段的筛选结果出来之后，我心情有点小郁闷，开始反思自己的人生和路线，想了很多，明白了很多，比如，什么才是适合自己的领域。</p>
 <p>第一次对于自己的未来规划有了这么清晰的认识，希望可以按部就班走下去。</p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/08/16/rCore2020%E5%90%8E%E7%BB%AD/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -412,70 +503,6 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/21/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E4%BC%A0%E6%92%AD/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="greatoyster">
-      <meta itemprop="description" content="Technique-sharing station">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Greatoyster">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/08/21/%E4%B8%8D%E7%A1%AE%E5%AE%9A%E6%80%A7%E4%BC%A0%E6%92%AD/" class="post-title-link" itemprop="url">不确定性传播</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-08-20 20:23:51" itemprop="dateCreated datePublished" datetime="2020-08-20T20:23:51Z">2020-08-20</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-08-25 06:43:58" itemprop="dateModified" datetime="2020-08-25T06:43:58Z">2020-08-25</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/07/%E4%BB%BF%E5%B0%84%E5%87%A0%E4%BD%95/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -507,7 +534,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-08-20 09:55:51" itemprop="dateModified" datetime="2020-08-20T09:55:51Z">2020-08-20</time>
+                <time title="Modified: 2020-09-20 14:34:19" itemprop="dateModified" datetime="2020-09-20T14:34:19Z">2020-09-20</time>
               </span>
 
           
@@ -521,7 +548,8 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>在数域$K$上的仿射空间包含了四样东西：</p>
+          <p>仿射几何整体上还是非常直观和易于理解的。</p>
+<p>在数域$K$上的仿射空间包含了四样东西：</p>
 <ul>
 <li><p>非空点集$E$</p>
 </li>
@@ -883,7 +911,7 @@ E\times V \to E</script></li>
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-09-10 07:43:43" itemprop="dateModified" datetime="2020-09-10T07:43:43Z">2020-09-10</time>
+                <time title="Modified: 2020-09-20 14:34:56" itemprop="dateModified" datetime="2020-09-20T14:34:56Z">2020-09-20</time>
               </span>
 
           
@@ -900,12 +928,14 @@ E\times V \to E</script></li>
           <p>这一篇工作的相关Demo可以在YouTube上面看到</p>
 <p>和传统的相机不一样，我们需要充分考虑到Event Camera的稀疏性和异步性，相关的建图出来的结果也是半稀疏的（edge-based）。</p>
 <p>这里有两个比较陌生的观念，一个是Space-Sweep算法，一个是DSI(Disparity Space Image),他们会在下文一一解释</p>
-<p>关于Space-Sweep算法有一个直观的解释，以一个二维平面为例，把所有的捕捉到的像素逆投影，线的汇聚点就是要还原的点</p>
-<p><img src="\images\1598888728160.png" alt="光束汇集的两个点就是空间点的位置"></p>
-<p>DSI其实是一个$w\times h\times N_z$的3D Volume，每一个格子记录了穿过这个格子的线的数量，那么一个很显然的观点就是DSI的局部最大点就是点的可能出现的概率</p>
-<p>关于如何检测这些局部极大值，我们首先生成一张深度图$Z^<em>(x,y)$和一张confidence map $f(X(x),Y(y),Z^</em>)=:c(x,y)$，接着，它定义了一个自适应的高斯阈值函数$T(x,y)=c(x,y)*G_{\sigma}(x,y)-C$，其中$C$是一个常数（实验的超参数）</p>
-<p>这篇论文后来又出了一篇后续，对于里面的一些细节进行了比较详细的描述，这里暂不赘述。</p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/09/01/%E6%B5%85%E6%9E%90EMVS-Event-Based-Multi-View-Stereo/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -990,7 +1020,7 @@ E\times V \to E</script></li>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">37</span>
+          <span class="site-state-item-count">38</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

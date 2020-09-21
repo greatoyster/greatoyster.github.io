@@ -155,7 +155,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives<span class="badge">37</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives<span class="badge">38</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -208,194 +208,6 @@
             
 
   <div class="posts-expand">
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/09/12/ROS%E5%85%A5%E9%97%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="greatoyster">
-      <meta itemprop="description" content="Technique-sharing station">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Greatoyster">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/09/12/ROS%E5%85%A5%E9%97%A8/" class="post-title-link" itemprop="url">ROS入门</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-09-12 13:31:44" itemprop="dateCreated datePublished" datetime="2020-09-12T13:31:44Z">2020-09-12</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-09-19 15:32:58" itemprop="dateModified" datetime="2020-09-19T15:32:58Z">2020-09-19</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>ROS文件系统概述</p>
-<h2 id="ROS文件系统概述"><a href="#ROS文件系统概述" class="headerlink" title="ROS文件系统概述"></a>ROS文件系统概述</h2><ul>
-<li>Package（包），ROS软件的一种组织形式，包括库，可执行文件，脚本等等等等</li>
-<li>Manifest，对于包的描述</li>
-</ul>
-<h2 id="常见指令和文件系统工具"><a href="#常见指令和文件系统工具" class="headerlink" title="常见指令和文件系统工具"></a>常见指令和文件系统工具</h2><p>一般来说<code>cd</code>和<code>ls</code>提供的基本功能还是不太够用的，ROS里自有一套工具</p>
-<h3 id="rospack"><a href="#rospack" class="headerlink" title="rospack"></a>rospack</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">USAGE: rospack &lt;command&gt; [options] [package]</span><br><span class="line">  Allowed commands:</span><br><span class="line">    help</span><br><span class="line">    cflags-only-I     [--deps-only] [package]</span><br><span class="line">    cflags-only-other [--deps-only] [package]</span><br><span class="line">    depends           [package] (alias: deps)</span><br><span class="line">    depends-indent    [package] (alias: deps-indent)</span><br><span class="line">    depends-manifests [package] (alias: deps-manifests)</span><br><span class="line">    depends-msgsrv    [package] (alias: deps-msgsrv)</span><br><span class="line">    depends-on        [package]</span><br><span class="line">    depends-on1       [package]</span><br><span class="line">    depends-why --target=&lt;target&gt; [package] (alias: deps-why)</span><br><span class="line">    depends1          [package] (alias: deps1)</span><br><span class="line">    export [--deps-only] --lang=&lt;lang&gt; --attrib=&lt;attrib&gt; [package]</span><br><span class="line">    find [package]</span><br><span class="line">    langs</span><br><span class="line">    libs-only-L     [--deps-only] [package]</span><br><span class="line">    libs-only-l     [--deps-only] [package]</span><br><span class="line">    libs-only-other [--deps-only] [package]</span><br><span class="line">    list</span><br><span class="line">    list-duplicates</span><br><span class="line">    list-names</span><br><span class="line">    plugins --attrib=&lt;attrib&gt; [--top=&lt;toppkg&gt;] [package]</span><br><span class="line">    profile [--length=&lt;length&gt;] [--zombie-only]</span><br><span class="line">    rosdep  [package] (alias: rosdeps)</span><br><span class="line">    rosdep0 [package] (alias: rosdeps0)</span><br><span class="line">    vcs  [package]</span><br><span class="line">    vcs0 [package]</span><br><span class="line">  Extra options:</span><br><span class="line">    -q     Quiets error reports.</span><br><span class="line"></span><br><span class="line"> If [package] is omitted, the current working directory</span><br><span class="line"> is used (if it contains a package.xml or manifest.xml).</span><br><span class="line">----------------------------------------------------------</span><br></pre></td></tr></table></figure>
-<h3 id="roscd"><a href="#roscd" class="headerlink" title="roscd"></a>roscd</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> roscd [location_name[/sub_directory]]</span></span><br></pre></td></tr></table></figure>
-<h3 id="rosls"><a href="#rosls" class="headerlink" title="rosls"></a>rosls</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> rosls [location_name[/sub_directory]]</span></span><br></pre></td></tr></table></figure>
-<h2 id="catkin-package"><a href="#catkin-package" class="headerlink" title="catkin package"></a>catkin package</h2><h3 id="组成要素"><a href="#组成要素" class="headerlink" title="组成要素"></a>组成要素</h3><ul>
-<li><p>一个依赖包文件<code>catkin compliant package.xml</code></p>
-</li>
-<li><p>一个<code>CMakeLists.txt</code></p>
-</li>
-</ul>
-<h3 id="创建catkin-worksapce"><a href="#创建catkin-worksapce" class="headerlink" title="创建catkin worksapce"></a>创建catkin worksapce</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> mkdir -p ~/catkin_ws/src</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> ~/catkin_ws/</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> catkin_make</span></span><br></pre></td></tr></table></figure>
-<h3 id="创建catkin包"><a href="#创建catkin包" class="headerlink" title="创建catkin包"></a>创建catkin包</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> catkin_create_pkg beginner_tutorials std_msgs rospy roscpp</span></span><br></pre></td></tr></table></figure>
-<p>这条命令的用法如下</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> catkin_create_pkg &lt;package_name&gt; [depend1] [depend2] [depend3]</span></span><br></pre></td></tr></table></figure>
-<h3 id="查看package依赖"><a href="#查看package依赖" class="headerlink" title="查看package依赖"></a>查看package依赖</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> rospack depends1 beginner_tutorials</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> rospack depends1 rospy</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> rospack depends beginner_tutorials</span></span><br></pre></td></tr></table></figure>
-<p>注意: depends1代表一阶依赖，在没有1作为后缀的情况下，会返回这个包的所有依赖（包括依赖的依赖）</p>
-<h3 id="创建自己的ROS-package"><a href="#创建自己的ROS-package" class="headerlink" title="创建自己的ROS package"></a>创建自己的ROS package</h3><p>关于<code>catkin_make</code>，你可以把它看作和</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> In a catkin workspace</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> catkin_make [make_targets] [-DCMAKE_VARIABLES=...]</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> In a CMake project</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> mkdir build</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> build</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> cmake ..</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> make</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> make install  <span class="comment"># (optionally)</span></span></span><br></pre></td></tr></table></figure>
-<h3 id="ROS的图概念"><a href="#ROS的图概念" class="headerlink" title="ROS的图概念"></a>ROS的图概念</h3><ul>
-<li><a href="http://wiki.ros.org/Nodes" target="_blank" rel="noopener">Nodes</a>: A node is an executable that uses ROS to communicate with other nodes. 和其他节点通信的可执行文件</li>
-<li><a href="http://wiki.ros.org/Messages" target="_blank" rel="noopener">Messages</a>: ROS data type used when subscribing or publishing to a topic.用在某个话题下发布和订阅的数据类型</li>
-<li><a href="http://wiki.ros.org/Topics" target="_blank" rel="noopener">Topics</a>: Nodes can <em>publish</em> messages to a topic as well as <em>subscribe</em> to a topic to receive messages. 节点可以把数据发送到话题下面，节点也可以订阅的的话题下的数据</li>
-<li><a href="http://wiki.ros.org/Master" target="_blank" rel="noopener">Master</a>: Name service for ROS (i.e. helps nodes find each other)，相当于是一个管理者，帮助Node之间互相通信</li>
-<li><a href="http://wiki.ros.org/rosout" target="_blank" rel="noopener">rosout</a>: ROS equivalent of stdout/stderr. ROS里面的等价标准输入</li>
-<li><a href="http://wiki.ros.org/roscore" target="_blank" rel="noopener">roscore</a>: Master + rosout + parameter server (parameter server will be introduced later). ROS里面的核心部件，基本得开了roscore了以后，节点，服务这些东西才可以正常运行</li>
-</ul>
-<h3 id="Node-client-libraries"><a href="#Node-client-libraries" class="headerlink" title="Node client libraries"></a>Node client libraries</h3><p>节点利用一个客户端的库来实现它的功能</p>
-<ul>
-<li>rospy = python client library</li>
-<li>roscpp = c++ client library</li>
-</ul>
-<h3 id="Node相关工具"><a href="#Node相关工具" class="headerlink" title="Node相关工具"></a>Node相关工具</h3><p>ROS提供了一个叫<code>rosnode</code>的工具，可以帮助我们获取Node的相关信息，详细用法可以用下面的命令来查询</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> rosnode <span class="built_in">help</span></span></span><br></pre></td></tr></table></figure>
-<p>此外，还有一个叫做<code>rosrun</code>的工具</p>
-<p>它的用法如下</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> rosrun [package_name] [node_name]</span></span><br></pre></td></tr></table></figure>
-<p>它可以直接调用ROS包下面的节点，即便不知道具体路径也可以</p>
-<h3 id="ROS-Topic"><a href="#ROS-Topic" class="headerlink" title="ROS Topic"></a>ROS Topic</h3><p>关于话题，ROS也提供了方便的工具<code>rostopic</code>，我们运行下面的指令</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> rostopic -h</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> output as follows</span></span><br><span class="line">rostopic bw     display bandwidth used by topic</span><br><span class="line">rostopic echo   print messages to screen</span><br><span class="line">rostopic hz     display publishing rate of topic    </span><br><span class="line">rostopic list   print information about active topics</span><br><span class="line">rostopic pub    publish data to topic</span><br><span class="line">rostopic type   print topic type</span><br></pre></td></tr></table></figure>
-<h3 id="ROS-Service"><a href="#ROS-Service" class="headerlink" title="ROS Service"></a>ROS Service</h3><p>参见</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> rosservice                                                                         <span class="comment"># output</span></span></span><br><span class="line">Commands:</span><br><span class="line">        rosservice args print service arguments</span><br><span class="line">        rosservice call call the service with the provided args</span><br><span class="line">        rosservice find find services by service type</span><br><span class="line">        rosservice info print information about service</span><br><span class="line">        rosservice list list active services</span><br><span class="line">        rosservice type print service type</span><br><span class="line">        rosservice uri  print service ROSRPC uri</span><br><span class="line"></span><br><span class="line">Type rosservice &lt;command&gt; -h for more detailed usage, e.g. 'rosservice call -h'</span><br></pre></td></tr></table></figure>
-<h3 id="ROS-Parameters"><a href="#ROS-Parameters" class="headerlink" title="ROS Parameters"></a>ROS Parameters</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> rosparam</span></span><br><span class="line">rosparam is a command-line tool for getting, setting, and deleting parameters from the ROS Parameter Server.</span><br><span class="line"></span><br><span class="line">Commands:</span><br><span class="line">        rosparam set    set parameter</span><br><span class="line">        rosparam get    get parameter</span><br><span class="line">        rosparam load   load parameters from file</span><br><span class="line">        rosparam dump   dump parameters to file</span><br><span class="line">        rosparam delete delete parameter</span><br><span class="line">        rosparam list   list parameter names</span><br></pre></td></tr></table></figure>
-<h3 id="roslaunch"><a href="#roslaunch" class="headerlink" title="roslaunch"></a>roslaunch</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> roslaunch [package] [filename.launch]</span></span><br></pre></td></tr></table></figure>
-<p>一般来说，我们可以给自己的包设置launch文件</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">#! ******.launch</span><br><span class="line"><span class="tag">&lt;<span class="name">launch</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">group</span> <span class="attr">ns</span>=<span class="string">"turtlesim1"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">"turtlesim"</span> <span class="attr">name</span>=<span class="string">"sim"</span> <span class="attr">type</span>=<span class="string">"turtlesim_node"</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">group</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">group</span> <span class="attr">ns</span>=<span class="string">"turtlesim2"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">"turtlesim"</span> <span class="attr">name</span>=<span class="string">"sim"</span> <span class="attr">type</span>=<span class="string">"turtlesim_node"</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">group</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">node</span> <span class="attr">pkg</span>=<span class="string">"turtlesim"</span> <span class="attr">name</span>=<span class="string">"mimic"</span> <span class="attr">type</span>=<span class="string">"mimic"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">remap</span> <span class="attr">from</span>=<span class="string">"input"</span> <span class="attr">to</span>=<span class="string">"turtlesim1/turtle1"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">remap</span> <span class="attr">from</span>=<span class="string">"output"</span> <span class="attr">to</span>=<span class="string">"turtlesim2/turtle1"</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">node</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">launch</span>&gt;</span></span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/19/Daily-Plan-in-MPL/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="greatoyster">
-      <meta itemprop="description" content="Technique-sharing station">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Greatoyster">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/08/19/Daily-Plan-in-MPL/" class="post-title-link" itemprop="url">Daily Plan in MPL</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-08-18 16:58:39" itemprop="dateCreated datePublished" datetime="2020-08-18T16:58:39Z">2020-08-18</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-09-19 11:12:30" itemprop="dateModified" datetime="2020-09-19T11:12:30Z">2020-09-19</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="2020-8-17"><a href="#2020-8-17" class="headerlink" title="2020.8.17"></a>2020.8.17</h1><p>Today is the first day to join MPL. I talked to Prof. Laurent about my future plan. And he gave me a lot of useful suggestions. </p>
-<p>As planed, I will join MPL Lab after I graduate from Shanghaitech University. The most important thing at this stage is to decide the sub-direction of my research work.</p>
-<p>I will update this blog daily to record my track of research.</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/08/19/Daily-Plan-in-MPL/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
         
   
   
@@ -552,7 +364,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/09/14/Insights-towards-Cuda/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/19/Daily-Plan-in-MPL/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -566,7 +378,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2020/09/14/Insights-towards-Cuda/" class="post-title-link" itemprop="url">Insights towards CUDA</a>
+            <a href="/2020/08/19/Daily-Plan-in-MPL/" class="post-title-link" itemprop="url">Daily Plan in MPL</a>
         </h1>
 
         <div class="post-meta">
@@ -576,14 +388,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2020-09-13 16:38:36" itemprop="dateCreated datePublished" datetime="2020-09-13T16:38:36Z">2020-09-13</time>
+              <time title="Created: 2020-08-18 16:58:39" itemprop="dateCreated datePublished" datetime="2020-08-18T16:58:39Z">2020-08-18</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-09-14 00:33:33" itemprop="dateModified" datetime="2020-09-14T00:33:33Z">2020-09-14</time>
+                <time title="Modified: 2020-09-21 14:31:36" itemprop="dateModified" datetime="2020-09-21T14:31:36Z">2020-09-21</time>
               </span>
 
           
@@ -597,10 +409,84 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>这里介绍一下关于cuda相关的入门级知识</p>
+          <h1 id="2020-8-17"><a href="#2020-8-17" class="headerlink" title="2020.8.17"></a>2020.8.17</h1><p>Today is the first day to join MPL. I talked to Prof. Laurent about my future plan. And he gave me a lot of useful suggestions. </p>
+<p>As planed, I will join MPL Lab after I graduate from Shanghaitech University. The most important thing at this stage is to decide the sub-direction of my research work.</p>
+<p>I will update this blog daily to record my track of research.</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/09/14/Insights-towards-Cuda/#more" rel="contents">
+              <a class="btn" href="/2020/08/19/Daily-Plan-in-MPL/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/09/21/Robotics-Pose-Convention/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="greatoyster">
+      <meta itemprop="description" content="Technique-sharing station">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Greatoyster">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/09/21/Robotics-Pose-Convention/" class="post-title-link" itemprop="url">Robotics-Pose-Convention</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-09-20 22:33:25" itemprop="dateCreated datePublished" datetime="2020-09-20T22:33:25Z">2020-09-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-09-21 01:51:21" itemprop="dateModified" datetime="2020-09-21T01:51:21Z">2020-09-21</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>关于机器人中关于位姿的约定俗成的东西。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/09/21/Robotics-Pose-Convention/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -698,7 +584,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/08/VDO-SLAM/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/09/14/Insights-towards-CUDA/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -712,7 +598,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2020/08/08/VDO-SLAM/" class="post-title-link" itemprop="url">VDO-SLAM</a>
+            <a href="/2020/09/14/Insights-towards-CUDA/" class="post-title-link" itemprop="url">Insights towards CUDA</a>
         </h1>
 
         <div class="post-meta">
@@ -722,14 +608,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2020-08-07 18:54:21" itemprop="dateCreated datePublished" datetime="2020-08-07T18:54:21Z">2020-08-07</time>
+              <time title="Created: 2020-09-13 16:38:36" itemprop="dateCreated datePublished" datetime="2020-09-13T16:38:36Z">2020-09-13</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-08-20 10:01:45" itemprop="dateModified" datetime="2020-08-20T10:01:45Z">2020-08-20</time>
+                <time title="Modified: 2020-09-14 00:33:33" itemprop="dateModified" datetime="2020-09-14T00:33:33Z">2020-09-14</time>
               </span>
 
           
@@ -743,10 +629,82 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>2020年刚刚挂在arXiv的文章，对于静态和动态的位姿估计做了一个统一。</p>
+          <p>这里介绍一下关于cuda相关的入门级知识</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/08/08/VDO-SLAM/#more" rel="contents">
+              <a class="btn" href="/2020/09/14/Insights-towards-CUDA/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/09/12/ROS%E5%85%A5%E9%97%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="greatoyster">
+      <meta itemprop="description" content="Technique-sharing station">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Greatoyster">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/09/12/ROS%E5%85%A5%E9%97%A8/" class="post-title-link" itemprop="url">ROS入门</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-09-12 13:31:44" itemprop="dateCreated datePublished" datetime="2020-09-12T13:31:44Z">2020-09-12</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-09-20 14:38:30" itemprop="dateModified" datetime="2020-09-20T14:38:30Z">2020-09-20</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>这里是关于ROS相关入门级知识的一个总结</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/09/12/ROS%E5%85%A5%E9%97%A8/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -930,7 +888,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/09/cmake%E6%9E%84%E5%BB%BA%E7%B3%BB%E7%BB%9F/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/08/VDO-SLAM/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -944,7 +902,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2020/08/09/cmake%E6%9E%84%E5%BB%BA%E7%B3%BB%E7%BB%9F/" class="post-title-link" itemprop="url">cmake构建系统</a>
+            <a href="/2020/08/08/VDO-SLAM/" class="post-title-link" itemprop="url">VDO-SLAM</a>
         </h1>
 
         <div class="post-meta">
@@ -954,14 +912,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2020-08-08 18:36:12" itemprop="dateCreated datePublished" datetime="2020-08-08T18:36:12Z">2020-08-08</time>
+              <time title="Created: 2020-08-07 18:54:21" itemprop="dateCreated datePublished" datetime="2020-08-07T18:54:21Z">2020-08-07</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-08-25 10:19:46" itemprop="dateModified" datetime="2020-08-25T10:19:46Z">2020-08-25</time>
+                <time title="Modified: 2020-09-20 14:39:02" itemprop="dateModified" datetime="2020-09-20T14:39:02Z">2020-09-20</time>
               </span>
 
           
@@ -975,10 +933,11 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>C++在代码复用这一块做的一言难尽，一些依赖第三方库的项目往往很难直接拿来跑，有一大堆的依赖问题需要处理。在这一块，目前比较好的方案只有cmake了。委员会其实可以学学Rust，考虑出个包管理器。但想到种种历史包袱，大概是有生之年了，C++50标准再见咯。</p>
+          <p>2020年刚刚挂在arXiv的文章，对于静态和动态的位姿估计做了一个统一。</p>
+<p>相关的内容会在未来补上，先挖一个坑。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/08/09/cmake%E6%9E%84%E5%BB%BA%E7%B3%BB%E7%BB%9F/#more" rel="contents">
+              <a class="btn" href="/2020/08/08/VDO-SLAM/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -1068,7 +1027,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">37</span>
+          <span class="site-state-item-count">38</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
