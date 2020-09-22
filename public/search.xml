@@ -1185,40 +1185,39 @@ p_c=Rp_w+t</script>]]></content>
 <li><p>vm/ 虚拟内存</p>
 </li>
 </ol>
-<p>   An almost empty directory. You will implement virtual memory here in project 3.</p>
-<ol>
+<pre><code>  An almost empty directory. You will implement virtual memory here in project 3.
+</code></pre><ol>
 <li>filesys/ 最基础的文件系统</li>
 </ol>
-<p>   Source code for a basic file system. You will use this file system starting with project 2, but you will not modify it until project 4.</p>
-<ol>
+<pre><code>  Source code for a basic file system. You will use this file system starting with project 2, but you will not modify it until project 4.
+</code></pre><ol>
 <li>devices/ 硬件接口</li>
 </ol>
-<p>   Source code for I/O device interfacing: keyboard, timer, disk, etc. You will modify the timer implementation in project 1. Otherwise you should have no need to change this code.</p>
-<ol>
+<pre><code>  Source code for I/O device interfacing: keyboard, timer, disk, etc. You will modify the timer implementation in project 1. Otherwise you should have no need to change this code.
+</code></pre><ol>
 <li>lib/ 部分C语言的标准库，用户态或是内核态程序都可以使用这些代码</li>
 </ol>
-<p>   An implementation of a subset of the standard C library. The code in this directory is compiled into both the Pintos kernel and, starting from project 2, user programs that run under it. In both kernel code and user programs, headers in this directory can be included using the <code>#&lt;...&gt;</code> </p>
-<ol>
+<pre><code>  An implementation of a subset of the standard C library. The code in this directory is compiled into both the Pintos kernel and, starting from project 2, user programs that run under it. In both kernel code and user programs, headers in this directory can be included using the `#&lt;...&gt;` 
+</code></pre><ol>
 <li>lib/kernel/  部分仅供内核调用的C语言库函数</li>
 </ol>
-<p>   Parts of the C library that are included only in the Pintos kernel. This also includes implementations of some data types that you are free to use in your kernel code: bitmaps, doubly linked lists, and hash tables. In the kernel, headers in this directory can be included using the  <code>#&lt;...&gt;</code> </p>
-<ol>
+<pre><code>  Parts of the C library that are included only in the Pintos kernel. This also includes implementations of some data types that you are free to use in your kernel code: bitmaps, doubly linked lists, and hash tables. In the kernel, headers in this directory can be included using the  `#&lt;...&gt;` 
+</code></pre><ol>
 <li>lib/user/ 用户的C语言库</li>
 </ol>
-<p>   Parts of the C library that are included only in Pintos user programs. In user programs, headers in this directory can be included using the   <code>#&lt;...&gt;</code> </p>
-<ol>
+<pre><code>  Parts of the C library that are included only in Pintos user programs. In user programs, headers in this directory can be included using the   `#&lt;...&gt;` 
+</code></pre><ol>
 <li>tests/ 测试用</li>
 </ol>
-<p>   Tests for each project. You can modify this code if it helps you test your submission, but we will replace it with the originals before we run the tests.</p>
-<ol>
-<li>examples/ 第二个Project的用户程序样例</li>
-</ol>
-<pre><code>Example user programs for use starting with project 2.
+<pre><code>  Tests for each project. You can modify this code if it helps you test your submission, but we will replace it with the originals before we run the tests.
 </code></pre><ol>
+<li><p>examples/ 第二个Project的用户程序样例</p>
+<p>  Example user programs for use starting with project 2.</p>
+</li>
 <li><p>misc/ 不用管他</p>
 </li>
 <li><p>utils/ 也不用管</p>
-<p>These files may come in handy if you decide to try working with Pintos on your own machine. Otherwise, you can ignore them.</p>
+<p>   These files may come in handy if you decide to try working with Pintos on your own machine. Otherwise, you can ignore them.</p>
 </li>
 </ol>
 <h2 id="调试工具以及技巧"><a href="#调试工具以及技巧" class="headerlink" title="调试工具以及技巧"></a>调试工具以及技巧</h2><ol>
