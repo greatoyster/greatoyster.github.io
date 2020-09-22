@@ -984,6 +984,15 @@ v
     <content><![CDATA[<p>很老很经典的图形学算法，难得考古一下。这个工作虽然是图像处理，但后来这个梯度域操作的思路启发了非常多的后续工作。堪称经典，不是因为解了当下的问题，而是给予了后人新的解题思路。</p>
 <p>泊松图像编辑的论文本体短小精炼。下面是对它的一个简要介绍。</p>
 <a id="more"></a>
+<p>关于图片编辑任务，我们一般会考虑两种方式，一种是全局的，一种是局部的。这里我们关注的是通过局部的图片的改变来实现无缝的图片融合。</p>
+<p>这篇工作的数学核心就一个：在迪利克雷边界条件下的泊松偏微分方程求解。</p>
+<p>在这里，我们先复习一下一些数学概念</p>
+<ul>
+<li><p>梯度：梯度首先是一个矢量 ，它的求解对象是标量，它指向标量场增长最快的方向，它的长度是改点值得变换率</p>
+</li>
+<li><p>散度：散度我们可以记成“散开的程度”。它的运算对象为矢量，表示空间中矢量场在某一点的发散程度，运算的结果为标量，当散度为正（+）时，矢量在这一点是发散的，当散度为负（-）时，矢量在这一点是收敛的。</p>
+</li>
+</ul>
 ]]></content>
   </entry>
   <entry>
@@ -1159,5 +1168,86 @@ p_c=Rp_w+t</script>]]></content>
 <p>通过透视投影，有时候会产生一个畸变</p>
 <a id="more"></a>
 ]]></content>
+  </entry>
+  <entry>
+    <title>PINTOS指北</title>
+    <url>/2020/09/22/PINTOS%E6%8C%87%E5%8C%97/</url>
+    <content><![CDATA[<p>[TOC]</p>
+<p><code>pintos</code>是斯坦福CS140的教学用操作系统。总共有四个project。如题所示，下文提供了一个pintos指北。</p>
+<a id="more"></a>
+<h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><h2 id="源文件树"><a href="#源文件树" class="headerlink" title="源文件树"></a>源文件树</h2><ol>
+<li><p>threads/ 最基础的内核代码</p>
+<p>   Source code for the base kernel, which you will modify starting in project 1.</p>
+</li>
+<li><p>userprog/ 用户程序的加载器</p>
+<p>Source code for the user program loader, which you will modify starting with project 2.</p>
+</li>
+<li><p>vm/ 虚拟内存</p>
+</li>
+</ol>
+<p>   An almost empty directory. You will implement virtual memory here in project 3.</p>
+<ol>
+<li>filesys/ 最基础的文件系统</li>
+</ol>
+<p>   Source code for a basic file system. You will use this file system starting with project 2, but you will not modify it until project 4.</p>
+<ol>
+<li>devices/ 硬件接口</li>
+</ol>
+<p>   Source code for I/O device interfacing: keyboard, timer, disk, etc. You will modify the timer implementation in project 1. Otherwise you should have no need to change this code.</p>
+<ol>
+<li>lib/ 部分C语言的标准库，用户态或是内核态程序都可以使用这些代码</li>
+</ol>
+<p>   An implementation of a subset of the standard C library. The code in this directory is compiled into both the Pintos kernel and, starting from project 2, user programs that run under it. In both kernel code and user programs, headers in this directory can be included using the <code>#&lt;...&gt;</code> </p>
+<ol>
+<li>lib/kernel/  部分仅供内核调用的C语言库函数</li>
+</ol>
+<p>   Parts of the C library that are included only in the Pintos kernel. This also includes implementations of some data types that you are free to use in your kernel code: bitmaps, doubly linked lists, and hash tables. In the kernel, headers in this directory can be included using the  <code>#&lt;...&gt;</code> </p>
+<ol>
+<li>lib/user/ 用户的C语言库</li>
+</ol>
+<p>   Parts of the C library that are included only in Pintos user programs. In user programs, headers in this directory can be included using the   <code>#&lt;...&gt;</code> </p>
+<ol>
+<li>tests/ 测试用</li>
+</ol>
+<p>   Tests for each project. You can modify this code if it helps you test your submission, but we will replace it with the originals before we run the tests.</p>
+<ol>
+<li>examples/ 第二个Project的用户程序样例</li>
+</ol>
+<pre><code>Example user programs for use starting with project 2.
+</code></pre><ol>
+<li><p>misc/ 不用管他</p>
+</li>
+<li><p>utils/ 也不用管</p>
+<p>These files may come in handy if you decide to try working with Pintos on your own machine. Otherwise, you can ignore them.</p>
+</li>
+</ol>
+<h2 id="调试工具以及技巧"><a href="#调试工具以及技巧" class="headerlink" title="调试工具以及技巧"></a>调试工具以及技巧</h2><ol>
+<li><p><code>printf()</code></p>
+<p>这个大家不会陌生。</p>
+</li>
+<li><p><code>ASSERT(expression)</code></p>
+<p>定义在<code>&lt;debug.h&gt;</code>中的宏，当表达式为0或者false时，内核会panic，相关的信息会输出</p>
+</li>
+<li><p>函数和参数宏</p>
+<ul>
+<li><code>UNUSED</code></li>
+<li><code>NO_RETURN</code></li>
+<li><code>NO_INLINE</code></li>
+<li><code>PRINT_FORMAT(format, first)</code></li>
+</ul>
+</li>
+<li><p>Backtrace</p>
+<p>在<code>&lt;debug.h&gt;</code>当中，定义了<code>debug_backtrace()</code>和<code>debug_backtrace_all()</code>两种回溯的函数</p>
+</li>
+<li><p>GDB</p>
+<p>GDB强大归强大，但我觉得在没有图形界面的情况下使用它还是非常麻烦的。</p>
+</li>
+</ol>
+<h2 id="如何测试"><a href="#如何测试" class="headerlink" title="如何测试"></a>如何测试</h2><p>   在<code>build</code>目录下运行</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">make check</span><br></pre></td></tr></table></figure>
+<h1 id="Project1-Threads"><a href="#Project1-Threads" class="headerlink" title="Project1: Threads"></a>Project1: Threads</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>关于线程的概念，有一句话我觉得概括得精炼至极</p>
+<p>“One thread is one virtual core.”</p>
+<p>“线程，就是虚拟核心。”</p>
+<h2 id="已有的基础"><a href="#已有的基础" class="headerlink" title="已有的基础"></a>已有的基础</h2><h1 id="Project2"><a href="#Project2" class="headerlink" title="Project2"></a>Project2</h1><h1 id="Project3"><a href="#Project3" class="headerlink" title="Project3"></a>Project3</h1><h1 id="Project4"><a href="#Project4" class="headerlink" title="Project4"></a>Project4</h1>]]></content>
   </entry>
 </search>
