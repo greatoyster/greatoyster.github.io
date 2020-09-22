@@ -1183,41 +1183,33 @@ p_c=Rp_w+t</script>]]></content>
 <p>Source code for the user program loader, which you will modify starting with project 2.</p>
 </li>
 <li><p>vm/ 虚拟内存</p>
+<p>   An almost empty directory. You will implement virtual memory here in project 3.</p>
 </li>
-</ol>
-<pre><code>  An almost empty directory. You will implement virtual memory here in project 3.
-</code></pre><ol>
-<li>filesys/ 最基础的文件系统</li>
-</ol>
-<pre><code>  Source code for a basic file system. You will use this file system starting with project 2, but you will not modify it until project 4.
-</code></pre><ol>
-<li>devices/ 硬件接口</li>
-</ol>
-<pre><code>  Source code for I/O device interfacing: keyboard, timer, disk, etc. You will modify the timer implementation in project 1. Otherwise you should have no need to change this code.
-</code></pre><ol>
-<li>lib/ 部分C语言的标准库，用户态或是内核态程序都可以使用这些代码</li>
-</ol>
-<pre><code>  An implementation of a subset of the standard C library. The code in this directory is compiled into both the Pintos kernel and, starting from project 2, user programs that run under it. In both kernel code and user programs, headers in this directory can be included using the `#&lt;...&gt;` 
-</code></pre><ol>
-<li>lib/kernel/  部分仅供内核调用的C语言库函数</li>
-</ol>
-<pre><code>  Parts of the C library that are included only in the Pintos kernel. This also includes implementations of some data types that you are free to use in your kernel code: bitmaps, doubly linked lists, and hash tables. In the kernel, headers in this directory can be included using the  `#&lt;...&gt;` 
-</code></pre><ol>
-<li>lib/user/ 用户的C语言库</li>
-</ol>
-<pre><code>  Parts of the C library that are included only in Pintos user programs. In user programs, headers in this directory can be included using the   `#&lt;...&gt;` 
-</code></pre><ol>
-<li>tests/ 测试用</li>
-</ol>
-<pre><code>  Tests for each project. You can modify this code if it helps you test your submission, but we will replace it with the originals before we run the tests.
-</code></pre><ol>
+<li><p>filesys/ 最基础的文件系统</p>
+<p>   Source code for a basic file system. You will use this file system starting with project 2, but you will not modify it until project 4.</p>
+</li>
+<li><p>devices/ 硬件接口</p>
+<p>   Source code for I/O device interfacing: keyboard, timer, disk, etc. You will modify the timer implementation in project 1. Otherwise you should have no need to change this code.</p>
+</li>
+<li><p>lib/ 部分C语言的标准库，用户态或是内核态程序都可以使用这些代码</p>
+<p>   An implementation of a subset of the standard C library. The code in this directory is compiled into both the Pintos kernel and, starting from project 2, user programs that run under it. In both kernel code and user programs, headers in this directory can be included using the <code>#&lt;...&gt;</code> </p>
+</li>
+<li><p>lib/kernel/  部分仅供内核调用的C语言库函数</p>
+<p>   Parts of the C library that are included only in the Pintos kernel. This also includes implementations of some data types that you are free to use in your kernel code: bitmaps, doubly linked lists, and hash tables. In the kernel, headers in this directory can be included using the  <code>#&lt;...&gt;</code> </p>
+</li>
+<li><p>lib/user/ 用户的C语言库</p>
+<p>   Parts of the C library that are included only in Pintos user programs. In user programs, headers in this directory can be included using the   <code>#&lt;...&gt;</code> </p>
+</li>
+<li><p>tests/ 测试用</p>
+<p>   Tests for each project. You can modify this code if it helps you test your submission,  but we will replace it with the originals before we run the tests.</p>
+</li>
 <li><p>examples/ 第二个Project的用户程序样例</p>
-<p>  Example user programs for use starting with project 2.</p>
+<p> Example user programs for use starting with project 2.</p>
 </li>
 <li><p>misc/ 不用管他</p>
 </li>
 <li><p>utils/ 也不用管</p>
-<p>   These files may come in handy if you decide to try working with Pintos on your own machine. Otherwise, you can ignore them.</p>
+<p> These files may come in handy if you decide to try working with Pintos on your own machine. Otherwise, you can ignore them.</p>
 </li>
 </ol>
 <h2 id="调试工具以及技巧"><a href="#调试工具以及技巧" class="headerlink" title="调试工具以及技巧"></a>调试工具以及技巧</h2><ol>
@@ -1247,6 +1239,137 @@ p_c=Rp_w+t</script>]]></content>
 <h1 id="Project1-Threads"><a href="#Project1-Threads" class="headerlink" title="Project1: Threads"></a>Project1: Threads</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>关于线程的概念，有一句话我觉得概括得精炼至极</p>
 <p>“One thread is one virtual core.”</p>
 <p>“线程，就是虚拟核心。”</p>
-<h2 id="已有的基础"><a href="#已有的基础" class="headerlink" title="已有的基础"></a>已有的基础</h2><h1 id="Project2"><a href="#Project2" class="headerlink" title="Project2"></a>Project2</h1><h1 id="Project3"><a href="#Project3" class="headerlink" title="Project3"></a>Project3</h1><h1 id="Project4"><a href="#Project4" class="headerlink" title="Project4"></a>Project4</h1>]]></content>
+<h2 id="已有的基础"><a href="#已有的基础" class="headerlink" title="已有的基础"></a>已有的基础</h2><p>pintos已经为我们实现了创建线程的一个函数，一个简单的调度器，以及同步相关的原型（例如锁，条件变量等）</p>
+<p>线程创建<code>thread_create()</code>的时候会先初始化一个上下文，然后把一个函数装入线程，让它在上下文里面运行。</p>
+<p>一个线程在不运行的时候会<code>idle()</code></p>
+<p>关于上下文切换的函数已经实现在了<code>threads/switch.S</code>，里面是80x64汇编码。</p>
+<h2 id="相关文件"><a href="#相关文件" class="headerlink" title="相关文件"></a>相关文件</h2><ol>
+<li><p>loader.S</p>
+</li>
+<li><p>loader.h 内核加载器，把内核载入内存，并且进入<code>start.S</code>里面的函数入口<code>start()</code></p>
+<p>The kernel loader. Assembles to 512 bytes of code and data that the PC BIOS loads into memory and which in turn finds the kernel on disk, loads it into memory, and jumps to  <code>start()</code> . See section<a href="http://web.stanford.edu/~ouster/cgi-bin/cs140-spring20/pintos/pintos_6.html#SEC92" target="_blank" rel="noopener">A.1.1 The Loader</a></p>
+</li>
+<li><p>start.S </p>
+<p>Does basic setup needed for memory protection and 32-bit operation on 80x64 CPU , for details.</p>
+</li>
+<li><p>kernel.lds.S 内核的链接脚本</p>
+<p>The linker script used to link the kernel. Sets the load address of the kernel and arranges for   , for details. Again, you should not need to look at this code or modify it, but it’s here in case you’re curious.</p>
+</li>
+<li><p>init.c</p>
+</li>
+<li><p>init.h 内核初始化</p>
+<p>Kernel initialization, including <code>main()</code> , the kernel’s “main program.” You should look over<code>main()</code>at least to see what gets initialized. You might want to add your own initialization code here. See section<a href="http://web.stanford.edu/~ouster/cgi-bin/cs140-spring20/pintos/pintos_6.html#SEC94" target="_blank" rel="noopener">A.1.3 High-Level Kernel Initialization</a></p>
+</li>
+<li><p>thread.c</p>
+</li>
+<li><p>thread.h 线程基本实现</p>
+<p>Basic thread support. Much of your work will take place in these files.   , which you are likely to modify in all four projects. See<a href="http://web.stanford.edu/~ouster/cgi-bin/cs140-spring20/pintos/pintos_6.html#SEC97" target="_blank" rel="noopener">A.2.1 <code>struct thread</code></a>and<a href="http://web.stanford.edu/~ouster/cgi-bin/cs140-spring20/pintos/pintos_6.html#SEC96" target="_blank" rel="noopener">A.2 Threads</a>for more information.</p>
+</li>
+<li><p>switch.S</p>
+</li>
+<li><p>switch.h 上下文切换</p>
+<p>Assembly language routine for switching threads. Already discussed above. See section , for more information.</p>
+</li>
+<li><p>palloc.c</p>
+</li>
+<li><p>palloc.h 页分配器</p>
+<p>Page allocator, which hands out system memory in multiples of 4 kB pages. See section , for more information.</p>
+</li>
+<li><p>malloc.c </p>
+</li>
+<li><p>malloc.h 内存分配器</p>
+<p>A simple implementation of     , for more information.</p>
+</li>
+<li><p>interrupt.c</p>
+</li>
+<li><p>interrupt.h 中断处理</p>
+<p>Basic interrupt handling and functions for turning interrupts on and off. See section , for more information.</p>
+</li>
+<li><p>intr-stubs.S</p>
+</li>
+<li><p>intr-stubs.h 中断处理的低级实现</p>
+<p>Assembly code for low-level interrupt handling. See section , for more information.</p>
+</li>
+<li><p>synch.c</p>
+</li>
+<li><p>synch.h 同步原型的实现</p>
+<p>Basic synchronization primitives: semaphores, locks, condition variables, and optimization barriers. You will need to use these for synchronization in all four projects. See section , for more information.</p>
+</li>
+<li><p>io.h I/O处理</p>
+<p>Functions for I/O port access. This is mostly used by source code in the  </p>
+</li>
+<li><p>vaddr.h</p>
+</li>
+<li><p>pte.h 页表项的实现</p>
+<p>Functions and macros for working with virtual addresses and page table entries. These will be more important to you in project 3. For now, you can ignore them.</p>
+</li>
+<li><p>flags.h</p>
+<p>Macros that define a few bits in the 80x ], section 3.4.3, “EFLAGS Register,” for more information.</p>
+</li>
+<li><p>fixed-point.h</p>
+<p>Functions that implement fixed-point arithmetic, for use in your implementation of the advanced scheduler. See <a href="http://web.stanford.edu/~ouster/cgi-bin/cs140-spring20/pintos/pintos_7.html#SEC137" target="_blank" rel="noopener">B.6 Fixed-Point Real Arithmetic</a> for more information.</p>
+</li>
+<li><p>timer.c</p>
+</li>
+<li><p>timer.h 时钟的实现</p>
+<p>System timer that ticks, by default, 100 times per second. You will modify this code in this project.</p>
+</li>
+<li><p>vga.c</p>
+</li>
+<li><p>vga.h VGA接口的驱动文件</p>
+<p>VGA display driver. Responsible for writing text to the screen. You should have no need to look at this code. </p>
+</li>
+<li><p>serial.c</p>
+</li>
+<li><p>serial.h 串口驱动</p>
+<p>Serial port driver. Again,  </p>
+</li>
+<li><p>block.c</p>
+</li>
+<li><p>block.h 储存区块的驱动</p>
+<p>An abstraction layer for , that is, random-access, disk-like devices that are organized as arrays of fixed-size blocks. Out of the box, Pintos supports two types of block devices: IDE disks and partitions. Block devices, regardless of type, won’t actually be used until project 2.</p>
+</li>
+<li><p>ide.c</p>
+</li>
+<li><p>ide.h 对于扇区读写的支持</p>
+<p>Supports reading and writing sectors on up to 4 IDE disks.</p>
+</li>
+<li><p>partition.c</p>
+</li>
+<li><p>partition.h 磁盘分区的实现</p>
+<p>Understands the structure of partitions on disks, allowing a single disk to be carved up into multiple regions (partitions) for independent use.</p>
+</li>
+<li><p>kbd.c</p>
+</li>
+<li><p>kbd.h 键盘驱动</p>
+<p>Keyboard driver. Handles keystrokes passing them to the input layer (see below).</p>
+</li>
+<li><p>input.c</p>
+</li>
+<li><p>input.h 输入层的抽象</p>
+<p>Input layer. Queues input characters passed along by the keyboard or serial drivers.</p>
+</li>
+<li><p>intq.c</p>
+</li>
+<li><p>intq.h 中断队列</p>
+<p>Interrupt queue, for managing a circular queue that both kernel threads and interrupt handlers want to access. Used by the keyboard and serial drivers.</p>
+</li>
+<li><p>rtc.c</p>
+</li>
+<li><p>rtc.h 实时时钟驱动</p>
+<p>Real-time clock driver, to enable the kernel to determine the current date and time. By default, this is only used by  </p>
+</li>
+<li><p>speaker.c</p>
+</li>
+<li><p>speaker.h 扬声器驱动</p>
+<p>Driver that can produce tones on the PC speaker.</p>
+</li>
+<li><p>pit.c</p>
+</li>
+<li><p>pit.h </p>
+<p>Code to configure the 8254 Programmable Interrupt Timer. This code is used by both <code>devices/timer.c</code> and <code>devices/speaker.c</code> because each device uses one of the PIT’s output channel.</p>
+</li>
+</ol>
+<h1 id="Project2"><a href="#Project2" class="headerlink" title="Project2"></a>Project2</h1><h1 id="Project3"><a href="#Project3" class="headerlink" title="Project3"></a>Project3</h1><h1 id="Project4"><a href="#Project4" class="headerlink" title="Project4"></a>Project4</h1>]]></content>
   </entry>
 </search>
