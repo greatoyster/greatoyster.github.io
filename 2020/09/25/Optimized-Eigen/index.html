@@ -55,7 +55,7 @@
 <meta property="og:description" content="Eigen是一个header-only的矩阵计算库，功能强大，应用广泛。但是有时候在追求性能的场景下面，如果不做一个深入了解，那么它的性能会大打折扣（甚至远低于numpy或者MATLAB的实现），这样就无法很好地发挥出C++的优势。下面记录了一些优化的心得体验。 注：下面以Eigen3为例">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-09-24T19:12:10.000Z">
-<meta property="article:modified_time" content="2020-09-24T13:17:37.734Z">
+<meta property="article:modified_time" content="2020-09-24T14:06:17.757Z">
 <meta property="article:author" content="greatoyster">
 <meta property="article:tag" content="greatoyster">
 <meta name="twitter:card" content="summary">
@@ -238,7 +238,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2020-09-24 19:12:10 / Modified: 13:17:37" itemprop="dateCreated datePublished" datetime="2020-09-24T19:12:10Z">2020-09-24</time>
+              <time title="Created: 2020-09-24 19:12:10 / Modified: 14:06:17" itemprop="dateCreated datePublished" datetime="2020-09-24T19:12:10Z">2020-09-24</time>
             </span>
 
           
@@ -266,7 +266,16 @@
 <p>在Eigen中，一般没有这种困扰。可以用<code>eval()</code>来强制生成中间结果。可以用<code>noalias()</code>来强制惰性计算。</p>
 <p> If you really want to force immediate evaluation, use <a href="http://eigen.tuxfamily.org/dox/classEigen_1_1DenseBase.html#aa73e57a2f0f7cfcb4ad4d55ea0b6414b" target="_blank" rel="noopener">eval()</a>:</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mat1 = (mat2 + mat3).eval();</span><br><span class="line"></span><br><span class="line">mat1.noalias() = mat2 * mat2;</span><br></pre></td></tr></table></figure>
-<h1 id="编译期计算"><a href="#编译期计算" class="headerlink" title="编译期计算"></a>编译期计算</h1><h1 id="SIMD向量化"><a href="#SIMD向量化" class="headerlink" title="SIMD向量化"></a>SIMD向量化</h1><p>当开启向量化的开关以后，Eigen对于内存对齐有很高的要求。会因为下面的各种情况崩溃</p>
+<h1 id="编译期计算"><a href="#编译期计算" class="headerlink" title="编译期计算"></a>编译期计算</h1><p>通过模板，我们可以在编译时期就把内存分配好，这样就可减小动态分配内存的开销，此外还可以更好的利用Intel的向量化指令集</p>
+<p>一般来说，对于较小的向量和矩阵，给它一个固定的大小还可以有利于编译器进行循环展开。</p>
+<p>We mentioned at the beginning of this page that the <a href="https://eigen.tuxfamily.org/dox/classEigen_1_1Matrix.html" target="_blank" rel="noopener">Matrix</a> class takes six template parameters, but so far we only discussed the first three. The remaining three parameters are optional. Here is the complete list of template parameters:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Matrix&lt;<span class="keyword">typename</span> Scalar,</span><br><span class="line">		<span class="keyword">int</span> RowsAtCompileTime,</span><br><span class="line">   	<span class="keyword">int</span> ColsAtCompileTime,</span><br><span class="line">     <span class="keyword">int</span> Options = <span class="number">0</span>，</span><br><span class="line">     <span class="keyword">int</span> MaxRowsAtCompileTime = RowsAtCompileTime,</span><br><span class="line">     <span class="keyword">int</span> MaxColsAtCompileTime = ColsAtCompileTime&gt;</span><br></pre></td></tr></table></figure>
+<p><code>Options</code> is a bit field. Here, we discuss only one bit:</p>
+<p><code>RowMajor</code> It specifies that the matrices of this type use row-major storage order; by default, the storage order is column-major. See the page storage orders. For example, this type means row-major 3x3 matrices:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Matrix&lt;<span class="keyword">float</span>, <span class="number">3</span>, <span class="number">3</span>, RowMajor&gt;</span><br></pre></td></tr></table></figure>
+<p><code>MaxRowsAtCompileTime</code> and <code>MaxColsAtCompileTime</code> are useful when you want to specify that, even though the exact sizes of your matrices are not known at compile time, a fixed upper bound is known at compile time. The biggest reason why you might want to do that is to avoid dynamic memory allocation. For example the following matrix type uses a plain array of 12 floats, without dynamic memory allocation:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Matrix&lt;<span class="keyword">float</span>, Dynamic, Dynamic, <span class="number">0</span>, <span class="number">3</span>, <span class="number">4</span>&gt;</span><br></pre></td></tr></table></figure>
+<h1 id="SIMD向量化"><a href="#SIMD向量化" class="headerlink" title="SIMD向量化"></a>SIMD向量化</h1><p>当开启向量化的开关以后，Eigen对于内存对齐有很高的要求。会因为下面的各种情况崩溃</p>
 <ol>
 <li>类或者结构体中含有Eigen对象</li>
 <li>Eigen对象放入STL容器时</li>
@@ -337,7 +346,8 @@
 </tbody>
 </table>
 </div>
-<h1 id="CUDA内核"><a href="#CUDA内核" class="headerlink" title="CUDA内核"></a>CUDA内核</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h1 id="CUDA核函数"><a href="#CUDA核函数" class="headerlink" title="CUDA核函数"></a>CUDA核函数</h1><p>在CUDA核函数里面也可以使用Eigen，但是支持还不完全，官方文档也没有补齐，这里暂时略过</p>
+
     </div>
 
     
@@ -418,7 +428,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Lazy-Evaluation"><span class="nav-number">1.</span> <span class="nav-text">Lazy Evaluation</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#编译期计算"><span class="nav-number">2.</span> <span class="nav-text">编译期计算</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SIMD向量化"><span class="nav-number">3.</span> <span class="nav-text">SIMD向量化</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#固定大小的可向量化对象"><span class="nav-number">3.1.</span> <span class="nav-text">固定大小的可向量化对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#有Eigen对象的数据结构"><span class="nav-number">3.2.</span> <span class="nav-text">有Eigen对象的数据结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#标准库容器"><span class="nav-number">3.3.</span> <span class="nav-text">标准库容器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Pass-by-value的问题"><span class="nav-number">3.4.</span> <span class="nav-text">Pass by value的问题</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#OpenMP多线程支持"><span class="nav-number">4.</span> <span class="nav-text">OpenMP多线程支持</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MKL和BLAS等支持"><span class="nav-number">5.</span> <span class="nav-text">MKL和BLAS等支持</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CUDA内核"><span class="nav-number">6.</span> <span class="nav-text">CUDA内核</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Lazy-Evaluation"><span class="nav-number">1.</span> <span class="nav-text">Lazy Evaluation</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#编译期计算"><span class="nav-number">2.</span> <span class="nav-text">编译期计算</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SIMD向量化"><span class="nav-number">3.</span> <span class="nav-text">SIMD向量化</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#固定大小的可向量化对象"><span class="nav-number">3.1.</span> <span class="nav-text">固定大小的可向量化对象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#有Eigen对象的数据结构"><span class="nav-number">3.2.</span> <span class="nav-text">有Eigen对象的数据结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#标准库容器"><span class="nav-number">3.3.</span> <span class="nav-text">标准库容器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Pass-by-value的问题"><span class="nav-number">3.4.</span> <span class="nav-text">Pass by value的问题</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#OpenMP多线程支持"><span class="nav-number">4.</span> <span class="nav-text">OpenMP多线程支持</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MKL和BLAS等支持"><span class="nav-number">5.</span> <span class="nav-text">MKL和BLAS等支持</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CUDA核函数"><span class="nav-number">6.</span> <span class="nav-text">CUDA核函数</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
