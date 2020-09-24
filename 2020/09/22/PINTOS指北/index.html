@@ -55,7 +55,7 @@
 <meta property="og:description" content="[TOC] pintos是斯坦福CS140的教学用操作系统。总共有四个project。如题所示，下文提供了一个pintos指北。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-09-22T09:55:52.000Z">
-<meta property="article:modified_time" content="2020-09-22T13:20:03.837Z">
+<meta property="article:modified_time" content="2020-09-23T02:55:32.305Z">
 <meta property="article:author" content="greatoyster">
 <meta property="article:tag" content="greatoyster">
 <meta name="twitter:card" content="summary">
@@ -157,7 +157,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives<span class="badge">39</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives<span class="badge">41</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -236,10 +236,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2020-09-22 09:55:52 / Modified: 13:20:03" itemprop="dateCreated datePublished" datetime="2020-09-22T09:55:52Z">2020-09-22</time>
+              <time title="Created: 2020-09-22 09:55:52" itemprop="dateCreated datePublished" datetime="2020-09-22T09:55:52Z">2020-09-22</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-09-23 02:55:32" itemprop="dateModified" datetime="2020-09-23T02:55:32Z">2020-09-23</time>
+              </span>
 
           
             <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
@@ -457,7 +463,33 @@
 <p>Code to configure the 8254 Programmable Interrupt Timer. This code is used by both <code>devices/timer.c</code> and <code>devices/speaker.c</code> because each device uses one of the PIT’s output channel.</p>
 </li>
 </ol>
-<h1 id="Project2"><a href="#Project2" class="headerlink" title="Project2"></a>Project2</h1><h1 id="Project3"><a href="#Project3" class="headerlink" title="Project3"></a>Project3</h1><h1 id="Project4"><a href="#Project4" class="headerlink" title="Project4"></a>Project4</h1>
+<h2 id="实现目标"><a href="#实现目标" class="headerlink" title="实现目标"></a>实现目标</h2><h3 id="相关文档"><a href="#相关文档" class="headerlink" title="相关文档"></a>相关文档</h3><h3 id="Alarm-Clock"><a href="#Alarm-Clock" class="headerlink" title="Alarm Clock"></a>Alarm Clock</h3><p>Reimplement <code>timer_sleep()</code>, defined in <code>devices/timer.c</code>. Although a working implementation is provided, it “busy waits,” that is, it spins in a loop checking the current time and calling <code>thread_yield()</code> until enough time has gone by. Reimplement it to avoid busy waiting.</p>
+<ul>
+<li><p>Function: void <strong>timer_sleep</strong> (int64_t ticks)</p>
+<p>Suspends execution of the calling thread until time has advanced by at least x timer ticks. Unless the system is otherwise idle, the thread need not wake up after exactly x ticks. Just put it on the ready queue after they have waited for the right amount of time.<code>timer_sleep()</code> is useful for threads that operate in real-time, e.g. for blinking the cursor once per second.The argument to <code>timer_sleep()</code> is expressed in timer ticks, not in milliseconds or any another unit. There are <code>TIMER_FREQ</code> timer ticks per second, where <code>TIMER_FREQ</code> is a macro defined in <code>devices/timer.h</code>. The default value is 100. We don’t recommend changing this value, because any change is likely to cause many of the tests to fail.</p>
+</li>
+</ul>
+<p>Separate functions <code>timer_msleep()</code>, <code>timer_usleep()</code>, and <code>timer_nsleep()</code> do exist for sleeping a specific number of milliseconds, microseconds, or nanoseconds, respectively, but these will call <code>timer_sleep()</code> automatically when necessary. You do not need to modify them.</p>
+<p>If your delays seem too short or too long, reread the explanation of the -r option to <code>pintos</code> (see section <a href="http://web.stanford.edu/~ouster/cgi-bin/cs140-spring20/pintos/pintos_1.html#SEC6" target="_blank" rel="noopener">1.1.4 Debugging versus Testing</a>).</p>
+<p>The alarm clock implementation is not needed for later projects, although it could be useful for project </p>
+<p>始终休眠完成以后放入准备就绪的队列即可，这个函数与后续工作无关</p>
+<h3 id="优先级调度"><a href="#优先级调度" class="headerlink" title="优先级调度"></a>优先级调度</h3><p>Implement priority scheduling in Pintos. When a thread is added to the ready list that has a higher priority than the currently running thread, the current thread should immediately yield the processor to the new thread. Similarly, when threads are waiting for a lock, semaphore, or condition variable, the highest priority waiting thread should be awakened first. A thread may raise or lower its own priority at any time, but lowering its priority such that it no longer has the highest priority must cause it to immediately yield the CPU.</p>
+<p>Thread priorities range from <code>PRI_MIN</code> (0) to <code>PRI_MAX</code> (63). Lower numbers correspond to lower priorities, so that priority 0 is the lowest priority and priority 63 is the highest. The initial thread priority is passed as an argument to <code>thread_create()</code>. If there’s no reason to choose another priority, use <code>PRI_DEFAULT</code> (31). The <code>PRI_</code> macros are defined in <code>threads/thread.h</code>, and you should not change their values.</p>
+<p>One issue with priority scheduling is “priority inversion”. Consider high, medium, and low priority threads H, M, and L, respectively. If H needs to wait for L (for instance, for a lock held by L), and M is on the ready list, then H will never get the CPU because the low priority thread will not get any CPU time. A partial fix for this problem is for H to “donate” its priority to L while L is holding the lock, then recall the donation once L releases (and thus H acquires) the lock.</p>
+<p>Implement priority donation. You will need to account for all different situations in which priority donation is required. Be sure to handle multiple donations, in which multiple priorities are donated to a single thread. You must also handle nested donation: if H is waiting on a lock that M holds and M is waiting on a lock that L holds, then both M and L should be boosted to H’s priority. If necessary, you may impose a reasonable limit on depth of nested priority donation, such as 8 levels.</p>
+<p>You must implement priority donation for locks. You need not implement priority donation for the other Pintos synchronization constructs. You do need to implement priority scheduling in all cases.</p>
+<p>Finally, implement the following functions that allow a thread to examine and modify its own priority. Skeletons for these functions are provided in <code>threads/thread.c</code>.</p>
+<ul>
+<li><p>Function: void <strong>thread_set_priority</strong> (int new_priority)</p>
+<p>Sets the current thread’s priority to new_priority. If the current thread no longer has the highest priority, yields.</p>
+</li>
+<li><p>Function: int <strong>thread_get_priority</strong> (void)</p>
+<p>Returns the current thread’s priority. In the presence of priority donation, returns the higher (donated) priority.</p>
+</li>
+</ul>
+<p>You need not provide any interface to allow a thread to directly modify other threads’ priorities.</p>
+<p>The priority scheduler is not used in any later project.</p>
+<h3 id="高级调度器"><a href="#高级调度器" class="headerlink" title="高级调度器"></a>高级调度器</h3><h1 id="Project2"><a href="#Project2" class="headerlink" title="Project2"></a>Project2</h1><h1 id="Project3"><a href="#Project3" class="headerlink" title="Project3"></a>Project3</h1><h1 id="Project4"><a href="#Project4" class="headerlink" title="Project4"></a>Project4</h1>
     </div>
 
     
@@ -475,7 +507,10 @@
     <a href="/2020/09/22/%E6%B5%85%E6%9E%90Poisson-Image-Editing/" rel="prev" title="浅析Poisson Image Editing">
       <i class="fa fa-chevron-left"></i> 浅析Poisson Image Editing
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2020/09/25/Optimized-Eigen/" rel="next" title="Optimized Eigen">
+      Optimized Eigen <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -535,7 +570,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#源文件树"><span class="nav-number">1.1.</span> <span class="nav-text">源文件树</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调试工具以及技巧"><span class="nav-number">1.2.</span> <span class="nav-text">调试工具以及技巧</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何测试"><span class="nav-number">1.3.</span> <span class="nav-text">如何测试</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Project1-Threads"><span class="nav-number">2.</span> <span class="nav-text">Project1: Threads</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">2.1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#已有的基础"><span class="nav-number">2.2.</span> <span class="nav-text">已有的基础</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#相关文件"><span class="nav-number">2.3.</span> <span class="nav-text">相关文件</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Project2"><span class="nav-number">3.</span> <span class="nav-text">Project2</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Project3"><span class="nav-number">4.</span> <span class="nav-text">Project3</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Project4"><span class="nav-number">5.</span> <span class="nav-text">Project4</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#源文件树"><span class="nav-number">1.1.</span> <span class="nav-text">源文件树</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调试工具以及技巧"><span class="nav-number">1.2.</span> <span class="nav-text">调试工具以及技巧</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何测试"><span class="nav-number">1.3.</span> <span class="nav-text">如何测试</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Project1-Threads"><span class="nav-number">2.</span> <span class="nav-text">Project1: Threads</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">2.1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#已有的基础"><span class="nav-number">2.2.</span> <span class="nav-text">已有的基础</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#相关文件"><span class="nav-number">2.3.</span> <span class="nav-text">相关文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现目标"><span class="nav-number">2.4.</span> <span class="nav-text">实现目标</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#相关文档"><span class="nav-number">2.4.1.</span> <span class="nav-text">相关文档</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Alarm-Clock"><span class="nav-number">2.4.2.</span> <span class="nav-text">Alarm Clock</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#优先级调度"><span class="nav-number">2.4.3.</span> <span class="nav-text">优先级调度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#高级调度器"><span class="nav-number">2.4.4.</span> <span class="nav-text">高级调度器</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Project2"><span class="nav-number">3.</span> <span class="nav-text">Project2</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Project3"><span class="nav-number">4.</span> <span class="nav-text">Project3</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Project4"><span class="nav-number">5.</span> <span class="nav-text">Project4</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -549,7 +584,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">39</span>
+          <span class="site-state-item-count">41</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

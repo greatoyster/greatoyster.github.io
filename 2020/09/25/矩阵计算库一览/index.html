@@ -47,22 +47,20 @@
   };
 </script>
 
-  <meta name="description" content="这里介绍一下关于cuda相关的入门级知识">
+  <meta name="description" content="本文是转载的，以下是出处  本文作者： Raymond.Z 本文链接： http:&#x2F;&#x2F;xiazuomo.com&#x2F;2018&#x2F;linear-algebra-library&#x2F;">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Insights towards CUDA">
-<meta property="og:url" content="http://yoursite.com/2020/09/14/Insights-towards-CUDA/index.html">
+<meta property="og:title" content="矩阵计算库一览">
+<meta property="og:url" content="http://yoursite.com/2020/09/25/%E7%9F%A9%E9%98%B5%E8%AE%A1%E7%AE%97%E5%BA%93%E4%B8%80%E8%A7%88/index.html">
 <meta property="og:site_name" content="Greatoyster">
-<meta property="og:description" content="这里介绍一下关于cuda相关的入门级知识">
+<meta property="og:description" content="本文是转载的，以下是出处  本文作者： Raymond.Z 本文链接： http:&#x2F;&#x2F;xiazuomo.com&#x2F;2018&#x2F;linear-algebra-library&#x2F;">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://yoursite.com/images/1600042285745.png">
-<meta property="article:published_time" content="2020-09-13T16:38:36.000Z">
-<meta property="article:modified_time" content="2020-09-14T00:33:33.119Z">
+<meta property="article:published_time" content="2020-09-24T21:18:02.000Z">
+<meta property="article:modified_time" content="2020-09-24T13:19:53.854Z">
 <meta property="article:author" content="greatoyster">
 <meta property="article:tag" content="greatoyster">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://yoursite.com/images/1600042285745.png">
 
-<link rel="canonical" href="http://yoursite.com/2020/09/14/Insights-towards-CUDA/">
+<link rel="canonical" href="http://yoursite.com/2020/09/25/%E7%9F%A9%E9%98%B5%E8%AE%A1%E7%AE%97%E5%BA%93%E4%B8%80%E8%A7%88/">
 
 
 <script id="page-configurations">
@@ -74,7 +72,7 @@
   };
 </script>
 
-  <title>Insights towards CUDA | Greatoyster</title>
+  <title>矩阵计算库一览 | Greatoyster</title>
   
 
 
@@ -216,7 +214,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/09/14/Insights-towards-CUDA/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/09/25/%E7%9F%A9%E9%98%B5%E8%AE%A1%E7%AE%97%E5%BA%93%E4%B8%80%E8%A7%88/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -229,7 +227,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Insights towards CUDA
+          矩阵计算库一览
         </h1>
 
         <div class="post-meta">
@@ -238,16 +236,10 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
+              
 
-              <time title="Created: 2020-09-13 16:38:36" itemprop="dateCreated datePublished" datetime="2020-09-13T16:38:36Z">2020-09-13</time>
+              <time title="Created: 2020-09-24 21:18:02 / Modified: 13:19:53" itemprop="dateCreated datePublished" datetime="2020-09-24T21:18:02Z">2020-09-24</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-09-14 00:33:33" itemprop="dateModified" datetime="2020-09-14T00:33:33Z">2020-09-14</time>
-              </span>
 
           
             <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
@@ -267,24 +259,95 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>这里介绍一下关于cuda相关的入门级知识</p>
-<a id="more"></a>
-<h1 id="编程模型"><a href="#编程模型" class="headerlink" title="编程模型"></a>编程模型</h1><p>CUDA是一个异构的编程模型，由CPU和GPU来协同完成计算任务。</p>
-<p>这里我们抽象出了两个基本的概念</p>
+        <p>本文是转载的，以下是出处</p>
 <ul>
-<li>Device，指代GPU和它的内存</li>
-<li>Host，指代CPU和它的内存</li>
+<li><strong>本文作者：</strong> Raymond.Z</li>
+<li><strong>本文链接：</strong> <a href="http://xiazuomo.com/2018/linear-algebra-library/" target="_blank" rel="noopener">http://xiazuomo.com/2018/linear-algebra-library/</a></li>
 </ul>
-<p>一个典型的流程如下：</p>
-<ol>
-<li>分配host内存，并进行数据初始化；</li>
-<li>分配device内存，并从host将数据拷贝到device上；</li>
-<li>调用CUDA的核函数在device上完成指定的运算；</li>
-<li>将device上的运算结果拷贝到host上；</li>
-<li>释放device和host上分配的内存</li>
-</ol>
-<p>从CPU到GPU的一步（从HOST到DEVICE）的关键在于核函数（kernel function），核函数的声明通过<code>__global__</code>这个宏定义。GPU上的每一个线程都会计算这个核函数，每一个线程都有一个内置的变量<code>threadIdx</code>来获取线程ID</p>
-<p><img src="\images\1600042285745.png" alt="GPU结构示意图"></p>
+<a id="more"></a>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>本文罗列了线性代数库/API相关的内容，包含基本数学库/API和高级数学库相关内容，以及他们之间的对比，可跳过前面直接阅读“线性代数库选用”相关内容。</p>
+<h2 id="基本数学库-API"><a href="#基本数学库-API" class="headerlink" title="基本数学库/API"></a>基本数学库/API</h2><h3 id="BLAS"><a href="#BLAS" class="headerlink" title="BLAS"></a>BLAS</h3><p>简介：基本线性代数子程序，Basic Linear Algebra Subprograms，是一个API标淮，用以规范发布基础线性代数操作的数值库（如矢量或矩阵乘法）。Netlib用Fortran实现了BLAS的这些API接口，得到的库也叫做BLAS。Netlib只是一般性地实现了基本功能，并没有对运算做过多的优化。在高性能计算领域，BLAS被广泛使用。为提高性能，各软硬件厂商则针对其产品对BLAS接口实现进行高度最佳化。</p>
+<p>参考链接：</p>
+<ul>
+<li><a href="http://www.netlib.org/blas/" target="_blank" rel="noopener">http://www.netlib.org/blas/</a></li>
+<li><a href="https://zh.wikipedia.org/wiki/BLAS" target="_blank" rel="noopener">https://zh.wikipedia.org/wiki/BLAS</a></li>
+</ul>
+<h3 id="LAPACK"><a href="#LAPACK" class="headerlink" title="LAPACK"></a>LAPACK</h3><p>简介：线性代数库，也是Netlib用fortran语言编写的，其底层是BLAS。LAPACK提供了丰富的工具函式，可用于诸如解多元线性方程式、线性系统方程组的最小平方解、计算特徵向量、用于计算矩阵QR分解的Householder转换、以及奇异值分解等问题。该库的运行效率比BLAS库高。从某个角度讲，LAPACK也可以称作是一组科学计算（矩阵运算）的接口规范。Netlib实现了这一组规范的功能，得到的这个库叫做LAPACK库。</p>
+<p>参考链接</p>
+<ul>
+<li><a href="http://www.netlib.org/lapack/" target="_blank" rel="noopener">http://www.netlib.org/lapack/</a></li>
+<li><a href="https://zh.wikipedia.org/wiki/LAPACK" target="_blank" rel="noopener">https://zh.wikipedia.org/wiki/LAPACK</a></li>
+</ul>
+<h3 id="ScaLAPACK"><a href="#ScaLAPACK" class="headerlink" title="ScaLAPACK"></a>ScaLAPACK</h3><p>简介：ScaLAPACK（Scalable LAPACK 简称）是一个并行计算软件包，适用于分布式存储的 MIMD （multiple instruction, multiple data）并行计算机。它是采用消息传递机制实现处理器/进程间通信，因此使用起来和编写传统的 MPI 程序比较类似。ScaLAPACK 主要针对密集和带状线性代数系统，提供若干线性代数求解功能，如各种矩阵运算，矩阵分解，线性方程组求解，最小二乘问题，本征值问题，奇异值问题等，具有高效、可移植、可伸缩、高可靠性等优点，利用它的求解库可以开发出基于线性代数运算的并行应用程序。</p>
+<p>参考链接</p>
+<ul>
+<li><a href="http://www.netlib.org/scalapack/index.html" target="_blank" rel="noopener">http://www.netlib.org/scalapack/index.html</a></li>
+<li><a href="https://blog.csdn.net/zuoshifan/article/details/80273198" target="_blank" rel="noopener">https://blog.csdn.net/zuoshifan/article/details/80273198</a></li>
+</ul>
+<h2 id="高级数学库"><a href="#高级数学库" class="headerlink" title="高级数学库"></a>高级数学库</h2><h3 id="MKL"><a href="#MKL" class="headerlink" title="MKL"></a>MKL</h3><p>简介：英特尔MKL基于英特尔® C++和Fortran编译器构建而成，并使用OpenMP*实现了线程化。该函数库的算法能够平均分配数据和任务，充分利用多个核心和处理器。支持Linux/Win。</p>
+<p>底层：</p>
+<ul>
+<li>BLAS：所有矩阵间运算（三级）均面向密集和稀疏 BLAS 实现了线程化。 许多矢量间运算（一级）和矩阵与矢量的运算（二级）均面向英特尔® 64 架构上 64 位程序中的密集型矩阵实现了线程化。 对于稀疏矩阵，除三角形稀疏矩阵解算器外的所有二级运算均实现了线程化。</li>
+<li>LAPACK：部分计算例程针对以下某类型的问题实现了线程化：线性方程解算器、正交因子分解、单值分解和对称特征值问题。 LAPACK 也调用 BLAS，因此即使是非线程化函数也可能并行运行。</li>
+<li>ScaLAPACK：面向集群的 LAPACK 分布式内存并行版本。</li>
+<li>PARDISO：该并行直接稀疏矩阵解算器的三个阶段均实现了线程化：重新排序（可选）、因子分解和解算（如果采用多个右侧项）。</li>
+<li>DFTs：离散傅立叶变换</li>
+<li>VML：矢量数学库</li>
+<li>VSL：矢量统计学库</li>
+</ul>
+<p>参考资料：</p>
+<ul>
+<li><a href="https://software.intel.com/es-es/node/699485" target="_blank" rel="noopener">https://software.intel.com/es-es/node/699485</a></li>
+<li><a href="http://www.docin.com/p-1907272173.html" target="_blank" rel="noopener">http://www.docin.com/p-1907272173.html</a></li>
+</ul>
+<h3 id="Armadillo"><a href="#Armadillo" class="headerlink" title="Armadillo"></a>Armadillo</h3><p>简介：使用模板元编程技术，与Matlab相似，易于使用的C++矩阵库，提供高效的 LAPACK, BLAS和ATLAS封装包，包含了 Intel MKL, AMD ACM和 OpenBLAS等诸多高性能版本。</p>
+<p>底层：</p>
+<ul>
+<li>BLAS/LAPACK：支持OpenBLAS、ACML、MKL</li>
+</ul>
+<p>参考链接：</p>
+<ul>
+<li><a href="http://arma.sourceforge.net/" target="_blank" rel="noopener">http://arma.sourceforge.net/</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Armadillo_(C%2B%2B_library" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Armadillo_(C%2B%2B_library</a>)</li>
+</ul>
+<h3 id="Eigen"><a href="#Eigen" class="headerlink" title="Eigen"></a>Eigen</h3><p>简介：Eigen是可以用来进行线性代数、矩阵、向量操作等运算的C++库，它里面包含了很多算法。它支持多平台。Eigen采用源码的方式提供给用户使用，在使用时只需要包含Eigen的头文件即可进行使用。之所以采用这种方式，是因为Eigen采用模板方式实现，由于模板函数不支持分离编译，所以只能提供源码而不是动态库的方式供用户使用。</p>
+<p>底层：</p>
+<ul>
+<li>BLAS/LAPACK：支持所有基于F77的BLAS或LAPACK库作为底层（<code>EIGEN_USE_BLAS</code>、<code>EIGEN_USE_LAPACKE</code>）</li>
+<li>MKL：支持MKL作为底层（<code>EIGEN_USE_MKL_ALL</code>）</li>
+<li>CUDA：支持在CUDA kernels里使用CUDA</li>
+<li>OpenMP：多线程优化</li>
+</ul>
+<p>参考链接</p>
+<ul>
+<li><a href="http://eigen.tuxfamily.org/index.php?title=Main_Page" target="_blank" rel="noopener">http://eigen.tuxfamily.org/index.php?title=Main_Page</a></li>
+<li><a href="http://eigen.tuxfamily.org/dox/TopicUsingBlasLapack.html" target="_blank" rel="noopener">http://eigen.tuxfamily.org/dox/TopicUsingBlasLapack.html</a></li>
+<li><a href="http://eigen.tuxfamily.org/dox/TopicUsingIntelMKL.html" target="_blank" rel="noopener">http://eigen.tuxfamily.org/dox/TopicUsingIntelMKL.html</a></li>
+</ul>
+<h2 id="线性代数库选用"><a href="#线性代数库选用" class="headerlink" title="线性代数库选用"></a>线性代数库选用</h2><h3 id="关系"><a href="#关系" class="headerlink" title="关系"></a>关系</h3><ul>
+<li>狭义的BLAS/LAPACK可理解为用于线性代数运算库的API</li>
+<li>Netlib实现了Fortran/C版的BLAS/LAPACK、CBLAS/CLAPACK</li>
+<li>开源社区及商业公司针对API实现了BLAS（ATLAS、OpenBLAS）和LAPACK（MKL、ACML、CUBLAS）的针对性优化</li>
+<li>Eigen、Armadillo除自身实现线性代数运算库外还支持上述各种BLAS/LAPACK为基础的底层以加速运算</li>
+</ul>
+<h3 id="对比"><a href="#对比" class="headerlink" title="对比"></a>对比</h3><ul>
+<li>备选：MKL、OpenBLAS、Eigen、Armadillo</li>
+<li>接口易用程度：Eigen &gt; Armadillo &gt; MKL/OpenBLAS</li>
+<li>速度：MKL≈OpenBLAS &gt; Eigen(with MKL) &gt; Eigen &gt; Armadillo</li>
+</ul>
+<p>其中：</p>
+<ul>
+<li>OpenBLAS没有单核版本，强行指定OMP_NUM_THREADS=1性能损失大，不考虑</li>
+<li>MKL直接使用学习成本较高，但是性能最强</li>
+<li>Armadillo效率和接口易用性不如Eigen</li>
+<li>Eigen的原生BLAS/LAPACK实现速度不如MKL、OpenBLAS，但是使用MKL做后台性能和MKL原生几乎一样，所以可以视情况决定是否使用MKL</li>
+</ul>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="https://blog.csdn.net/u013677156/article/details/77865405" target="_blank" rel="noopener">blas、lapack和atlas、openblas的区别联系</a></li>
+<li><a href="http://www.leexiang.com/the-performance-of-matrix-multiplication-among-openblas-intel-mkl-and-eigen" target="_blank" rel="noopener">比较OpenBLAS，Intel MKL和Eigen的矩阵相乘性能</a></li>
+<li><a href="https://blog.csdn.net/zyh821351004/article/details/46272685" target="_blank" rel="noopener">Eigen、OpenCV、Armadillo对比</a></li>
+<li><a href="https://scicomp.stackexchange.com/questions/351/recommendations-for-a-usable-fast-c-matrix-library" target="_blank" rel="noopener">更多线性代数库的对比</a></li>
+</ul>
 
     </div>
 
@@ -300,13 +363,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/09/12/ROS%E5%85%A5%E9%97%A8/" rel="prev" title="ROS入门">
-      <i class="fa fa-chevron-left"></i> ROS入门
+    <a href="/2020/09/25/Optimized-Eigen/" rel="prev" title="Optimized Eigen">
+      <i class="fa fa-chevron-left"></i> Optimized Eigen
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2020/09/21/Robotics-Pose-Convention/" rel="next" title="Robotics-Pose-Convention">
-      Robotics-Pose-Convention <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -366,7 +426,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#编程模型"><span class="nav-number">1.</span> <span class="nav-text">编程模型</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基本数学库-API"><span class="nav-number">2.</span> <span class="nav-text">基本数学库&#x2F;API</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#BLAS"><span class="nav-number">2.1.</span> <span class="nav-text">BLAS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LAPACK"><span class="nav-number">2.2.</span> <span class="nav-text">LAPACK</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ScaLAPACK"><span class="nav-number">2.3.</span> <span class="nav-text">ScaLAPACK</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#高级数学库"><span class="nav-number">3.</span> <span class="nav-text">高级数学库</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#MKL"><span class="nav-number">3.1.</span> <span class="nav-text">MKL</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Armadillo"><span class="nav-number">3.2.</span> <span class="nav-text">Armadillo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Eigen"><span class="nav-number">3.3.</span> <span class="nav-text">Eigen</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线性代数库选用"><span class="nav-number">4.</span> <span class="nav-text">线性代数库选用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#关系"><span class="nav-number">4.1.</span> <span class="nav-text">关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#对比"><span class="nav-number">4.2.</span> <span class="nav-text">对比</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">5.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

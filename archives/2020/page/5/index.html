@@ -47,22 +47,18 @@
   };
 </script>
 
-  <meta name="description" content="这里介绍一下关于cuda相关的入门级知识">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Insights towards CUDA">
-<meta property="og:url" content="http://yoursite.com/2020/09/14/Insights-towards-CUDA/index.html">
+  <meta name="description" content="Technique-sharing station">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Greatoyster">
+<meta property="og:url" content="http://yoursite.com/archives/2020/page/5/index.html">
 <meta property="og:site_name" content="Greatoyster">
-<meta property="og:description" content="这里介绍一下关于cuda相关的入门级知识">
+<meta property="og:description" content="Technique-sharing station">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://yoursite.com/images/1600042285745.png">
-<meta property="article:published_time" content="2020-09-13T16:38:36.000Z">
-<meta property="article:modified_time" content="2020-09-14T00:33:33.119Z">
 <meta property="article:author" content="greatoyster">
 <meta property="article:tag" content="greatoyster">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://yoursite.com/images/1600042285745.png">
 
-<link rel="canonical" href="http://yoursite.com/2020/09/14/Insights-towards-CUDA/">
+<link rel="canonical" href="http://yoursite.com/archives/2020/page/5/">
 
 
 <script id="page-configurations">
@@ -70,11 +66,11 @@
   CONFIG.page = {
     sidebar: "",
     isHome: false,
-    isPost: true
+    isPost: false
   };
 </script>
 
-  <title>Insights towards CUDA | Greatoyster</title>
+  <title>Archive | Greatoyster</title>
   
 
 
@@ -211,111 +207,53 @@
           <div class="content">
             
 
-  <div class="posts-expand">
-      
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/09/14/Insights-towards-CUDA/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="greatoyster">
-      <meta itemprop="description" content="Technique-sharing station">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Greatoyster">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          Insights towards CUDA
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-09-13 16:38:36" itemprop="dateCreated datePublished" datetime="2020-09-13T16:38:36Z">2020-09-13</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-09-14 00:33:33" itemprop="dateModified" datetime="2020-09-14T00:33:33Z">2020-09-14</time>
-              </span>
-
-          
-            <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">Views: </span>
-              <span id="busuanzi_value_page_pv"></span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
+  
+  <div class="post-block">
+    <div class="posts-collapse">
+      <div class="collection-title">
+        
+        <span class="collection-header">OK! 41 posts in total. Keep on posting.</span>
+      </div>
 
       
-        <p>这里介绍一下关于cuda相关的入门级知识</p>
-<a id="more"></a>
-<h1 id="编程模型"><a href="#编程模型" class="headerlink" title="编程模型"></a>编程模型</h1><p>CUDA是一个异构的编程模型，由CPU和GPU来协同完成计算任务。</p>
-<p>这里我们抽象出了两个基本的概念</p>
-<ul>
-<li>Device，指代GPU和它的内存</li>
-<li>Host，指代CPU和它的内存</li>
-</ul>
-<p>一个典型的流程如下：</p>
-<ol>
-<li>分配host内存，并进行数据初始化；</li>
-<li>分配device内存，并从host将数据拷贝到device上；</li>
-<li>调用CUDA的核函数在device上完成指定的运算；</li>
-<li>将device上的运算结果拷贝到host上；</li>
-<li>释放device和host上分配的内存</li>
-</ol>
-<p>从CPU到GPU的一步（从HOST到DEVICE）的关键在于核函数（kernel function），核函数的声明通过<code>__global__</code>这个宏定义。GPU上的每一个线程都会计算这个核函数，每一个线程都有一个内置的变量<code>threadIdx</code>来获取线程ID</p>
-<p><img src="\images\1600042285745.png" alt="GPU结构示意图"></p>
-
+    <div class="collection-year">
+      <h1 class="collection-header">2020</h1>
     </div>
 
-    
-    
-    
+  <article itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
 
-      <footer class="post-footer">
+      <div class="post-meta">
+        <time itemprop="dateCreated"
+              datetime="2020-02-01T13:03:49Z"
+              content="2020-02-01">
+          02-01
+        </time>
+      </div>
 
-        
+      <h2 class="post-title">
+          <a class="post-title-link" href="/2020/02/01/Rust%E5%85%A5%E9%97%A8%E8%AF%AD%E6%B3%95%E5%BD%92%E7%BA%B3/" itemprop="url">
+            <span itemprop="name">Rust入门语法归纳</span>
+          </a>
+      </h2>
 
-
-        
-    <div class="post-nav">
-      <div class="post-nav-item">
-    <a href="/2020/09/12/ROS%E5%85%A5%E9%97%A8/" rel="prev" title="ROS入门">
-      <i class="fa fa-chevron-left"></i> ROS入门
-    </a></div>
-      <div class="post-nav-item">
-    <a href="/2020/09/21/Robotics-Pose-Convention/" rel="next" title="Robotics-Pose-Convention">
-      Robotics-Pose-Convention <i class="fa fa-chevron-right"></i>
-    </a></div>
-    </div>
-      </footer>
-    
+    </header>
   </article>
+
+
+    </div>
+  </div>
   
   
   
 
-  </div>
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/archives/2020/page/4/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/archives/2020/">1</a><span class="space">&hellip;</span><a class="page-number" href="/archives/2020/page/4/">4</a><span class="page-number current">5</span>
+  </nav>
+
 
 
           </div>
@@ -366,7 +304,6 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#编程模型"><span class="nav-number">1.</span> <span class="nav-text">编程模型</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -574,56 +511,6 @@ window.addEventListener('pjax:success', () => {
   
 
   
-      
-<script type="text/x-mathjax-config">
-    MathJax.Ajax.config.path['mhchem'] = '//cdn.jsdelivr.net/npm/mathjax-mhchem@3';
-
-  MathJax.Hub.Config({
-    tex2jax: {
-      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
-      processEscapes: true,
-      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-    },
-    TeX: {
-        extensions: ['[mhchem]/mhchem.js'],
-      equationNumbers: {
-        autoNumber: 'AMS'
-      }
-    }
-  });
-
-  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
-    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
-      if (data.display) {
-        var next = data.script.nextSibling;
-        while (next && next.nodeName.toLowerCase() === '#text') {
-          next = next.nextSibling;
-        }
-        if (next && next.nodeName.toLowerCase() === 'br') {
-          next.parentNode.removeChild(next);
-        }
-      }
-    });
-  });
-
-  MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for (i = 0; i < all.length; i += 1) {
-      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
-      if (element.nodeName.toLowerCase() == 'li') {
-        element = element.parentNode;
-      }
-      element.classList.add('has-jax');
-    }
-  });
-</script>
-<script>
-  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
-    MathJax.Hub.Typeset();
-  }, window.MathJax);
-</script>
-
-    
 
   
 
