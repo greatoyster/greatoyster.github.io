@@ -1,48 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Ceres优化示例</title>
-    <url>/2020/09/09/Ceres%E4%BC%98%E5%8C%96%E7%A4%BA%E4%BE%8B/</url>
-    <content><![CDATA[<p>Ceres Solver是一个比较著名的非线性最小二乘优化库，这里稍做介绍他的使用方法。</p>
-<p>这里提一下，有不错的<a href="https://izhengfan.gitbooks.io/ceres-solver-cn/content/" target="_blank" rel="noopener">中文文档</a></p>
-<p>大致流程如下:</p>
-<ul>
-<li>定义残差</li>
-<li>选择核函数</li>
-<li>初始话求解器设置</li>
-<li>求解</li>
-</ul>
-<a id="more"></a>
-<p>里面的有一个类型叫<code>Problem</code>，我们就在这个类型的基础上给他添加残差块，再把它丢给求解器求解。</p>
-<p>那么如何定义残差块呢，我们首先需要的是一个拟函数(functor)，然后在拟函数里需要重载带模板参数的运算符<code>()</code>，当我们把拟函数结合进残差块的时候，可以选择对他进行的求导方式，有两种方式，一种是自动求导，一种是数值求导，一般来说我们会选用前者（更快更稳）</p>
-<p>拟函数示例如下</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">CostFunctor</span> &#123;</span></span><br><span class="line">   <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line">   <span class="function"><span class="keyword">bool</span> <span class="title">operator</span><span class="params">()</span><span class="params">(<span class="keyword">const</span> T* <span class="keyword">const</span> x, T* residual)</span> <span class="keyword">const</span> </span>&#123;</span><br><span class="line">     residual[<span class="number">0</span>] = T(<span class="number">10.0</span>) - x[<span class="number">0</span>];</span><br><span class="line">     <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>以下是一个最简单的例子</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span>** argv)</span> </span>&#123;</span><br><span class="line">  google::InitGoogleLogging(argv[<span class="number">0</span>]);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// The variable to solve for with its initial value.</span></span><br><span class="line">  <span class="keyword">double</span> initial_x = <span class="number">5.0</span>;</span><br><span class="line">  <span class="keyword">double</span> x = initial_x;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Build the problem.</span></span><br><span class="line">  Problem problem;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Set up the only cost function (also known as residual). This uses</span></span><br><span class="line">  <span class="comment">// auto-differentiation to obtain the derivative (jacobian).</span></span><br><span class="line">  CostFunction* cost_function =</span><br><span class="line">      <span class="keyword">new</span> AutoDiffCostFunction&lt;CostFunctor, <span class="number">1</span>, <span class="number">1</span>&gt;(<span class="keyword">new</span> CostFunctor);</span><br><span class="line">  problem.AddResidualBlock(cost_function, <span class="literal">NULL</span>, &amp;x);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Run the solver!</span></span><br><span class="line">  Solver::Options options;</span><br><span class="line">  options.linear_solver_type = ceres::DENSE_QR;</span><br><span class="line">  options.minimizer_progress_to_stdout = <span class="literal">true</span>;</span><br><span class="line">  Solver::Summary summary;</span><br><span class="line">  Solve(options, &amp;problem, &amp;summary);</span><br><span class="line"></span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; summary.BriefReport() &lt;&lt; <span class="string">"\n"</span>;</span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"x : "</span> &lt;&lt; initial_x</span><br><span class="line">            &lt;&lt; <span class="string">" -&gt; "</span> &lt;&lt; x &lt;&lt; <span class="string">"\n"</span>;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>上面会求得$x^*=\arg\min_{x}f(x)=\arg\min_{x}\frac{1}{2}(10-x)^2$</p>
-<h3 id="微分"><a href="#微分" class="headerlink" title="微分"></a>微分</h3><p>关于微分部分，有三种类型</p>
-<ul>
-<li>数值微分</li>
-<li>解析微分</li>
-<li>自动求导（利用C++模板特性自动求解解析微分）</li>
-</ul>
-<h4 id="解析微分"><a href="#解析微分" class="headerlink" title="解析微分"></a>解析微分</h4><p>我们从<code>SizedCostFunction</code>继承一个解析代价函数的模型，并且重载一个叫<code>Evaluate()</code>的方法来计算Jacobian</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Rat43Analytic</span> :</span> <span class="keyword">public</span> SizedCostFunction&lt;<span class="number">1</span>,<span class="number">4</span>&gt; &#123;</span><br><span class="line">   <span class="keyword">public</span>:</span><br><span class="line">     Rat43Analytic(<span class="keyword">const</span> <span class="keyword">double</span> x, <span class="keyword">const</span> <span class="keyword">double</span> y) : x_(x), y_(y) &#123;&#125;</span><br><span class="line">     <span class="keyword">virtual</span> ~Rat43Analytic() &#123;&#125;</span><br><span class="line">     <span class="function"><span class="keyword">virtual</span> <span class="keyword">bool</span> <span class="title">Evaluate</span><span class="params">(<span class="keyword">double</span> <span class="keyword">const</span>* <span class="keyword">const</span>* parameters,</span></span></span><br><span class="line"><span class="function"><span class="params">                           <span class="keyword">double</span>* residuals,</span></span></span><br><span class="line"><span class="function"><span class="params">                           <span class="keyword">double</span>** jacobians)</span> <span class="keyword">const</span> </span>&#123;</span><br><span class="line">       <span class="keyword">const</span> <span class="keyword">double</span> b1 = parameters[<span class="number">0</span>][<span class="number">0</span>];</span><br><span class="line">       <span class="keyword">const</span> <span class="keyword">double</span> b2 = parameters[<span class="number">0</span>][<span class="number">1</span>];</span><br><span class="line">       <span class="keyword">const</span> <span class="keyword">double</span> b3 = parameters[<span class="number">0</span>][<span class="number">2</span>];</span><br><span class="line">       <span class="keyword">const</span> <span class="keyword">double</span> b4 = parameters[<span class="number">0</span>][<span class="number">3</span>];</span><br><span class="line"></span><br><span class="line">       residuals[<span class="number">0</span>] = b1 *  <span class="built_in">pow</span>(<span class="number">1</span> + <span class="built_in">exp</span>(b2 -  b3 * x_), <span class="number">-1.0</span> / b4) - y_;</span><br><span class="line"></span><br><span class="line">       <span class="keyword">if</span> (!jacobians) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">       <span class="keyword">double</span>* jacobian = jacobians[<span class="number">0</span>];</span><br><span class="line">       <span class="keyword">if</span> (!jacobian) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">       jacobian[<span class="number">0</span>] = <span class="built_in">pow</span>(<span class="number">1</span> + <span class="built_in">exp</span>(b2 - b3 * x_), <span class="number">-1.0</span> / b4);</span><br><span class="line">       jacobian[<span class="number">1</span>] = -b1 * <span class="built_in">exp</span>(b2 - b3 * x_) *</span><br><span class="line">                     <span class="built_in">pow</span>(<span class="number">1</span> + <span class="built_in">exp</span>(b2 - b3 * x_), <span class="number">-1.0</span> / b4 - <span class="number">1</span>) / b4;</span><br><span class="line">       jacobian[<span class="number">2</span>] = x_ * b1 * <span class="built_in">exp</span>(b2 - b3 * x_) *</span><br><span class="line">                     <span class="built_in">pow</span>(<span class="number">1</span> + <span class="built_in">exp</span>(b2 - b3 * x_), <span class="number">-1.0</span> / b4 - <span class="number">1</span>) / b4;</span><br><span class="line">       jacobian[<span class="number">3</span>] = b1 * <span class="built_in">log</span>(<span class="number">1</span> + <span class="built_in">exp</span>(b2 - b3 * x_)) *</span><br><span class="line">                     <span class="built_in">pow</span>(<span class="number">1</span> + <span class="built_in">exp</span>(b2 - b3 * x_), <span class="number">-1.0</span> / b4) / (b4 * b4);</span><br><span class="line">       <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">     &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span>:</span><br><span class="line">     <span class="keyword">const</span> <span class="keyword">double</span> x_;</span><br><span class="line">     <span class="keyword">const</span> <span class="keyword">double</span> y_;</span><br><span class="line"> &#125;;</span><br></pre></td></tr></table></figure>
-<p>注意，重载<code>Evaluate()</code>的时候，要注意计算的效率问题（你可以在官方文档里找到它的优化版本，比当前版本快了2.8倍！）</p>
-<h4 id="数值微分"><a href="#数值微分" class="headerlink" title="数值微分"></a>数值微分</h4><p>数值微分直接定义代价函数就完事了，简单粗暴</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Rat43CostFunctor</span> &#123;</span></span><br><span class="line">  Rat43CostFunctor(<span class="keyword">const</span> <span class="keyword">double</span> x, <span class="keyword">const</span> <span class="keyword">double</span> y) : x_(x), y_(y) &#123;&#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">bool</span> <span class="title">operator</span><span class="params">()</span><span class="params">(<span class="keyword">const</span> <span class="keyword">double</span>* parameters, <span class="keyword">double</span>* residuals)</span> <span class="keyword">const</span> </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">double</span> b1 = parameters[<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">double</span> b2 = parameters[<span class="number">1</span>];</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">double</span> b3 = parameters[<span class="number">2</span>];</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">double</span> b4 = parameters[<span class="number">3</span>];</span><br><span class="line">    residuals[<span class="number">0</span>] = b1 * <span class="built_in">pow</span>(<span class="number">1.0</span> + <span class="built_in">exp</span>(b2 -  b3 * x_), <span class="number">-1.0</span> / b4) - y_;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">double</span> x_;</span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">double</span> y_;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">CostFunction* cost_function =</span><br><span class="line">  <span class="keyword">new</span> NumericDiffCostFunction&lt;Rat43CostFunctor, FORWARD, <span class="number">1</span>, <span class="number">4</span>&gt;(</span><br><span class="line">    <span class="keyword">new</span> Rat43CostFunctor(x, y));</span><br></pre></td></tr></table></figure>
-<p>数值微分优化的余地比较小，而且会有一个小量的误差（不过多数情况基本可以忽略不计，如果想要减小这个小量误差，可以把<code>Forward</code>或者<code>Central</code>换成<code>RIDDERS</code>）</p>
-<h4 id="自动求导"><a href="#自动求导" class="headerlink" title="自动求导"></a>自动求导</h4><p>基本和数值微分的定义类似，仅仅是<code>operator()</code>的函数签名不太一样（后者没有模板）</p>
-<p>例子如下</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Rat43CostFunctor</span> &#123;</span></span><br><span class="line">  Rat43CostFunctor(<span class="keyword">const</span> <span class="keyword">double</span> x, <span class="keyword">const</span> <span class="keyword">double</span> y) : x_(x), y_(y) &#123;&#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line">  <span class="function"><span class="keyword">bool</span> <span class="title">operator</span><span class="params">()</span><span class="params">(<span class="keyword">const</span> T* parameters, T* residuals)</span> <span class="keyword">const</span> </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> T b1 = parameters[<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">const</span> T b2 = parameters[<span class="number">1</span>];</span><br><span class="line">    <span class="keyword">const</span> T b3 = parameters[<span class="number">2</span>];</span><br><span class="line">    <span class="keyword">const</span> T b4 = parameters[<span class="number">3</span>];</span><br><span class="line">    residuals[<span class="number">0</span>] = b1 * <span class="built_in">pow</span>(<span class="number">1.0</span> + <span class="built_in">exp</span>(b2 -  b3 * x_), <span class="number">-1.0</span> / b4) - y_;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">double</span> x_;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">double</span> y_;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">CostFunction* cost_function =</span><br><span class="line">      <span class="keyword">new</span> AutoDiffCostFunction&lt;Rat43CostFunctor, <span class="number">1</span>, <span class="number">4</span>&gt;(</span><br><span class="line">        <span class="keyword">new</span> Rat43CostFunctor(x, y));</span><br></pre></td></tr></table></figure>
-]]></content>
-  </entry>
-  <entry>
     <title>DLT直接线性法</title>
     <url>/2020/08/15/DLT%E7%9B%B4%E6%8E%A5%E7%BA%BF%E6%80%A7%E6%B3%95/</url>
     <content><![CDATA[<p>直接线性变换法可以用来解决很多问题，他的核心思想就是根据得到的多组约束再通过SVD求得特定代价函数（很多情况下都是L2 Norm）下的最优解</p>
 <a id="more"></a>
 <p>这里挖一个坑，以后填上</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>Insights towards CUDA</title>
+    <url>/2020/09/14/Insights-towards-CUDA/</url>
+    <content><![CDATA[<p>这里介绍一下关于cuda相关的入门级知识</p>
+<a id="more"></a>
+<h1 id="编程模型"><a href="#编程模型" class="headerlink" title="编程模型"></a>编程模型</h1><p>CUDA是一个异构的编程模型，由CPU和GPU来协同完成计算任务。</p>
+<p>这里我们抽象出了两个基本的概念</p>
+<ul>
+<li>Device，指代GPU和它的内存</li>
+<li>Host，指代CPU和它的内存</li>
+</ul>
+<p>一个典型的流程如下：</p>
+<ol>
+<li>分配host内存，并进行数据初始化；</li>
+<li>分配device内存，并从host将数据拷贝到device上；</li>
+<li>调用CUDA的核函数在device上完成指定的运算；</li>
+<li>将device上的运算结果拷贝到host上；</li>
+<li>释放device和host上分配的内存</li>
+</ol>
+<p>从CPU到GPU的一步（从HOST到DEVICE）的关键在于核函数（kernel function），核函数的声明通过<code>__global__</code>这个宏定义。GPU上的每一个线程都会计算这个核函数，每一个线程都有一个内置的变量<code>threadIdx</code>来获取线程ID</p>
+<p><img src="\images\1600042285745.png" alt="GPU结构示意图"></p>
 ]]></content>
   </entry>
   <entry>
@@ -104,7 +90,12 @@
 <p>And some materials about Robotics and CV were updated to my GitHub Pages.</p>
 <h1 id="2020-9-21"><a href="#2020-9-21" class="headerlink" title="2020.9.21"></a>2020.9.21</h1><p>The Robotics and CV homework are released, I planed to finish them this week.</p>
 <p>I felt a little bit tired these days, so today I decided to have a good rest. </p>
-<h1 id="2020-9-22-2020-9-24"><a href="#2020-9-22-2020-9-24" class="headerlink" title="2020.9.22-2020.9.24"></a>2020.9.22-2020.9.24</h1>]]></content>
+<h1 id="2020-9-22-2020-10-1"><a href="#2020-9-22-2020-10-1" class="headerlink" title="2020.9.22-2020.10.1"></a>2020.9.22-2020.10.1</h1><p> During these days, the efficiency of our project is highly improved. Now, it is real time, which means we can take one step further. Come on!</p>
+<p>As to Deadlines, they always seem endless, I must arrange my time more carefully.</p>
+<h1 id="2020-10-2"><a href="#2020-10-2" class="headerlink" title="2020.10.2"></a>2020.10.2</h1><p>In a long period of research, I think loneliness and tiredness is unavoidable, wish I could get along with them.</p>
+<h1 id="2020-10-3"><a href="#2020-10-3" class="headerlink" title="2020.10.3"></a>2020.10.3</h1><p>My part of Pintos Project1 is almost finished, then I need to prepare the ICRA paper presentation for Robotics course. CV homework2 is also on the way. Tomorrow is not available .</p>
+<p>Another task is to run our dataset on ORB SLAM2. Come on!  </p>
+]]></content>
   </entry>
   <entry>
     <title>Robotics-Pose-Convention</title>
@@ -130,6 +121,341 @@
 \right)</script><p>代表的变换将参考系$A$中的点的坐标转换到了坐标系$G$中的坐标</p>
 <p>注：坐标和坐标系不同</p>
 ]]></content>
+  </entry>
+  <entry>
+    <title>Optimized Eigen</title>
+    <url>/2020/09/25/Optimized-Eigen/</url>
+    <content><![CDATA[<p><code>Eigen</code>是一个header-only的矩阵计算库，功能强大，应用广泛。但是有时候在追求性能的场景下面，如果不做一个深入了解，那么它的性能会大打折扣（甚至远低于<code>numpy</code>或者<code>MATLAB</code>的实现），这样就无法很好地发挥出C++的优势。下面记录了一些优化的心得体验。</p>
+<p>注：下面以Eigen3为例</p>
+<a id="more"></a>
+<h1 id="Lazy-Evaluation"><a href="#Lazy-Evaluation" class="headerlink" title="Lazy Evaluation"></a>Lazy Evaluation</h1><p>类似<code>A=B+C*D</code>这样的操作往往编译器会生成一个中间变量来储存<code>C*D</code>再加上<code>B</code>，最后赋给<code>A</code>，当中间变量相对较大的时候，这个多余的中间变量会带来不小的性能开销（一方面是可能会打乱cache里面的存储布局，降低缓存的命中率）</p>
+<p>在Eigen中，一般没有这种困扰。可以用<code>eval()</code>来强制生成中间结果。可以用<code>noalias()</code>来强制惰性计算。</p>
+<p> If you really want to force immediate evaluation, use <a href="http://eigen.tuxfamily.org/dox/classEigen_1_1DenseBase.html#aa73e57a2f0f7cfcb4ad4d55ea0b6414b" target="_blank" rel="noopener">eval()</a>:</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">mat1 = (mat2 + mat3).eval();</span><br><span class="line"></span><br><span class="line">mat1.noalias() = mat2 * mat2;</span><br></pre></td></tr></table></figure>
+<h1 id="编译期计算"><a href="#编译期计算" class="headerlink" title="编译期计算"></a>编译期计算</h1><p>通过模板，我们可以在编译时期就把内存分配好，这样就可减小动态分配内存的开销，此外还可以更好的利用Intel的向量化指令集</p>
+<p>一般来说，对于较小的向量和矩阵，给它一个固定的大小还可以有利于编译器进行循环展开。</p>
+<p>We mentioned at the beginning of this page that the <a href="https://eigen.tuxfamily.org/dox/classEigen_1_1Matrix.html" target="_blank" rel="noopener">Matrix</a> class takes six template parameters, but so far we only discussed the first three. The remaining three parameters are optional. Here is the complete list of template parameters:</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">Matrix&lt;<span class="keyword">typename</span> Scalar,</span><br><span class="line">		<span class="keyword">int</span> RowsAtCompileTime,</span><br><span class="line">   	<span class="keyword">int</span> ColsAtCompileTime,</span><br><span class="line">     <span class="keyword">int</span> Options = <span class="number">0</span>，</span><br><span class="line">     <span class="keyword">int</span> MaxRowsAtCompileTime = RowsAtCompileTime,</span><br><span class="line">     <span class="keyword">int</span> MaxColsAtCompileTime = ColsAtCompileTime&gt;</span><br></pre></td></tr></table></figure>
+<p><code>Options</code> is a bit field. Here, we discuss only one bit:</p>
+<p><code>RowMajor</code> It specifies that the matrices of this type use row-major storage order; by default, the storage order is column-major. See the page storage orders. For example, this type means row-major 3x3 matrices:</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">Matrix&lt;<span class="keyword">float</span>, <span class="number">3</span>, <span class="number">3</span>, RowMajor&gt;</span><br></pre></td></tr></table></figure>
+<p><code>MaxRowsAtCompileTime</code> and <code>MaxColsAtCompileTime</code> are useful when you want to specify that, even though the exact sizes of your matrices are not known at compile time, a fixed upper bound is known at compile time. The biggest reason why you might want to do that is to avoid dynamic memory allocation. For example the following matrix type uses a plain array of 12 floats, without dynamic memory allocation:</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">Matrix&lt;<span class="keyword">float</span>, Dynamic, Dynamic, <span class="number">0</span>, <span class="number">3</span>, <span class="number">4</span>&gt;</span><br></pre></td></tr></table></figure>
+<h1 id="SIMD向量化"><a href="#SIMD向量化" class="headerlink" title="SIMD向量化"></a>SIMD向量化</h1><p>当开启向量化的开关以后，Eigen对于内存对齐有很高的要求。会因为下面的各种情况崩溃</p>
+<ol>
+<li>类或者结构体中含有Eigen对象</li>
+<li>Eigen对象放入STL容器时</li>
+<li>Eigen对象passed by value</li>
+</ol>
+<h2 id="固定大小的可向量化对象"><a href="#固定大小的可向量化对象" class="headerlink" title="固定大小的可向量化对象"></a>固定大小的可向量化对象</h2><p>An <a href="http://eigen.tuxfamily.org/dox/namespaceEigen.html" target="_blank" rel="noopener">Eigen</a> object is called “fixed-size vectorizable” if it has fixed size and that size is a multiple of 16 bytes.</p>
+<p>当对象的大小固定，且为16bytes的整数倍的时候，这些对象被称为固定大小的可向量化对象（需要内存对齐128位）</p>
+<p>Examples include:</p>
+<ul>
+<li>Eigen::Vector2d</li>
+<li>Eigen::Vector4d</li>
+<li>Eigen::Vector4f</li>
+<li>Eigen::Matrix2d</li>
+<li>Eigen::Matrix2f</li>
+<li>Eigen::Matrix4d</li>
+<li>Eigen::Matrix4f</li>
+<li>Eigen::Affine3d</li>
+<li>Eigen::Affine3f</li>
+<li><a href="http://eigen.tuxfamily.org/dox/group__Geometry__Module.html#ga5daab8e66aa480465000308455578830" target="_blank" rel="noopener">Eigen::Quaterniond</a></li>
+<li><a href="http://eigen.tuxfamily.org/dox/group__Geometry__Module.html#ga66aa915a26d698c60ed206818c3e4c9b" target="_blank" rel="noopener">Eigen::Quaternionf</a></li>
+</ul>
+<h2 id="有Eigen对象的数据结构"><a href="#有Eigen对象的数据结构" class="headerlink" title="有Eigen对象的数据结构"></a>有Eigen对象的数据结构</h2><p>这个问题很好解决，public下面加一个宏定义即可</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Foo</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  ...</span><br><span class="line">  Eigen::Vector2d v;</span><br><span class="line">  ...</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">  EIGEN_MAKE_ALIGNED_OPERATOR_NEW</span><br><span class="line">&#125;;</span><br><span class="line"> </span><br><span class="line">...</span><br><span class="line"> </span><br><span class="line">Foo *foo = <span class="keyword">new</span> Foo;</span><br></pre></td></tr></table></figure>
+<p>还有条件宏可以用</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">int</span> n&gt; <span class="class"><span class="keyword">class</span> <span class="title">Foo</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  <span class="keyword">typedef</span> Eigen::Matrix&lt;<span class="keyword">float</span>,n,<span class="number">1</span>&gt; Vector;</span><br><span class="line">  <span class="keyword">enum</span> &#123; NeedsToAlign = (<span class="keyword">sizeof</span>(Vector)%<span class="number">16</span>)==<span class="number">0</span> &#125;;</span><br><span class="line">  ...</span><br><span class="line">  Vector v;</span><br><span class="line">  ...</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">  EIGEN_MAKE_ALIGNED_OPERATOR_NEW_IF(NeedsToAlign)</span><br><span class="line">&#125;;</span><br><span class="line"> </span><br><span class="line">...</span><br><span class="line"> </span><br><span class="line">Foo&lt;<span class="number">4</span>&gt; *foo4 = <span class="keyword">new</span> Foo&lt;<span class="number">4</span>&gt;; <span class="comment">// foo4 is guaranteed to be 128bit-aligned</span></span><br><span class="line">Foo&lt;<span class="number">3</span>&gt; *foo3 = <span class="keyword">new</span> Foo&lt;<span class="number">3</span>&gt;; <span class="comment">// foo3 has only the system default alignment guarantee</span></span><br></pre></td></tr></table></figure>
+<p>也提供对于对齐功能的禁用</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Foo</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  ...</span><br><span class="line">  Eigen::Matrix&lt;<span class="keyword">double</span>,<span class="number">2</span>,<span class="number">1</span>,Eigen::DontAlign&gt; v;</span><br><span class="line">  ...</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="标准库容器"><a href="#标准库容器" class="headerlink" title="标准库容器"></a>标准库容器</h2><p>For example, instead of</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">map</span>&lt;<span class="keyword">int</span>, Eigen::Vector4f&gt;</span><br></pre></td></tr></table></figure>
+<p>you need to use<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">map</span>&lt;<span class="keyword">int</span>, Eigen::Vector4f, <span class="built_in">std</span>::less&lt;<span class="keyword">int</span>&gt;, </span><br><span class="line">         Eigen::aligned_allocator&lt;<span class="built_in">std</span>::pair&lt;<span class="keyword">const</span> <span class="keyword">int</span>, Eigen::Vector4f&gt; &gt; &gt;</span><br></pre></td></tr></table></figure></p>
+<p>另一个例子</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;Eigen/StdVector&gt;</span></span></span><br><span class="line"><span class="comment">/* ... */</span></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;Eigen::Vector4f,Eigen::aligned_allocator&lt;Eigen::Vector4f&gt; &gt;</span><br></pre></td></tr></table></figure>
+<h2 id="Pass-by-value的问题"><a href="#Pass-by-value的问题" class="headerlink" title="Pass by value的问题"></a>Pass by value的问题</h2><p>很好解决，传入引用就可以了</p>
+<p>So for example, a function like this, where v is passed by value:</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">my_function</span><span class="params">(Eigen::Vector2d v)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>needs to be rewritten as follows, passing v by reference:</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">my_function</span><span class="params">(<span class="keyword">const</span> Eigen::Vector2d &amp;v)</span></span>;</span><br></pre></td></tr></table></figure>
+<h1 id="OpenMP多线程支持"><a href="#OpenMP多线程支持" class="headerlink" title="OpenMP多线程支持"></a>OpenMP多线程支持</h1><p>Eigen内置的部分矩阵算法支持多线程，可以加入<code>-fopenmp</code>来激活</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">OMP_NUM_THREADS=n ./my_program</span><br><span class="line">omp_set_num_threads(n);</span><br><span class="line">Eigen::setNbThreads(n);</span><br></pre></td></tr></table></figure>
+<h1 id="MKL和BLAS等支持"><a href="#MKL和BLAS等支持" class="headerlink" title="MKL和BLAS等支持"></a>MKL和BLAS等支持</h1><p>在引入Eigen头文件之前加上宏定义即可，再链接上相关的库</p>
+<p>When doing so, a number of Eigen’s algorithms are silently substituted with calls to Intel MKL routines. These substitutions apply only for <strong>Dynamic</strong> <strong>or</strong> <strong>large</strong> enough objects with one of the following four standard scalar types: <code>float</code>, <code>double</code>, <code>complex&lt;float&gt;</code>, and <code>complex&lt;double&gt;</code>. Operations on other scalar types or mixing reals and complexes will continue to use the built-in algorithms.</p>
+<p>In addition you can choose which parts will be substituted by defining one or multiple of the following macros:</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th><code>EIGEN_USE_BLAS</code></th>
+<th>Enables the use of external BLAS level 2 and 3 routines</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>EIGEN_USE_LAPACKE</code></td>
+<td>Enables the use of external Lapack routines via the <a href="http://www.netlib.org/lapack/lapacke.html" target="_blank" rel="noopener">Lapacke</a> C interface to Lapack</td>
+</tr>
+<tr>
+<td><code>EIGEN_USE_LAPACKE_STRICT</code></td>
+<td>Same as <code>EIGEN_USE_LAPACKE</code> but algorithm of lower robustness are disabled. This currently concerns only <a href="http://eigen.tuxfamily.org/dox/classEigen_1_1JacobiSVD.html" target="_blank" rel="noopener">JacobiSVD</a> which otherwise would be replaced by <code>gesvd</code> that is less robust than Jacobi rotations.</td>
+</tr>
+<tr>
+<td><code>EIGEN_USE_MKL_VML</code></td>
+<td>Enables the use of Intel VML (vector operations)</td>
+</tr>
+<tr>
+<td><code>EIGEN_USE_MKL_ALL</code></td>
+<td>Defines <code>EIGEN_USE_BLAS</code>, <code>EIGEN_USE_LAPACKE</code>, and <code>EIGEN_USE_MKL_VML</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h1 id="CUDA核函数"><a href="#CUDA核函数" class="headerlink" title="CUDA核函数"></a>CUDA核函数</h1><p>在CUDA核函数里面也可以使用Eigen，但是支持还不完全，官方文档也没有补齐，这里暂时略过</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>PINTOS指北</title>
+    <url>/2020/09/22/PINTOS%E6%8C%87%E5%8C%97/</url>
+    <content><![CDATA[<p>[TOC]</p>
+<p><code>pintos</code>是斯坦福CS140的教学用操作系统。总共有四个project。如题所示，下文提供了一个pintos指北。</p>
+<a id="more"></a>
+<h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><h2 id="源文件树"><a href="#源文件树" class="headerlink" title="源文件树"></a>源文件树</h2><ol>
+<li><p>threads/ 最基础的内核代码</p>
+<p>   Source code for the base kernel, which you will modify starting in project 1.</p>
+</li>
+<li><p>userprog/ 用户程序的加载器</p>
+<p>Source code for the user program loader, which you will modify starting with project 2.</p>
+</li>
+<li><p>vm/ 虚拟内存</p>
+<p>   An almost empty directory. You will implement virtual memory here in project 3.</p>
+</li>
+<li><p>filesys/ 最基础的文件系统</p>
+<p>   Source code for a basic file system. You will use this file system starting with project 2, but you will not modify it until project 4.</p>
+</li>
+<li><p>devices/ 硬件接口</p>
+<p>   Source code for I/O device interfacing: keyboard, timer, disk, etc. You will modify the timer implementation in project 1. Otherwise you should have no need to change this code.</p>
+</li>
+<li><p>lib/ 部分C语言的标准库，用户态或是内核态程序都可以使用这些代码</p>
+<p>   An implementation of a subset of the standard C library. The code in this directory is compiled into both the Pintos kernel and, starting from project 2, user programs that run under it. In both kernel code and user programs, headers in this directory can be included using the <code>#&lt;...&gt;</code> </p>
+</li>
+<li><p>lib/kernel/  部分仅供内核调用的C语言库函数</p>
+<p>   Parts of the C library that are included only in the Pintos kernel. This also includes implementations of some data types that you are free to use in your kernel code: bitmaps, doubly linked lists, and hash tables. In the kernel, headers in this directory can be included using the  <code>#&lt;...&gt;</code> </p>
+</li>
+<li><p>lib/user/ 用户的C语言库</p>
+<p>   Parts of the C library that are included only in Pintos user programs. In user programs, headers in this directory can be included using the   <code>#&lt;...&gt;</code> </p>
+</li>
+<li><p>tests/ 测试用</p>
+<p>   Tests for each project. You can modify this code if it helps you test your submission,  but we will replace it with the originals before we run the tests.</p>
+</li>
+<li><p>examples/ 第二个Project的用户程序样例</p>
+<p> Example user programs for use starting with project 2.</p>
+</li>
+<li><p>misc/ 不用管他</p>
+</li>
+<li><p>utils/ 也不用管</p>
+<p> These files may come in handy if you decide to try working with Pintos on your own machine. Otherwise, you can ignore them.</p>
+</li>
+</ol>
+<h2 id="调试工具以及技巧"><a href="#调试工具以及技巧" class="headerlink" title="调试工具以及技巧"></a>调试工具以及技巧</h2><ol>
+<li><p><code>printf()</code></p>
+<p>这个大家不会陌生。</p>
+</li>
+<li><p><code>ASSERT(expression)</code></p>
+<p>定义在<code>&lt;debug.h&gt;</code>中的宏，当表达式为0或者false时，内核会panic，相关的信息会输出</p>
+</li>
+<li><p>函数和参数宏</p>
+<ul>
+<li><code>UNUSED</code></li>
+<li><code>NO_RETURN</code></li>
+<li><code>NO_INLINE</code></li>
+<li><code>PRINT_FORMAT(format, first)</code></li>
+</ul>
+</li>
+<li><p>Backtrace</p>
+<p>在<code>&lt;debug.h&gt;</code>当中，定义了<code>debug_backtrace()</code>和<code>debug_backtrace_all()</code>两种回溯的函数</p>
+</li>
+<li><p>GDB</p>
+<p>GDB强大归强大，但我觉得在没有图形界面的情况下使用它还是非常麻烦的。</p>
+</li>
+</ol>
+<h2 id="如何测试"><a href="#如何测试" class="headerlink" title="如何测试"></a>如何测试</h2><p>   在<code>build</code>目录下运行</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">make check</span><br></pre></td></tr></table></figure>
+<h1 id="Project1-Threads"><a href="#Project1-Threads" class="headerlink" title="Project1: Threads"></a>Project1: Threads</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>关于线程的概念，有一句话我觉得概括得精炼至极</p>
+<p>“One thread is one virtual core.”</p>
+<p>“线程，就是虚拟核心。”</p>
+<h2 id="已有的基础"><a href="#已有的基础" class="headerlink" title="已有的基础"></a>已有的基础</h2><p>pintos已经为我们实现了创建线程的一个函数，一个简单的调度器，以及同步相关的原型（例如锁，条件变量等）</p>
+<p>线程创建<code>thread_create()</code>的时候会先初始化一个上下文，然后把一个函数装入线程，让它在上下文里面运行。</p>
+<p>一个线程在不运行的时候会<code>idle()</code></p>
+<p>关于上下文切换的函数已经实现在了<code>threads/switch.S</code>，里面是80x64汇编码。</p>
+<h2 id="相关文件"><a href="#相关文件" class="headerlink" title="相关文件"></a>相关文件</h2><ol>
+<li><p>loader.S</p>
+</li>
+<li><p>loader.h 内核加载器，把内核载入内存，并且进入<code>start.S</code>里面的函数入口<code>start()</code></p>
+<p>The kernel loader. Assembles to 512 bytes of code and data that the PC BIOS loads into memory and which in turn finds the kernel on disk, loads it into memory, and jumps to  <code>start()</code> . See section<a href="http://web.stanford.edu/~ouster/cgi-bin/cs140-spring20/pintos/pintos_6.html#SEC92" target="_blank" rel="noopener">A.1.1 The Loader</a></p>
+</li>
+<li><p>start.S </p>
+<p>Does basic setup needed for memory protection and 32-bit operation on 80x64 CPU , for details.</p>
+</li>
+<li><p>kernel.lds.S 内核的链接脚本</p>
+<p>The linker script used to link the kernel. Sets the load address of the kernel and arranges for   , for details. Again, you should not need to look at this code or modify it, but it’s here in case you’re curious.</p>
+</li>
+<li><p>init.c</p>
+</li>
+<li><p>init.h 内核初始化</p>
+<p>Kernel initialization, including <code>main()</code> , the kernel’s “main program.” You should look over<code>main()</code>at least to see what gets initialized. You might want to add your own initialization code here. See section<a href="http://web.stanford.edu/~ouster/cgi-bin/cs140-spring20/pintos/pintos_6.html#SEC94" target="_blank" rel="noopener">A.1.3 High-Level Kernel Initialization</a></p>
+</li>
+<li><p>thread.c</p>
+</li>
+<li><p>thread.h 线程基本实现</p>
+<p>Basic thread support. Much of your work will take place in these files.   , which you are likely to modify in all four projects. See<a href="http://web.stanford.edu/~ouster/cgi-bin/cs140-spring20/pintos/pintos_6.html#SEC97" target="_blank" rel="noopener">A.2.1 <code>struct thread</code></a>and<a href="http://web.stanford.edu/~ouster/cgi-bin/cs140-spring20/pintos/pintos_6.html#SEC96" target="_blank" rel="noopener">A.2 Threads</a>for more information.</p>
+</li>
+<li><p>switch.S</p>
+</li>
+<li><p>switch.h 上下文切换</p>
+<p>Assembly language routine for switching threads. Already discussed above. See section , for more information.</p>
+</li>
+<li><p>palloc.c</p>
+</li>
+<li><p>palloc.h 页分配器</p>
+<p>Page allocator, which hands out system memory in multiples of 4 kB pages. See section , for more information.</p>
+</li>
+<li><p>malloc.c </p>
+</li>
+<li><p>malloc.h 内存分配器</p>
+<p>A simple implementation of     , for more information.</p>
+</li>
+<li><p>interrupt.c</p>
+</li>
+<li><p>interrupt.h 中断处理</p>
+<p>Basic interrupt handling and functions for turning interrupts on and off. See section , for more information.</p>
+</li>
+<li><p>intr-stubs.S</p>
+</li>
+<li><p>intr-stubs.h 中断处理的低级实现</p>
+<p>Assembly code for low-level interrupt handling. See section , for more information.</p>
+</li>
+<li><p>synch.c</p>
+</li>
+<li><p>synch.h 同步原型的实现</p>
+<p>Basic synchronization primitives: semaphores, locks, condition variables, and optimization barriers. You will need to use these for synchronization in all four projects. See section , for more information.</p>
+</li>
+<li><p>io.h I/O处理</p>
+<p>Functions for I/O port access. This is mostly used by source code in the  </p>
+</li>
+<li><p>vaddr.h</p>
+</li>
+<li><p>pte.h 页表项的实现</p>
+<p>Functions and macros for working with virtual addresses and page table entries. These will be more important to you in project 3. For now, you can ignore them.</p>
+</li>
+<li><p>flags.h</p>
+<p>Macros that define a few bits in the 80x ], section 3.4.3, “EFLAGS Register,” for more information.</p>
+</li>
+<li><p>fixed-point.h</p>
+<p>Functions that implement fixed-point arithmetic, for use in your implementation of the advanced scheduler. See <a href="http://web.stanford.edu/~ouster/cgi-bin/cs140-spring20/pintos/pintos_7.html#SEC137" target="_blank" rel="noopener">B.6 Fixed-Point Real Arithmetic</a> for more information.</p>
+</li>
+<li><p>timer.c</p>
+</li>
+<li><p>timer.h 时钟的实现</p>
+<p>System timer that ticks, by default, 100 times per second. You will modify this code in this project.</p>
+</li>
+<li><p>vga.c</p>
+</li>
+<li><p>vga.h VGA接口的驱动文件</p>
+<p>VGA display driver. Responsible for writing text to the screen. You should have no need to look at this code. </p>
+</li>
+<li><p>serial.c</p>
+</li>
+<li><p>serial.h 串口驱动</p>
+<p>Serial port driver. Again,  </p>
+</li>
+<li><p>block.c</p>
+</li>
+<li><p>block.h 储存区块的驱动</p>
+<p>An abstraction layer for , that is, random-access, disk-like devices that are organized as arrays of fixed-size blocks. Out of the box, Pintos supports two types of block devices: IDE disks and partitions. Block devices, regardless of type, won’t actually be used until project 2.</p>
+</li>
+<li><p>ide.c</p>
+</li>
+<li><p>ide.h 对于扇区读写的支持</p>
+<p>Supports reading and writing sectors on up to 4 IDE disks.</p>
+</li>
+<li><p>partition.c</p>
+</li>
+<li><p>partition.h 磁盘分区的实现</p>
+<p>Understands the structure of partitions on disks, allowing a single disk to be carved up into multiple regions (partitions) for independent use.</p>
+</li>
+<li><p>kbd.c</p>
+</li>
+<li><p>kbd.h 键盘驱动</p>
+<p>Keyboard driver. Handles keystrokes passing them to the input layer (see below).</p>
+</li>
+<li><p>input.c</p>
+</li>
+<li><p>input.h 输入层的抽象</p>
+<p>Input layer. Queues input characters passed along by the keyboard or serial drivers.</p>
+</li>
+<li><p>intq.c</p>
+</li>
+<li><p>intq.h 中断队列</p>
+<p>Interrupt queue, for managing a circular queue that both kernel threads and interrupt handlers want to access. Used by the keyboard and serial drivers.</p>
+</li>
+<li><p>rtc.c</p>
+</li>
+<li><p>rtc.h 实时时钟驱动</p>
+<p>Real-time clock driver, to enable the kernel to determine the current date and time. By default, this is only used by  </p>
+</li>
+<li><p>speaker.c</p>
+</li>
+<li><p>speaker.h 扬声器驱动</p>
+<p>Driver that can produce tones on the PC speaker.</p>
+</li>
+<li><p>pit.c</p>
+</li>
+<li><p>pit.h </p>
+<p>Code to configure the 8254 Programmable Interrupt Timer. This code is used by both <code>devices/timer.c</code> and <code>devices/speaker.c</code> because each device uses one of the PIT’s output channel.</p>
+</li>
+</ol>
+<h2 id="实现目标"><a href="#实现目标" class="headerlink" title="实现目标"></a>实现目标</h2><h3 id="相关文档"><a href="#相关文档" class="headerlink" title="相关文档"></a>相关文档</h3><h3 id="Alarm-Clock"><a href="#Alarm-Clock" class="headerlink" title="Alarm Clock"></a>Alarm Clock</h3><p>Reimplement <code>timer_sleep()</code>, defined in <code>devices/timer.c</code>. Although a working implementation is provided, it “busy waits,” that is, it spins in a loop checking the current time and calling <code>thread_yield()</code> until enough time has gone by. Reimplement it to avoid busy waiting.</p>
+<ul>
+<li><p>Function: void <strong>timer_sleep</strong> (int64_t ticks)</p>
+<p>Suspends execution of the calling thread until time has advanced by at least x timer ticks. Unless the system is otherwise idle, the thread need not wake up after exactly x ticks. Just put it on the ready queue after they have waited for the right amount of time.<code>timer_sleep()</code> is useful for threads that operate in real-time, e.g. for blinking the cursor once per second.The argument to <code>timer_sleep()</code> is expressed in timer ticks, not in milliseconds or any another unit. There are <code>TIMER_FREQ</code> timer ticks per second, where <code>TIMER_FREQ</code> is a macro defined in <code>devices/timer.h</code>. The default value is 100. We don’t recommend changing this value, because any change is likely to cause many of the tests to fail.</p>
+</li>
+</ul>
+<p>Separate functions <code>timer_msleep()</code>, <code>timer_usleep()</code>, and <code>timer_nsleep()</code> do exist for sleeping a specific number of milliseconds, microseconds, or nanoseconds, respectively, but these will call <code>timer_sleep()</code> automatically when necessary. You do not need to modify them.</p>
+<p>If your delays seem too short or too long, reread the explanation of the -r option to <code>pintos</code> (see section <a href="http://web.stanford.edu/~ouster/cgi-bin/cs140-spring20/pintos/pintos_1.html#SEC6" target="_blank" rel="noopener">1.1.4 Debugging versus Testing</a>).</p>
+<p>The alarm clock implementation is not needed for later projects, although it could be useful for project </p>
+<p>始终休眠完成以后放入准备就绪的队列即可，这个函数与后续工作无关</p>
+<h3 id="优先级调度"><a href="#优先级调度" class="headerlink" title="优先级调度"></a>优先级调度</h3><p>Implement priority scheduling in Pintos. When a thread is added to the ready list that has a higher priority than the currently running thread, the current thread should immediately yield the processor to the new thread. Similarly, when threads are waiting for a lock, semaphore, or condition variable, the highest priority waiting thread should be awakened first. A thread may raise or lower its own priority at any time, but lowering its priority such that it no longer has the highest priority must cause it to immediately yield the CPU.</p>
+<p>Thread priorities range from <code>PRI_MIN</code> (0) to <code>PRI_MAX</code> (63). Lower numbers correspond to lower priorities, so that priority 0 is the lowest priority and priority 63 is the highest. The initial thread priority is passed as an argument to <code>thread_create()</code>. If there’s no reason to choose another priority, use <code>PRI_DEFAULT</code> (31). The <code>PRI_</code> macros are defined in <code>threads/thread.h</code>, and you should not change their values.</p>
+<p>One issue with priority scheduling is “priority inversion”. Consider high, medium, and low priority threads H, M, and L, respectively. If H needs to wait for L (for instance, for a lock held by L), and M is on the ready list, then H will never get the CPU because the low priority thread will not get any CPU time. A partial fix for this problem is for H to “donate” its priority to L while L is holding the lock, then recall the donation once L releases (and thus H acquires) the lock.</p>
+<p>Implement priority donation. You will need to account for all different situations in which priority donation is required. Be sure to handle multiple donations, in which multiple priorities are donated to a single thread. You must also handle nested donation: if H is waiting on a lock that M holds and M is waiting on a lock that L holds, then both M and L should be boosted to H’s priority. If necessary, you may impose a reasonable limit on depth of nested priority donation, such as 8 levels.</p>
+<p>You must implement priority donation for locks. You need not implement priority donation for the other Pintos synchronization constructs. You do need to implement priority scheduling in all cases.</p>
+<p>Finally, implement the following functions that allow a thread to examine and modify its own priority. Skeletons for these functions are provided in <code>threads/thread.c</code>.</p>
+<ul>
+<li><p>Function: void <strong>thread_set_priority</strong> (int new_priority)</p>
+<p>Sets the current thread’s priority to new_priority. If the current thread no longer has the highest priority, yields.</p>
+</li>
+<li><p>Function: int <strong>thread_get_priority</strong> (void)</p>
+<p>Returns the current thread’s priority. In the presence of priority donation, returns the higher (donated) priority.</p>
+</li>
+</ul>
+<p>You need not provide any interface to allow a thread to directly modify other threads’ priorities.</p>
+<p>The priority scheduler is not used in any later project.</p>
+<p>我们维护一个线程的优先级队列，还要解决关于优先级捐赠的问题。</p>
+<h3 id="高级调度器"><a href="#高级调度器" class="headerlink" title="高级调度器"></a>高级调度器</h3><p>每一个线程都有不同的调度需求，比如有些I/O相关的线程就需要快速的响应时间，但是对CPU计算资源的需求的就不是那么迫切。另一方面，有的很消耗CPU计算资源的线程有时也不太需要很快的响应时间。一个好的调度器应该要通过合理的调度，使得这些需求被很好的平衡。</p>
+<p>关于BSD调度器，每一个线程有一个参数叫做<code>nice</code>，从在-20到20之间浮动，这个值越高，线程就越容易放弃相关的CPU资源</p>
+<p><code>priority</code>和<code>nice</code>之间的关系有自己的一套计算公式</p>
+<script type="math/tex; mode=display">
+priority=PRI\_MAX-(recent\_cpu/4)-(nice*2)</script><p><code>recent_cpu</code>是该线程最近使用的CPU资源的一个度量，优先级从0-63浮动（也就是我们维护了64个优先级队列）</p>
+<script type="math/tex; mode=display">
+\begin{cases}
+x(0)=f(0)\\
+x(t)=a*x(t-1)+f(t)\\
+a=\frac{k}{k+1}
+\end{cases}</script><p>其中$k$是参数，$x(t)$是$t$时刻的均值，例子如下</p>
+<script type="math/tex; mode=display">
+x(5)=a^4f(1)+a^3f(2)+a^2f(3)+a^1f(4)+f(5)</script><h1 id="Project2"><a href="#Project2" class="headerlink" title="Project2"></a>Project2</h1><h1 id="Project3"><a href="#Project3" class="headerlink" title="Project3"></a>Project3</h1><h1 id="Project4"><a href="#Project4" class="headerlink" title="Project4"></a>Project4</h1>]]></content>
   </entry>
   <entry>
     <title>Rust 错误处理</title>
@@ -159,29 +485,6 @@
 <li>同一个函数中使用<code>?</code>操作符的地方必须返回同一个错误类型，否则会编译失败</li>
 <li>main函数有两个有效返回值，分别为<code>()</code>，<code>Result&lt;T, E&gt;</code></li>
 </ul>
-]]></content>
-  </entry>
-  <entry>
-    <title>Insights towards CUDA</title>
-    <url>/2020/09/14/Insights-towards-CUDA/</url>
-    <content><![CDATA[<p>这里介绍一下关于cuda相关的入门级知识</p>
-<a id="more"></a>
-<h1 id="编程模型"><a href="#编程模型" class="headerlink" title="编程模型"></a>编程模型</h1><p>CUDA是一个异构的编程模型，由CPU和GPU来协同完成计算任务。</p>
-<p>这里我们抽象出了两个基本的概念</p>
-<ul>
-<li>Device，指代GPU和它的内存</li>
-<li>Host，指代CPU和它的内存</li>
-</ul>
-<p>一个典型的流程如下：</p>
-<ol>
-<li>分配host内存，并进行数据初始化；</li>
-<li>分配device内存，并从host将数据拷贝到device上；</li>
-<li>调用CUDA的核函数在device上完成指定的运算；</li>
-<li>将device上的运算结果拷贝到host上；</li>
-<li>释放device和host上分配的内存</li>
-</ol>
-<p>从CPU到GPU的一步（从HOST到DEVICE）的关键在于核函数（kernel function），核函数的声明通过<code>__global__</code>这个宏定义。GPU上的每一个线程都会计算这个核函数，每一个线程都有一个内置的变量<code>threadIdx</code>来获取线程ID</p>
-<p><img src="\images\1600042285745.png" alt="GPU结构示意图"></p>
 ]]></content>
   </entry>
   <entry>
@@ -255,6 +558,28 @@
 </ul>
 </li>
 </ul>
+]]></content>
+  </entry>
+  <entry>
+    <title>VDO-SLAM</title>
+    <url>/2020/08/08/VDO-SLAM/</url>
+    <content><![CDATA[<p>2020年刚刚挂在arXiv的文章，对于静态和动态的位姿估计做了一个统一。</p>
+<p>相关的内容会在未来补上，先挖一个坑。</p>
+<a id="more"></a>
+]]></content>
+  </entry>
+  <entry>
+    <title>pybind11示例</title>
+    <url>/2020/09/09/pybind11%E7%A4%BA%E4%BE%8B/</url>
+    <content><![CDATA[<p><code>pybind11</code>是一个C++的库，它能够在Python和C++建立绑定，达到互相调用接口的效果</p>
+<a id="more"></a>
+<p>在这里，假设所有的文件开头都有如下的声明</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;pybind11/pybind11.h&gt;</span></span></span><br><span class="line"><span class="keyword">namespace</span> py = pybind11;</span><br></pre></td></tr></table></figure>
+<p>一般来说，我们会分别建立函数的文件和Python的绑定文件。</p>
+<p>一个最简单的例子就是</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// file: example.cpp</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pybind11/pybind11.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> i, <span class="keyword">int</span> j)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> i + j;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">PYBIND11_MODULE(example, m) &#123;</span><br><span class="line">    m.doc() = <span class="string">"pybind11 example plugin"</span>; <span class="comment">// optional module docstring</span></span><br><span class="line"></span><br><span class="line">    m.def(<span class="string">"add"</span>, &amp;add, <span class="string">"A function which adds two numbers"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>并且通过一下命令来编译</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> c++ -O3 -Wall -shared -std=c++11 -fPIC `python3 -m pybind11 --includes` example.cpp -o example`python3-config --extension-suffix`</span></span><br></pre></td></tr></table></figure>
 ]]></content>
   </entry>
   <entry>
@@ -501,50 +826,6 @@
       </tags>
   </entry>
   <entry>
-    <title>VDO-SLAM</title>
-    <url>/2020/08/08/VDO-SLAM/</url>
-    <content><![CDATA[<p>2020年刚刚挂在arXiv的文章，对于静态和动态的位姿估计做了一个统一。</p>
-<p>相关的内容会在未来补上，先挖一个坑。</p>
-<a id="more"></a>
-]]></content>
-  </entry>
-  <entry>
-    <title>pybind11示例</title>
-    <url>/2020/09/09/pybind11%E7%A4%BA%E4%BE%8B/</url>
-    <content><![CDATA[<p><code>pybind11</code>是一个C++的库，它能够在Python和C++建立绑定，达到互相调用接口的效果</p>
-<a id="more"></a>
-<p>在这里，假设所有的文件开头都有如下的声明</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;pybind11/pybind11.h&gt;</span></span></span><br><span class="line"><span class="keyword">namespace</span> py = pybind11;</span><br></pre></td></tr></table></figure>
-<p>一般来说，我们会分别建立函数的文件和Python的绑定文件。</p>
-<p>一个最简单的例子就是</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// file: example.cpp</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;pybind11/pybind11.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> i, <span class="keyword">int</span> j)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> i + j;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">PYBIND11_MODULE(example, m) &#123;</span><br><span class="line">    m.doc() = <span class="string">"pybind11 example plugin"</span>; <span class="comment">// optional module docstring</span></span><br><span class="line"></span><br><span class="line">    m.def(<span class="string">"add"</span>, &amp;add, <span class="string">"A function which adds two numbers"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>并且通过一下命令来编译</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> c++ -O3 -Wall -shared -std=c++11 -fPIC `python3 -m pybind11 --includes` example.cpp -o example`python3-config --extension-suffix`</span></span><br></pre></td></tr></table></figure>
-]]></content>
-  </entry>
-  <entry>
-    <title>cmake构建系统</title>
-    <url>/2020/08/09/cmake%E6%9E%84%E5%BB%BA%E7%B3%BB%E7%BB%9F/</url>
-    <content><![CDATA[<p>C++在代码复用这一块做的一言难尽，一些依赖第三方库的项目往往很难直接拿来跑，有一大堆的依赖问题需要处理。在这一块，目前比较好的方案只有cmake了。委员会其实可以学学Rust，考虑出个包管理器。但想到种种历史包袱，大概是有生之年了，C++50标准再见咯。</p>
-<a id="more"></a>
-<p>SLAM领域的工作还是要用到不少第三方库的，比如<code>sophus</code>,<code>eigen</code>,<code>g2o</code>，所以cmake还是得好好用起来。</p>
-<p>cmake最基本的功能</p>
-<ul>
-<li>添加版本号</li>
-<li>确定CXX标准</li>
-<li>构建</li>
-<li>测试</li>
-<li>添加库并且给库添加特殊要求</li>
-<li>安装</li>
-</ul>
-<p>对于cmake的种种操作都包含在一个叫做<code>CMakeLists.txt</code>的文件中，在项目的目录下面创建这个文件就好了。</p>
-<p>关于cmake最好的学习方式我认为不是官方的tutorial，官方文档作为一个参考就可以了，反而应该看看优秀的开源代码是怎么运用cmake的。</p>
-<p>下面贴一段<code>opengv</code>的<code>CMakeLists.txt</code>，不难发现，稍微大型一点的项目，这个文件超过三百行是一件非常平常的事情。</p>
-<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="keyword">cmake_minimum_required</span>(VERSION <span class="number">3.1</span>.<span class="number">3</span>)</span><br><span class="line"><span class="keyword">project</span>(opengv VERSION <span class="number">1.0</span> LANGUAGES CXX)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Set the build type.  Options are:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#  None (CMAKE_C_FLAGS or CMAKE_CXX_FLAGS used)</span></span><br><span class="line"><span class="comment">#  Debug (CMAKE_C_FLAGS_DEBUG or CMAKE_CXX_FLAGS_DEBUG)</span></span><br><span class="line"><span class="comment">#  Release (CMAKE_C_FLAGS_RELEASE or CMAKE_CXX_FLAGS_RELEASE)</span></span><br><span class="line"><span class="comment">#  RelWithDebInfo (CMAKE_C_FLAGS_RELWITHDEBINFO or CMAKE_CXX_FLAGS_RELWITHDEBINFO)</span></span><br><span class="line"><span class="comment">#  MinSizeRel (CMAKE_C_FLAGS_MINSIZEREL or CMAKE_CXX_FLAGS_MINSIZEREL)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">set</span>(CMAKE_BUILD_TYPE Release)</span><br><span class="line"></span><br><span class="line"><span class="comment">#set the default path for built executables to the "bin" directory</span></span><br><span class="line"><span class="keyword">set</span>(EXECUTABLE_OUTPUT_PATH <span class="variable">$&#123;CMAKE_BINARY_DIR&#125;</span>/bin)</span><br><span class="line"><span class="comment">#set the default path for built libraries to the "lib" directory</span></span><br><span class="line"><span class="keyword">set</span>(LIBRARY_OUTPUT_PATH <span class="variable">$&#123;CMAKE_BINARY_DIR&#125;</span>/lib)</span><br><span class="line"></span><br><span class="line"><span class="keyword">OPTION</span>(BUILD_TESTS <span class="string">"Build tests"</span> <span class="keyword">ON</span>)</span><br><span class="line"><span class="keyword">OPTION</span>(BUILD_PYTHON <span class="string">"Build Python extension"</span> <span class="keyword">OFF</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">IF</span>(MSVC)</span><br><span class="line">  <span class="keyword">set</span>(BUILD_SHARED_LIBS <span class="keyword">OFF</span>)</span><br><span class="line"><span class="keyword">ELSE</span>()</span><br><span class="line">  <span class="keyword">OPTION</span>(BUILD_SHARED_LIBS <span class="string">"Build shared libraries"</span> <span class="keyword">OFF</span>)</span><br><span class="line">  <span class="keyword">OPTION</span>(BUILD_POSITION_INDEPENDENT_CODE <span class="string">"Build position independent code (-fPIC)"</span> <span class="keyword">ON</span>)</span><br><span class="line"><span class="keyword">ENDIF</span>()</span><br><span class="line"></span><br><span class="line"><span class="keyword">IF</span>(MSVC)</span><br><span class="line">  <span class="keyword">add_compile_options</span>(/wd4514 /wd4267 /bigobj)</span><br><span class="line">  <span class="keyword">add_definitions</span>(-D_USE_MATH_DEFINES)</span><br><span class="line"><span class="keyword">ELSE</span>()</span><br><span class="line">  <span class="keyword">IF</span> (CMAKE_SYSTEM_PROCESSOR <span class="keyword">MATCHES</span> <span class="string">"(arm64)|(ARM64)|(aarch64)|(AARCH64)"</span>)</span><br><span class="line">    <span class="keyword">add_definitions</span> (-march=armv8-a)</span><br><span class="line">  <span class="keyword">ELSEIF</span> (CMAKE_SYSTEM_PROCESSOR <span class="keyword">MATCHES</span> </span><br><span class="line">          <span class="string">"(arm)|(ARM)|(armhf)|(ARMHF)|(armel)|(ARMEL)"</span>)</span><br><span class="line">    <span class="keyword">add_definitions</span> (-march=armv7-a)</span><br><span class="line">  <span class="keyword">ELSE</span> ()</span><br><span class="line">    <span class="keyword">add_definitions</span> (-march=native) <span class="comment">#TODO use correct c++11 def once everybody has moved to gcc 4.7 # for now I even removed std=gnu++0x</span></span><br><span class="line">  <span class="keyword">ENDIF</span>()</span><br><span class="line">  <span class="keyword">add_definitions</span> (</span><br><span class="line">    -O3</span><br><span class="line">    -Wall</span><br><span class="line">    -Wextra</span><br><span class="line">    <span class="comment">#-Werror</span></span><br><span class="line">    -Wwrite-strings</span><br><span class="line">    -Wno-unused-parameter</span><br><span class="line">    -fno-strict-aliasing</span><br><span class="line">  )</span><br><span class="line"><span class="keyword">ENDIF</span>()</span><br><span class="line"></span><br><span class="line"><span class="keyword">IF</span>(BUILD_POSITION_INDEPENDENT_CODE)</span><br><span class="line">  <span class="keyword">add_definitions</span>( -fPIC )</span><br><span class="line"><span class="keyword">ENDIF</span>()</span><br><span class="line"></span><br><span class="line"><span class="keyword">set</span>(CMAKE_MODULE_PATH <span class="variable">$&#123;CMAKE_MODULE_PATH&#125;</span> <span class="string">"$&#123;PROJECT_SOURCE_DIR&#125;/modules/"</span>)</span><br><span class="line"><span class="keyword">find_package</span>(Eigen REQUIRED)</span><br><span class="line"><span class="keyword">set</span>(ADDITIONAL_INCLUDE_DIRS <span class="variable">$&#123;EIGEN_INCLUDE_DIRS&#125;</span> <span class="variable">$&#123;EIGEN_INCLUDE_DIR&#125;</span>/unsupported)</span><br><span class="line"></span><br><span class="line"><span class="keyword">set</span>( OPENGV_SOURCE_FILES</span><br><span class="line">  src/absolute_pose/modules/main.cpp</span><br><span class="line">  src/absolute_pose/modules/gp3p/code.cpp</span><br><span class="line">  src/absolute_pose/modules/gp3p/init.cpp</span><br><span class="line">  src/absolute_pose/modules/gp3p/reductors.cpp</span><br><span class="line">  src/absolute_pose/modules/gp3p/spolynomials.cpp</span><br><span class="line">  src/absolute_pose/modules/Epnp.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp1/code.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp1/init.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp1/reductors.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp1/spolynomials.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp2/code.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp2/init.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp2/reductors.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp2/spolynomials.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp3/code.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp3/init.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp3/reductors.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp3/spolynomials.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp4/code.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp4/init.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp4/reductors.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp4/spolynomials.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp5/code.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp5/init.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp5/reductors.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp5/spolynomials.cpp</span><br><span class="line">  src/absolute_pose/modules/upnp2.cpp</span><br><span class="line">  src/absolute_pose/modules/upnp4.cpp</span><br><span class="line">  src/relative_pose/modules/main.cpp</span><br><span class="line">  src/relative_pose/modules/fivept_nister/modules.cpp</span><br><span class="line">  src/relative_pose/modules/fivept_stewenius/modules.cpp</span><br><span class="line">  src/relative_pose/modules/fivept_kneip/code.cpp</span><br><span class="line">  src/relative_pose/modules/fivept_kneip/init.cpp</span><br><span class="line">  src/relative_pose/modules/fivept_kneip/reductors.cpp</span><br><span class="line">  src/relative_pose/modules/fivept_kneip/spolynomials.cpp</span><br><span class="line">  src/relative_pose/modules/sixpt/modules2.cpp</span><br><span class="line">  src/relative_pose/modules/eigensolver/modules.cpp</span><br><span class="line">  src/relative_pose/modules/ge/modules.cpp</span><br><span class="line">  src/<span class="keyword">math</span>/cayley.cpp</span><br><span class="line">  src/<span class="keyword">math</span>/quaternion.cpp</span><br><span class="line">  src/<span class="keyword">math</span>/arun.cpp</span><br><span class="line">  src/<span class="keyword">math</span>/Sturm.cpp</span><br><span class="line">  src/<span class="keyword">math</span>/roots.cpp</span><br><span class="line">  src/<span class="keyword">math</span>/gauss_jordan.cpp</span><br><span class="line">  src/absolute_pose/methods.cpp</span><br><span class="line">  src/absolute_pose/CentralAbsoluteAdapter.cpp</span><br><span class="line">  src/absolute_pose/NoncentralAbsoluteAdapter.cpp</span><br><span class="line">  src/absolute_pose/NoncentralAbsoluteMultiAdapter.cpp</span><br><span class="line">  src/relative_pose/methods.cpp</span><br><span class="line">  src/relative_pose/CentralRelativeAdapter.cpp</span><br><span class="line">  src/relative_pose/CentralRelativeWeightingAdapter.cpp</span><br><span class="line">  src/relative_pose/NoncentralRelativeAdapter.cpp</span><br><span class="line">  src/relative_pose/CentralRelativeMultiAdapter.cpp</span><br><span class="line">  src/relative_pose/NoncentralRelativeMultiAdapter.cpp</span><br><span class="line">  src/triangulation/methods.cpp</span><br><span class="line">  src/point_cloud/methods.cpp</span><br><span class="line">  src/point_cloud/PointCloudAdapter.cpp</span><br><span class="line">  src/sac_problems/absolute_pose/AbsolutePoseSacProblem.cpp</span><br><span class="line">  src/sac_problems/absolute_pose/MultiNoncentralAbsolutePoseSacProblem.cpp</span><br><span class="line">  src/sac_problems/relative_pose/CentralRelativePoseSacProblem.cpp</span><br><span class="line">  src/sac_problems/relative_pose/NoncentralRelativePoseSacProblem.cpp</span><br><span class="line">  src/sac_problems/relative_pose/RotationOnlySacProblem.cpp</span><br><span class="line">  src/sac_problems/relative_pose/TranslationOnlySacProblem.cpp</span><br><span class="line">  src/sac_problems/relative_pose/EigensolverSacProblem.cpp</span><br><span class="line">  src/sac_problems/relative_pose/MultiCentralRelativePoseSacProblem.cpp</span><br><span class="line">  src/sac_problems/relative_pose/MultiNoncentralRelativePoseSacProblem.cpp</span><br><span class="line">  src/sac_problems/point_cloud/PointCloudSacProblem.cpp</span><br><span class="line">  src/absolute_pose/MACentralAbsolute.cpp</span><br><span class="line">  src/absolute_pose/MANoncentralAbsolute.cpp</span><br><span class="line">  src/relative_pose/MACentralRelative.cpp</span><br><span class="line">  src/relative_pose/MANoncentralRelative.cpp</span><br><span class="line">  src/relative_pose/MANoncentralRelativeMulti.cpp</span><br><span class="line">  src/point_cloud/MAPointCloud.cpp )</span><br><span class="line"></span><br><span class="line"><span class="keyword">set</span>( OPENGV_HEADER_FILES</span><br><span class="line">  <span class="keyword">include</span>/opengv/types.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/OptimizationFunctor.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/absolute_pose/methods.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/relative_pose/methods.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/triangulation/methods.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/point_cloud/methods.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/<span class="keyword">math</span>/cayley.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/<span class="keyword">math</span>/quaternion.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/<span class="keyword">math</span>/arun.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/<span class="keyword">math</span>/Sturm.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/<span class="keyword">math</span>/roots.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/<span class="keyword">math</span>/gauss_jordan.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/absolute_pose/AbsoluteAdapterBase.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/absolute_pose/CentralAbsoluteAdapter.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/absolute_pose/NoncentralAbsoluteAdapter.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/absolute_pose/NoncentralAbsoluteMultiAdapter.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/absolute_pose/AbsoluteMultiAdapterBase.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/relative_pose/RelativeAdapterBase.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/relative_pose/RelativeMultiAdapterBase.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/relative_pose/CentralRelativeAdapter.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/relative_pose/CentralRelativeWeightingAdapter.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/relative_pose/NoncentralRelativeAdapter.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/relative_pose/CentralRelativeMultiAdapter.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/relative_pose/NoncentralRelativeMultiAdapter.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/point_cloud/PointCloudAdapterBase.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/point_cloud/PointCloudAdapter.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/sac_problems/absolute_pose/AbsolutePoseSacProblem.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/sac_problems/absolute_pose/MultiNoncentralAbsolutePoseSacProblem.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/sac_problems/relative_pose/CentralRelativePoseSacProblem.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/sac_problems/relative_pose/NoncentralRelativePoseSacProblem.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/sac_problems/relative_pose/MultiCentralRelativePoseSacProblem.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/sac_problems/relative_pose/MultiNoncentralRelativePoseSacProblem.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/sac_problems/relative_pose/EigensolverSacProblem.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/sac_problems/relative_pose/RotationOnlySacProblem.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/sac_problems/relative_pose/TranslationOnlySacProblem.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/sac_problems/point_cloud/PointCloudSacProblem.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/absolute_pose/MACentralAbsolute.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/absolute_pose/MANoncentralAbsolute.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/relative_pose/MACentralRelative.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/relative_pose/MANoncentralRelative.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/relative_pose/MANoncentralRelativeMulti.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/point_cloud/MAPointCloud.hpp )</span><br><span class="line"></span><br><span class="line"><span class="keyword">add_library</span>( opengv <span class="variable">$&#123;OPENGV_SOURCE_FILES&#125;</span> <span class="variable">$&#123;OPENGV_HEADER_FILES&#125;</span> )</span><br><span class="line"><span class="keyword">add_library</span>( random_generators <span class="keyword">test</span>/random_generators.cpp <span class="keyword">test</span>/random_generators.hpp <span class="keyword">test</span>/experiment_helpers.cpp <span class="keyword">test</span>/experiment_helpers.hpp <span class="keyword">test</span>/time_measurement.cpp <span class="keyword">test</span>/time_measurement.hpp )</span><br><span class="line"><span class="keyword">set_target_properties</span>( opengv random_generators PROPERTIES</span><br><span class="line">                    SOVERSION <span class="variable">$&#123;PROJECT_VERSION&#125;</span></span><br><span class="line">                    VERSION <span class="variable">$&#123;PROJECT_VERSION&#125;</span></span><br><span class="line">                    CXX_STANDARD <span class="number">11</span></span><br><span class="line">                    CXX_STANDARD_REQUIRED <span class="keyword">ON</span></span><br><span class="line">                    DEBUG_POSTFIX d )</span><br><span class="line"></span><br><span class="line"><span class="keyword">target_include_directories</span>( opengv PUBLIC </span><br><span class="line">                <span class="comment"># only when building from the source tree</span></span><br><span class="line">                $&lt;BUILD_INTERFACE:<span class="variable">$&#123;PROJECT_SOURCE_DIR&#125;</span>/<span class="keyword">include</span>&gt;</span><br><span class="line">                <span class="comment"># only when using the lib from the install path</span></span><br><span class="line">                $&lt;INSTALL_INTERFACE:<span class="keyword">include</span>&gt;</span><br><span class="line">                <span class="variable">$&#123;ADDITIONAL_INCLUDE_DIRS&#125;</span> )</span><br><span class="line"></span><br><span class="line"><span class="keyword">target_include_directories</span>( random_generators PRIVATE <span class="variable">$&#123;ADDITIONAL_INCLUDE_DIRS&#125;</span> )</span><br><span class="line"></span><br><span class="line"><span class="keyword">target_link_libraries</span>( random_generators opengv )</span><br><span class="line"></span><br><span class="line"><span class="keyword">IF</span> (BUILD_TESTS)</span><br><span class="line">  <span class="keyword">enable_testing</span>()</span><br><span class="line">  <span class="keyword">include_directories</span>( <span class="variable">$&#123;ADDITIONAL_INCLUDE_DIRS&#125;</span> )</span><br><span class="line"></span><br><span class="line">  <span class="keyword">add_executable</span>( test_absolute_pose <span class="keyword">test</span>/test_absolute_pose.cpp )</span><br><span class="line">  <span class="keyword">target_link_libraries</span>( test_absolute_pose opengv random_generators )</span><br><span class="line">  <span class="keyword">add_test</span>(NAME test_absolute_pose</span><br><span class="line">    WORKING_DIRECTORY <span class="variable">$&#123;EXECUTABLE_OUTPUT_PATH&#125;</span></span><br><span class="line">    <span class="keyword">COMMAND</span> test_absolute_pose)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">add_executable</span>( test_absolute_pose_sac <span class="keyword">test</span>/test_absolute_pose_sac.cpp )</span><br><span class="line">  <span class="keyword">target_link_libraries</span>( test_absolute_pose_sac opengv random_generators )</span><br><span class="line">  <span class="keyword">add_test</span>(NAME test_absolute_pose_sac</span><br><span class="line">    WORKING_DIRECTORY <span class="variable">$&#123;CMAKE_RUNTIME_OUTPUT_DIRECTORY&#125;</span></span><br><span class="line">    <span class="keyword">COMMAND</span> test_absolute_pose_sac)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">add_executable</span>( test_noncentral_absolute_pose <span class="keyword">test</span>/test_noncentral_absolute_pose.cpp )</span><br><span class="line">  <span class="keyword">target_link_libraries</span>( test_noncentral_absolute_pose opengv random_generators )</span><br><span class="line">  <span class="keyword">add_test</span>(NAME test_noncentral_absolute_pose</span><br><span class="line">    WORKING_DIRECTORY <span class="variable">$&#123;CMAKE_RUNTIME_OUTPUT_DIRECTORY&#125;</span></span><br><span class="line">    <span class="keyword">COMMAND</span> test_noncentral_absolute_pose)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">add_executable</span>( test_noncentral_absolute_pose_sac <span class="keyword">test</span>/test_noncentral_absolute_pose_sac.cpp )</span><br><span class="line">  <span class="keyword">target_link_libraries</span>( test_noncentral_absolute_pose_sac opengv random_generators )</span><br><span class="line">  <span class="keyword">add_test</span>(NAME test_noncentral_absolute_pose_sac</span><br><span class="line">    WORKING_DIRECTORY <span class="variable">$&#123;CMAKE_RUNTIME_OUTPUT_DIRECTORY&#125;</span></span><br><span class="line">    <span class="keyword">COMMAND</span> test_noncentral_absolute_pose_sac)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">add_executable</span>( test_multi_noncentral_absolute_pose_sac <span class="keyword">test</span>/test_multi_noncentral_absolute_pose_sac.cpp )</span><br><span class="line">  <span class="keyword">target_link_libraries</span>( test_multi_noncentral_absolute_pose_sac opengv random_generators )</span><br><span class="line">  <span class="keyword">add_test</span>(NAME test_multi_noncentral_absolute_pose_sac</span><br><span class="line">    WORKING_DIRECTORY <span class="variable">$&#123;CMAKE_RUNTIME_OUTPUT_DIRECTORY&#125;</span></span><br><span class="line">    <span class="keyword">COMMAND</span> test_multi_noncentral_absolute_pose_sac)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">add_executable</span>( test_relative_pose <span class="keyword">test</span>/test_relative_pose.cpp )</span><br><span class="line">  <span class="keyword">target_link_libraries</span>( test_relative_pose opengv random_generators )</span><br><span class="line">  <span class="keyword">add_test</span>(NAME test_relative_pose</span><br><span class="line">    WORKING_DIRECTORY <span class="variable">$&#123;CMAKE_RUNTIME_OUTPUT_DIRECTORY&#125;</span></span><br><span class="line">    <span class="keyword">COMMAND</span> test_relative_pose)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">add_executable</span>( test_relative_pose_rotationOnly <span class="keyword">test</span>/test_relative_pose_rotationOnly.cpp )</span><br><span class="line">  <span class="keyword">target_link_libraries</span>( test_relative_pose_rotationOnly opengv random_generators )</span><br><span class="line">  <span class="keyword">add_test</span>(NAME test_relative_pose_rotationOnly</span><br><span class="line">    WORKING_DIRECTORY <span class="variable">$&#123;CMAKE_RUNTIME_OUTPUT_DIRECTORY&#125;</span></span><br><span class="line">    <span class="keyword">COMMAND</span> test_relative_pose_rotationOnly)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">add_executable</span>( test_relative_pose_rotationOnly_sac <span class="keyword">test</span>/test_relative_pose_rotationOnly_sac.cpp )</span><br><span class="line">  <span class="keyword">target_link_libraries</span>( test_relative_pose_rotationOnly_sac opengv random_generators )</span><br><span class="line">  <span class="keyword">add_test</span>(NAME test_relative_pose_rotationOnly_sac</span><br><span class="line">    WORKING_DIRECTORY <span class="variable">$&#123;CMAKE_RUNTIME_OUTPUT_DIRECTORY&#125;</span></span><br><span class="line">    <span class="keyword">COMMAND</span> test_relative_pose_rotationOnly_sac)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">add_executable</span>( test_relative_pose_sac <span class="keyword">test</span>/test_relative_pose_sac.cpp )</span><br><span class="line">  <span class="keyword">target_link_libraries</span>( test_relative_pose_sac opengv random_generators )</span><br><span class="line">  <span class="keyword">add_test</span>(NAME test_relative_pose_sac</span><br><span class="line">    WORKING_DIRECTORY <span class="variable">$&#123;CMAKE_RUNTIME_OUTPUT_DIRECTORY&#125;</span></span><br><span class="line">    <span class="keyword">COMMAND</span> test_relative_pose_sac)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">add_executable</span>( test_noncentral_relative_pose <span class="keyword">test</span>/test_noncentral_relative_pose.cpp )</span><br><span class="line">  <span class="keyword">target_link_libraries</span>( test_noncentral_relative_pose opengv random_generators )</span><br><span class="line">  <span class="keyword">add_test</span>(NAME test_noncentral_relative_pose</span><br><span class="line">    WORKING_DIRECTORY <span class="variable">$&#123;CMAKE_RUNTIME_OUTPUT_DIRECTORY&#125;</span></span><br><span class="line">    <span class="keyword">COMMAND</span> test_noncentral_relative_pose)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">add_executable</span>( test_noncentral_relative_pose_sac <span class="keyword">test</span>/test_noncentral_relative_pose_sac.cpp )</span><br><span class="line">  <span class="keyword">target_link_libraries</span>( test_noncentral_relative_pose_sac opengv random_generators )</span><br><span class="line">  <span class="keyword">add_test</span>(NAME test_noncentral_relative_pose_sac</span><br><span class="line">    WORKING_DIRECTORY <span class="variable">$&#123;CMAKE_RUNTIME_OUTPUT_DIRECTORY&#125;</span></span><br><span class="line">    <span class="keyword">COMMAND</span> test_noncentral_relative_pose_sac)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">add_executable</span>( test_multi_noncentral_relative_pose_sac <span class="keyword">test</span>/test_multi_noncentral_relative_pose_sac.cpp )</span><br><span class="line">  <span class="keyword">target_link_libraries</span>( test_multi_noncentral_relative_pose_sac opengv random_generators )</span><br><span class="line">  <span class="keyword">add_test</span>(NAME test_multi_noncentral_relative_pose_sac</span><br><span class="line">    WORKING_DIRECTORY <span class="variable">$&#123;CMAKE_RUNTIME_OUTPUT_DIRECTORY&#125;</span></span><br><span class="line">    <span class="keyword">COMMAND</span> test_multi_noncentral_relative_pose_sac)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">add_executable</span>( test_eigensolver_sac <span class="keyword">test</span>/test_eigensolver_sac.cpp )</span><br><span class="line">  <span class="keyword">target_link_libraries</span>( test_eigensolver_sac opengv random_generators )</span><br><span class="line">  <span class="keyword">add_test</span>(NAME test_eigensolver_sac</span><br><span class="line">    WORKING_DIRECTORY <span class="variable">$&#123;CMAKE_RUNTIME_OUTPUT_DIRECTORY&#125;</span></span><br><span class="line">    <span class="keyword">COMMAND</span> test_eigensolver_sac)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">add_executable</span>( test_triangulation <span class="keyword">test</span>/test_triangulation.cpp )</span><br><span class="line">  <span class="keyword">target_link_libraries</span>( test_triangulation opengv random_generators )</span><br><span class="line">  <span class="keyword">add_test</span>(NAME test_triangulation</span><br><span class="line">    WORKING_DIRECTORY <span class="variable">$&#123;CMAKE_RUNTIME_OUTPUT_DIRECTORY&#125;</span></span><br><span class="line">    <span class="keyword">COMMAND</span> test_triangulation)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">add_executable</span>( test_eigensolver <span class="keyword">test</span>/test_eigensolver.cpp )</span><br><span class="line">  <span class="keyword">target_link_libraries</span>( test_eigensolver opengv random_generators )</span><br><span class="line">  <span class="keyword">add_test</span>(NAME test_eigensolver</span><br><span class="line">    WORKING_DIRECTORY <span class="variable">$&#123;CMAKE_RUNTIME_OUTPUT_DIRECTORY&#125;</span></span><br><span class="line">    <span class="keyword">COMMAND</span> test_eigensolver)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">add_executable</span>( test_point_cloud <span class="keyword">test</span>/test_point_cloud.cpp )</span><br><span class="line">  <span class="keyword">target_link_libraries</span>( test_point_cloud opengv random_generators )</span><br><span class="line">  <span class="keyword">add_test</span>(NAME  test_point_cloud</span><br><span class="line">    WORKING_DIRECTORY <span class="variable">$&#123;CMAKE_RUNTIME_OUTPUT_DIRECTORY&#125;</span></span><br><span class="line">    <span class="keyword">COMMAND</span> test_point_cloud)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">add_executable</span>( test_point_cloud_sac <span class="keyword">test</span>/test_point_cloud_sac.cpp )</span><br><span class="line">  <span class="keyword">target_link_libraries</span>( test_point_cloud_sac opengv random_generators )</span><br><span class="line">  <span class="keyword">add_test</span>(NAME test_point_cloud_sac</span><br><span class="line">    WORKING_DIRECTORY <span class="variable">$&#123;CMAKE_RUNTIME_OUTPUT_DIRECTORY&#125;</span></span><br><span class="line">    <span class="keyword">COMMAND</span> test_point_cloud_sac)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">add_executable</span>( test_Sturm <span class="keyword">test</span>/test_Sturm.cpp )</span><br><span class="line">  <span class="keyword">target_link_libraries</span>( test_Sturm opengv random_generators )</span><br><span class="line">  <span class="keyword">add_test</span>(NAME test_Sturm</span><br><span class="line">    WORKING_DIRECTORY <span class="variable">$&#123;CMAKE_RUNTIME_OUTPUT_DIRECTORY&#125;</span></span><br><span class="line">    <span class="keyword">COMMAND</span> test_Sturm)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">set_target_properties</span>(</span><br><span class="line">    test_absolute_pose</span><br><span class="line">    test_absolute_pose_sac</span><br><span class="line">    test_noncentral_absolute_pose</span><br><span class="line">    test_noncentral_absolute_pose_sac</span><br><span class="line">    test_multi_noncentral_absolute_pose_sac</span><br><span class="line">    test_relative_pose</span><br><span class="line">    test_relative_pose_rotationOnly</span><br><span class="line">    test_relative_pose_rotationOnly_sac</span><br><span class="line">    test_relative_pose_sac</span><br><span class="line">    test_noncentral_relative_pose</span><br><span class="line">    test_noncentral_relative_pose_sac</span><br><span class="line">    test_multi_noncentral_relative_pose_sac</span><br><span class="line">    test_eigensolver_sac</span><br><span class="line">    test_triangulation</span><br><span class="line">    test_eigensolver</span><br><span class="line">    test_point_cloud</span><br><span class="line">    test_point_cloud_sac</span><br><span class="line">    test_Sturm</span><br><span class="line"></span><br><span class="line">    PROPERTIES</span><br><span class="line">    CXX_STANDARD <span class="number">11</span></span><br><span class="line">    CXX_STANDARD_REQUIRED <span class="keyword">ON</span></span><br><span class="line">    DEBUG_POSTFIX d )</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">ENDIF</span>()</span><br><span class="line"></span><br><span class="line"><span class="comment"># Configuration</span></span><br><span class="line"><span class="keyword">set</span>(config_install_dir <span class="string">"lib/cmake/$&#123;PROJECT_NAME&#125;-$&#123;PROJECT_VERSION&#125;"</span>)</span><br><span class="line"><span class="keyword">set</span>(include_install_dir <span class="string">"include"</span>)</span><br><span class="line"><span class="keyword">set</span>(version_config <span class="string">"$&#123;CMAKE_CURRENT_BINARY_DIR&#125;/$&#123;PROJECT_NAME&#125;ConfigVersion.cmake"</span>)</span><br><span class="line"><span class="keyword">set</span>(project_config <span class="string">"$&#123;CMAKE_CURRENT_BINARY_DIR&#125;/$&#123;PROJECT_NAME&#125;Config.cmake"</span>)</span><br><span class="line"><span class="keyword">set</span>(targets_export_name <span class="string">"$&#123;PROJECT_NAME&#125;Targets"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Include module with fuction 'write_basic_package_version_file'</span></span><br><span class="line"><span class="keyword">include</span>(CMakePackageConfigHelpers)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Configure '&lt;PROJECT-NAME&gt;ConfigVersion.cmake'</span></span><br><span class="line"><span class="comment"># <span class="doctag">Note:</span> PROJECT_VERSION is used as a VERSION</span></span><br><span class="line">write_basic_package_version_file(</span><br><span class="line">    <span class="string">"$&#123;version_config&#125;"</span> COMPATIBILITY SameMajorVersion )</span><br><span class="line"></span><br><span class="line"><span class="comment"># Configure '&lt;PROJECT-NAME&gt;Config.cmake'</span></span><br><span class="line"><span class="comment"># Use variables:</span></span><br><span class="line"><span class="comment">#   * targets_export_name</span></span><br><span class="line"><span class="comment">#   * PROJECT_NAME</span></span><br><span class="line">configure_package_config_file(</span><br><span class="line">    <span class="string">"modules/Config.cmake.in"</span></span><br><span class="line">    <span class="string">"$&#123;project_config&#125;"</span></span><br><span class="line">    INSTALL_DESTINATION <span class="string">"$&#123;config_install_dir&#125;"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Export '&lt;PROJECT-NAME&gt;Targets.cmake' to build dir (to find package in build dir without install)</span></span><br><span class="line"><span class="keyword">export</span>(TARGETS opengv <span class="keyword">FILE</span> <span class="string">"$&#123;CMAKE_CURRENT_BINARY_DIR&#125;/$&#123;targets_export_name&#125;.cmake"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Targets:</span></span><br><span class="line"><span class="keyword">install</span>(TARGETS opengv</span><br><span class="line">        <span class="keyword">EXPORT</span> <span class="string">"$&#123;targets_export_name&#125;"</span></span><br><span class="line">        LIBRARY DESTINATION <span class="string">"lib"</span></span><br><span class="line">        ARCHIVE DESTINATION <span class="string">"lib"</span></span><br><span class="line">        RUNTIME DESTINATION <span class="string">"bin"</span></span><br><span class="line">        INCLUDES DESTINATION <span class="string">"$&#123;include_install_dir&#125;"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Config</span></span><br><span class="line"><span class="comment">#   * &lt;prefix&gt;/lib/cmake/opengv/opengvConfig.cmake</span></span><br><span class="line"><span class="comment">#   * &lt;prefix&gt;/lib/cmake/opengv/opengvConfigVersion.cmake</span></span><br><span class="line"><span class="keyword">install</span>(FILES <span class="string">"$&#123;project_config&#125;"</span> <span class="string">"$&#123;version_config&#125;"</span></span><br><span class="line">        DESTINATION <span class="string">"$&#123;config_install_dir&#125;"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Config</span></span><br><span class="line"><span class="comment">#   * &lt;prefix&gt;/lib/cmake/opengv/opengvTargets.cmake</span></span><br><span class="line"><span class="keyword">install</span>(<span class="keyword">EXPORT</span> <span class="string">"$&#123;targets_export_name&#125;"</span></span><br><span class="line">        NAMESPACE <span class="string">"$&#123;namespace&#125;"</span></span><br><span class="line">        DESTINATION <span class="string">"$&#123;config_install_dir&#125;"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Headers</span></span><br><span class="line"><span class="keyword">install</span>(DIRECTORY <span class="keyword">include</span>/ </span><br><span class="line">        DESTINATION <span class="variable">$&#123;include_install_dir&#125;</span> </span><br><span class="line">        FILES_MATCHING PATTERN <span class="string">"*.h"</span> PATTERN <span class="string">"*.hpp"</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (BUILD_PYTHON)</span><br><span class="line">  <span class="keyword">add_subdirectory</span>( python )</span><br><span class="line"><span class="keyword">endif</span>()</span><br></pre></td></tr></table></figure>
-<p>就个人经验而言，我用cmake构建的时候一般是先把库编译出来，再把库链接到可执行文件上</p>
-]]></content>
-  </entry>
-  <entry>
     <title>rCore2020后续</title>
     <url>/2020/08/16/rCore2020%E5%90%8E%E7%BB%AD/</url>
     <content><![CDATA[<p>rCore2020活动应该还在进行，不过我没有在第一阶段入围，原因未知。老师一开始通知了我，后来又说我没有入围第二阶段，让我明年继续努力，不过现在也不去纠结了。不过明年可以明确不会继续参加这个活动了。</p>
@@ -577,6 +858,28 @@
       <tags>
         <tag>Rust</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>cmake构建系统</title>
+    <url>/2020/08/09/cmake%E6%9E%84%E5%BB%BA%E7%B3%BB%E7%BB%9F/</url>
+    <content><![CDATA[<p>C++在代码复用这一块做的一言难尽，一些依赖第三方库的项目往往很难直接拿来跑，有一大堆的依赖问题需要处理。在这一块，目前比较好的方案只有cmake了。委员会其实可以学学Rust，考虑出个包管理器。但想到种种历史包袱，大概是有生之年了，C++50标准再见咯。</p>
+<a id="more"></a>
+<p>SLAM领域的工作还是要用到不少第三方库的，比如<code>sophus</code>,<code>eigen</code>,<code>g2o</code>，所以cmake还是得好好用起来。</p>
+<p>cmake最基本的功能</p>
+<ul>
+<li>添加版本号</li>
+<li>确定CXX标准</li>
+<li>构建</li>
+<li>测试</li>
+<li>添加库并且给库添加特殊要求</li>
+<li>安装</li>
+</ul>
+<p>对于cmake的种种操作都包含在一个叫做<code>CMakeLists.txt</code>的文件中，在项目的目录下面创建这个文件就好了。</p>
+<p>关于cmake最好的学习方式我认为不是官方的tutorial，官方文档作为一个参考就可以了，反而应该看看优秀的开源代码是怎么运用cmake的。</p>
+<p>下面贴一段<code>opengv</code>的<code>CMakeLists.txt</code>，不难发现，稍微大型一点的项目，这个文件超过三百行是一件非常平常的事情。</p>
+<figure class="highlight cmake"><table><tr><td class="code"><pre><span class="line"><span class="keyword">cmake_minimum_required</span>(VERSION <span class="number">3.1</span>.<span class="number">3</span>)</span><br><span class="line"><span class="keyword">project</span>(opengv VERSION <span class="number">1.0</span> LANGUAGES CXX)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Set the build type.  Options are:</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment">#  None (CMAKE_C_FLAGS or CMAKE_CXX_FLAGS used)</span></span><br><span class="line"><span class="comment">#  Debug (CMAKE_C_FLAGS_DEBUG or CMAKE_CXX_FLAGS_DEBUG)</span></span><br><span class="line"><span class="comment">#  Release (CMAKE_C_FLAGS_RELEASE or CMAKE_CXX_FLAGS_RELEASE)</span></span><br><span class="line"><span class="comment">#  RelWithDebInfo (CMAKE_C_FLAGS_RELWITHDEBINFO or CMAKE_CXX_FLAGS_RELWITHDEBINFO)</span></span><br><span class="line"><span class="comment">#  MinSizeRel (CMAKE_C_FLAGS_MINSIZEREL or CMAKE_CXX_FLAGS_MINSIZEREL)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">set</span>(CMAKE_BUILD_TYPE Release)</span><br><span class="line"></span><br><span class="line"><span class="comment">#set the default path for built executables to the "bin" directory</span></span><br><span class="line"><span class="keyword">set</span>(EXECUTABLE_OUTPUT_PATH <span class="variable">$&#123;CMAKE_BINARY_DIR&#125;</span>/bin)</span><br><span class="line"><span class="comment">#set the default path for built libraries to the "lib" directory</span></span><br><span class="line"><span class="keyword">set</span>(LIBRARY_OUTPUT_PATH <span class="variable">$&#123;CMAKE_BINARY_DIR&#125;</span>/lib)</span><br><span class="line"></span><br><span class="line"><span class="keyword">OPTION</span>(BUILD_TESTS <span class="string">"Build tests"</span> <span class="keyword">ON</span>)</span><br><span class="line"><span class="keyword">OPTION</span>(BUILD_PYTHON <span class="string">"Build Python extension"</span> <span class="keyword">OFF</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">IF</span>(MSVC)</span><br><span class="line">  <span class="keyword">set</span>(BUILD_SHARED_LIBS <span class="keyword">OFF</span>)</span><br><span class="line"><span class="keyword">ELSE</span>()</span><br><span class="line">  <span class="keyword">OPTION</span>(BUILD_SHARED_LIBS <span class="string">"Build shared libraries"</span> <span class="keyword">OFF</span>)</span><br><span class="line">  <span class="keyword">OPTION</span>(BUILD_POSITION_INDEPENDENT_CODE <span class="string">"Build position independent code (-fPIC)"</span> <span class="keyword">ON</span>)</span><br><span class="line"><span class="keyword">ENDIF</span>()</span><br><span class="line"></span><br><span class="line"><span class="keyword">IF</span>(MSVC)</span><br><span class="line">  <span class="keyword">add_compile_options</span>(/wd4514 /wd4267 /bigobj)</span><br><span class="line">  <span class="keyword">add_definitions</span>(-D_USE_MATH_DEFINES)</span><br><span class="line"><span class="keyword">ELSE</span>()</span><br><span class="line">  <span class="keyword">IF</span> (CMAKE_SYSTEM_PROCESSOR <span class="keyword">MATCHES</span> <span class="string">"(arm64)|(ARM64)|(aarch64)|(AARCH64)"</span>)</span><br><span class="line">    <span class="keyword">add_definitions</span> (-march=armv8-a)</span><br><span class="line">  <span class="keyword">ELSEIF</span> (CMAKE_SYSTEM_PROCESSOR <span class="keyword">MATCHES</span> </span><br><span class="line">          <span class="string">"(arm)|(ARM)|(armhf)|(ARMHF)|(armel)|(ARMEL)"</span>)</span><br><span class="line">    <span class="keyword">add_definitions</span> (-march=armv7-a)</span><br><span class="line">  <span class="keyword">ELSE</span> ()</span><br><span class="line">    <span class="keyword">add_definitions</span> (-march=native) <span class="comment">#TODO use correct c++11 def once everybody has moved to gcc 4.7 # for now I even removed std=gnu++0x</span></span><br><span class="line">  <span class="keyword">ENDIF</span>()</span><br><span class="line">  <span class="keyword">add_definitions</span> (</span><br><span class="line">    -O3</span><br><span class="line">    -Wall</span><br><span class="line">    -Wextra</span><br><span class="line">    <span class="comment">#-Werror</span></span><br><span class="line">    -Wwrite-strings</span><br><span class="line">    -Wno-unused-parameter</span><br><span class="line">    -fno-strict-aliasing</span><br><span class="line">  )</span><br><span class="line"><span class="keyword">ENDIF</span>()</span><br><span class="line"></span><br><span class="line"><span class="keyword">IF</span>(BUILD_POSITION_INDEPENDENT_CODE)</span><br><span class="line">  <span class="keyword">add_definitions</span>( -fPIC )</span><br><span class="line"><span class="keyword">ENDIF</span>()</span><br><span class="line"></span><br><span class="line"><span class="keyword">set</span>(CMAKE_MODULE_PATH <span class="variable">$&#123;CMAKE_MODULE_PATH&#125;</span> <span class="string">"$&#123;PROJECT_SOURCE_DIR&#125;/modules/"</span>)</span><br><span class="line"><span class="keyword">find_package</span>(Eigen REQUIRED)</span><br><span class="line"><span class="keyword">set</span>(ADDITIONAL_INCLUDE_DIRS <span class="variable">$&#123;EIGEN_INCLUDE_DIRS&#125;</span> <span class="variable">$&#123;EIGEN_INCLUDE_DIR&#125;</span>/unsupported)</span><br><span class="line"></span><br><span class="line"><span class="keyword">set</span>( OPENGV_SOURCE_FILES</span><br><span class="line">  src/absolute_pose/modules/main.cpp</span><br><span class="line">  src/absolute_pose/modules/gp3p/code.cpp</span><br><span class="line">  src/absolute_pose/modules/gp3p/init.cpp</span><br><span class="line">  src/absolute_pose/modules/gp3p/reductors.cpp</span><br><span class="line">  src/absolute_pose/modules/gp3p/spolynomials.cpp</span><br><span class="line">  src/absolute_pose/modules/Epnp.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp1/code.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp1/init.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp1/reductors.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp1/spolynomials.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp2/code.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp2/init.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp2/reductors.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp2/spolynomials.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp3/code.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp3/init.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp3/reductors.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp3/spolynomials.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp4/code.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp4/init.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp4/reductors.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp4/spolynomials.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp5/code.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp5/init.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp5/reductors.cpp</span><br><span class="line">  src/absolute_pose/modules/gpnp5/spolynomials.cpp</span><br><span class="line">  src/absolute_pose/modules/upnp2.cpp</span><br><span class="line">  src/absolute_pose/modules/upnp4.cpp</span><br><span class="line">  src/relative_pose/modules/main.cpp</span><br><span class="line">  src/relative_pose/modules/fivept_nister/modules.cpp</span><br><span class="line">  src/relative_pose/modules/fivept_stewenius/modules.cpp</span><br><span class="line">  src/relative_pose/modules/fivept_kneip/code.cpp</span><br><span class="line">  src/relative_pose/modules/fivept_kneip/init.cpp</span><br><span class="line">  src/relative_pose/modules/fivept_kneip/reductors.cpp</span><br><span class="line">  src/relative_pose/modules/fivept_kneip/spolynomials.cpp</span><br><span class="line">  src/relative_pose/modules/sixpt/modules2.cpp</span><br><span class="line">  src/relative_pose/modules/eigensolver/modules.cpp</span><br><span class="line">  src/relative_pose/modules/ge/modules.cpp</span><br><span class="line">  src/<span class="keyword">math</span>/cayley.cpp</span><br><span class="line">  src/<span class="keyword">math</span>/quaternion.cpp</span><br><span class="line">  src/<span class="keyword">math</span>/arun.cpp</span><br><span class="line">  src/<span class="keyword">math</span>/Sturm.cpp</span><br><span class="line">  src/<span class="keyword">math</span>/roots.cpp</span><br><span class="line">  src/<span class="keyword">math</span>/gauss_jordan.cpp</span><br><span class="line">  src/absolute_pose/methods.cpp</span><br><span class="line">  src/absolute_pose/CentralAbsoluteAdapter.cpp</span><br><span class="line">  src/absolute_pose/NoncentralAbsoluteAdapter.cpp</span><br><span class="line">  src/absolute_pose/NoncentralAbsoluteMultiAdapter.cpp</span><br><span class="line">  src/relative_pose/methods.cpp</span><br><span class="line">  src/relative_pose/CentralRelativeAdapter.cpp</span><br><span class="line">  src/relative_pose/CentralRelativeWeightingAdapter.cpp</span><br><span class="line">  src/relative_pose/NoncentralRelativeAdapter.cpp</span><br><span class="line">  src/relative_pose/CentralRelativeMultiAdapter.cpp</span><br><span class="line">  src/relative_pose/NoncentralRelativeMultiAdapter.cpp</span><br><span class="line">  src/triangulation/methods.cpp</span><br><span class="line">  src/point_cloud/methods.cpp</span><br><span class="line">  src/point_cloud/PointCloudAdapter.cpp</span><br><span class="line">  src/sac_problems/absolute_pose/AbsolutePoseSacProblem.cpp</span><br><span class="line">  src/sac_problems/absolute_pose/MultiNoncentralAbsolutePoseSacProblem.cpp</span><br><span class="line">  src/sac_problems/relative_pose/CentralRelativePoseSacProblem.cpp</span><br><span class="line">  src/sac_problems/relative_pose/NoncentralRelativePoseSacProblem.cpp</span><br><span class="line">  src/sac_problems/relative_pose/RotationOnlySacProblem.cpp</span><br><span class="line">  src/sac_problems/relative_pose/TranslationOnlySacProblem.cpp</span><br><span class="line">  src/sac_problems/relative_pose/EigensolverSacProblem.cpp</span><br><span class="line">  src/sac_problems/relative_pose/MultiCentralRelativePoseSacProblem.cpp</span><br><span class="line">  src/sac_problems/relative_pose/MultiNoncentralRelativePoseSacProblem.cpp</span><br><span class="line">  src/sac_problems/point_cloud/PointCloudSacProblem.cpp</span><br><span class="line">  src/absolute_pose/MACentralAbsolute.cpp</span><br><span class="line">  src/absolute_pose/MANoncentralAbsolute.cpp</span><br><span class="line">  src/relative_pose/MACentralRelative.cpp</span><br><span class="line">  src/relative_pose/MANoncentralRelative.cpp</span><br><span class="line">  src/relative_pose/MANoncentralRelativeMulti.cpp</span><br><span class="line">  src/point_cloud/MAPointCloud.cpp )</span><br><span class="line"></span><br><span class="line"><span class="keyword">set</span>( OPENGV_HEADER_FILES</span><br><span class="line">  <span class="keyword">include</span>/opengv/types.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/OptimizationFunctor.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/absolute_pose/methods.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/relative_pose/methods.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/triangulation/methods.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/point_cloud/methods.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/<span class="keyword">math</span>/cayley.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/<span class="keyword">math</span>/quaternion.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/<span class="keyword">math</span>/arun.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/<span class="keyword">math</span>/Sturm.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/<span class="keyword">math</span>/roots.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/<span class="keyword">math</span>/gauss_jordan.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/absolute_pose/AbsoluteAdapterBase.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/absolute_pose/CentralAbsoluteAdapter.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/absolute_pose/NoncentralAbsoluteAdapter.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/absolute_pose/NoncentralAbsoluteMultiAdapter.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/absolute_pose/AbsoluteMultiAdapterBase.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/relative_pose/RelativeAdapterBase.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/relative_pose/RelativeMultiAdapterBase.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/relative_pose/CentralRelativeAdapter.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/relative_pose/CentralRelativeWeightingAdapter.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/relative_pose/NoncentralRelativeAdapter.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/relative_pose/CentralRelativeMultiAdapter.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/relative_pose/NoncentralRelativeMultiAdapter.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/point_cloud/PointCloudAdapterBase.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/point_cloud/PointCloudAdapter.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/sac_problems/absolute_pose/AbsolutePoseSacProblem.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/sac_problems/absolute_pose/MultiNoncentralAbsolutePoseSacProblem.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/sac_problems/relative_pose/CentralRelativePoseSacProblem.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/sac_problems/relative_pose/NoncentralRelativePoseSacProblem.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/sac_problems/relative_pose/MultiCentralRelativePoseSacProblem.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/sac_problems/relative_pose/MultiNoncentralRelativePoseSacProblem.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/sac_problems/relative_pose/EigensolverSacProblem.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/sac_problems/relative_pose/RotationOnlySacProblem.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/sac_problems/relative_pose/TranslationOnlySacProblem.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/sac_problems/point_cloud/PointCloudSacProblem.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/absolute_pose/MACentralAbsolute.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/absolute_pose/MANoncentralAbsolute.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/relative_pose/MACentralRelative.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/relative_pose/MANoncentralRelative.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/relative_pose/MANoncentralRelativeMulti.hpp</span><br><span class="line">  <span class="keyword">include</span>/opengv/point_cloud/MAPointCloud.hpp )</span><br><span class="line"></span><br><span class="line"><span class="keyword">add_library</span>( opengv <span class="variable">$&#123;OPENGV_SOURCE_FILES&#125;</span> <span class="variable">$&#123;OPENGV_HEADER_FILES&#125;</span> )</span><br><span class="line"><span class="keyword">add_library</span>( random_generators <span class="keyword">test</span>/random_generators.cpp <span class="keyword">test</span>/random_generators.hpp <span class="keyword">test</span>/experiment_helpers.cpp <span class="keyword">test</span>/experiment_helpers.hpp <span class="keyword">test</span>/time_measurement.cpp <span class="keyword">test</span>/time_measurement.hpp )</span><br><span class="line"><span class="keyword">set_target_properties</span>( opengv random_generators PROPERTIES</span><br><span class="line">                    SOVERSION <span class="variable">$&#123;PROJECT_VERSION&#125;</span></span><br><span class="line">                    VERSION <span class="variable">$&#123;PROJECT_VERSION&#125;</span></span><br><span class="line">                    CXX_STANDARD <span class="number">11</span></span><br><span class="line">                    CXX_STANDARD_REQUIRED <span class="keyword">ON</span></span><br><span class="line">                    DEBUG_POSTFIX d )</span><br><span class="line"></span><br><span class="line"><span class="keyword">target_include_directories</span>( opengv PUBLIC </span><br><span class="line">                <span class="comment"># only when building from the source tree</span></span><br><span class="line">                $&lt;BUILD_INTERFACE:<span class="variable">$&#123;PROJECT_SOURCE_DIR&#125;</span>/<span class="keyword">include</span>&gt;</span><br><span class="line">                <span class="comment"># only when using the lib from the install path</span></span><br><span class="line">                $&lt;INSTALL_INTERFACE:<span class="keyword">include</span>&gt;</span><br><span class="line">                <span class="variable">$&#123;ADDITIONAL_INCLUDE_DIRS&#125;</span> )</span><br><span class="line"></span><br><span class="line"><span class="keyword">target_include_directories</span>( random_generators PRIVATE <span class="variable">$&#123;ADDITIONAL_INCLUDE_DIRS&#125;</span> )</span><br><span class="line"></span><br><span class="line"><span class="keyword">target_link_libraries</span>( random_generators opengv )</span><br><span class="line"></span><br><span class="line"><span class="keyword">IF</span> (BUILD_TESTS)</span><br><span class="line">  <span class="keyword">enable_testing</span>()</span><br><span class="line">  <span class="keyword">include_directories</span>( <span class="variable">$&#123;ADDITIONAL_INCLUDE_DIRS&#125;</span> )</span><br><span class="line"></span><br><span class="line">  <span class="keyword">add_executable</span>( test_absolute_pose <span class="keyword">test</span>/test_absolute_pose.cpp )</span><br><span class="line">  <span class="keyword">target_link_libraries</span>( test_absolute_pose opengv random_generators )</span><br><span class="line">  <span class="keyword">add_test</span>(NAME test_absolute_pose</span><br><span class="line">    WORKING_DIRECTORY <span class="variable">$&#123;EXECUTABLE_OUTPUT_PATH&#125;</span></span><br><span class="line">    <span class="keyword">COMMAND</span> test_absolute_pose)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">add_executable</span>( test_absolute_pose_sac <span class="keyword">test</span>/test_absolute_pose_sac.cpp )</span><br><span class="line">  <span class="keyword">target_link_libraries</span>( test_absolute_pose_sac opengv random_generators )</span><br><span class="line">  <span class="keyword">add_test</span>(NAME test_absolute_pose_sac</span><br><span class="line">    WORKING_DIRECTORY <span class="variable">$&#123;CMAKE_RUNTIME_OUTPUT_DIRECTORY&#125;</span></span><br><span class="line">    <span class="keyword">COMMAND</span> test_absolute_pose_sac)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">add_executable</span>( test_noncentral_absolute_pose <span class="keyword">test</span>/test_noncentral_absolute_pose.cpp )</span><br><span class="line">  <span class="keyword">target_link_libraries</span>( test_noncentral_absolute_pose opengv random_generators )</span><br><span class="line">  <span class="keyword">add_test</span>(NAME test_noncentral_absolute_pose</span><br><span class="line">    WORKING_DIRECTORY <span class="variable">$&#123;CMAKE_RUNTIME_OUTPUT_DIRECTORY&#125;</span></span><br><span class="line">    <span class="keyword">COMMAND</span> test_noncentral_absolute_pose)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">add_executable</span>( test_noncentral_absolute_pose_sac <span class="keyword">test</span>/test_noncentral_absolute_pose_sac.cpp )</span><br><span class="line">  <span class="keyword">target_link_libraries</span>( test_noncentral_absolute_pose_sac opengv random_generators )</span><br><span class="line">  <span class="keyword">add_test</span>(NAME test_noncentral_absolute_pose_sac</span><br><span class="line">    WORKING_DIRECTORY <span class="variable">$&#123;CMAKE_RUNTIME_OUTPUT_DIRECTORY&#125;</span></span><br><span class="line">    <span class="keyword">COMMAND</span> test_noncentral_absolute_pose_sac)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">add_executable</span>( test_multi_noncentral_absolute_pose_sac <span class="keyword">test</span>/test_multi_noncentral_absolute_pose_sac.cpp )</span><br><span class="line">  <span class="keyword">target_link_libraries</span>( test_multi_noncentral_absolute_pose_sac opengv random_generators )</span><br><span class="line">  <span class="keyword">add_test</span>(NAME test_multi_noncentral_absolute_pose_sac</span><br><span class="line">    WORKING_DIRECTORY <span class="variable">$&#123;CMAKE_RUNTIME_OUTPUT_DIRECTORY&#125;</span></span><br><span class="line">    <span class="keyword">COMMAND</span> test_multi_noncentral_absolute_pose_sac)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">add_executable</span>( test_relative_pose <span class="keyword">test</span>/test_relative_pose.cpp )</span><br><span class="line">  <span class="keyword">target_link_libraries</span>( test_relative_pose opengv random_generators )</span><br><span class="line">  <span class="keyword">add_test</span>(NAME test_relative_pose</span><br><span class="line">    WORKING_DIRECTORY <span class="variable">$&#123;CMAKE_RUNTIME_OUTPUT_DIRECTORY&#125;</span></span><br><span class="line">    <span class="keyword">COMMAND</span> test_relative_pose)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">add_executable</span>( test_relative_pose_rotationOnly <span class="keyword">test</span>/test_relative_pose_rotationOnly.cpp )</span><br><span class="line">  <span class="keyword">target_link_libraries</span>( test_relative_pose_rotationOnly opengv random_generators )</span><br><span class="line">  <span class="keyword">add_test</span>(NAME test_relative_pose_rotationOnly</span><br><span class="line">    WORKING_DIRECTORY <span class="variable">$&#123;CMAKE_RUNTIME_OUTPUT_DIRECTORY&#125;</span></span><br><span class="line">    <span class="keyword">COMMAND</span> test_relative_pose_rotationOnly)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">add_executable</span>( test_relative_pose_rotationOnly_sac <span class="keyword">test</span>/test_relative_pose_rotationOnly_sac.cpp )</span><br><span class="line">  <span class="keyword">target_link_libraries</span>( test_relative_pose_rotationOnly_sac opengv random_generators )</span><br><span class="line">  <span class="keyword">add_test</span>(NAME test_relative_pose_rotationOnly_sac</span><br><span class="line">    WORKING_DIRECTORY <span class="variable">$&#123;CMAKE_RUNTIME_OUTPUT_DIRECTORY&#125;</span></span><br><span class="line">    <span class="keyword">COMMAND</span> test_relative_pose_rotationOnly_sac)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">add_executable</span>( test_relative_pose_sac <span class="keyword">test</span>/test_relative_pose_sac.cpp )</span><br><span class="line">  <span class="keyword">target_link_libraries</span>( test_relative_pose_sac opengv random_generators )</span><br><span class="line">  <span class="keyword">add_test</span>(NAME test_relative_pose_sac</span><br><span class="line">    WORKING_DIRECTORY <span class="variable">$&#123;CMAKE_RUNTIME_OUTPUT_DIRECTORY&#125;</span></span><br><span class="line">    <span class="keyword">COMMAND</span> test_relative_pose_sac)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">add_executable</span>( test_noncentral_relative_pose <span class="keyword">test</span>/test_noncentral_relative_pose.cpp )</span><br><span class="line">  <span class="keyword">target_link_libraries</span>( test_noncentral_relative_pose opengv random_generators )</span><br><span class="line">  <span class="keyword">add_test</span>(NAME test_noncentral_relative_pose</span><br><span class="line">    WORKING_DIRECTORY <span class="variable">$&#123;CMAKE_RUNTIME_OUTPUT_DIRECTORY&#125;</span></span><br><span class="line">    <span class="keyword">COMMAND</span> test_noncentral_relative_pose)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">add_executable</span>( test_noncentral_relative_pose_sac <span class="keyword">test</span>/test_noncentral_relative_pose_sac.cpp )</span><br><span class="line">  <span class="keyword">target_link_libraries</span>( test_noncentral_relative_pose_sac opengv random_generators )</span><br><span class="line">  <span class="keyword">add_test</span>(NAME test_noncentral_relative_pose_sac</span><br><span class="line">    WORKING_DIRECTORY <span class="variable">$&#123;CMAKE_RUNTIME_OUTPUT_DIRECTORY&#125;</span></span><br><span class="line">    <span class="keyword">COMMAND</span> test_noncentral_relative_pose_sac)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">add_executable</span>( test_multi_noncentral_relative_pose_sac <span class="keyword">test</span>/test_multi_noncentral_relative_pose_sac.cpp )</span><br><span class="line">  <span class="keyword">target_link_libraries</span>( test_multi_noncentral_relative_pose_sac opengv random_generators )</span><br><span class="line">  <span class="keyword">add_test</span>(NAME test_multi_noncentral_relative_pose_sac</span><br><span class="line">    WORKING_DIRECTORY <span class="variable">$&#123;CMAKE_RUNTIME_OUTPUT_DIRECTORY&#125;</span></span><br><span class="line">    <span class="keyword">COMMAND</span> test_multi_noncentral_relative_pose_sac)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">add_executable</span>( test_eigensolver_sac <span class="keyword">test</span>/test_eigensolver_sac.cpp )</span><br><span class="line">  <span class="keyword">target_link_libraries</span>( test_eigensolver_sac opengv random_generators )</span><br><span class="line">  <span class="keyword">add_test</span>(NAME test_eigensolver_sac</span><br><span class="line">    WORKING_DIRECTORY <span class="variable">$&#123;CMAKE_RUNTIME_OUTPUT_DIRECTORY&#125;</span></span><br><span class="line">    <span class="keyword">COMMAND</span> test_eigensolver_sac)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">add_executable</span>( test_triangulation <span class="keyword">test</span>/test_triangulation.cpp )</span><br><span class="line">  <span class="keyword">target_link_libraries</span>( test_triangulation opengv random_generators )</span><br><span class="line">  <span class="keyword">add_test</span>(NAME test_triangulation</span><br><span class="line">    WORKING_DIRECTORY <span class="variable">$&#123;CMAKE_RUNTIME_OUTPUT_DIRECTORY&#125;</span></span><br><span class="line">    <span class="keyword">COMMAND</span> test_triangulation)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">add_executable</span>( test_eigensolver <span class="keyword">test</span>/test_eigensolver.cpp )</span><br><span class="line">  <span class="keyword">target_link_libraries</span>( test_eigensolver opengv random_generators )</span><br><span class="line">  <span class="keyword">add_test</span>(NAME test_eigensolver</span><br><span class="line">    WORKING_DIRECTORY <span class="variable">$&#123;CMAKE_RUNTIME_OUTPUT_DIRECTORY&#125;</span></span><br><span class="line">    <span class="keyword">COMMAND</span> test_eigensolver)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">add_executable</span>( test_point_cloud <span class="keyword">test</span>/test_point_cloud.cpp )</span><br><span class="line">  <span class="keyword">target_link_libraries</span>( test_point_cloud opengv random_generators )</span><br><span class="line">  <span class="keyword">add_test</span>(NAME  test_point_cloud</span><br><span class="line">    WORKING_DIRECTORY <span class="variable">$&#123;CMAKE_RUNTIME_OUTPUT_DIRECTORY&#125;</span></span><br><span class="line">    <span class="keyword">COMMAND</span> test_point_cloud)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">add_executable</span>( test_point_cloud_sac <span class="keyword">test</span>/test_point_cloud_sac.cpp )</span><br><span class="line">  <span class="keyword">target_link_libraries</span>( test_point_cloud_sac opengv random_generators )</span><br><span class="line">  <span class="keyword">add_test</span>(NAME test_point_cloud_sac</span><br><span class="line">    WORKING_DIRECTORY <span class="variable">$&#123;CMAKE_RUNTIME_OUTPUT_DIRECTORY&#125;</span></span><br><span class="line">    <span class="keyword">COMMAND</span> test_point_cloud_sac)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">add_executable</span>( test_Sturm <span class="keyword">test</span>/test_Sturm.cpp )</span><br><span class="line">  <span class="keyword">target_link_libraries</span>( test_Sturm opengv random_generators )</span><br><span class="line">  <span class="keyword">add_test</span>(NAME test_Sturm</span><br><span class="line">    WORKING_DIRECTORY <span class="variable">$&#123;CMAKE_RUNTIME_OUTPUT_DIRECTORY&#125;</span></span><br><span class="line">    <span class="keyword">COMMAND</span> test_Sturm)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">set_target_properties</span>(</span><br><span class="line">    test_absolute_pose</span><br><span class="line">    test_absolute_pose_sac</span><br><span class="line">    test_noncentral_absolute_pose</span><br><span class="line">    test_noncentral_absolute_pose_sac</span><br><span class="line">    test_multi_noncentral_absolute_pose_sac</span><br><span class="line">    test_relative_pose</span><br><span class="line">    test_relative_pose_rotationOnly</span><br><span class="line">    test_relative_pose_rotationOnly_sac</span><br><span class="line">    test_relative_pose_sac</span><br><span class="line">    test_noncentral_relative_pose</span><br><span class="line">    test_noncentral_relative_pose_sac</span><br><span class="line">    test_multi_noncentral_relative_pose_sac</span><br><span class="line">    test_eigensolver_sac</span><br><span class="line">    test_triangulation</span><br><span class="line">    test_eigensolver</span><br><span class="line">    test_point_cloud</span><br><span class="line">    test_point_cloud_sac</span><br><span class="line">    test_Sturm</span><br><span class="line"></span><br><span class="line">    PROPERTIES</span><br><span class="line">    CXX_STANDARD <span class="number">11</span></span><br><span class="line">    CXX_STANDARD_REQUIRED <span class="keyword">ON</span></span><br><span class="line">    DEBUG_POSTFIX d )</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">ENDIF</span>()</span><br><span class="line"></span><br><span class="line"><span class="comment"># Configuration</span></span><br><span class="line"><span class="keyword">set</span>(config_install_dir <span class="string">"lib/cmake/$&#123;PROJECT_NAME&#125;-$&#123;PROJECT_VERSION&#125;"</span>)</span><br><span class="line"><span class="keyword">set</span>(include_install_dir <span class="string">"include"</span>)</span><br><span class="line"><span class="keyword">set</span>(version_config <span class="string">"$&#123;CMAKE_CURRENT_BINARY_DIR&#125;/$&#123;PROJECT_NAME&#125;ConfigVersion.cmake"</span>)</span><br><span class="line"><span class="keyword">set</span>(project_config <span class="string">"$&#123;CMAKE_CURRENT_BINARY_DIR&#125;/$&#123;PROJECT_NAME&#125;Config.cmake"</span>)</span><br><span class="line"><span class="keyword">set</span>(targets_export_name <span class="string">"$&#123;PROJECT_NAME&#125;Targets"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Include module with fuction 'write_basic_package_version_file'</span></span><br><span class="line"><span class="keyword">include</span>(CMakePackageConfigHelpers)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Configure '&lt;PROJECT-NAME&gt;ConfigVersion.cmake'</span></span><br><span class="line"><span class="comment"># <span class="doctag">Note:</span> PROJECT_VERSION is used as a VERSION</span></span><br><span class="line">write_basic_package_version_file(</span><br><span class="line">    <span class="string">"$&#123;version_config&#125;"</span> COMPATIBILITY SameMajorVersion )</span><br><span class="line"></span><br><span class="line"><span class="comment"># Configure '&lt;PROJECT-NAME&gt;Config.cmake'</span></span><br><span class="line"><span class="comment"># Use variables:</span></span><br><span class="line"><span class="comment">#   * targets_export_name</span></span><br><span class="line"><span class="comment">#   * PROJECT_NAME</span></span><br><span class="line">configure_package_config_file(</span><br><span class="line">    <span class="string">"modules/Config.cmake.in"</span></span><br><span class="line">    <span class="string">"$&#123;project_config&#125;"</span></span><br><span class="line">    INSTALL_DESTINATION <span class="string">"$&#123;config_install_dir&#125;"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Export '&lt;PROJECT-NAME&gt;Targets.cmake' to build dir (to find package in build dir without install)</span></span><br><span class="line"><span class="keyword">export</span>(TARGETS opengv <span class="keyword">FILE</span> <span class="string">"$&#123;CMAKE_CURRENT_BINARY_DIR&#125;/$&#123;targets_export_name&#125;.cmake"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Targets:</span></span><br><span class="line"><span class="keyword">install</span>(TARGETS opengv</span><br><span class="line">        <span class="keyword">EXPORT</span> <span class="string">"$&#123;targets_export_name&#125;"</span></span><br><span class="line">        LIBRARY DESTINATION <span class="string">"lib"</span></span><br><span class="line">        ARCHIVE DESTINATION <span class="string">"lib"</span></span><br><span class="line">        RUNTIME DESTINATION <span class="string">"bin"</span></span><br><span class="line">        INCLUDES DESTINATION <span class="string">"$&#123;include_install_dir&#125;"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Config</span></span><br><span class="line"><span class="comment">#   * &lt;prefix&gt;/lib/cmake/opengv/opengvConfig.cmake</span></span><br><span class="line"><span class="comment">#   * &lt;prefix&gt;/lib/cmake/opengv/opengvConfigVersion.cmake</span></span><br><span class="line"><span class="keyword">install</span>(FILES <span class="string">"$&#123;project_config&#125;"</span> <span class="string">"$&#123;version_config&#125;"</span></span><br><span class="line">        DESTINATION <span class="string">"$&#123;config_install_dir&#125;"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Config</span></span><br><span class="line"><span class="comment">#   * &lt;prefix&gt;/lib/cmake/opengv/opengvTargets.cmake</span></span><br><span class="line"><span class="keyword">install</span>(<span class="keyword">EXPORT</span> <span class="string">"$&#123;targets_export_name&#125;"</span></span><br><span class="line">        NAMESPACE <span class="string">"$&#123;namespace&#125;"</span></span><br><span class="line">        DESTINATION <span class="string">"$&#123;config_install_dir&#125;"</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Headers</span></span><br><span class="line"><span class="keyword">install</span>(DIRECTORY <span class="keyword">include</span>/ </span><br><span class="line">        DESTINATION <span class="variable">$&#123;include_install_dir&#125;</span> </span><br><span class="line">        FILES_MATCHING PATTERN <span class="string">"*.h"</span> PATTERN <span class="string">"*.hpp"</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (BUILD_PYTHON)</span><br><span class="line">  <span class="keyword">add_subdirectory</span>( python )</span><br><span class="line"><span class="keyword">endif</span>()</span><br></pre></td></tr></table></figure>
+<p>就个人经验而言，我用cmake构建的时候一般是先把库编译出来，再把库链接到可执行文件上</p>
+]]></content>
   </entry>
   <entry>
     <title>仿射几何</title>
@@ -674,6 +977,25 @@ V_t(:,i,j,k)=F_t(:,\hat{i},\hat{j})</script></li>
 ]]></content>
   </entry>
   <entry>
+    <title>浅析B样条曲线</title>
+    <url>/2020/09/27/%E6%B5%85%E6%9E%90B%E6%A0%B7%E6%9D%A1%E6%9B%B2%E7%BA%BF/</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>浅析EMVS: Event-Based Multi-View Stereo</title>
+    <url>/2020/09/01/%E6%B5%85%E6%9E%90EMVS-Event-Based-Multi-View-Stereo/</url>
+    <content><![CDATA[<p>这一篇工作的相关Demo可以在YouTube上面看到</p>
+<p>和传统的相机不一样，我们需要充分考虑到Event Camera的稀疏性和异步性，相关的建图出来的结果也是半稀疏的（edge-based）。</p>
+<p>这里有两个比较陌生的观念，一个是Space-Sweep算法，一个是DSI(Disparity Space Image),他们会在下文一一解释</p>
+<a id="more"></a>
+<p>关于Space-Sweep算法有一个直观的解释，以一个二维平面为例，把所有的捕捉到的像素逆投影，线的汇聚点就是要还原的点</p>
+<p><img src="\images\1598888728160.png" alt="光束汇集的两个点就是空间点的位置"></p>
+<p>DSI其实是一个$w\times h\times N_z$的3D Volume，每一个格子记录了穿过这个格子的线的数量，那么一个很显然的观点就是DSI的局部最大点就是点的可能出现的概率</p>
+<p>关于如何检测这些局部极大值，我们首先生成一张深度图$Z^<em>(x,y)$和一张confidence map $f(X(x),Y(y),Z^</em>)=:c(x,y)$，接着，它定义了一个自适应的高斯阈值函数$T(x,y)=c(x,y)*G_{\sigma}(x,y)-C$，其中$C$是一个常数（实验的超参数）</p>
+<p>这篇论文后来又出了一篇后续，对于里面的一些细节进行了比较详细的描述，这里暂不赘述。</p>
+]]></content>
+  </entry>
+  <entry>
     <title>浅析DTAM: Dense Tracking and Mapping in Real-Time</title>
     <url>/2020/08/08/%E6%B5%85%E6%9E%90DTAM-Dense-Tracking-and-Mapping-in-Real-Time/</url>
     <content><![CDATA[<p>这篇文章讲的是实时的稠密追踪和建图，时间有点早，应该不算state of the art了，但还是挺典型的。本文主要讲的是他的建图过程。</p>
@@ -724,20 +1046,6 @@ E_{\xi}=\int_{\Omega}\{g(u)||\nabla{\xi(u)} ||_{\epsilon}+\lambda C(u,\xi(u)) \}
 ]]></content>
   </entry>
   <entry>
-    <title>浅析EMVS: Event-Based Multi-View Stereo</title>
-    <url>/2020/09/01/%E6%B5%85%E6%9E%90EMVS-Event-Based-Multi-View-Stereo/</url>
-    <content><![CDATA[<p>这一篇工作的相关Demo可以在YouTube上面看到</p>
-<p>和传统的相机不一样，我们需要充分考虑到Event Camera的稀疏性和异步性，相关的建图出来的结果也是半稀疏的（edge-based）。</p>
-<p>这里有两个比较陌生的观念，一个是Space-Sweep算法，一个是DSI(Disparity Space Image),他们会在下文一一解释</p>
-<a id="more"></a>
-<p>关于Space-Sweep算法有一个直观的解释，以一个二维平面为例，把所有的捕捉到的像素逆投影，线的汇聚点就是要还原的点</p>
-<p><img src="\images\1598888728160.png" alt="光束汇集的两个点就是空间点的位置"></p>
-<p>DSI其实是一个$w\times h\times N_z$的3D Volume，每一个格子记录了穿过这个格子的线的数量，那么一个很显然的观点就是DSI的局部最大点就是点的可能出现的概率</p>
-<p>关于如何检测这些局部极大值，我们首先生成一张深度图$Z^<em>(x,y)$和一张confidence map $f(X(x),Y(y),Z^</em>)=:c(x,y)$，接着，它定义了一个自适应的高斯阈值函数$T(x,y)=c(x,y)*G_{\sigma}(x,y)-C$，其中$C$是一个常数（实验的超参数）</p>
-<p>这篇论文后来又出了一篇后续，对于里面的一些细节进行了比较详细的描述，这里暂不赘述。</p>
-]]></content>
-  </entry>
-  <entry>
     <title>浅析EVO: A Geometric Approach to Event-based 6-DOF Parallel Tracking and Mapping in Real-time</title>
     <url>/2020/08/25/%E6%B5%85%E6%9E%90EVO-A-Geometric-Approach-to-Event-based-6-DOF-Parallel-Tracking-and-Mapping-in-Real-time/</url>
     <content><![CDATA[<p>这篇文章的相关Demo可以在Youtube上看到，不难看出，在线条丰富的场景里面event camera的表现还是相当不错的。</p>
@@ -755,14 +1063,6 @@ W(u;T)=\pi(T\cdot\pi^{-1}(u,d_u))</script><p>那么一个很简单的例子就�
 <p>根据一连串的位姿，按照EMVS里面的方法来进行三维建图</p>
 <p>（注：上面的两个知识点在其他文章里面有介绍</p>
 <p><img src="\images\1599741307396.png" alt="DSI图例"></p>
-]]></content>
-  </entry>
-  <entry>
-    <title>浅析Entropy Minimisation Framework for Event-based Vision Model Estimation</title>
-    <url>/2020/09/11/%E6%B5%85%E6%9E%90Entropy-Minimisation-Framework-for-Event-based-Vision-Model-Estimation/</url>
-    <content><![CDATA[<p>帝国理工ECCV2020最新发表的文章，提出了一种全新的最小化熵的事件视觉的估计框架</p>
-<p>与前面提出的框架不同，它不需要把事件映射到子空间上面再进行相关的优化和计算。它的目标在于减小模型的空间弥散度（dispersion）。这个弥散的度量叫做熵（Entropy）</p>
-<a id="more"></a>
 ]]></content>
   </entry>
   <entry>
@@ -803,6 +1103,14 @@ W(u;T)=\pi(T\cdot\pi^{-1}(u,d_u))</script><p>那么一个很简单的例子就�
 </li>
 </ul>
 <p>关于优化Warped Image的一些方案，大致分为最大化对比（Contrast Maximization）和最小化熵（Entropy Minimization）两种框架</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>浅析Entropy Minimisation Framework for Event-based Vision Model Estimation</title>
+    <url>/2020/09/11/%E6%B5%85%E6%9E%90Entropy-Minimisation-Framework-for-Event-based-Vision-Model-Estimation/</url>
+    <content><![CDATA[<p>帝国理工ECCV2020最新发表的文章，提出了一种全新的最小化熵的事件视觉的估计框架</p>
+<p>与前面提出的框架不同，它不需要把事件映射到子空间上面再进行相关的优化和计算。它的目标在于减小模型的空间弥散度（dispersion）。这个弥散的度量叫做熵（Entropy）</p>
+<a id="more"></a>
 ]]></content>
   </entry>
   <entry>
@@ -973,10 +1281,19 @@ v
 \vec{v}=(A^TA)^TA^T(-b)</script>]]></content>
   </entry>
   <entry>
-    <title>浅析Real-time Visual-Inertial Odometry for Event Cameras using Keyframe-based Nonlinear Optimization</title>
-    <url>/2020/09/01/%E6%B5%85%E6%9E%90Real-time-Visual-Inertial-Odometry-for-Event-Cameras-using-Keyframe-based-Nonlinear-Optimization/</url>
-    <content><![CDATA[<p>这是一篇基于Event camera的VIO的工作，很有意思。YouTube有相关的Demo可以参考。</p>
-<a id="more"></a>]]></content>
+    <title>浅析OmniSLAM: Omnidirectional Localization and Dense Mapping for Wide-baseline Multi-camera Systems</title>
+    <url>/2020/10/03/%E6%B5%85%E6%9E%90OmniSLAM-Omnidirectional-Localization-and-Dense-Mappingfor-Wide-baseline-Multi-camera-Systems/</url>
+    <content><![CDATA[<p><img src="\images\1601712224770.png" alt=""></p>
+<p>这项工作发表在了ICRA2020上面，是会议上机器人视觉方向做不错的几项工作之一。</p>
+<p>工作涵盖了全向视角下的定位和稠密三维重建，提出了一个广角视角下的深度估计的神经网络结构，并把它集成到了视觉里程计当中，这个视觉里程计还包括了一个回环检测模块，增加了全局上的一致性。在三维重建部分，它结合了估计的位姿和深度图，通过TSDF进行三维重建。</p>
+<a id="more"></a>
+<p>一般来说，基于激光雷达或者结构光等机制的深度传感器还是较为准确的，这给精准的三维建图提供了一个很好的前提，不过它们也有一些缺点，比如纵向的分辨率不太够，或者传感器之间的互相干扰，再或者是尺寸，成本，功耗等一系列的问题。</p>
+<p>另一套进行深度估计的体系是基于相机系统的，我们利用多视角几何的约束来求解场景点的深度，也可以利用基于深度学习的算法来进行深度估计。本文用的就是这套体系。</p>
+<p>一般来说的相机体系用的是固定的朝某一方向的一对相机，它们利用共同的视野中的对应点来计算相应的深度。在这项工作中，我们使用的是拥有更加宽广的视野的广角相机，一般来说鱼眼相机可以有220°的视野，那么我们采用的相机系统包含了四个这样子的相机，这样就可以360°无死角了。</p>
+<p>以上的这套广角相机系统有一个鲁棒的视觉里程计ROVO，也有关于深度估计的神经网络结构OmniMVS。关于OmniMVS，它要把输入的图像的特征映射到全局的球上，会大量消耗计算资源。作者在这里优化了这个网络结构，让它更快更准了。</p>
+<p>关于本文的贡献，我个人以为没有什么理论上的创新，但是在工程的角度上对已有的方案做了一个很好的整合和优化，最后实现了一个相对鲁棒的定位和建图的系统。</p>
+<p><img src="images\1601721840486.png" alt=""></p>
+]]></content>
   </entry>
   <entry>
     <title>浅析Poisson Image Editing</title>
@@ -996,6 +1313,12 @@ v
 <p>那么关于Formulation的部分</p>
 <p><img src="C:\Users\lenovo\Documents\hexo\source\images\1600878360696.png" alt=""></p>
 ]]></content>
+  </entry>
+  <entry>
+    <title>浅析Real-time Visual-Inertial Odometry for Event Cameras using Keyframe-based Nonlinear Optimization</title>
+    <url>/2020/09/01/%E6%B5%85%E6%9E%90Real-time-Visual-Inertial-Odometry-for-Event-Cameras-using-Keyframe-based-Nonlinear-Optimization/</url>
+    <content><![CDATA[<p>这是一篇基于Event camera的VIO的工作，很有意思。YouTube有相关的Demo可以参考。</p>
+<a id="more"></a>]]></content>
   </entry>
   <entry>
     <title>浅析Robust Homography Estimation via Dual Principal Component Pursuit</title>
@@ -1172,235 +1495,6 @@ p_c=Rp_w+t</script>]]></content>
 ]]></content>
   </entry>
   <entry>
-    <title>PINTOS指北</title>
-    <url>/2020/09/22/PINTOS%E6%8C%87%E5%8C%97/</url>
-    <content><![CDATA[<p>[TOC]</p>
-<p><code>pintos</code>是斯坦福CS140的教学用操作系统。总共有四个project。如题所示，下文提供了一个pintos指北。</p>
-<a id="more"></a>
-<h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><h2 id="源文件树"><a href="#源文件树" class="headerlink" title="源文件树"></a>源文件树</h2><ol>
-<li><p>threads/ 最基础的内核代码</p>
-<p>   Source code for the base kernel, which you will modify starting in project 1.</p>
-</li>
-<li><p>userprog/ 用户程序的加载器</p>
-<p>Source code for the user program loader, which you will modify starting with project 2.</p>
-</li>
-<li><p>vm/ 虚拟内存</p>
-<p>   An almost empty directory. You will implement virtual memory here in project 3.</p>
-</li>
-<li><p>filesys/ 最基础的文件系统</p>
-<p>   Source code for a basic file system. You will use this file system starting with project 2, but you will not modify it until project 4.</p>
-</li>
-<li><p>devices/ 硬件接口</p>
-<p>   Source code for I/O device interfacing: keyboard, timer, disk, etc. You will modify the timer implementation in project 1. Otherwise you should have no need to change this code.</p>
-</li>
-<li><p>lib/ 部分C语言的标准库，用户态或是内核态程序都可以使用这些代码</p>
-<p>   An implementation of a subset of the standard C library. The code in this directory is compiled into both the Pintos kernel and, starting from project 2, user programs that run under it. In both kernel code and user programs, headers in this directory can be included using the <code>#&lt;...&gt;</code> </p>
-</li>
-<li><p>lib/kernel/  部分仅供内核调用的C语言库函数</p>
-<p>   Parts of the C library that are included only in the Pintos kernel. This also includes implementations of some data types that you are free to use in your kernel code: bitmaps, doubly linked lists, and hash tables. In the kernel, headers in this directory can be included using the  <code>#&lt;...&gt;</code> </p>
-</li>
-<li><p>lib/user/ 用户的C语言库</p>
-<p>   Parts of the C library that are included only in Pintos user programs. In user programs, headers in this directory can be included using the   <code>#&lt;...&gt;</code> </p>
-</li>
-<li><p>tests/ 测试用</p>
-<p>   Tests for each project. You can modify this code if it helps you test your submission,  but we will replace it with the originals before we run the tests.</p>
-</li>
-<li><p>examples/ 第二个Project的用户程序样例</p>
-<p> Example user programs for use starting with project 2.</p>
-</li>
-<li><p>misc/ 不用管他</p>
-</li>
-<li><p>utils/ 也不用管</p>
-<p> These files may come in handy if you decide to try working with Pintos on your own machine. Otherwise, you can ignore them.</p>
-</li>
-</ol>
-<h2 id="调试工具以及技巧"><a href="#调试工具以及技巧" class="headerlink" title="调试工具以及技巧"></a>调试工具以及技巧</h2><ol>
-<li><p><code>printf()</code></p>
-<p>这个大家不会陌生。</p>
-</li>
-<li><p><code>ASSERT(expression)</code></p>
-<p>定义在<code>&lt;debug.h&gt;</code>中的宏，当表达式为0或者false时，内核会panic，相关的信息会输出</p>
-</li>
-<li><p>函数和参数宏</p>
-<ul>
-<li><code>UNUSED</code></li>
-<li><code>NO_RETURN</code></li>
-<li><code>NO_INLINE</code></li>
-<li><code>PRINT_FORMAT(format, first)</code></li>
-</ul>
-</li>
-<li><p>Backtrace</p>
-<p>在<code>&lt;debug.h&gt;</code>当中，定义了<code>debug_backtrace()</code>和<code>debug_backtrace_all()</code>两种回溯的函数</p>
-</li>
-<li><p>GDB</p>
-<p>GDB强大归强大，但我觉得在没有图形界面的情况下使用它还是非常麻烦的。</p>
-</li>
-</ol>
-<h2 id="如何测试"><a href="#如何测试" class="headerlink" title="如何测试"></a>如何测试</h2><p>   在<code>build</code>目录下运行</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">make check</span><br></pre></td></tr></table></figure>
-<h1 id="Project1-Threads"><a href="#Project1-Threads" class="headerlink" title="Project1: Threads"></a>Project1: Threads</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>关于线程的概念，有一句话我觉得概括得精炼至极</p>
-<p>“One thread is one virtual core.”</p>
-<p>“线程，就是虚拟核心。”</p>
-<h2 id="已有的基础"><a href="#已有的基础" class="headerlink" title="已有的基础"></a>已有的基础</h2><p>pintos已经为我们实现了创建线程的一个函数，一个简单的调度器，以及同步相关的原型（例如锁，条件变量等）</p>
-<p>线程创建<code>thread_create()</code>的时候会先初始化一个上下文，然后把一个函数装入线程，让它在上下文里面运行。</p>
-<p>一个线程在不运行的时候会<code>idle()</code></p>
-<p>关于上下文切换的函数已经实现在了<code>threads/switch.S</code>，里面是80x64汇编码。</p>
-<h2 id="相关文件"><a href="#相关文件" class="headerlink" title="相关文件"></a>相关文件</h2><ol>
-<li><p>loader.S</p>
-</li>
-<li><p>loader.h 内核加载器，把内核载入内存，并且进入<code>start.S</code>里面的函数入口<code>start()</code></p>
-<p>The kernel loader. Assembles to 512 bytes of code and data that the PC BIOS loads into memory and which in turn finds the kernel on disk, loads it into memory, and jumps to  <code>start()</code> . See section<a href="http://web.stanford.edu/~ouster/cgi-bin/cs140-spring20/pintos/pintos_6.html#SEC92" target="_blank" rel="noopener">A.1.1 The Loader</a></p>
-</li>
-<li><p>start.S </p>
-<p>Does basic setup needed for memory protection and 32-bit operation on 80x64 CPU , for details.</p>
-</li>
-<li><p>kernel.lds.S 内核的链接脚本</p>
-<p>The linker script used to link the kernel. Sets the load address of the kernel and arranges for   , for details. Again, you should not need to look at this code or modify it, but it’s here in case you’re curious.</p>
-</li>
-<li><p>init.c</p>
-</li>
-<li><p>init.h 内核初始化</p>
-<p>Kernel initialization, including <code>main()</code> , the kernel’s “main program.” You should look over<code>main()</code>at least to see what gets initialized. You might want to add your own initialization code here. See section<a href="http://web.stanford.edu/~ouster/cgi-bin/cs140-spring20/pintos/pintos_6.html#SEC94" target="_blank" rel="noopener">A.1.3 High-Level Kernel Initialization</a></p>
-</li>
-<li><p>thread.c</p>
-</li>
-<li><p>thread.h 线程基本实现</p>
-<p>Basic thread support. Much of your work will take place in these files.   , which you are likely to modify in all four projects. See<a href="http://web.stanford.edu/~ouster/cgi-bin/cs140-spring20/pintos/pintos_6.html#SEC97" target="_blank" rel="noopener">A.2.1 <code>struct thread</code></a>and<a href="http://web.stanford.edu/~ouster/cgi-bin/cs140-spring20/pintos/pintos_6.html#SEC96" target="_blank" rel="noopener">A.2 Threads</a>for more information.</p>
-</li>
-<li><p>switch.S</p>
-</li>
-<li><p>switch.h 上下文切换</p>
-<p>Assembly language routine for switching threads. Already discussed above. See section , for more information.</p>
-</li>
-<li><p>palloc.c</p>
-</li>
-<li><p>palloc.h 页分配器</p>
-<p>Page allocator, which hands out system memory in multiples of 4 kB pages. See section , for more information.</p>
-</li>
-<li><p>malloc.c </p>
-</li>
-<li><p>malloc.h 内存分配器</p>
-<p>A simple implementation of     , for more information.</p>
-</li>
-<li><p>interrupt.c</p>
-</li>
-<li><p>interrupt.h 中断处理</p>
-<p>Basic interrupt handling and functions for turning interrupts on and off. See section , for more information.</p>
-</li>
-<li><p>intr-stubs.S</p>
-</li>
-<li><p>intr-stubs.h 中断处理的低级实现</p>
-<p>Assembly code for low-level interrupt handling. See section , for more information.</p>
-</li>
-<li><p>synch.c</p>
-</li>
-<li><p>synch.h 同步原型的实现</p>
-<p>Basic synchronization primitives: semaphores, locks, condition variables, and optimization barriers. You will need to use these for synchronization in all four projects. See section , for more information.</p>
-</li>
-<li><p>io.h I/O处理</p>
-<p>Functions for I/O port access. This is mostly used by source code in the  </p>
-</li>
-<li><p>vaddr.h</p>
-</li>
-<li><p>pte.h 页表项的实现</p>
-<p>Functions and macros for working with virtual addresses and page table entries. These will be more important to you in project 3. For now, you can ignore them.</p>
-</li>
-<li><p>flags.h</p>
-<p>Macros that define a few bits in the 80x ], section 3.4.3, “EFLAGS Register,” for more information.</p>
-</li>
-<li><p>fixed-point.h</p>
-<p>Functions that implement fixed-point arithmetic, for use in your implementation of the advanced scheduler. See <a href="http://web.stanford.edu/~ouster/cgi-bin/cs140-spring20/pintos/pintos_7.html#SEC137" target="_blank" rel="noopener">B.6 Fixed-Point Real Arithmetic</a> for more information.</p>
-</li>
-<li><p>timer.c</p>
-</li>
-<li><p>timer.h 时钟的实现</p>
-<p>System timer that ticks, by default, 100 times per second. You will modify this code in this project.</p>
-</li>
-<li><p>vga.c</p>
-</li>
-<li><p>vga.h VGA接口的驱动文件</p>
-<p>VGA display driver. Responsible for writing text to the screen. You should have no need to look at this code. </p>
-</li>
-<li><p>serial.c</p>
-</li>
-<li><p>serial.h 串口驱动</p>
-<p>Serial port driver. Again,  </p>
-</li>
-<li><p>block.c</p>
-</li>
-<li><p>block.h 储存区块的驱动</p>
-<p>An abstraction layer for , that is, random-access, disk-like devices that are organized as arrays of fixed-size blocks. Out of the box, Pintos supports two types of block devices: IDE disks and partitions. Block devices, regardless of type, won’t actually be used until project 2.</p>
-</li>
-<li><p>ide.c</p>
-</li>
-<li><p>ide.h 对于扇区读写的支持</p>
-<p>Supports reading and writing sectors on up to 4 IDE disks.</p>
-</li>
-<li><p>partition.c</p>
-</li>
-<li><p>partition.h 磁盘分区的实现</p>
-<p>Understands the structure of partitions on disks, allowing a single disk to be carved up into multiple regions (partitions) for independent use.</p>
-</li>
-<li><p>kbd.c</p>
-</li>
-<li><p>kbd.h 键盘驱动</p>
-<p>Keyboard driver. Handles keystrokes passing them to the input layer (see below).</p>
-</li>
-<li><p>input.c</p>
-</li>
-<li><p>input.h 输入层的抽象</p>
-<p>Input layer. Queues input characters passed along by the keyboard or serial drivers.</p>
-</li>
-<li><p>intq.c</p>
-</li>
-<li><p>intq.h 中断队列</p>
-<p>Interrupt queue, for managing a circular queue that both kernel threads and interrupt handlers want to access. Used by the keyboard and serial drivers.</p>
-</li>
-<li><p>rtc.c</p>
-</li>
-<li><p>rtc.h 实时时钟驱动</p>
-<p>Real-time clock driver, to enable the kernel to determine the current date and time. By default, this is only used by  </p>
-</li>
-<li><p>speaker.c</p>
-</li>
-<li><p>speaker.h 扬声器驱动</p>
-<p>Driver that can produce tones on the PC speaker.</p>
-</li>
-<li><p>pit.c</p>
-</li>
-<li><p>pit.h </p>
-<p>Code to configure the 8254 Programmable Interrupt Timer. This code is used by both <code>devices/timer.c</code> and <code>devices/speaker.c</code> because each device uses one of the PIT’s output channel.</p>
-</li>
-</ol>
-<h2 id="实现目标"><a href="#实现目标" class="headerlink" title="实现目标"></a>实现目标</h2><h3 id="相关文档"><a href="#相关文档" class="headerlink" title="相关文档"></a>相关文档</h3><h3 id="Alarm-Clock"><a href="#Alarm-Clock" class="headerlink" title="Alarm Clock"></a>Alarm Clock</h3><p>Reimplement <code>timer_sleep()</code>, defined in <code>devices/timer.c</code>. Although a working implementation is provided, it “busy waits,” that is, it spins in a loop checking the current time and calling <code>thread_yield()</code> until enough time has gone by. Reimplement it to avoid busy waiting.</p>
-<ul>
-<li><p>Function: void <strong>timer_sleep</strong> (int64_t ticks)</p>
-<p>Suspends execution of the calling thread until time has advanced by at least x timer ticks. Unless the system is otherwise idle, the thread need not wake up after exactly x ticks. Just put it on the ready queue after they have waited for the right amount of time.<code>timer_sleep()</code> is useful for threads that operate in real-time, e.g. for blinking the cursor once per second.The argument to <code>timer_sleep()</code> is expressed in timer ticks, not in milliseconds or any another unit. There are <code>TIMER_FREQ</code> timer ticks per second, where <code>TIMER_FREQ</code> is a macro defined in <code>devices/timer.h</code>. The default value is 100. We don’t recommend changing this value, because any change is likely to cause many of the tests to fail.</p>
-</li>
-</ul>
-<p>Separate functions <code>timer_msleep()</code>, <code>timer_usleep()</code>, and <code>timer_nsleep()</code> do exist for sleeping a specific number of milliseconds, microseconds, or nanoseconds, respectively, but these will call <code>timer_sleep()</code> automatically when necessary. You do not need to modify them.</p>
-<p>If your delays seem too short or too long, reread the explanation of the -r option to <code>pintos</code> (see section <a href="http://web.stanford.edu/~ouster/cgi-bin/cs140-spring20/pintos/pintos_1.html#SEC6" target="_blank" rel="noopener">1.1.4 Debugging versus Testing</a>).</p>
-<p>The alarm clock implementation is not needed for later projects, although it could be useful for project </p>
-<p>始终休眠完成以后放入准备就绪的队列即可，这个函数与后续工作无关</p>
-<h3 id="优先级调度"><a href="#优先级调度" class="headerlink" title="优先级调度"></a>优先级调度</h3><p>Implement priority scheduling in Pintos. When a thread is added to the ready list that has a higher priority than the currently running thread, the current thread should immediately yield the processor to the new thread. Similarly, when threads are waiting for a lock, semaphore, or condition variable, the highest priority waiting thread should be awakened first. A thread may raise or lower its own priority at any time, but lowering its priority such that it no longer has the highest priority must cause it to immediately yield the CPU.</p>
-<p>Thread priorities range from <code>PRI_MIN</code> (0) to <code>PRI_MAX</code> (63). Lower numbers correspond to lower priorities, so that priority 0 is the lowest priority and priority 63 is the highest. The initial thread priority is passed as an argument to <code>thread_create()</code>. If there’s no reason to choose another priority, use <code>PRI_DEFAULT</code> (31). The <code>PRI_</code> macros are defined in <code>threads/thread.h</code>, and you should not change their values.</p>
-<p>One issue with priority scheduling is “priority inversion”. Consider high, medium, and low priority threads H, M, and L, respectively. If H needs to wait for L (for instance, for a lock held by L), and M is on the ready list, then H will never get the CPU because the low priority thread will not get any CPU time. A partial fix for this problem is for H to “donate” its priority to L while L is holding the lock, then recall the donation once L releases (and thus H acquires) the lock.</p>
-<p>Implement priority donation. You will need to account for all different situations in which priority donation is required. Be sure to handle multiple donations, in which multiple priorities are donated to a single thread. You must also handle nested donation: if H is waiting on a lock that M holds and M is waiting on a lock that L holds, then both M and L should be boosted to H’s priority. If necessary, you may impose a reasonable limit on depth of nested priority donation, such as 8 levels.</p>
-<p>You must implement priority donation for locks. You need not implement priority donation for the other Pintos synchronization constructs. You do need to implement priority scheduling in all cases.</p>
-<p>Finally, implement the following functions that allow a thread to examine and modify its own priority. Skeletons for these functions are provided in <code>threads/thread.c</code>.</p>
-<ul>
-<li><p>Function: void <strong>thread_set_priority</strong> (int new_priority)</p>
-<p>Sets the current thread’s priority to new_priority. If the current thread no longer has the highest priority, yields.</p>
-</li>
-<li><p>Function: int <strong>thread_get_priority</strong> (void)</p>
-<p>Returns the current thread’s priority. In the presence of priority donation, returns the higher (donated) priority.</p>
-</li>
-</ul>
-<p>You need not provide any interface to allow a thread to directly modify other threads’ priorities.</p>
-<p>The priority scheduler is not used in any later project.</p>
-<h3 id="高级调度器"><a href="#高级调度器" class="headerlink" title="高级调度器"></a>高级调度器</h3><h1 id="Project2"><a href="#Project2" class="headerlink" title="Project2"></a>Project2</h1><h1 id="Project3"><a href="#Project3" class="headerlink" title="Project3"></a>Project3</h1><h1 id="Project4"><a href="#Project4" class="headerlink" title="Project4"></a>Project4</h1>]]></content>
-  </entry>
-  <entry>
     <title>矩阵计算库一览</title>
     <url>/2020/09/25/%E7%9F%A9%E9%98%B5%E8%AE%A1%E7%AE%97%E5%BA%93%E4%B8%80%E8%A7%88/</url>
     <content><![CDATA[<p>本文是转载的，以下是出处</p>
@@ -1495,96 +1589,40 @@ p_c=Rp_w+t</script>]]></content>
 ]]></content>
   </entry>
   <entry>
-    <title>Optimized Eigen</title>
-    <url>/2020/09/25/Optimized-Eigen/</url>
-    <content><![CDATA[<p><code>Eigen</code>是一个header-only的矩阵计算库，功能强大，应用广泛。但是有时候在追求性能的场景下面，如果不做一个深入了解，那么它的性能会大打折扣（甚至远低于<code>numpy</code>或者<code>MATLAB</code>的实现），这样就无法很好地发挥出C++的优势。下面记录了一些优化的心得体验。</p>
-<p>注：下面以Eigen3为例</p>
-<a id="more"></a>
-<h1 id="Lazy-Evaluation"><a href="#Lazy-Evaluation" class="headerlink" title="Lazy Evaluation"></a>Lazy Evaluation</h1><p>类似<code>A=B+C*D</code>这样的操作往往编译器会生成一个中间变量来储存<code>C*D</code>再加上<code>B</code>，最后赋给<code>A</code>，当中间变量相对较大的时候，这个多余的中间变量会带来不小的性能开销（一方面是可能会打乱cache里面的存储布局，降低缓存的命中率）</p>
-<p>在Eigen中，一般没有这种困扰。可以用<code>eval()</code>来强制生成中间结果。可以用<code>noalias()</code>来强制惰性计算。</p>
-<p> If you really want to force immediate evaluation, use <a href="http://eigen.tuxfamily.org/dox/classEigen_1_1DenseBase.html#aa73e57a2f0f7cfcb4ad4d55ea0b6414b" target="_blank" rel="noopener">eval()</a>:</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">mat1 = (mat2 + mat3).eval();</span><br><span class="line"></span><br><span class="line">mat1.noalias() = mat2 * mat2;</span><br></pre></td></tr></table></figure>
-<h1 id="编译期计算"><a href="#编译期计算" class="headerlink" title="编译期计算"></a>编译期计算</h1><p>通过模板，我们可以在编译时期就把内存分配好，这样就可减小动态分配内存的开销，此外还可以更好的利用Intel的向量化指令集</p>
-<p>一般来说，对于较小的向量和矩阵，给它一个固定的大小还可以有利于编译器进行循环展开。</p>
-<p>We mentioned at the beginning of this page that the <a href="https://eigen.tuxfamily.org/dox/classEigen_1_1Matrix.html" target="_blank" rel="noopener">Matrix</a> class takes six template parameters, but so far we only discussed the first three. The remaining three parameters are optional. Here is the complete list of template parameters:</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">Matrix&lt;<span class="keyword">typename</span> Scalar,</span><br><span class="line">		<span class="keyword">int</span> RowsAtCompileTime,</span><br><span class="line">   	<span class="keyword">int</span> ColsAtCompileTime,</span><br><span class="line">     <span class="keyword">int</span> Options = <span class="number">0</span>，</span><br><span class="line">     <span class="keyword">int</span> MaxRowsAtCompileTime = RowsAtCompileTime,</span><br><span class="line">     <span class="keyword">int</span> MaxColsAtCompileTime = ColsAtCompileTime&gt;</span><br></pre></td></tr></table></figure>
-<p><code>Options</code> is a bit field. Here, we discuss only one bit:</p>
-<p><code>RowMajor</code> It specifies that the matrices of this type use row-major storage order; by default, the storage order is column-major. See the page storage orders. For example, this type means row-major 3x3 matrices:</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">Matrix&lt;<span class="keyword">float</span>, <span class="number">3</span>, <span class="number">3</span>, RowMajor&gt;</span><br></pre></td></tr></table></figure>
-<p><code>MaxRowsAtCompileTime</code> and <code>MaxColsAtCompileTime</code> are useful when you want to specify that, even though the exact sizes of your matrices are not known at compile time, a fixed upper bound is known at compile time. The biggest reason why you might want to do that is to avoid dynamic memory allocation. For example the following matrix type uses a plain array of 12 floats, without dynamic memory allocation:</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">Matrix&lt;<span class="keyword">float</span>, Dynamic, Dynamic, <span class="number">0</span>, <span class="number">3</span>, <span class="number">4</span>&gt;</span><br></pre></td></tr></table></figure>
-<h1 id="SIMD向量化"><a href="#SIMD向量化" class="headerlink" title="SIMD向量化"></a>SIMD向量化</h1><p>当开启向量化的开关以后，Eigen对于内存对齐有很高的要求。会因为下面的各种情况崩溃</p>
-<ol>
-<li>类或者结构体中含有Eigen对象</li>
-<li>Eigen对象放入STL容器时</li>
-<li>Eigen对象passed by value</li>
-</ol>
-<h2 id="固定大小的可向量化对象"><a href="#固定大小的可向量化对象" class="headerlink" title="固定大小的可向量化对象"></a>固定大小的可向量化对象</h2><p>An <a href="http://eigen.tuxfamily.org/dox/namespaceEigen.html" target="_blank" rel="noopener">Eigen</a> object is called “fixed-size vectorizable” if it has fixed size and that size is a multiple of 16 bytes.</p>
-<p>当对象的大小固定，且为16bytes的整数倍的时候，这些对象被称为固定大小的可向量化对象（需要内存对齐128位）</p>
-<p>Examples include:</p>
+    <title>Ceres优化示例</title>
+    <url>/2020/09/09/Ceres%E4%BC%98%E5%8C%96%E7%A4%BA%E4%BE%8B/</url>
+    <content><![CDATA[<p>Ceres Solver是一个比较著名的非线性最小二乘优化库，这里稍做介绍他的使用方法。</p>
+<p>这里提一下，有不错的<a href="https://izhengfan.gitbooks.io/ceres-solver-cn/content/" target="_blank" rel="noopener">中文文档</a></p>
+<p>大致流程如下:</p>
 <ul>
-<li>Eigen::Vector2d</li>
-<li>Eigen::Vector4d</li>
-<li>Eigen::Vector4f</li>
-<li>Eigen::Matrix2d</li>
-<li>Eigen::Matrix2f</li>
-<li>Eigen::Matrix4d</li>
-<li>Eigen::Matrix4f</li>
-<li>Eigen::Affine3d</li>
-<li>Eigen::Affine3f</li>
-<li><a href="http://eigen.tuxfamily.org/dox/group__Geometry__Module.html#ga5daab8e66aa480465000308455578830" target="_blank" rel="noopener">Eigen::Quaterniond</a></li>
-<li><a href="http://eigen.tuxfamily.org/dox/group__Geometry__Module.html#ga66aa915a26d698c60ed206818c3e4c9b" target="_blank" rel="noopener">Eigen::Quaternionf</a></li>
+<li>定义残差</li>
+<li>选择核函数</li>
+<li>初始话求解器设置</li>
+<li>求解</li>
 </ul>
-<h2 id="有Eigen对象的数据结构"><a href="#有Eigen对象的数据结构" class="headerlink" title="有Eigen对象的数据结构"></a>有Eigen对象的数据结构</h2><p>这个问题很好解决，public下面加一个宏定义即可</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Foo</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  ...</span><br><span class="line">  Eigen::Vector2d v;</span><br><span class="line">  ...</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">  EIGEN_MAKE_ALIGNED_OPERATOR_NEW</span><br><span class="line">&#125;;</span><br><span class="line"> </span><br><span class="line">...</span><br><span class="line"> </span><br><span class="line">Foo *foo = <span class="keyword">new</span> Foo;</span><br></pre></td></tr></table></figure>
-<p>还有条件宏可以用</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">int</span> n&gt; <span class="class"><span class="keyword">class</span> <span class="title">Foo</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  <span class="keyword">typedef</span> Eigen::Matrix&lt;<span class="keyword">float</span>,n,<span class="number">1</span>&gt; Vector;</span><br><span class="line">  <span class="keyword">enum</span> &#123; NeedsToAlign = (<span class="keyword">sizeof</span>(Vector)%<span class="number">16</span>)==<span class="number">0</span> &#125;;</span><br><span class="line">  ...</span><br><span class="line">  Vector v;</span><br><span class="line">  ...</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">  EIGEN_MAKE_ALIGNED_OPERATOR_NEW_IF(NeedsToAlign)</span><br><span class="line">&#125;;</span><br><span class="line"> </span><br><span class="line">...</span><br><span class="line"> </span><br><span class="line">Foo&lt;<span class="number">4</span>&gt; *foo4 = <span class="keyword">new</span> Foo&lt;<span class="number">4</span>&gt;; <span class="comment">// foo4 is guaranteed to be 128bit-aligned</span></span><br><span class="line">Foo&lt;<span class="number">3</span>&gt; *foo3 = <span class="keyword">new</span> Foo&lt;<span class="number">3</span>&gt;; <span class="comment">// foo3 has only the system default alignment guarantee</span></span><br></pre></td></tr></table></figure>
-<p>也提供对于对齐功能的禁用</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Foo</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">  ...</span><br><span class="line">  Eigen::Matrix&lt;<span class="keyword">double</span>,<span class="number">2</span>,<span class="number">1</span>,Eigen::DontAlign&gt; v;</span><br><span class="line">  ...</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<h2 id="标准库容器"><a href="#标准库容器" class="headerlink" title="标准库容器"></a>标准库容器</h2><p>For example, instead of</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">map</span>&lt;<span class="keyword">int</span>, Eigen::Vector4f&gt;</span><br></pre></td></tr></table></figure>
-<p>you need to use<br><figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">map</span>&lt;<span class="keyword">int</span>, Eigen::Vector4f, <span class="built_in">std</span>::less&lt;<span class="keyword">int</span>&gt;, </span><br><span class="line">         Eigen::aligned_allocator&lt;<span class="built_in">std</span>::pair&lt;<span class="keyword">const</span> <span class="keyword">int</span>, Eigen::Vector4f&gt; &gt; &gt;</span><br></pre></td></tr></table></figure></p>
-<p>另一个例子</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;Eigen/StdVector&gt;</span></span></span><br><span class="line"><span class="comment">/* ... */</span></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">vector</span>&lt;Eigen::Vector4f,Eigen::aligned_allocator&lt;Eigen::Vector4f&gt; &gt;</span><br></pre></td></tr></table></figure>
-<h2 id="Pass-by-value的问题"><a href="#Pass-by-value的问题" class="headerlink" title="Pass by value的问题"></a>Pass by value的问题</h2><p>很好解决，传入引用就可以了</p>
-<p>So for example, a function like this, where v is passed by value:</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">my_function</span><span class="params">(Eigen::Vector2d v)</span></span>;</span><br></pre></td></tr></table></figure>
-<p>needs to be rewritten as follows, passing v by reference:</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">my_function</span><span class="params">(<span class="keyword">const</span> Eigen::Vector2d &amp;v)</span></span>;</span><br></pre></td></tr></table></figure>
-<h1 id="OpenMP多线程支持"><a href="#OpenMP多线程支持" class="headerlink" title="OpenMP多线程支持"></a>OpenMP多线程支持</h1><p>Eigen内置的部分矩阵算法支持多线程，可以加入<code>-fopenmp</code>来激活</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">OMP_NUM_THREADS=n ./my_program</span><br><span class="line">omp_set_num_threads(n);</span><br><span class="line">Eigen::setNbThreads(n);</span><br></pre></td></tr></table></figure>
-<h1 id="MKL和BLAS等支持"><a href="#MKL和BLAS等支持" class="headerlink" title="MKL和BLAS等支持"></a>MKL和BLAS等支持</h1><p>在引入Eigen头文件之前加上宏定义即可，再链接上相关的库</p>
-<p>When doing so, a number of Eigen’s algorithms are silently substituted with calls to Intel MKL routines. These substitutions apply only for <strong>Dynamic</strong> <strong>or</strong> <strong>large</strong> enough objects with one of the following four standard scalar types: <code>float</code>, <code>double</code>, <code>complex&lt;float&gt;</code>, and <code>complex&lt;double&gt;</code>. Operations on other scalar types or mixing reals and complexes will continue to use the built-in algorithms.</p>
-<p>In addition you can choose which parts will be substituted by defining one or multiple of the following macros:</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th><code>EIGEN_USE_BLAS</code></th>
-<th>Enables the use of external BLAS level 2 and 3 routines</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>EIGEN_USE_LAPACKE</code></td>
-<td>Enables the use of external Lapack routines via the <a href="http://www.netlib.org/lapack/lapacke.html" target="_blank" rel="noopener">Lapacke</a> C interface to Lapack</td>
-</tr>
-<tr>
-<td><code>EIGEN_USE_LAPACKE_STRICT</code></td>
-<td>Same as <code>EIGEN_USE_LAPACKE</code> but algorithm of lower robustness are disabled. This currently concerns only <a href="http://eigen.tuxfamily.org/dox/classEigen_1_1JacobiSVD.html" target="_blank" rel="noopener">JacobiSVD</a> which otherwise would be replaced by <code>gesvd</code> that is less robust than Jacobi rotations.</td>
-</tr>
-<tr>
-<td><code>EIGEN_USE_MKL_VML</code></td>
-<td>Enables the use of Intel VML (vector operations)</td>
-</tr>
-<tr>
-<td><code>EIGEN_USE_MKL_ALL</code></td>
-<td>Defines <code>EIGEN_USE_BLAS</code>, <code>EIGEN_USE_LAPACKE</code>, and <code>EIGEN_USE_MKL_VML</code></td>
-</tr>
-</tbody>
-</table>
-</div>
-<h1 id="CUDA核函数"><a href="#CUDA核函数" class="headerlink" title="CUDA核函数"></a>CUDA核函数</h1><p>在CUDA核函数里面也可以使用Eigen，但是支持还不完全，官方文档也没有补齐，这里暂时略过</p>
+<a id="more"></a>
+<p>里面的有一个类型叫<code>Problem</code>，我们就在这个类型的基础上给他添加残差块，再把它丢给求解器求解。</p>
+<p>那么如何定义残差块呢，我们首先需要的是一个拟函数(functor)，然后在拟函数里需要重载带模板参数的运算符<code>()</code>，当我们把拟函数结合进残差块的时候，可以选择对他进行的求导方式，有两种方式，一种是自动求导，一种是数值求导，一般来说我们会选用前者（更快更稳）</p>
+<p>拟函数示例如下</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">CostFunctor</span> &#123;</span></span><br><span class="line">   <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line">   <span class="function"><span class="keyword">bool</span> <span class="title">operator</span><span class="params">()</span><span class="params">(<span class="keyword">const</span> T* <span class="keyword">const</span> x, T* residual)</span> <span class="keyword">const</span> </span>&#123;</span><br><span class="line">     residual[<span class="number">0</span>] = T(<span class="number">10.0</span>) - x[<span class="number">0</span>];</span><br><span class="line">     <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>以下是一个最简单的例子</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span>** argv)</span> </span>&#123;</span><br><span class="line">  google::InitGoogleLogging(argv[<span class="number">0</span>]);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// The variable to solve for with its initial value.</span></span><br><span class="line">  <span class="keyword">double</span> initial_x = <span class="number">5.0</span>;</span><br><span class="line">  <span class="keyword">double</span> x = initial_x;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Build the problem.</span></span><br><span class="line">  Problem problem;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Set up the only cost function (also known as residual). This uses</span></span><br><span class="line">  <span class="comment">// auto-differentiation to obtain the derivative (jacobian).</span></span><br><span class="line">  CostFunction* cost_function =</span><br><span class="line">      <span class="keyword">new</span> AutoDiffCostFunction&lt;CostFunctor, <span class="number">1</span>, <span class="number">1</span>&gt;(<span class="keyword">new</span> CostFunctor);</span><br><span class="line">  problem.AddResidualBlock(cost_function, <span class="literal">NULL</span>, &amp;x);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Run the solver!</span></span><br><span class="line">  Solver::Options options;</span><br><span class="line">  options.linear_solver_type = ceres::DENSE_QR;</span><br><span class="line">  options.minimizer_progress_to_stdout = <span class="literal">true</span>;</span><br><span class="line">  Solver::Summary summary;</span><br><span class="line">  Solve(options, &amp;problem, &amp;summary);</span><br><span class="line"></span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; summary.BriefReport() &lt;&lt; <span class="string">"\n"</span>;</span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"x : "</span> &lt;&lt; initial_x</span><br><span class="line">            &lt;&lt; <span class="string">" -&gt; "</span> &lt;&lt; x &lt;&lt; <span class="string">"\n"</span>;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面会求得$x^*=\arg\min_{x}f(x)=\arg\min_{x}\frac{1}{2}(10-x)^2$</p>
+<h3 id="微分"><a href="#微分" class="headerlink" title="微分"></a>微分</h3><p>关于微分部分，有三种类型</p>
+<ul>
+<li>数值微分</li>
+<li>解析微分</li>
+<li>自动求导（利用C++模板特性自动求解解析微分）</li>
+</ul>
+<h4 id="解析微分"><a href="#解析微分" class="headerlink" title="解析微分"></a>解析微分</h4><p>我们从<code>SizedCostFunction</code>继承一个解析代价函数的模型，并且重载一个叫<code>Evaluate()</code>的方法来计算Jacobian</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Rat43Analytic</span> :</span> <span class="keyword">public</span> SizedCostFunction&lt;<span class="number">1</span>,<span class="number">4</span>&gt; &#123;</span><br><span class="line">   <span class="keyword">public</span>:</span><br><span class="line">     Rat43Analytic(<span class="keyword">const</span> <span class="keyword">double</span> x, <span class="keyword">const</span> <span class="keyword">double</span> y) : x_(x), y_(y) &#123;&#125;</span><br><span class="line">     <span class="keyword">virtual</span> ~Rat43Analytic() &#123;&#125;</span><br><span class="line">     <span class="function"><span class="keyword">virtual</span> <span class="keyword">bool</span> <span class="title">Evaluate</span><span class="params">(<span class="keyword">double</span> <span class="keyword">const</span>* <span class="keyword">const</span>* parameters,</span></span></span><br><span class="line"><span class="function"><span class="params">                           <span class="keyword">double</span>* residuals,</span></span></span><br><span class="line"><span class="function"><span class="params">                           <span class="keyword">double</span>** jacobians)</span> <span class="keyword">const</span> </span>&#123;</span><br><span class="line">       <span class="keyword">const</span> <span class="keyword">double</span> b1 = parameters[<span class="number">0</span>][<span class="number">0</span>];</span><br><span class="line">       <span class="keyword">const</span> <span class="keyword">double</span> b2 = parameters[<span class="number">0</span>][<span class="number">1</span>];</span><br><span class="line">       <span class="keyword">const</span> <span class="keyword">double</span> b3 = parameters[<span class="number">0</span>][<span class="number">2</span>];</span><br><span class="line">       <span class="keyword">const</span> <span class="keyword">double</span> b4 = parameters[<span class="number">0</span>][<span class="number">3</span>];</span><br><span class="line"></span><br><span class="line">       residuals[<span class="number">0</span>] = b1 *  <span class="built_in">pow</span>(<span class="number">1</span> + <span class="built_in">exp</span>(b2 -  b3 * x_), <span class="number">-1.0</span> / b4) - y_;</span><br><span class="line"></span><br><span class="line">       <span class="keyword">if</span> (!jacobians) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">       <span class="keyword">double</span>* jacobian = jacobians[<span class="number">0</span>];</span><br><span class="line">       <span class="keyword">if</span> (!jacobian) <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">       jacobian[<span class="number">0</span>] = <span class="built_in">pow</span>(<span class="number">1</span> + <span class="built_in">exp</span>(b2 - b3 * x_), <span class="number">-1.0</span> / b4);</span><br><span class="line">       jacobian[<span class="number">1</span>] = -b1 * <span class="built_in">exp</span>(b2 - b3 * x_) *</span><br><span class="line">                     <span class="built_in">pow</span>(<span class="number">1</span> + <span class="built_in">exp</span>(b2 - b3 * x_), <span class="number">-1.0</span> / b4 - <span class="number">1</span>) / b4;</span><br><span class="line">       jacobian[<span class="number">2</span>] = x_ * b1 * <span class="built_in">exp</span>(b2 - b3 * x_) *</span><br><span class="line">                     <span class="built_in">pow</span>(<span class="number">1</span> + <span class="built_in">exp</span>(b2 - b3 * x_), <span class="number">-1.0</span> / b4 - <span class="number">1</span>) / b4;</span><br><span class="line">       jacobian[<span class="number">3</span>] = b1 * <span class="built_in">log</span>(<span class="number">1</span> + <span class="built_in">exp</span>(b2 - b3 * x_)) *</span><br><span class="line">                     <span class="built_in">pow</span>(<span class="number">1</span> + <span class="built_in">exp</span>(b2 - b3 * x_), <span class="number">-1.0</span> / b4) / (b4 * b4);</span><br><span class="line">       <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">     &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span>:</span><br><span class="line">     <span class="keyword">const</span> <span class="keyword">double</span> x_;</span><br><span class="line">     <span class="keyword">const</span> <span class="keyword">double</span> y_;</span><br><span class="line"> &#125;;</span><br></pre></td></tr></table></figure>
+<p>注意，重载<code>Evaluate()</code>的时候，要注意计算的效率问题（你可以在官方文档里找到它的优化版本，比当前版本快了2.8倍！）</p>
+<h4 id="数值微分"><a href="#数值微分" class="headerlink" title="数值微分"></a>数值微分</h4><p>数值微分直接定义代价函数就完事了，简单粗暴</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Rat43CostFunctor</span> &#123;</span></span><br><span class="line">  Rat43CostFunctor(<span class="keyword">const</span> <span class="keyword">double</span> x, <span class="keyword">const</span> <span class="keyword">double</span> y) : x_(x), y_(y) &#123;&#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">bool</span> <span class="title">operator</span><span class="params">()</span><span class="params">(<span class="keyword">const</span> <span class="keyword">double</span>* parameters, <span class="keyword">double</span>* residuals)</span> <span class="keyword">const</span> </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">double</span> b1 = parameters[<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">double</span> b2 = parameters[<span class="number">1</span>];</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">double</span> b3 = parameters[<span class="number">2</span>];</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">double</span> b4 = parameters[<span class="number">3</span>];</span><br><span class="line">    residuals[<span class="number">0</span>] = b1 * <span class="built_in">pow</span>(<span class="number">1.0</span> + <span class="built_in">exp</span>(b2 -  b3 * x_), <span class="number">-1.0</span> / b4) - y_;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">double</span> x_;</span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">double</span> y_;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">CostFunction* cost_function =</span><br><span class="line">  <span class="keyword">new</span> NumericDiffCostFunction&lt;Rat43CostFunctor, FORWARD, <span class="number">1</span>, <span class="number">4</span>&gt;(</span><br><span class="line">    <span class="keyword">new</span> Rat43CostFunctor(x, y));</span><br></pre></td></tr></table></figure>
+<p>数值微分优化的余地比较小，而且会有一个小量的误差（不过多数情况基本可以忽略不计，如果想要减小这个小量误差，可以把<code>Forward</code>或者<code>Central</code>换成<code>RIDDERS</code>）</p>
+<h4 id="自动求导"><a href="#自动求导" class="headerlink" title="自动求导"></a>自动求导</h4><p>基本和数值微分的定义类似，仅仅是<code>operator()</code>的函数签名不太一样（后者没有模板）</p>
+<p>例子如下</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Rat43CostFunctor</span> &#123;</span></span><br><span class="line">  Rat43CostFunctor(<span class="keyword">const</span> <span class="keyword">double</span> x, <span class="keyword">const</span> <span class="keyword">double</span> y) : x_(x), y_(y) &#123;&#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line">  <span class="function"><span class="keyword">bool</span> <span class="title">operator</span><span class="params">()</span><span class="params">(<span class="keyword">const</span> T* parameters, T* residuals)</span> <span class="keyword">const</span> </span>&#123;</span><br><span class="line">    <span class="keyword">const</span> T b1 = parameters[<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">const</span> T b2 = parameters[<span class="number">1</span>];</span><br><span class="line">    <span class="keyword">const</span> T b3 = parameters[<span class="number">2</span>];</span><br><span class="line">    <span class="keyword">const</span> T b4 = parameters[<span class="number">3</span>];</span><br><span class="line">    residuals[<span class="number">0</span>] = b1 * <span class="built_in">pow</span>(<span class="number">1.0</span> + <span class="built_in">exp</span>(b2 -  b3 * x_), <span class="number">-1.0</span> / b4) - y_;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">double</span> x_;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">double</span> y_;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">CostFunction* cost_function =</span><br><span class="line">      <span class="keyword">new</span> AutoDiffCostFunction&lt;Rat43CostFunctor, <span class="number">1</span>, <span class="number">4</span>&gt;(</span><br><span class="line">        <span class="keyword">new</span> Rat43CostFunctor(x, y));</span><br></pre></td></tr></table></figure>
 ]]></content>
   </entry>
 </search>

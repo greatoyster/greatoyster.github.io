@@ -155,7 +155,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives<span class="badge">41</span></a>
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives<span class="badge">43</span></a>
 
   </li>
       <li class="menu-item menu-item-search">
@@ -212,7 +212,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/09/09/pybind11%E7%A4%BA%E4%BE%8B/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/01/Rust%E5%85%A5%E9%97%A8%E8%AF%AD%E6%B3%95%E5%BD%92%E7%BA%B3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -226,7 +226,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2020/09/09/pybind11%E7%A4%BA%E4%BE%8B/" class="post-title-link" itemprop="url">pybind11示例</a>
+            <a href="/2020/02/01/Rust%E5%85%A5%E9%97%A8%E8%AF%AD%E6%B3%95%E5%BD%92%E7%BA%B3/" class="post-title-link" itemprop="url">Rust入门语法归纳</a>
         </h1>
 
         <div class="post-meta">
@@ -236,15 +236,26 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2020-09-09 15:12:44" itemprop="dateCreated datePublished" datetime="2020-09-09T15:12:44Z">2020-09-09</time>
+              <time title="Created: 2020-02-01 13:03:49" itemprop="dateCreated datePublished" datetime="2020-02-01T13:03:49Z">2020-02-01</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-09-20 14:37:26" itemprop="dateModified" datetime="2020-09-20T14:37:26Z">2020-09-20</time>
+                <time title="Modified: 2020-08-16 07:08:05" itemprop="dateModified" datetime="2020-08-16T07:08:05Z">2020-08-16</time>
               </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Rust/" itemprop="url" rel="index">
+                    <span itemprop="name">Rust</span>
+                  </a>
+                </span>
+            </span>
 
           
 
@@ -257,10 +268,13 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p><code>pybind11</code>是一个C++的库，它能够在Python和C++建立绑定，达到互相调用接口的效果</p>
+          <h1 id="Rust入门语法归纳"><a href="#Rust入门语法归纳" class="headerlink" title="Rust入门语法归纳"></a>Rust入门语法归纳</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>Rust是一门学习曲线极其陡峭的编程语言，里面的语法规则比较庞杂。不得不承认，Rust可读性是很高的，但是写出正确的代码又是另外一回事了。</p>
+<p>好在学习Rust有比较好的官方教材《The Rust Programing Language》，而且也有了翻译质量很高的中文版，但是我发现这本官方教材里面很多东西都是零零碎碎的，例子很多，却缺乏了一些很general的表述。在这里，我来汇总一下Rust的部分基本语法规则。</p>
+<p>此外，如果在一门或者多门其他编程语言上已经有了相当的基础，那么学习Rust会快上一些。这也是本文面向的主要对象。</p>
+<p>友情提示：把Rust作为一门入门语言是一个不太理智的决定。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/09/09/pybind11%E7%A4%BA%E4%BE%8B/#more" rel="contents">
+              <a class="btn" href="/2020/02/01/Rust%E5%85%A5%E9%97%A8%E8%AF%AD%E6%B3%95%E5%BD%92%E7%BA%B3/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -284,7 +298,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/09/cmake%E6%9E%84%E5%BB%BA%E7%B3%BB%E7%BB%9F/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/02/02/Rust%E8%BF%9B%E9%98%B6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -298,7 +312,7 @@
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2020/08/09/cmake%E6%9E%84%E5%BB%BA%E7%B3%BB%E7%BB%9F/" class="post-title-link" itemprop="url">cmake构建系统</a>
+            <a href="/2020/02/02/Rust%E8%BF%9B%E9%98%B6/" class="post-title-link" itemprop="url">Rust进阶</a>
         </h1>
 
         <div class="post-meta">
@@ -308,14 +322,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2020-08-08 18:36:12" itemprop="dateCreated datePublished" datetime="2020-08-08T18:36:12Z">2020-08-08</time>
+              <time title="Created: 2020-02-02 10:54:15" itemprop="dateCreated datePublished" datetime="2020-02-02T10:54:15Z">2020-02-02</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-08-25 10:19:46" itemprop="dateModified" datetime="2020-08-25T10:19:46Z">2020-08-25</time>
+                <time title="Modified: 2020-02-05 06:18:50" itemprop="dateModified" datetime="2020-02-05T06:18:50Z">2020-02-05</time>
               </span>
 
           
@@ -329,10 +343,12 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>C++在代码复用这一块做的一言难尽，一些依赖第三方库的项目往往很难直接拿来跑，有一大堆的依赖问题需要处理。在这一块，目前比较好的方案只有cmake了。委员会其实可以学学Rust，考虑出个包管理器。但想到种种历史包袱，大概是有生之年了，C++50标准再见咯。</p>
+          <h1 id="Rust进阶"><a href="#Rust进阶" class="headerlink" title="Rust进阶"></a>Rust进阶</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>如果看过了前面的《Rust入门语法归纳》或者是对Rust语法已经有了基本了解，那么就可以进入进阶阶段了。</p>
+<p>在进阶阶段，我们依然从类型系统和控制流两个主要方面来展开。另外，还有相关的编程概念也需要交代。</p>
+<p>文章暂时没有写完。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/08/09/cmake%E6%9E%84%E5%BB%BA%E7%B3%BB%E7%BB%9F/#more" rel="contents">
+              <a class="btn" href="/2020/02/02/Rust%E8%BF%9B%E9%98%B6/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -480,6 +496,78 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2020/07/26/rCore2020%E6%80%BB%E7%BB%93/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/09/cmake%E6%9E%84%E5%BB%BA%E7%B3%BB%E7%BB%9F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="greatoyster">
+      <meta itemprop="description" content="Technique-sharing station">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Greatoyster">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/08/09/cmake%E6%9E%84%E5%BB%BA%E7%B3%BB%E7%BB%9F/" class="post-title-link" itemprop="url">cmake构建系统</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-08-08 18:36:12" itemprop="dateCreated datePublished" datetime="2020-08-08T18:36:12Z">2020-08-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-08-25 10:19:46" itemprop="dateModified" datetime="2020-08-25T10:19:46Z">2020-08-25</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>C++在代码复用这一块做的一言难尽，一些依赖第三方库的项目往往很难直接拿来跑，有一大堆的依赖问题需要处理。在这一块，目前比较好的方案只有cmake了。委员会其实可以学学Rust，考虑出个包管理器。但想到种种历史包袱，大概是有生之年了，C++50标准再见咯。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/08/09/cmake%E6%9E%84%E5%BB%BA%E7%B3%BB%E7%BB%9F/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -808,7 +896,7 @@ E\times V \to E</script></li>
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/08/%E6%B5%85%E6%9E%90DTAM-Dense-Tracking-and-Mapping-in-Real-Time/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/09/27/%E6%B5%85%E6%9E%90B%E6%A0%B7%E6%9D%A1%E6%9B%B2%E7%BA%BF/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -822,7 +910,7 @@ E\times V \to E</script></li>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2020/08/08/%E6%B5%85%E6%9E%90DTAM-Dense-Tracking-and-Mapping-in-Real-Time/" class="post-title-link" itemprop="url">浅析DTAM: Dense Tracking and Mapping in Real-Time</a>
+            <a href="/2020/09/27/%E6%B5%85%E6%9E%90B%E6%A0%B7%E6%9D%A1%E6%9B%B2%E7%BA%BF/" class="post-title-link" itemprop="url">浅析B样条曲线</a>
         </h1>
 
         <div class="post-meta">
@@ -831,16 +919,10 @@ E\times V \to E</script></li>
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
+              
 
-              <time title="Created: 2020-08-08 00:27:22" itemprop="dateCreated datePublished" datetime="2020-08-08T00:27:22Z">2020-08-08</time>
+              <time title="Created: 2020-09-26 17:55:49 / Modified: 09:55:49" itemprop="dateCreated datePublished" datetime="2020-09-26T17:55:49Z">2020-09-26</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-08-20 10:03:43" itemprop="dateModified" datetime="2020-08-20T10:03:43Z">2020-08-20</time>
-              </span>
 
           
 
@@ -853,89 +935,7 @@ E\times V \to E</script></li>
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>这篇文章讲的是实时的稠密追踪和建图，时间有点早，应该不算state of the art了，但还是挺典型的。本文主要讲的是他的建图过程。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/08/08/%E6%B5%85%E6%9E%90DTAM-Dense-Tracking-and-Mapping-in-Real-Time/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/09/01/%E6%B5%85%E6%9E%90EMVS-Event-Based-Multi-View-Stereo/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="greatoyster">
-      <meta itemprop="description" content="Technique-sharing station">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Greatoyster">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2020/09/01/%E6%B5%85%E6%9E%90EMVS-Event-Based-Multi-View-Stereo/" class="post-title-link" itemprop="url">浅析EMVS: Event-Based Multi-View Stereo</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-08-31 23:22:37" itemprop="dateCreated datePublished" datetime="2020-08-31T23:22:37Z">2020-08-31</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-09-20 14:34:56" itemprop="dateModified" datetime="2020-09-20T14:34:56Z">2020-09-20</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>这一篇工作的相关Demo可以在YouTube上面看到</p>
-<p>和传统的相机不一样，我们需要充分考虑到Event Camera的稀疏性和异步性，相关的建图出来的结果也是半稀疏的（edge-based）。</p>
-<p>这里有两个比较陌生的观念，一个是Space-Sweep算法，一个是DSI(Disparity Space Image),他们会在下文一一解释</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/09/01/%E6%B5%85%E6%9E%90EMVS-Event-Based-Multi-View-Stereo/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
       
     </div>
 
@@ -1020,7 +1020,7 @@ E\times V \to E</script></li>
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">41</span>
+          <span class="site-state-item-count">43</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
