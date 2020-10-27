@@ -55,7 +55,7 @@
 <meta property="og:description" content="[TOC] pintos是斯坦福CS140的教学用操作系统。总共有四个project。如题所示，下文提供了一个pintos指北。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-09-22T09:55:52.000Z">
-<meta property="article:modified_time" content="2020-10-02T12:47:04.502Z">
+<meta property="article:modified_time" content="2020-10-21T02:19:31.339Z">
 <meta property="article:author" content="greatoyster">
 <meta property="article:tag" content="greatoyster">
 <meta name="twitter:card" content="summary">
@@ -244,7 +244,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-10-02 12:47:04" itemprop="dateModified" datetime="2020-10-02T12:47:04Z">2020-10-02</time>
+                <time title="Modified: 2020-10-21 02:19:31" itemprop="dateModified" datetime="2020-10-21T02:19:31Z">2020-10-21</time>
               </span>
 
           
@@ -502,7 +502,72 @@ x(t)=a*x(t-1)+f(t)\\
 a=\frac{k}{k+1}
 \end{cases}</script><p>其中$k$是参数，$x(t)$是$t$时刻的均值，例子如下</p>
 <script type="math/tex; mode=display">
-x(5)=a^4f(1)+a^3f(2)+a^2f(3)+a^1f(4)+f(5)</script><h1 id="Project2"><a href="#Project2" class="headerlink" title="Project2"></a>Project2</h1><h1 id="Project3"><a href="#Project3" class="headerlink" title="Project3"></a>Project3</h1><h1 id="Project4"><a href="#Project4" class="headerlink" title="Project4"></a>Project4</h1>
+x(5)=a^4f(1)+a^3f(2)+a^2f(3)+a^1f(4)+f(5)</script><h1 id="Project2"><a href="#Project2" class="headerlink" title="Project2"></a>Project2</h1><h2 id="概述-1"><a href="#概述-1" class="headerlink" title="概述"></a>概述</h2><p>经过project1以后，我们已经基本熟悉了thread的运作方式，这些东西都是在内核态中的，而project2要处理的是用户态程序。</p>
+<p>最基本的代码已经给我们提供了装载和运行用户态程序的方式，不过有一点需要注意的事情，这个阶段的用户态程序是没有I/O交互功能的，这时我们需要去完善的。</p>
+<p>我们在这个阶段需要实现的有三个大目标</p>
+<ul>
+<li>打印终止信息：当一个程序终止的时候，输出他的终止码和进程的名字</li>
+<li>参数解析：解析命令行的参数</li>
+<li>系统调用：实现13个系统调用</li>
+</ul>
+<p>这里会涉及到一些关于文件系统的部分，但是我们不用去修改文件系统的代码，当前这个project还没有必要。</p>
+<p>前两个部分暂且不表，这里说一下关于系统调用的部分。project2需要实现的系统调用有十三个</p>
+<ul>
+<li><p>System Call: void <strong>halt</strong> (void)</p>
+<p>Terminates Pintos by calling <code>shutdown_power_off()</code> (declared in <code>devices/shutdown.h</code>). This should be seldom used, because you lose some information about possible deadlock situations, etc.</p>
+<p>通过调用<code>shutdown_power_off()</code>来终止Pintos</p>
+</li>
+<li><p>System Call: void <strong>exit</strong> (int status)</p>
+<p>Terminates the current user program, returning status to the kernel. If the process’s parent <code>wait</code>s for it (see below), this is the status that will be returned. Conventionally, a status of 0 indicates success and nonzero values indicate errors.</p>
+<p>终止当前的用户程序，向内核和父进程返回它的状态， 0代表成功</p>
+</li>
+<li><p>System Call: pid_t <strong>exec</strong> (const char *cmd_line)</p>
+<p>Runs the executable whose name is given in cmd_line, passing any given arguments, and returns the new process’s program id (pid). Must return pid -1, which otherwise should not be a valid pid, if the program cannot load or run for any reason. Thus, the parent process cannot return from the <code>exec</code> until it knows whether the child process successfully loaded its executable. You must use appropriate synchronization to ensure this.</p>
+<p>执行命令行，如果失败的时候会返回-1。注意，父进程需要等到知道子进程是否成功执行的时候才可以返回<code>exec()</code></p>
+</li>
+<li><p>System Call: int <strong>wait</strong> (pid_t pid)</p>
+<p>Waits for a child process pid and retrieves the child’s exit status.If pid is still alive, waits until it terminates. Then, returns the status that pid passed to <code>exit</code>. If pid did not call <code>exit()</code>, but was terminated by the kernel (e.g. killed due to an exception), <code>wait(pid)</code> must return -1. It is perfectly legal for a parent process to wait for child processes that have already terminated by the time the parent calls <code>wait</code>, but the kernel must still allow the parent to retrieve its child’s exit status, or learn that the child was terminated by the kernel.<code>wait</code> must fail and return -1 immediately if any of the following conditions is true:pid does not refer to a direct child of the calling process. pid is a direct child of the calling process if and only if the calling process received pid as a return value from a successful call to <code>exec</code>.Note that children are not inherited: if A spawns child B and B spawns child process C, then A cannot wait for C, even if B is dead. A call to <code>wait(C)</code> by process A must fail. Similarly, orphaned processes are not assigned to a new parent if their parent process exits before they do.The process that calls <code>wait</code> has already called <code>wait</code> on pid. That is, a process may wait for any given child at most once.Processes may spawn any number of children, wait for them in any order, and may even exit without having waited for some or all of their children. Your design should consider all the ways in which waits can occur. All of a process’s resources, including its <code>struct thread</code>, must be freed whether its parent ever waits for it or not, and regardless of whether the child exits before or after its parent.You must ensure that Pintos does not terminate until the initial process exits. The supplied Pintos code tries to do this by calling <code>process_wait()</code> (in <code>userprog/process.c</code>) from <code>main()</code> (in <code>threads/init.c</code>). We suggest that you implement <code>process_wait()</code> according to the comment at the top of the function and then implement the <code>wait</code> system call in terms of <code>process_wait()</code>.Implementing this system call requires considerably more work than any of the rest.</p>
+<p>等待子进程的pid并且等待子进程退出，记录它的退出状态。没有正常通过<code>exit()</code>退出的情况下返回-1</p>
+</li>
+<li><p>System Call: bool <strong>create</strong> (const char *file, unsigned initial_size)</p>
+<p>Creates a new file called file initially initial_size bytes in size. Returns true if successful, false otherwise. Creating a new file does not open it: opening the new file is a separate operation which would require a <code>open</code> system call.</p>
+</li>
+</ul>
+<ul>
+<li><p>System Call: bool <strong>remove</strong> (const char *file)</p>
+<p>Deletes the file called file. Returns true if successful, false otherwise. A file may be removed regardless of whether it is open or closed, and removing an open file does not close it. See <a href="http://web.stanford.edu/~ouster/cgi-bin/cs140-spring20/pintos/pintos_3.html#Removing an Open File" target="_blank" rel="noopener">Removing an Open File</a>, for details.</p>
+<p>删除文件，如果成功返回1，不管有没有打开都要删除</p>
+</li>
+<li><p>System Call: int <strong>open</strong> (const char *file)</p>
+<p>Opens the file called file. Returns a nonnegative integer handle called a “file descriptor” (fd), or -1 if the file could not be opened.File descriptors numbered 0 and 1 are reserved for the console: fd 0 (<code>STDIN_FILENO</code>) is standard input, fd 1 (<code>STDOUT_FILENO</code>) is standard output. The <code>open</code> system call will never return either of these file descriptors, which are valid as system call arguments only as explicitly described below.Each process has an independent set of file descriptors. File descriptors are not inherited by child processes.When a single file is opened more than once, whether by a single process or different processes, each <code>open</code> returns a new file descriptor. Different file descriptors for a single file are closed independently in separate calls to <code>close</code> and they do not share a file position.</p>
+<p>打开一个文件，返回文件描述符，打开失败就返回-1。</p>
+</li>
+<li><p>System Call: int <strong>filesize</strong> (int fd)</p>
+<p>Returns the size, in bytes, of the file open as fd.</p>
+<p>返回打开的文件大小，即字节数</p>
+</li>
+<li><p>System Call: int <strong>read</strong> (int fd, void *buffer, unsigned size)</p>
+<p>Reads size bytes from the file open as fd into buffer. Returns the number of bytes actually read (0 at end of file), or -1 if the file could not be read (due to a condition other than end of file). Fd 0 reads from the keyboard using <code>input_getc()</code>.</p>
+<p>把打开的文件内容读入缓存，返回每次读取的字节数</p>
+</li>
+<li><p>System Call: int <strong>write</strong> (int fd, const void *buffer, unsigned size)</p>
+<p>Writes size bytes from buffer to the open file fd. Returns the number of bytes actually written, which may be less than size if some bytes could not be written.Writing past end-of-file would normally extend the file, but file growth is not implemented by the basic file system. The expected behavior is to write as many bytes as possible up to end-of-file and return the actual number written, or 0 if no bytes could be written at all.Fd 1 writes to the console. Your code to write to the console should write all of buffer in one call to <code>putbuf()</code>, at least as long as size is not bigger than a few hundred bytes. (It is reasonable to break up larger buffers.) Otherwise, lines of text output by different processes may end up interleaved on the console, confusing both human readers and our grading scripts.</p>
+<p>把缓存中的写入打开的文件，写入一定数量的字节，并返回实际写入的字节。</p>
+</li>
+<li><p>System Call: void <strong>seek</strong> (int fd, unsigned position)</p>
+<p>Changes the next byte to be read or written in open file fd to position, expressed in bytes from the beginning of the file. (Thus, a position of 0 is the file’s start.)A seek past the current end of a file is not an error. A later read obtains 0 bytes, indicating end of file. A later write extends the file, filling any unwritten gap with zeros. (However, in Pintos files have a fixed length until project 4 is complete, so writes past end of file will return an error.) These semantics are implemented in the file system and do not require any special effort in system call implementation.</p>
+<p>把下一个要都或者写的字节转移到特定位置</p>
+</li>
+<li><p>System Call: unsigned <strong>tell</strong> (int fd)</p>
+<p>Returns the position of the next byte to be read or written in open file fd, expressed in bytes from the beginning of the file.</p>
+<p>返回现在正在读和写的位置</p>
+</li>
+<li><p>System Call: void <strong>close</strong> (int fd)</p>
+<p>Closes file descriptor fd. Exiting or terminating a process implicitly closes all its open file descriptors, as if by calling this function for each one.</p>
+<p>关闭文件</p>
+</li>
+</ul>
+<h1 id="Project3"><a href="#Project3" class="headerlink" title="Project3"></a>Project3</h1><h1 id="Project4"><a href="#Project4" class="headerlink" title="Project4"></a>Project4</h1>
     </div>
 
     
@@ -583,7 +648,7 @@ x(5)=a^4f(1)+a^3f(2)+a^2f(3)+a^1f(4)+f(5)</script><h1 id="Project2"><a href="#Pr
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#源文件树"><span class="nav-number">1.1.</span> <span class="nav-text">源文件树</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调试工具以及技巧"><span class="nav-number">1.2.</span> <span class="nav-text">调试工具以及技巧</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何测试"><span class="nav-number">1.3.</span> <span class="nav-text">如何测试</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Project1-Threads"><span class="nav-number">2.</span> <span class="nav-text">Project1: Threads</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">2.1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#已有的基础"><span class="nav-number">2.2.</span> <span class="nav-text">已有的基础</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#相关文件"><span class="nav-number">2.3.</span> <span class="nav-text">相关文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现目标"><span class="nav-number">2.4.</span> <span class="nav-text">实现目标</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#相关文档"><span class="nav-number">2.4.1.</span> <span class="nav-text">相关文档</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Alarm-Clock"><span class="nav-number">2.4.2.</span> <span class="nav-text">Alarm Clock</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#优先级调度"><span class="nav-number">2.4.3.</span> <span class="nav-text">优先级调度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#高级调度器"><span class="nav-number">2.4.4.</span> <span class="nav-text">高级调度器</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Project2"><span class="nav-number">3.</span> <span class="nav-text">Project2</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Project3"><span class="nav-number">4.</span> <span class="nav-text">Project3</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Project4"><span class="nav-number">5.</span> <span class="nav-text">Project4</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#源文件树"><span class="nav-number">1.1.</span> <span class="nav-text">源文件树</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调试工具以及技巧"><span class="nav-number">1.2.</span> <span class="nav-text">调试工具以及技巧</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何测试"><span class="nav-number">1.3.</span> <span class="nav-text">如何测试</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Project1-Threads"><span class="nav-number">2.</span> <span class="nav-text">Project1: Threads</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">2.1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#已有的基础"><span class="nav-number">2.2.</span> <span class="nav-text">已有的基础</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#相关文件"><span class="nav-number">2.3.</span> <span class="nav-text">相关文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现目标"><span class="nav-number">2.4.</span> <span class="nav-text">实现目标</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#相关文档"><span class="nav-number">2.4.1.</span> <span class="nav-text">相关文档</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Alarm-Clock"><span class="nav-number">2.4.2.</span> <span class="nav-text">Alarm Clock</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#优先级调度"><span class="nav-number">2.4.3.</span> <span class="nav-text">优先级调度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#高级调度器"><span class="nav-number">2.4.4.</span> <span class="nav-text">高级调度器</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Project2"><span class="nav-number">3.</span> <span class="nav-text">Project2</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#概述-1"><span class="nav-number">3.1.</span> <span class="nav-text">概述</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Project3"><span class="nav-number">4.</span> <span class="nav-text">Project3</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Project4"><span class="nav-number">5.</span> <span class="nav-text">Project4</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
