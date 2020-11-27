@@ -154,7 +154,15 @@
 <li><p>In the KITTI dataset, it seem OK with pure translation, but still not as robust as rotation case, the number of events is one possible reason, but I think there may be other potential reasons.</p>
 <h1 id="2020-11-9"><a href="#2020-11-9" class="headerlink" title="2020.11.9"></a>2020.11.9</h1></li>
 </ul>
-<p>Both PINTOS project3 and CV homework3 is on the way, their deadline is near the end of November. </p>
+<p>Both PINTOS project3 and CV homework3 is on the way, their deadlines are near the end of November. </p>
+<h1 id="2020-11-10-2020-11-11"><a href="#2020-11-10-2020-11-11" class="headerlink" title="2020.11.10-2020.11.11"></a>2020.11.10-2020.11.11</h1><p>These days I plan to finish my course project first.</p>
+<h1 id="2020-11-12-2020-11-17"><a href="#2020-11-12-2020-11-17" class="headerlink" title="2020.11.12-2020.11.17"></a>2020.11.12-2020.11.17</h1><p>Still working on my course project, including computer vision, Robotics and Operating System, which is a heavy load.</p>
+<p>During these days, Samsung Gen3 arrived with higher resolution.</p>
+<p>About ETAM part, I am trying to simplify the code.</p>
+<h1 id="2020-11-18-2020-11-20"><a href="#2020-11-18-2020-11-20" class="headerlink" title="2020.11.18-2020.11.20"></a>2020.11.18-2020.11.20</h1><p>Pintos part is given to my partner now, and the interface of  real time read of events data is designed. But if we need to run the two part in parallel, we’d better to embed the current ETAM code to ROS.</p>
+<h1 id="2020-11-21"><a href="#2020-11-21" class="headerlink" title="2020.11.21"></a>2020.11.21</h1><p>Today I fixed some potential bugs in pintos. And I also did some investigation into the ETAM implementation. It is a challenge to get it into ROS for it is somehow complex and time-consuming. And a first intuition is to remove some useless code first. And the second step is to replace some code by reliable third party libraries i.e. kindr. The last step is to do my own adaption.</p>
+<p>I also need to do some review for robotics midterm.</p>
+<h1 id="2020-11-22-2020-11-27"><a href="#2020-11-22-2020-11-27" class="headerlink" title="2020.11.22-2020.11.27"></a>2020.11.22-2020.11.27</h1><p>ETAM has been transplanted to ROS, and as December is coming, I plan to spend the rest time of this year to my course projects and final exams. A lot of materials are needed to be upload to this GitHub Pages.</p>
 ]]></content>
   </entry>
   <entry>
@@ -595,7 +603,9 @@ x(5)=a^4f(1)+a^3f(2)+a^2f(3)+a^1f(4)+f(5)</script><h1 id="Project2"><a href="#Pr
 <p>关闭文件</p>
 </li>
 </ul>
-<h1 id="Project3"><a href="#Project3" class="headerlink" title="Project3"></a>Project3</h1><h1 id="Project4"><a href="#Project4" class="headerlink" title="Project4"></a>Project4</h1>]]></content>
+<h1 id="Project3"><a href="#Project3" class="headerlink" title="Project3"></a>Project3</h1><p>这次主要和虚拟内存相关，我们需要实现物理帧，虚拟页，以及页表来完成用户态对于虚拟内存的使用。</p>
+<h2 id="实现策略"><a href="#实现策略" class="headerlink" title="实现策略"></a>实现策略</h2><p>先实现物理页表，可以在<code>process.c</code>实现自己的分配器，和置换相关的算法可以先放在一边不用管，做完了这些以后，project2里面的测试依旧可以通过</p>
+<h2 id="Page-Table"><a href="#Page-Table" class="headerlink" title="Page Table"></a>Page Table</h2><h2 id="Frame-Table"><a href="#Frame-Table" class="headerlink" title="Frame Table"></a>Frame Table</h2><h2 id="Swap-Table"><a href="#Swap-Table" class="headerlink" title="Swap Table"></a>Swap Table</h2><h1 id="Project4"><a href="#Project4" class="headerlink" title="Project4"></a>Project4</h1>]]></content>
   </entry>
   <entry>
     <title>ROS入门</title>
@@ -999,6 +1009,16 @@ x(5)=a^4f(1)+a^3f(2)+a^2f(3)+a^1f(4)+f(5)</script><h1 id="Project2"><a href="#Pr
 ]]></content>
   </entry>
   <entry>
+    <title>manim教程</title>
+    <url>/2020/10/28/manim%E6%95%99%E7%A8%8B/</url>
+    <content><![CDATA[<p><code>manim</code>是一个非常强大和优雅的可视化框架和动画引擎，但使用上会稍微复杂，这里介绍一下基本的使用方法</p>
+<a id="more"></a>
+<p>安装部分可以参考官方GitHub仓库的README，在Ubuntu上面有时候遇到一些<code>ffmpeg</code>的配置问题，可以参考相关issue。</p>
+<p>在安装完成以后，可以运行下列命令来运行Demo</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 -m manim example_scenes.py SquareToCircle -pl</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
     <title>pybind11示例</title>
     <url>/2020/09/09/pybind11%E7%A4%BA%E4%BE%8B/</url>
     <content><![CDATA[<p><code>pybind11</code>是一个C++的库，它能够在Python和C++建立绑定，达到互相调用接口的效果</p>
@@ -1194,6 +1214,15 @@ E_{\xi}=\int_{\Omega}\{g(u)||\nabla{\xi(u)} ||_{\epsilon}+\lambda C(u,\xi(u)) \}
 <li><p>后面的描述都围绕着如何优化损失$E_\xi$以及加速运算，数学标记就更为复杂了，这里暂且不表，先挖一个坑。</p>
 </li>
 </ul>
+]]></content>
+  </entry>
+  <entry>
+    <title>浅析Depth Map Prediction from a Single Image using a Multi-Scale Deep Network</title>
+    <url>/2020/11/10/%E6%B5%85%E6%9E%90Depth-Map-Prediction-from-a-Single-Image/</url>
+    <content><![CDATA[<p>NIPS2014的文章，运用深度学习实现了从单张图片获取深度估计。</p>
+<p>神经网络分为两部分，如图所示</p>
+<p><img src="C:\Users\lenovo\Documents\hexo\source\images\1604934056751.png" alt="1604934056751"></p>
+<p>第一部分是全局的粗略估计，第二部分是局部的精细调优。</p>
 ]]></content>
   </entry>
   <entry>
@@ -1446,21 +1475,6 @@ v
 ]]></content>
   </entry>
   <entry>
-    <title>浅析OmniSLAM: Omnidirectional Localization and Dense Mapping for Wide-baseline Multi-camera Systems</title>
-    <url>/2020/10/03/%E6%B5%85%E6%9E%90OmniSLAM-Omnidirectional-Localization-and-Dense-Mappingfor-Wide-baseline-Multi-camera-Systems/</url>
-    <content><![CDATA[<p><img src="\images\1601712224770.png" alt=""></p>
-<p>这项工作发表在了ICRA2020上面，是会议上机器人视觉方向做不错的几项工作之一。</p>
-<p>工作涵盖了全向视角下的定位和稠密三维重建，提出了一个广角视角下的深度估计的神经网络结构，并把它集成到了视觉里程计当中，这个视觉里程计还包括了一个回环检测模块，增加了全局上的一致性。在三维重建部分，它结合了估计的位姿和深度图，通过TSDF进行三维重建。</p>
-<a id="more"></a>
-<p>一般来说，基于激光雷达或者结构光等机制的深度传感器还是较为准确的，这给精准的三维建图提供了一个很好的前提，不过它们也有一些缺点，比如纵向的分辨率不太够，或者传感器之间的互相干扰，再或者是尺寸，成本，功耗等一系列的问题。</p>
-<p>另一套进行深度估计的体系是基于相机系统的，我们利用多视角几何的约束来求解场景点的深度，也可以利用基于深度学习的算法来进行深度估计。本文用的就是这套体系。</p>
-<p>一般来说的相机体系用的是固定的朝某一方向的一对相机，它们利用共同的视野中的对应点来计算相应的深度。在这项工作中，我们使用的是拥有更加宽广的视野的广角相机，一般来说鱼眼相机可以有220°的视野，那么我们采用的相机系统包含了四个这样子的相机，这样就可以360°无死角了。</p>
-<p>以上的这套广角相机系统有一个鲁棒的视觉里程计ROVO，也有关于深度估计的神经网络结构OmniMVS。关于OmniMVS，它要把输入的图像的特征映射到全局的球上，会大量消耗计算资源。作者在这里优化了这个网络结构，让它更快更准了。</p>
-<p>关于本文的贡献，我个人以为没有什么理论上的创新，但是在工程的角度上对已有的方案做了一个很好的整合和优化，最后实现了一个相对鲁棒的定位和建图的系统。</p>
-<p><img src="images\1601721840486.png" alt=""></p>
-]]></content>
-  </entry>
-  <entry>
     <title>浅析Poisson Image Editing</title>
     <url>/2020/09/22/%E6%B5%85%E6%9E%90Poisson-Image-Editing/</url>
     <content><![CDATA[<p>很老很经典的图形学算法，难得考古一下。这个工作虽然是图像处理，但后来这个梯度域操作的思路启发了非常多的后续工作。堪称经典，不是因为解了当下的问题，而是给予了后人新的解题思路。</p>
@@ -1477,6 +1491,21 @@ v
 </ul>
 <p>那么关于Formulation的部分</p>
 <p><img src="C:\Users\lenovo\Documents\hexo\source\images\1600878360696.png" alt=""></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>浅析OmniSLAM: Omnidirectional Localization and Dense Mapping for Wide-baseline Multi-camera Systems</title>
+    <url>/2020/10/03/%E6%B5%85%E6%9E%90OmniSLAM-Omnidirectional-Localization-and-Dense-Mappingfor-Wide-baseline-Multi-camera-Systems/</url>
+    <content><![CDATA[<p><img src="\images\1601712224770.png" alt=""></p>
+<p>这项工作发表在了ICRA2020上面，是会议上机器人视觉方向做不错的几项工作之一。</p>
+<p>工作涵盖了全向视角下的定位和稠密三维重建，提出了一个广角视角下的深度估计的神经网络结构，并把它集成到了视觉里程计当中，这个视觉里程计还包括了一个回环检测模块，增加了全局上的一致性。在三维重建部分，它结合了估计的位姿和深度图，通过TSDF进行三维重建。</p>
+<a id="more"></a>
+<p>一般来说，基于激光雷达或者结构光等机制的深度传感器还是较为准确的，这给精准的三维建图提供了一个很好的前提，不过它们也有一些缺点，比如纵向的分辨率不太够，或者传感器之间的互相干扰，再或者是尺寸，成本，功耗等一系列的问题。</p>
+<p>另一套进行深度估计的体系是基于相机系统的，我们利用多视角几何的约束来求解场景点的深度，也可以利用基于深度学习的算法来进行深度估计。本文用的就是这套体系。</p>
+<p>一般来说的相机体系用的是固定的朝某一方向的一对相机，它们利用共同的视野中的对应点来计算相应的深度。在这项工作中，我们使用的是拥有更加宽广的视野的广角相机，一般来说鱼眼相机可以有220°的视野，那么我们采用的相机系统包含了四个这样子的相机，这样就可以360°无死角了。</p>
+<p>以上的这套广角相机系统有一个鲁棒的视觉里程计ROVO，也有关于深度估计的神经网络结构OmniMVS。关于OmniMVS，它要把输入的图像的特征映射到全局的球上，会大量消耗计算资源。作者在这里优化了这个网络结构，让它更快更准了。</p>
+<p>关于本文的贡献，我个人以为没有什么理论上的创新，但是在工程的角度上对已有的方案做了一个很好的整合和优化，最后实现了一个相对鲁棒的定位和建图的系统。</p>
+<p><img src="images\1601721840486.png" alt=""></p>
 ]]></content>
   </entry>
   <entry>
@@ -1598,21 +1627,6 @@ r(\rho)=||\mathcal T_{left}^s(x_1(\rho))-\mathcal T_{right}^s(x_2(\rho))||_2</sc
 ]]></content>
   </entry>
   <entry>
-    <title>浅析VINS-Mono: A Robust and Versatile Monocular Visual-Inertial State Estimator</title>
-    <url>/2020/09/03/%E6%B5%85%E6%9E%90VINS-Mono-A-Robust-and-Versatile-Monocular-Visual-Inertial-State-Estimator/</url>
-    <content><![CDATA[<p>VIO领域的经典之作，利用单目相机和惯导来解决6DoF的状态估计问题</p>
-<a id="more"></a>
-<p>由于缺乏对于深度的直接测量，事实上我们会在IMU处理，状态初始化，外参标定和非线性优化上遇到很大的挑战</p>
-<p>通过融合IMU的预积分结果和视觉特征，达到了一个较为精确的VIO状态估计。融合过程应用了非线性优化，采用的是紧耦合的模型</p>
-<p>在这以前，基于单目相机的定位和重建一直广受关注，但一个很重要的问题在于单目相机的尺度是不确定的，那么一个很自然的方案是给已有的单目相机系统加上一个IMU，最直接的好处就是我们得到了关于尺度的信息，包括旋转角的度量。IMU也在一定程度增强了系统的稳定性，尤其是当相机遇到强烈光度变化，运动模糊，纹理缺失等情况的时候。</p>
-<p>不过这些也是有代价的，为了得到尺度信息，IMU要从一个运动的状态开始初始化，此外VIO系统是非线性的，这就给估计器的初始化带来了巨大挑战</p>
-<p>整个VIO系统提供了精准的位姿和速度估计，还包括了相机的外参标定和IMU的偏移误差修正，由于IMU的roll和pitch角度已知，6DoF的姿态估计就可以退化到4DoF的位姿图优化</p>
-<p>VIO最简单的方案是IMU和相机的松耦合模型，IMU通过一个EKF，被用来在视觉估计的基础上进行状态传播。紧耦合模型是把IMU和相机的原属数据通过EKF进行融合。前面的比较流行的方案是MSCKF，以及他的衍生版本SR-ISWF。对于之后的图优化部分，极少的方案可以在资源有限的情况下实时运行，因为优化是靠不断迭代来进行的。</p>
-<p>对于视觉信息的处理，一般根据视觉残差模型的不同定义可以分为直接和间接两个流派。大致来说，直接法最小化的是光度误差，间接法最小化的是几何误差。直接法需要一个较为精准的初始估计值。间接法一般需要在检测特征和特征匹配上花费额外的计算资源。</p>
-<p>在这里，需要介绍一点关于IMU预积分的知识</p>
-]]></content>
-  </entry>
-  <entry>
     <title>浅析Visual-Inertial-Aided Navigation for High-Dynamic Motion in Built Environments Without Initial Conditions</title>
     <url>/2020/09/04/%E6%B5%85%E6%9E%90Visual-Inertial-Aided-Navigation-for-High-Dynamic-Motion-in-Built-Environments-Without-Initial-Conditions/</url>
     <content><![CDATA[<p>这篇文章主要讲的是视觉信息和IMU信息的融合</p>
@@ -1730,6 +1744,21 @@ p_c=Rp_w+t</script>]]></content>
 ]]></content>
   </entry>
   <entry>
+    <title>浅析VINS-Mono: A Robust and Versatile Monocular Visual-Inertial State Estimator</title>
+    <url>/2020/09/03/%E6%B5%85%E6%9E%90VINS-Mono-A-Robust-and-Versatile-Monocular-Visual-Inertial-State-Estimator/</url>
+    <content><![CDATA[<p>VIO领域的经典之作，利用单目相机和惯导来解决6DoF的状态估计问题</p>
+<a id="more"></a>
+<p>由于缺乏对于深度的直接测量，事实上我们会在IMU处理，状态初始化，外参标定和非线性优化上遇到很大的挑战</p>
+<p>通过融合IMU的预积分结果和视觉特征，达到了一个较为精确的VIO状态估计。融合过程应用了非线性优化，采用的是紧耦合的模型</p>
+<p>在这以前，基于单目相机的定位和重建一直广受关注，但一个很重要的问题在于单目相机的尺度是不确定的，那么一个很自然的方案是给已有的单目相机系统加上一个IMU，最直接的好处就是我们得到了关于尺度的信息，包括旋转角的度量。IMU也在一定程度增强了系统的稳定性，尤其是当相机遇到强烈光度变化，运动模糊，纹理缺失等情况的时候。</p>
+<p>不过这些也是有代价的，为了得到尺度信息，IMU要从一个运动的状态开始初始化，此外VIO系统是非线性的，这就给估计器的初始化带来了巨大挑战</p>
+<p>整个VIO系统提供了精准的位姿和速度估计，还包括了相机的外参标定和IMU的偏移误差修正，由于IMU的roll和pitch角度已知，6DoF的姿态估计就可以退化到4DoF的位姿图优化</p>
+<p>VIO最简单的方案是IMU和相机的松耦合模型，IMU通过一个EKF，被用来在视觉估计的基础上进行状态传播。紧耦合模型是把IMU和相机的原属数据通过EKF进行融合。前面的比较流行的方案是MSCKF，以及他的衍生版本SR-ISWF。对于之后的图优化部分，极少的方案可以在资源有限的情况下实时运行，因为优化是靠不断迭代来进行的。</p>
+<p>对于视觉信息的处理，一般根据视觉残差模型的不同定义可以分为直接和间接两个流派。大致来说，直接法最小化的是光度误差，间接法最小化的是几何误差。直接法需要一个较为精准的初始估计值。间接法一般需要在检测特征和特征匹配上花费额外的计算资源。</p>
+<p>在这里，需要介绍一点关于IMU预积分的知识</p>
+]]></content>
+  </entry>
+  <entry>
     <title>逆深度参数化</title>
     <url>/2020/08/08/%E9%80%86%E6%B7%B1%E5%BA%A6%E5%8F%82%E6%95%B0%E5%8C%96/</url>
     <content><![CDATA[<p>逆深度图在DTAM以及后续的相关工作中都有提及，这里稍微介绍一下逆深度参数化的相关知识</p>
@@ -1752,20 +1781,5 @@ p_c=Rp_w+t</script>]]></content>
 <p>通过透视投影，有时候会产生一个畸变</p>
 <a id="more"></a>
 ]]></content>
-  </entry>
-  <entry>
-    <title>manim教程</title>
-    <url>/2020/10/28/manim%E6%95%99%E7%A8%8B/</url>
-    <content><![CDATA[<p><code>manim</code>是一个非常强大和优雅的可视化框架和动画引擎，但使用上会稍微复杂，这里介绍一下基本的使用方法</p>
-<a id="more"></a>
-<p>安装部分可以参考官方GitHub仓库的README，在Ubuntu上面有时候遇到一些<code>ffmpeg</code>的配置问题，可以参考相关issue。</p>
-<p>在安装完成以后，可以运行下列命令来运行Demo</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">python3 -m manim example_scenes.py SquareToCircle -pl</span><br></pre></td></tr></table></figure>
-]]></content>
-  </entry>
-  <entry>
-    <title>浅析Depth Map Prediction from a Single Image</title>
-    <url>/2020/11/10/%E6%B5%85%E6%9E%90Depth-Map-Prediction-from-a-Single-Image/</url>
-    <content><![CDATA[]]></content>
   </entry>
 </search>

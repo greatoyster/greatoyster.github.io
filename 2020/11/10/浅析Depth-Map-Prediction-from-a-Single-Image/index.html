@@ -47,18 +47,20 @@
   };
 </script>
 
-  <meta name="description" content="Technique-sharing station">
+  <meta name="description" content="NIPS2014的文章，运用深度学习实现了从单张图片获取深度估计。 神经网络分为两部分，如图所示  第一部分是全局的粗略估计，第二部分是局部的精细调优。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="浅析Depth Map Prediction from a Single Image">
+<meta property="og:title" content="浅析Depth Map Prediction from a Single Image using a Multi-Scale Deep Network">
 <meta property="og:url" content="http://yoursite.com/2020/11/10/%E6%B5%85%E6%9E%90Depth-Map-Prediction-from-a-Single-Image/index.html">
 <meta property="og:site_name" content="Greatoyster">
-<meta property="og:description" content="Technique-sharing station">
+<meta property="og:description" content="NIPS2014的文章，运用深度学习实现了从单张图片获取深度估计。 神经网络分为两部分，如图所示  第一部分是全局的粗略估计，第二部分是局部的精细调优。">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="c:/Users/lenovo/Documents/hexo/source/images/1604934056751.png">
 <meta property="article:published_time" content="2020-11-09T22:51:50.000Z">
-<meta property="article:modified_time" content="2020-11-09T14:51:50.162Z">
+<meta property="article:modified_time" content="2020-11-10T12:26:09.190Z">
 <meta property="article:author" content="greatoyster">
 <meta property="article:tag" content="greatoyster">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="c:/Users/lenovo/Documents/hexo/source/images/1604934056751.png">
 
 <link rel="canonical" href="http://yoursite.com/2020/11/10/%E6%B5%85%E6%9E%90Depth-Map-Prediction-from-a-Single-Image/">
 
@@ -72,7 +74,7 @@
   };
 </script>
 
-  <title>浅析Depth Map Prediction from a Single Image | Greatoyster</title>
+  <title>浅析Depth Map Prediction from a Single Image using a Multi-Scale Deep Network | Greatoyster</title>
   
 
 
@@ -227,7 +229,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          浅析Depth Map Prediction from a Single Image
+          浅析Depth Map Prediction from a Single Image using a Multi-Scale Deep Network
         </h1>
 
         <div class="post-meta">
@@ -236,10 +238,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2020-11-09 22:51:50 / Modified: 14:51:50" itemprop="dateCreated datePublished" datetime="2020-11-09T22:51:50Z">2020-11-09</time>
+              <time title="Created: 2020-11-09 22:51:50" itemprop="dateCreated datePublished" datetime="2020-11-09T22:51:50Z">2020-11-09</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-11-10 12:26:09" itemprop="dateModified" datetime="2020-11-10T12:26:09Z">2020-11-10</time>
+              </span>
 
           
             <span class="post-meta-item" title="Views" id="busuanzi_container_page_pv" style="display: none;">
@@ -259,7 +267,11 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        
+        <p>NIPS2014的文章，运用深度学习实现了从单张图片获取深度估计。</p>
+<p>神经网络分为两部分，如图所示</p>
+<p><img src="C:\Users\lenovo\Documents\hexo\source\images\1604934056751.png" alt="1604934056751"></p>
+<p>第一部分是全局的粗略估计，第二部分是局部的精细调优。</p>
+
     </div>
 
     
@@ -544,6 +556,56 @@ window.addEventListener('pjax:success', () => {
   
 
   
+      
+<script type="text/x-mathjax-config">
+    MathJax.Ajax.config.path['mhchem'] = '//cdn.jsdelivr.net/npm/mathjax-mhchem@3';
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        extensions: ['[mhchem]/mhchem.js'],
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
 
   
 
